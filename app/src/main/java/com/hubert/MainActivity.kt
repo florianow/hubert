@@ -85,8 +85,8 @@ fun HubertApp() {
         }
     }
 
-    LaunchedEffect(conjugationState.isPlaying, conjugationState.isGameOver, conjugationState.countdown) {
-        if (conjugationState.countdown != null || conjugationState.isPlaying || conjugationState.isGameOver) {
+    LaunchedEffect(conjugationState.isTenseSelection, conjugationState.isPlaying, conjugationState.isGameOver, conjugationState.countdown) {
+        if (conjugationState.isTenseSelection || conjugationState.countdown != null || conjugationState.isPlaying || conjugationState.isGameOver) {
             currentScreen = Screen.CONJUGATION
         }
     }
@@ -240,6 +240,17 @@ fun HubertApp() {
 
         Screen.CONJUGATION -> {
             when {
+                conjugationState.isTenseSelection -> {
+                    TenseSelectionScreen(
+                        state = conjugationState,
+                        onToggleTense = { conjugationVm.toggleTense(it) },
+                        onStart = { conjugationVm.startGame() },
+                        onBack = {
+                            conjugationVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
                 conjugationState.countdown != null -> {
                     CountdownScreen(count = conjugationState.countdown!!)
                 }
@@ -283,7 +294,7 @@ fun HubertApp() {
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },
                 onStartSpellingBee = { spellingBeeVm.startGame() },
-                onStartConjugation = { conjugationVm.startGame() },
+                onStartConjugation = { conjugationVm.showTenseSelection() },
                 onShowHighScores = { currentScreen = Screen.HIGH_SCORES }
             )
         }

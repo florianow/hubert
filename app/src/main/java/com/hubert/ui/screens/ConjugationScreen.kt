@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -79,27 +80,6 @@ fun ConjugationScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Tense badge
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(20.dp),
-                    color = AccentPurple.copy(alpha = 0.12f)
-                ) {
-                    Text(
-                        text = state.tenseName,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = AccentPurple
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
             // Question area: sentence view or drill view
             if (state.sentenceFr != null) {
                 // Sentence view: show sentence with gap
@@ -119,7 +99,33 @@ fun ConjugationScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Tense badge — between question and answers so it's clear what's needed
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    color = AccentPurple.copy(alpha = 0.15f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = state.tenseName,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp, vertical = 10.dp),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Black,
+                        color = AccentPurple,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 1.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             // 4 answer choices in 2x2 grid
             Column(
@@ -436,6 +442,170 @@ private fun ConjugationChoiceCard(
                 color = textColor,
                 textAlign = TextAlign.Center,
                 maxLines = 2
+            )
+        }
+    }
+}
+
+@Composable
+fun TenseSelectionScreen(
+    state: ConjugationState,
+    onToggleTense: (String) -> Unit,
+    onStart: () -> Unit,
+    onBack: () -> Unit
+) {
+    // Ordered list of tenses for consistent display
+    val tenseOrder = listOf(
+        "present", "imparfait", "futur", "conditionnel",
+        "subjonctif", "passe_simple", "imperatif"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp)
+        ) {
+            // Top bar with back button
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back to menu",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = "Conjuguez!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentPurple
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = "Select tenses to practice",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Tense chips
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                for (tenseKey in tenseOrder) {
+                    val displayName = state.availableTenses[tenseKey] ?: continue
+                    val isSelected = tenseKey in state.selectedTenses
+
+                    TenseChip(
+                        label = displayName,
+                        isSelected = isSelected,
+                        onClick = { onToggleTense(tenseKey) }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Start button
+            Button(
+                onClick = onStart,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = AccentPurple
+                )
+            ) {
+                Text(
+                    text = "START",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 3.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+private fun TenseChip(
+    label: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor = if (isSelected) {
+        AccentPurple.copy(alpha = 0.15f)
+    } else {
+        MaterialTheme.colorScheme.surface
+    }
+
+    val borderColor = if (isSelected) {
+        AccentPurple
+    } else {
+        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+    }
+
+    val textColor = if (isSelected) {
+        AccentPurple
+    } else {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+    }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .border(
+                width = if (isSelected) 2.dp else 1.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .clickable { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                color = textColor
+            )
+
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = { onClick() },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = AccentPurple,
+                    uncheckedColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f)
+                )
             )
         }
     }

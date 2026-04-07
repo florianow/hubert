@@ -17,10 +17,10 @@ import javax.inject.Inject
 /**
  * Conjuguez! — verb conjugation game.
  *
- * Shows a French verb infinitive + tense + subject pronoun.
- * Player picks the correct conjugated form from 4 multiple-choice options.
- * Distractors are other forms of the SAME verb (different tenses/persons)
- * to teach tense discrimination.
+ * Player selects which tenses to practice before the game starts.
+ * During gameplay, tenses are picked randomly from the selection,
+ * with error-weighted repetition: tenses the player gets wrong
+ * appear more frequently.
  *
  * When a matching example sentence exists, it's shown with the verb blanked out.
  * Otherwise, a plain drill view (infinitive + pronoun + tense) is used.
@@ -31,6 +31,11 @@ data class ConjugationState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
+
+    // Tense selection (shown before game starts)
+    val isTenseSelection: Boolean = false,
+    val availableTenses: Map<String, String> = emptyMap(),  // key -> display name
+    val selectedTenses: Set<String> = setOf("present"),
 
     // Current question
     val infinitive: String = "",
@@ -81,17 +86,23 @@ class ConjugationViewModel @Inject constructor(
     private var timerDeadline = 0L
 
     private var verbPool: MutableList<ConjugationVerb> = mutableListOf()
-    private var questionsAsked = 0  // tracks difficulty progression
+    private var activeTenses: Set<String> = setOf("present")
+
+    // Error-weighted tense tracking: count of wrong answers per tense
+    private var tenseErrorCounts: MutableMap<String, Int> = mutableMapOf()
 
     companion object {
-        const val GAME_TIME_MS = 60_000L
+        const val GAME_TIME_MS = 90_000L
         const val POINTS_PER_CORRECT = 200
         const val STREAK_BONUS = 50
         const val WRONG_PENALTY_MS = 5_000L
-        const val CORRECT_BONUS_MS = 2_000L
+        const val CORRECT_BONUS_MS = 4_000L
         const val NUM_CHOICES = 4
 
-        // Tense display names
+        // Error weight: each error on a tense adds this much extra selection weight
+        const val ERROR_WEIGHT_BONUS = 2
+
+        // Tense keys → display names
         val TENSE_DISPLAY = mapOf(
             "present" to "Présent",
             "imparfait" to "Imparfait",
@@ -105,11 +116,6 @@ class ConjugationViewModel @Inject constructor(
         val PERSON_LABELS = listOf("je", "tu", "il/elle", "nous", "vous", "ils/elles")
         // Impératif only has tu (1), nous (3), vous (4) forms
         val IMPERATIF_PERSONS = listOf(1, 3, 4)
-
-        // Difficulty tiers: which tenses are available at each stage
-        val TIER_1_TENSES = listOf("present")
-        val TIER_2_TENSES = listOf("present", "imparfait", "futur")
-        val TIER_3_TENSES = listOf("present", "imparfait", "futur", "conditionnel", "subjonctif")
     }
 
     init {
@@ -119,18 +125,54 @@ class ConjugationViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Show the tense selection screen. Called when user taps the Conjuguez! card.
+     */
+    fun showTenseSelection() {
+        _uiState.update {
+            it.copy(
+                isTenseSelection = true,
+                availableTenses = TENSE_DISPLAY,
+                selectedTenses = it.selectedTenses  // preserve previous selection
+            )
+        }
+    }
+
+    /**
+     * Toggle a tense on/off in the selection screen.
+     * Ensures at least one tense remains selected.
+     */
+    fun toggleTense(tenseKey: String) {
+        _uiState.update { state ->
+            val current = state.selectedTenses
+            val updated = if (tenseKey in current) {
+                // Don't allow deselecting the last tense
+                if (current.size > 1) current - tenseKey else current
+            } else {
+                current + tenseKey
+            }
+            state.copy(selectedTenses = updated)
+        }
+    }
+
+    /**
+     * Start the game with the currently selected tenses.
+     */
     fun startGame() {
         countdownJob?.cancel()
         timerJob?.cancel()
-        questionsAsked = 0
 
+        activeTenses = _uiState.value.selectedTenses
+        tenseErrorCounts = mutableMapOf()
         verbPool = vocabRepository.getConjugations().shuffled().toMutableList()
 
         _uiState.update {
             ConjugationState(
                 isPlaying = false,
+                isTenseSelection = false,
                 countdown = 3,
-                highScore = it.highScore
+                highScore = it.highScore,
+                selectedTenses = it.selectedTenses  // preserve for next round
             )
         }
 
@@ -156,15 +198,14 @@ class ConjugationViewModel @Inject constructor(
 
         val verb = verbPool.removeFirst()
 
-        // Pick tense based on difficulty progression
-        val availableTenses = getAvailableTenses()
-        val eligibleTenses = verb.tenses.keys.filter { it in availableTenses }
-        if (eligibleTenses.isEmpty()) {
-            // This verb doesn't have any tenses we want right now, skip it
+        // Pick tense using error-weighted random selection
+        val tense = pickWeightedTense(verb)
+        if (tense == null) {
+            // This verb doesn't have any of the selected tenses, skip
             showNextQuestion()
             return
         }
-        val tense = eligibleTenses.random()
+
         val forms = verb.tenses[tense] ?: return
 
         // Pick a random person (that has a non-empty form)
@@ -226,20 +267,27 @@ class ConjugationViewModel @Inject constructor(
                 feedback = null
             )
         }
-
-        questionsAsked++
     }
 
     /**
-     * Difficulty progression: start with Présent only, add tenses as the player
-     * answers more questions correctly.
+     * Pick a tense from the active set using error-weighted random selection.
+     * Each tense gets a base weight of 1. Each error on a tense adds
+     * [ERROR_WEIGHT_BONUS] extra weight, so tenses the player struggles with
+     * appear more often.
+     *
+     * Returns null if the verb has none of the active tenses.
      */
-    private fun getAvailableTenses(): List<String> {
-        return when {
-            questionsAsked < 5 -> TIER_1_TENSES
-            questionsAsked < 10 -> TIER_2_TENSES
-            else -> TIER_3_TENSES
+    private fun pickWeightedTense(verb: ConjugationVerb): String? {
+        val eligibleTenses = verb.tenses.keys.filter { it in activeTenses }
+        if (eligibleTenses.isEmpty()) return null
+
+        // Build weighted list
+        val weighted = eligibleTenses.flatMap { tense ->
+            val weight = 1 + (tenseErrorCounts[tense] ?: 0) * ERROR_WEIGHT_BONUS
+            List(weight) { tense }
         }
+
+        return weighted.random()
     }
 
     fun answer(choiceIndex: Int) {
@@ -248,13 +296,18 @@ class ConjugationViewModel @Inject constructor(
 
         val isCorrect = choiceIndex == state.correctIndex
 
+        // Always speak the correct conjugated form (learn from mistakes too)
+        frenchTts.speak(state.choices[state.correctIndex])
+
+        // Find the current tense key for error tracking
+        val currentTenseKey = TENSE_DISPLAY.entries
+            .firstOrNull { it.value == state.tenseName }?.key
+
         if (isCorrect) {
             val newStreak = state.streak + 1
             val streakBonus = (newStreak - 1) * STREAK_BONUS
             val matchScore = POINTS_PER_CORRECT + streakBonus
 
-            // Speak the correct conjugated form
-            frenchTts.speak(state.choices[choiceIndex])
             timerDeadline += CORRECT_BONUS_MS
 
             _uiState.update {
@@ -269,6 +322,12 @@ class ConjugationViewModel @Inject constructor(
             }
         } else {
             timerDeadline -= WRONG_PENALTY_MS
+
+            // Track error for weighted tense selection
+            if (currentTenseKey != null) {
+                tenseErrorCounts[currentTenseKey] =
+                    (tenseErrorCounts[currentTenseKey] ?: 0) + 1
+            }
 
             _uiState.update {
                 it.copy(
