@@ -19,13 +19,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.GapFillState
 
 @Composable
 fun GapFillScreen(
     state: GapFillState,
-    onAnswer: (Int) -> Unit
+    onAnswer: (Int) -> Unit,
+    onQuit: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -38,7 +41,7 @@ fun GapFillScreen(
                 .padding(16.dp)
         ) {
             // Top bar: Score + Streak
-            GapFillTopBar(state)
+            GapFillTopBar(state, onQuit = onQuit)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -213,12 +216,24 @@ fun GapFillScreen(
 }
 
 @Composable
-private fun GapFillTopBar(state: GapFillState) {
+private fun GapFillTopBar(state: GapFillState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Quit button
+        IconButton(
+            onClick = onQuit,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Quit game",
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            )
+        }
+
         Column {
             Text(
                 text = "Score",

@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,7 +31,8 @@ fun SpellingBeeScreen(
     state: SpellingBeeState,
     onTypedTextChanged: (String) -> Unit,
     onSubmit: () -> Unit,
-    onReplay: () -> Unit
+    onReplay: () -> Unit,
+    onQuit: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -45,7 +47,7 @@ fun SpellingBeeScreen(
                 .padding(16.dp)
         ) {
             // Top bar: Score + Title + Streak
-            SpellingBeeTopBar(state)
+            SpellingBeeTopBar(state, onQuit = onQuit)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -298,12 +300,24 @@ fun SpellingBeeScreen(
 }
 
 @Composable
-private fun SpellingBeeTopBar(state: SpellingBeeState) {
+private fun SpellingBeeTopBar(state: SpellingBeeState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Quit button
+        IconButton(
+            onClick = onQuit,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Quit game",
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            )
+        }
+
         Column {
             Text(
                 text = "Score",

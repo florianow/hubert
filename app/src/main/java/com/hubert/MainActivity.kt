@@ -98,7 +98,11 @@ fun HubertApp() {
                     GameScreen(
                         state = matchingState,
                         onSelectFrench = { matchingVm.selectFrench(it) },
-                        onSelectGerman = { matchingVm.selectGerman(it) }
+                        onSelectGerman = { matchingVm.selectGerman(it) },
+                        onQuit = {
+                            matchingVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
                     )
                 }
                 matchingState.isGameOver -> {
@@ -128,7 +132,11 @@ fun HubertApp() {
                 genderSnapState.isPlaying -> {
                     GenderSnapScreen(
                         state = genderSnapState,
-                        onAnswer = { genderSnapVm.answer(it) }
+                        onAnswer = { genderSnapVm.answer(it) },
+                        onQuit = {
+                            genderSnapVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
                     )
                 }
                 genderSnapState.isGameOver -> {
@@ -158,7 +166,11 @@ fun HubertApp() {
                 gapFillState.isPlaying -> {
                     GapFillScreen(
                         state = gapFillState,
-                        onAnswer = { gapFillVm.answer(it) }
+                        onAnswer = { gapFillVm.answer(it) },
+                        onQuit = {
+                            gapFillVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
                     )
                 }
                 gapFillState.isGameOver -> {
@@ -190,7 +202,11 @@ fun HubertApp() {
                         state = spellingBeeState,
                         onTypedTextChanged = { spellingBeeVm.onTypedTextChanged(it) },
                         onSubmit = { spellingBeeVm.submit() },
-                        onReplay = { spellingBeeVm.replayAudio() }
+                        onReplay = { spellingBeeVm.replayAudio() },
+                        onQuit = {
+                            spellingBeeVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
                     )
                 }
                 spellingBeeState.isGameOver -> {

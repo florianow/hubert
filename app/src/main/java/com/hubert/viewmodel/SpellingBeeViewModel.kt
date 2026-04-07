@@ -259,6 +259,7 @@ class SpellingBeeViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        frenchTts.shutdown()
+        timerJob?.cancel()
+        countdownJob?.cancel()
     }
 }

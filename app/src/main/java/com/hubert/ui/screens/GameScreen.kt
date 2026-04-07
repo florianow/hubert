@@ -19,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.GameUiState
 
@@ -26,7 +28,8 @@ import com.hubert.viewmodel.GameUiState
 fun GameScreen(
     state: GameUiState,
     onSelectFrench: (Int) -> Unit,
-    onSelectGerman: (Int) -> Unit
+    onSelectGerman: (Int) -> Unit,
+    onQuit: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -39,7 +42,7 @@ fun GameScreen(
                 .padding(16.dp)
         ) {
             // Top bar: Score + Streak + Matches
-            GameTopBar(state)
+            GameTopBar(state, onQuit = onQuit)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -158,12 +161,24 @@ fun GameScreen(
 }
 
 @Composable
-private fun GameTopBar(state: GameUiState) {
+private fun GameTopBar(state: GameUiState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Quit button
+        IconButton(
+            onClick = onQuit,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Quit game",
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            )
+        }
+
         // Score
         Column {
             Text(
