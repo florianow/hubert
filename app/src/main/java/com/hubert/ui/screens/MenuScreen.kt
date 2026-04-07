@@ -1,0 +1,246 @@
+package com.hubert.ui.screens
+
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.hubert.R
+import com.hubert.ui.theme.*
+
+@Composable
+fun MenuScreen(
+    matchingHighScore: Int,
+    genderSnapHighScore: Int,
+    gapFillHighScore: Int,
+    spellingBeeHighScore: Int,
+    onStartMatching: () -> Unit,
+    onStartGenderSnap: () -> Unit,
+    onStartGapFill: () -> Unit,
+    onStartSpellingBee: () -> Unit,
+    onShowHighScores: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 32.dp, vertical = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Mascot
+        Image(
+            painter = painterResource(id = R.drawable.hubert_mascot),
+            contentDescription = "Hubert the French Axolotl",
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // App title
+        Text(
+            text = "HUBERT",
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.Black,
+            color = AccentPurple,
+            letterSpacing = 8.sp
+        )
+
+        Spacer(modifier = Modifier.height(2.dp))
+
+        Text(
+            text = "Francais-Deutsch",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Game mode cards
+        GameModeCard(
+            title = "Word Match",
+            description = "Match French words with German translations",
+            accentColor = FrenchBlue,
+            highScore = matchingHighScore,
+            onClick = onStartMatching
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "le ou la ?",
+            description = "Guess the gender of French nouns",
+            accentColor = AccentPurple,
+            highScore = genderSnapHighScore,
+            onClick = onStartGenderSnap
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Gap Fill",
+            description = "Complete French sentences with the missing word",
+            accentColor = CorrectGreen,
+            highScore = gapFillHighScore,
+            onClick = onStartGapFill
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Spelling Bee",
+            description = "Hear a French word, type it correctly",
+            accentColor = GermanGold,
+            highScore = spellingBeeHighScore,
+            onClick = onStartSpellingBee
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // High scores button
+        OutlinedButton(
+            onClick = onShowHighScores,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(
+                text = "HIGH SCORES",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun GameModeCard(
+    title: String,
+    description: String,
+    accentColor: Color,
+    highScore: Int,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .border(
+                width = 2.dp,
+                color = accentColor.copy(alpha = 0.4f),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = accentColor.copy(alpha = 0.08f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = accentColor
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+            }
+            if (highScore > 0) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "$highScore",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = GermanGold
+                    )
+                    Text(
+                        text = "best",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = GermanGold.copy(alpha = 0.7f)
+                    )
+                }
+            } else {
+                Text(
+                    text = "PLAY",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = accentColor,
+                    letterSpacing = 2.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CountdownScreen(count: Int) {
+    val scale by animateFloatAsState(
+        targetValue = 1f,
+        animationSpec = spring(dampingRatio = 0.4f, stiffness = 200f),
+        label = "countdown_scale"
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = AccentPurple.copy(alpha = 0.15f),
+            modifier = Modifier
+                .size(160.dp)
+                .scale(scale)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = "$count",
+                    fontSize = 72.sp,
+                    fontWeight = FontWeight.Black,
+                    color = AccentPurple
+                )
+            }
+        }
+    }
+}
