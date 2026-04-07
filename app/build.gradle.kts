@@ -29,6 +29,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Sign with debug key for sideloading (no Play Store)
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
