@@ -22,3 +22,24 @@ data class SentenceEntry(
     val de: String,    // German translation (full)
     val blank: String  // The word that was blanked out
 )
+
+/**
+ * A verb with its conjugation forms across tenses.
+ * Loaded from bundled conjugations.json asset.
+ */
+data class ConjugationVerb(
+    val rank: Int,
+    val infinitive: String,
+    val german: String,
+    val tenses: Map<String, List<String>>,  // tense name -> [6 person forms]
+    val sentences: Map<String, Map<String, SentenceMatch>>? = null  // tense -> person_idx -> sentence
+)
+
+/**
+ * A matched example sentence for a specific conjugation form.
+ */
+data class SentenceMatch(
+    val fr: String,
+    val de: String,
+    val blank: String
+)

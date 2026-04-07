@@ -1,0 +1,358 @@
+package com.hubert.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hubert.data.model.ConjugationVerb
+import com.hubert.data.model.SentenceMatch
+import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.VocabRepository
+import com.hubert.utils.FrenchTts
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+/**
+ * Conjuguez! — verb conjugation game.
+ *
+ * Shows a French verb infinitive + tense + subject pronoun.
+ * Player picks the correct conjugated form from 4 multiple-choice options.
+ * Distractors are other forms of the SAME verb (different tenses/persons)
+ * to teach tense discrimination.
+ *
+ * When a matching example sentence exists, it's shown with the verb blanked out.
+ * Otherwise, a plain drill view (infinitive + pronoun + tense) is used.
+ *
+ * ALL data comes directly from the Anki deck — nothing is generated.
+ */
+data class ConjugationState(
+    val isPlaying: Boolean = false,
+    val isGameOver: Boolean = false,
+    val isNewHighScore: Boolean = false,
+
+    // Current question
+    val infinitive: String = "",
+    val german: String = "",
+    val tenseName: String = "",        // Display name: "Présent", "Imparfait", etc.
+    val personLabel: String = "",      // "je", "tu", "il/elle", etc.
+
+    // Sentence context (null = use plain drill view)
+    val sentenceFr: String? = null,    // French sentence with blank
+    val sentenceDe: String? = null,    // German translation
+
+    // Multiple choice
+    val choices: List<String> = emptyList(),
+    val correctIndex: Int = -1,
+
+    // Feedback
+    val selectedIndex: Int? = null,
+    val feedback: Boolean? = null,     // true=correct, false=wrong
+
+    // Scoring
+    val score: Int = 0,
+    val totalCorrect: Int = 0,
+    val totalWrong: Int = 0,
+    val streak: Int = 0,
+    val bestStreak: Int = 0,
+    val highScore: Int = 0,
+
+    // Timer
+    val timeRemainingMs: Long = 0L,
+    val timerFraction: Float = 1f,
+
+    // Countdown
+    val countdown: Int? = null
+)
+
+@HiltViewModel
+class ConjugationViewModel @Inject constructor(
+    private val vocabRepository: VocabRepository,
+    private val highScoreRepository: HighScoreRepository,
+    private val frenchTts: FrenchTts
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ConjugationState())
+    val uiState: StateFlow<ConjugationState> = _uiState.asStateFlow()
+
+    private var timerJob: Job? = null
+    private var countdownJob: Job? = null
+    private var timerDeadline = 0L
+
+    private var verbPool: MutableList<ConjugationVerb> = mutableListOf()
+    private var questionsAsked = 0  // tracks difficulty progression
+
+    companion object {
+        const val GAME_TIME_MS = 60_000L
+        const val POINTS_PER_CORRECT = 200
+        const val STREAK_BONUS = 50
+        const val WRONG_PENALTY_MS = 5_000L
+        const val CORRECT_BONUS_MS = 2_000L
+        const val NUM_CHOICES = 4
+
+        // Tense display names
+        val TENSE_DISPLAY = mapOf(
+            "present" to "Présent",
+            "imparfait" to "Imparfait",
+            "futur" to "Futur simple",
+            "conditionnel" to "Conditionnel",
+            "subjonctif" to "Subjonctif",
+            "passe_simple" to "Passé simple",
+            "imperatif" to "Impératif"
+        )
+
+        val PERSON_LABELS = listOf("je", "tu", "il/elle", "nous", "vous", "ils/elles")
+        // Impératif only has tu (1), nous (3), vous (4) forms
+        val IMPERATIF_PERSONS = listOf(1, 3, 4)
+
+        // Difficulty tiers: which tenses are available at each stage
+        val TIER_1_TENSES = listOf("present")
+        val TIER_2_TENSES = listOf("present", "imparfait", "futur")
+        val TIER_3_TENSES = listOf("present", "imparfait", "futur", "conditionnel", "subjonctif")
+    }
+
+    init {
+        viewModelScope.launch {
+            val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
+            _uiState.update { it.copy(highScore = hs) }
+        }
+    }
+
+    fun startGame() {
+        countdownJob?.cancel()
+        timerJob?.cancel()
+        questionsAsked = 0
+
+        verbPool = vocabRepository.getConjugations().shuffled().toMutableList()
+
+        _uiState.update {
+            ConjugationState(
+                isPlaying = false,
+                countdown = 3,
+                highScore = it.highScore
+            )
+        }
+
+        countdownJob = viewModelScope.launch {
+            for (i in 3 downTo 1) {
+                _uiState.update { it.copy(countdown = i) }
+                delay(800)
+            }
+            _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            _uiState.update {
+                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+            }
+            showNextQuestion()
+            startTimer()
+        }
+    }
+
+    private fun showNextQuestion() {
+        if (verbPool.isEmpty()) {
+            verbPool = vocabRepository.getConjugations().shuffled().toMutableList()
+        }
+
+        val verb = verbPool.removeFirst()
+
+        // Pick tense based on difficulty progression
+        val availableTenses = getAvailableTenses()
+        val eligibleTenses = verb.tenses.keys.filter { it in availableTenses }
+        if (eligibleTenses.isEmpty()) {
+            // This verb doesn't have any tenses we want right now, skip it
+            showNextQuestion()
+            return
+        }
+        val tense = eligibleTenses.random()
+        val forms = verb.tenses[tense] ?: return
+
+        // Pick a random person (that has a non-empty form)
+        val eligiblePersons = if (tense == "imperatif") {
+            IMPERATIF_PERSONS.filter { idx -> idx < forms.size && forms[idx].isNotEmpty() }
+        } else {
+            forms.indices.filter { forms[it].isNotEmpty() }
+        }
+
+        if (eligiblePersons.isEmpty()) {
+            showNextQuestion()
+            return
+        }
+
+        val personIdx = eligiblePersons.random()
+        val correctForm = forms[personIdx]
+
+        // Build distractors: other forms of the SAME verb (different tenses/persons)
+        val distractorPool = mutableSetOf<String>()
+        for ((_, fs) in verb.tenses) {
+            for (f in fs) {
+                if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
+                    distractorPool.add(f)
+                }
+            }
+        }
+
+        val distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
+
+        // If not enough distractors from same verb, this is rare but handle it
+        if (distractors.isEmpty()) {
+            showNextQuestion()
+            return
+        }
+
+        val allChoices = (listOf(correctForm) + distractors).shuffled()
+        val correctIdx = allChoices.indexOf(correctForm)
+
+        // Check for matching sentence
+        val sentenceMatch = verb.sentences
+            ?.get(tense)
+            ?.get(personIdx.toString())
+
+        val sentenceFr = if (sentenceMatch != null) {
+            sentenceMatch.fr.replace(sentenceMatch.blank, "___")
+        } else null
+
+        _uiState.update {
+            it.copy(
+                infinitive = verb.infinitive,
+                german = verb.german,
+                tenseName = TENSE_DISPLAY[tense] ?: tense,
+                personLabel = PERSON_LABELS[personIdx],
+                sentenceFr = sentenceFr,
+                sentenceDe = sentenceMatch?.de,
+                choices = allChoices,
+                correctIndex = correctIdx,
+                selectedIndex = null,
+                feedback = null
+            )
+        }
+
+        questionsAsked++
+    }
+
+    /**
+     * Difficulty progression: start with Présent only, add tenses as the player
+     * answers more questions correctly.
+     */
+    private fun getAvailableTenses(): List<String> {
+        return when {
+            questionsAsked < 5 -> TIER_1_TENSES
+            questionsAsked < 10 -> TIER_2_TENSES
+            else -> TIER_3_TENSES
+        }
+    }
+
+    fun answer(choiceIndex: Int) {
+        val state = _uiState.value
+        if (!state.isPlaying || state.feedback != null) return
+
+        val isCorrect = choiceIndex == state.correctIndex
+
+        if (isCorrect) {
+            val newStreak = state.streak + 1
+            val streakBonus = (newStreak - 1) * STREAK_BONUS
+            val matchScore = POINTS_PER_CORRECT + streakBonus
+
+            // Speak the correct conjugated form
+            frenchTts.speak(state.choices[choiceIndex])
+            timerDeadline += CORRECT_BONUS_MS
+
+            _uiState.update {
+                it.copy(
+                    selectedIndex = choiceIndex,
+                    feedback = true,
+                    score = it.score + matchScore,
+                    totalCorrect = it.totalCorrect + 1,
+                    streak = newStreak,
+                    bestStreak = maxOf(it.bestStreak, newStreak)
+                )
+            }
+        } else {
+            timerDeadline -= WRONG_PENALTY_MS
+
+            _uiState.update {
+                it.copy(
+                    selectedIndex = choiceIndex,
+                    feedback = false,
+                    totalWrong = it.totalWrong + 1,
+                    streak = 0
+                )
+            }
+
+            if (timerDeadline <= System.currentTimeMillis()) {
+                _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                endGame()
+                return
+            }
+        }
+
+        viewModelScope.launch {
+            delay(if (isCorrect) 600 else 1200)
+            if (_uiState.value.isPlaying) {
+                showNextQuestion()
+            }
+        }
+    }
+
+    private fun startTimer() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (true) {
+                val remaining = timerDeadline - System.currentTimeMillis()
+                if (remaining <= 0) {
+                    _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                    endGame()
+                    break
+                }
+                _uiState.update {
+                    it.copy(
+                        timeRemainingMs = remaining,
+                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                    )
+                }
+                delay(50)
+            }
+        }
+    }
+
+    private fun endGame() {
+        timerJob?.cancel()
+        val state = _uiState.value
+
+        viewModelScope.launch {
+            val previousHigh = highScoreRepository.getHighestScore(gameType = "conjugation")
+            val isNewHigh = state.score > previousHigh
+
+            highScoreRepository.saveScore(
+                score = state.score,
+                matchesCompleted = state.totalCorrect,
+                roundsCompleted = state.bestStreak,
+                gameType = "conjugation"
+            )
+
+            _uiState.update {
+                it.copy(
+                    isPlaying = false,
+                    isGameOver = true,
+                    isNewHighScore = isNewHigh,
+                    highScore = maxOf(it.highScore, state.score)
+                )
+            }
+        }
+    }
+
+    fun resetToMenu() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        viewModelScope.launch {
+            val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
+            _uiState.value = ConjugationState(highScore = hs)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timerJob?.cancel()
+        countdownJob?.cancel()
+    }
+}

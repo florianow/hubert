@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 4 game modes</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 5 game modes</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -23,13 +23,13 @@
 
 ## About
 
-Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, and example sentences.
+Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables.
 
 Each game mode runs on a 60-second timer with time bonuses for correct answers (+2s), penalties for wrong answers (-5s), and streak multipliers for consecutive correct answers. French words are spoken aloud via Android's built-in Text-to-Speech engine.
 
 ## Features
 
-- **4 Game Modes** — Word Match, Gender Snap, Gap Fill, Spelling Bee
+- **5 Game Modes** — Word Match, Gender Snap, Gap Fill, Spelling Bee, Conjuguez!
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **Text-to-Speech** — hear correct French pronunciation after every correct answer
 - **Streak System** — consecutive correct answers earn bonus points
@@ -37,6 +37,7 @@ Each game mode runs on a 60-second timer with time bonuses for correct answers (
 - **28 Thematic Categories** — Tiere, Farben, Essen und Trinken, Familie, and more
 - **3076 Nouns with Gender** — masculine/feminine data for Gender Snap
 - **~2000 Example Sentences** — real French sentences with German translations for Gap Fill
+- **1182 Verbs with Conjugations** — full conjugation tables across 7 tenses for Conjuguez!
 - **Offline-first** — all data bundled as JSON assets, no network required
 - **Material Design 3** — clean, modern UI with themed game colors
 
@@ -72,6 +73,16 @@ Hear a French word spoken via TTS, then type it. The German translation is shown
 - **Scoring**: 200 pts per correct + streak bonus
 - **Timer**: 60s, +2s correct, -5s wrong
 - **Pool**: all 5000 words
+
+### 5. Conjuguez!
+
+A verb conjugation challenge. When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons).
+
+Difficulty ramps up as you play: questions 1–4 use Présent only, 5–9 add Imparfait and Futur, and from question 10 onward Conditionnel and Subjonctif are mixed in.
+
+- **Scoring**: 200 pts per correct + streak bonus
+- **Timer**: 60s, +2s correct, -5s wrong
+- **Pool**: 1182 verbs across 7 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif)
 
 ## Tech Stack
 
@@ -152,9 +163,9 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 
 ## Data Pipeline
 
-The vocabulary data is sourced from the [anki_french](https://github.com/jacbz/anki_french) repository and converted into three JSON asset files by a Python script.
+The vocabulary data is sourced from the [anki_french](https://github.com/jacbz/anki_french) repository and converted into JSON asset files by Python scripts. Conjugation data is extracted from the Anki deck's `.apkg` database.
 
-### Running the Pipeline
+### Running the Vocabulary Pipeline
 
 ```bash
 python3 scripts/convert_vocab.py
@@ -167,6 +178,18 @@ This downloads the YAML card data and parses the thematic category HTML files, p
 | `app/src/main/assets/vocab.json` | 5000 words with rank, french, german, gender, IPA, part of speech, categories | ~535 KB |
 | `app/src/main/assets/categories.json` | 28 thematic categories → list of word rank numbers | ~12 KB |
 | `app/src/main/assets/sentences.json` | ~2000 words → up to 5 example sentences each (French + German + blank word) | ~1.4 MB |
+
+### Running the Conjugation Pipeline
+
+```bash
+python3 scripts/extract_conjugations.py
+```
+
+This reads the local Anki database (requires the "Französisch 5000" deck imported in Anki), parses HTML conjugation tables, matches example sentences to conjugated forms, and produces:
+
+| File | Contents | Size |
+|------|----------|------|
+| `app/src/main/assets/conjugations.json` | 1182 verbs with conjugation forms across 7 tenses + matched example sentences | ~2 MB |
 
 ### Data Fields
 
@@ -189,20 +212,21 @@ app/src/main/java/com/hubert/
 │   │   ├── AppDatabase.kt          # Room database (v2, high scores)
 │   │   └── HighScoreDao.kt         # Per-game-type score queries
 │   ├── model/
-│   │   ├── VocabWord.kt            # VocabWord + SentenceEntry data classes
+│   │   ├── VocabWord.kt            # VocabWord, SentenceEntry, ConjugationVerb data classes
 │   │   └── HighScore.kt            # Room entity with gameType field
 │   └── repository/
-│       ├── VocabRepository.kt      # Vocab, categories, sentences, gender index
+│       ├── VocabRepository.kt      # Vocab, categories, sentences, conjugations
 │       └── HighScoreRepository.kt  # Save/query scores by game type
 ├── di/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with 4 game mode cards + mascot
+│   │   ├── MenuScreen.kt           # Main menu with 5 game mode cards + mascot
 │   │   ├── GameScreen.kt           # Word Match game UI
 │   │   ├── GenderSnapScreen.kt     # le ou la? game UI
 │   │   ├── GapFillScreen.kt        # Gap Fill game UI
 │   │   ├── SpellingBeeScreen.kt    # Spelling Bee game UI
+│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI
 │   │   ├── GameOverScreen.kt       # Generic game over screen
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
 │   └── theme/
@@ -214,17 +238,20 @@ app/src/main/java/com/hubert/
 │   ├── GameViewModel.kt            # Word Match game logic
 │   ├── GenderSnapViewModel.kt      # Gender Snap game logic
 │   ├── GapFillViewModel.kt         # Gap Fill game logic
-│   └── SpellingBeeViewModel.kt     # Spelling Bee game logic
+│   ├── SpellingBeeViewModel.kt     # Spelling Bee game logic
+│   └── ConjugationViewModel.kt     # Conjuguez! game logic
 ├── HubertApplication.kt            # Hilt application class
 └── MainActivity.kt                 # Entry point, screen navigation
 
 scripts/
-└── convert_vocab.py                # Data pipeline: YAML + HTML → JSON assets
+├── convert_vocab.py                # Data pipeline: YAML + HTML → JSON assets
+└── extract_conjugations.py         # Conjugation pipeline: Anki DB → conjugations.json
 
 app/src/main/assets/
 ├── vocab.json                      # 5000 vocabulary words
 ├── categories.json                 # 28 thematic categories
-└── sentences.json                  # ~2000 words with example sentences
+├── sentences.json                  # ~2000 words with example sentences
+└── conjugations.json               # 1182 verbs with conjugation tables + sentence matches
 ```
 
 ## Architecture
@@ -234,13 +261,15 @@ app/src/main/assets/
 │                 UI Layer                     │
 │  MenuScreen · GameScreen · GenderSnapScreen │
 │  GapFillScreen · SpellingBeeScreen          │
-│  GameOverScreen · HighScoresScreen          │
+│  ConjugationScreen · GameOverScreen         │
+│  HighScoresScreen                           │
 └──────────────────┬──────────────────────────┘
                    │ observes StateFlow
 ┌──────────────────▼──────────────────────────┐
 │              ViewModel Layer                 │
 │  GameViewModel · GenderSnapViewModel        │
 │  GapFillViewModel · SpellingBeeViewModel    │
+│  ConjugationViewModel                       │
 │  (timer, scoring, streak, game state)       │
 └──────────────────┬──────────────────────────┘
                    │ calls
@@ -253,6 +282,7 @@ app/src/main/assets/
 ┌──────────────────▼──────────────────────────┐
 │              Data Layer                      │
 │  vocab.json · categories.json · sentences.json │
+│  conjugations.json                              │
 │  Room SQLite (high_scores table)            │
 └─────────────────────────────────────────────┘
 ```
@@ -297,7 +327,7 @@ Contributions are welcome!
 
 ### Ideas for Contributions
 
-- Add more game modes (verb conjugation, sentence ordering, etc.)
+- Add more game modes (sentence ordering, listening comprehension, etc.)
 - Difficulty levels (filter by word frequency rank)
 - Daily challenges / spaced repetition
 - Statistics and progress tracking over time
@@ -312,5 +342,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- Vocabulary data from [anki_french](https://github.com/jacbz/anki_french) by jacbz
+- Vocabulary and conjugation data from [anki_french](https://github.com/jacbz/anki_french) by jacbz
 - Built with Kotlin and Jetpack Compose

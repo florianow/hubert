@@ -3,6 +3,7 @@ package com.hubert.data.repository
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.hubert.data.model.ConjugationVerb
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -21,6 +22,7 @@ class VocabRepository @Inject constructor(
     private var cachedWords: List<VocabWord>? = null
     private var cachedCategories: Map<String, List<Int>>? = null
     private var cachedSentences: Map<String, List<SentenceEntry>>? = null
+    private var cachedConjugations: List<ConjugationVerb>? = null
 
     // Indexes built on first access
     private var nounsByGender: Map<String, List<VocabWord>>? = null
@@ -163,5 +165,18 @@ class VocabRepository @Inject constructor(
     fun getWordsWithSentences(): List<VocabWord> {
         val sentenceRanks = getSentences().keys.map { it.toInt() }.toSet()
         return getAllWords().filter { it.rank in sentenceRanks }
+    }
+
+    // ---------------------------------------------------------------
+    // Conjugations (for Conjuguez! game)
+    // ---------------------------------------------------------------
+
+    fun getConjugations(): List<ConjugationVerb> {
+        cachedConjugations?.let { return it }
+        val json = context.assets.open("conjugations.json").bufferedReader().use { it.readText() }
+        val type = object : TypeToken<List<ConjugationVerb>>() {}.type
+        val verbs: List<ConjugationVerb> = gson.fromJson(json, type)
+        cachedConjugations = verbs
+        return verbs
     }
 }

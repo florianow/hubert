@@ -32,10 +32,12 @@ fun MenuScreen(
     genderSnapHighScore: Int,
     gapFillHighScore: Int,
     spellingBeeHighScore: Int,
+    conjugationHighScore: Int,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
     onStartSpellingBee: () -> Unit,
+    onStartConjugation: () -> Unit,
     onShowHighScores: () -> Unit
 ) {
     Column(
@@ -115,6 +117,16 @@ fun MenuScreen(
             accentColor = GermanGold,
             highScore = spellingBeeHighScore,
             onClick = onStartSpellingBee
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Conjuguez!",
+            description = "Pick the correct verb conjugation",
+            accentColor = FrenchBlue,
+            highScore = conjugationHighScore,
+            onClick = onStartConjugation
         )
 
         Spacer(modifier = Modifier.height(24.dp))

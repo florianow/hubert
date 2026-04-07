@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hubert.ui.screens.*
 import com.hubert.ui.theme.HubertTheme
+import com.hubert.viewmodel.ConjugationViewModel
 import com.hubert.viewmodel.GameViewModel
 import com.hubert.viewmodel.GapFillViewModel
 import com.hubert.viewmodel.GenderSnapViewModel
@@ -38,6 +39,7 @@ enum class Screen {
     GENDER_SNAP,
     GAP_FILL,
     SPELLING_BEE,
+    CONJUGATION,
     HIGH_SCORES
 }
 
@@ -47,11 +49,13 @@ fun HubertApp() {
     val genderSnapVm: GenderSnapViewModel = hiltViewModel()
     val gapFillVm: GapFillViewModel = hiltViewModel()
     val spellingBeeVm: SpellingBeeViewModel = hiltViewModel()
+    val conjugationVm: ConjugationViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
     val gapFillState by gapFillVm.uiState.collectAsState()
     val spellingBeeState by spellingBeeVm.uiState.collectAsState()
+    val conjugationState by conjugationVm.uiState.collectAsState()
     val topScores by matchingVm.topScores.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
@@ -78,6 +82,12 @@ fun HubertApp() {
     LaunchedEffect(spellingBeeState.isPlaying, spellingBeeState.isGameOver, spellingBeeState.countdown) {
         if (spellingBeeState.countdown != null || spellingBeeState.isPlaying || spellingBeeState.isGameOver) {
             currentScreen = Screen.SPELLING_BEE
+        }
+    }
+
+    LaunchedEffect(conjugationState.isPlaying, conjugationState.isGameOver, conjugationState.countdown) {
+        if (conjugationState.countdown != null || conjugationState.isPlaying || conjugationState.isGameOver) {
+            currentScreen = Screen.CONJUGATION
         }
     }
 
@@ -228,16 +238,52 @@ fun HubertApp() {
             }
         }
 
+        Screen.CONJUGATION -> {
+            when {
+                conjugationState.countdown != null -> {
+                    CountdownScreen(count = conjugationState.countdown!!)
+                }
+                conjugationState.isPlaying -> {
+                    ConjugationScreen(
+                        state = conjugationState,
+                        onAnswer = { conjugationVm.answer(it) },
+                        onQuit = {
+                            conjugationVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                conjugationState.isGameOver -> {
+                    GameOverScreen(
+                        score = conjugationState.score,
+                        isNewHighScore = conjugationState.isNewHighScore,
+                        stats = listOf(
+                            Triple("Streak", "${conjugationState.bestStreak}", "streak"),
+                            Triple("Correct", "${conjugationState.totalCorrect}", "correct"),
+                            Triple("Wrong", "${conjugationState.totalWrong}", "wrong")
+                        ),
+                        onPlayAgain = { conjugationVm.startGame() },
+                        onBackToMenu = {
+                            conjugationVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+            }
+        }
+
         Screen.MENU -> {
             MenuScreen(
                 matchingHighScore = matchingState.highScore,
                 genderSnapHighScore = genderSnapState.highScore,
                 gapFillHighScore = gapFillState.highScore,
                 spellingBeeHighScore = spellingBeeState.highScore,
+                conjugationHighScore = conjugationState.highScore,
                 onStartMatching = { matchingVm.startGame() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },
                 onStartSpellingBee = { spellingBeeVm.startGame() },
+                onStartConjugation = { conjugationVm.startGame() },
                 onShowHighScores = { currentScreen = Screen.HIGH_SCORES }
             )
         }
