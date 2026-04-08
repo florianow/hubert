@@ -113,6 +113,7 @@ fun SpellingBeeScreen(
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center
                     )
+
                 }
             }
 

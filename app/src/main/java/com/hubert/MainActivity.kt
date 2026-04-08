@@ -378,6 +378,8 @@ fun HubertApp() {
                         state = pronunciationState,
                         onToggleRecording = { pronunciationVm.toggleRecording() },
                         onNext = { pronunciationVm.nextSentence() },
+                        onRetry = { pronunciationVm.retryRecording() },
+                        onSkipRetry = { pronunciationVm.skipRetry() },
                         onSpeak = { pronunciationVm.speak(it) },
                         onQuit = {
                             pronunciationVm.resetToMenu()

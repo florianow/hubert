@@ -28,6 +28,7 @@ class VocabRepository @Inject constructor(
     private var nounsByGender: Map<String, List<VocabWord>>? = null
     private var wordsByRank: Map<Int, VocabWord>? = null
     private var wordsByCategory: Map<String, List<VocabWord>>? = null
+    private var ipaByFrench: Map<String, String>? = null
 
     // ---------------------------------------------------------------
     // Basic word access
@@ -51,6 +52,18 @@ class VocabRepository @Inject constructor(
             wordsByRank = getAllWords().associateBy { it.rank }
         }
         return wordsByRank!![rank]
+    }
+
+    /**
+     * Look up the IPA transcription for a French word (e.g., verb infinitive).
+     */
+    fun getIpaForFrench(french: String): String? {
+        if (ipaByFrench == null) {
+            ipaByFrench = getAllWords()
+                .filter { it.ipa != null }
+                .associateBy({ it.french }, { it.ipa!! })
+        }
+        return ipaByFrench!![french]
     }
 
     // ---------------------------------------------------------------

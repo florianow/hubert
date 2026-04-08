@@ -102,6 +102,7 @@ fun GameScreen(
                         // French word card
                         WordCard(
                             text = state.frenchWords[i].text,
+                            subtitle = state.frenchWords[i].ipa?.let { "/$it/" },
                             isSelected = state.selectedFrench == i,
                             isCorrectFlash = frenchCorrect,
                             isWrongFlash = frenchWrong,
@@ -277,6 +278,7 @@ fun TimerBar(fraction: Float, timeMs: Long) {
 @Composable
 fun WordCard(
     text: String,
+    subtitle: String? = null,
     isSelected: Boolean,
     isCorrectFlash: Boolean,
     isWrongFlash: Boolean,
@@ -328,15 +330,27 @@ fun WordCard(
                 .padding(8.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if (subtitle != null) {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
         }
     }
 }

@@ -138,6 +138,14 @@ fun GenderSnapScreen(
                                 color = MaterialTheme.colorScheme.onSurface,
                                 textAlign = TextAlign.Center
                             )
+                            if (word.ipa != null) {
+                                Text(
+                                    text = "/${word.ipa}/",
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = word.german,
@@ -233,7 +241,7 @@ private fun GenderSnapTopBar(state: GenderSnapState, onQuit: () -> Unit) {
 
         // Title
         Text(
-            text = "le ou la ?",
+            text = "Le ou La Baguette",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground

@@ -111,6 +111,10 @@ data class PronunciationState(
     // Difficulty
     val difficultyLabel: String = "Facile",
 
+    // Second chance — score 80-94 on first attempt allows a retry at lower threshold (85)
+    val isRetry: Boolean = false,       // true if this is the second attempt on the same sentence
+    val canRetry: Boolean = false,      // true when first attempt scored 80-94 and player can try again
+
     // Manual advance — true when feedback is shown and player needs to tap "Next"
     val awaitingNext: Boolean = false,
 
@@ -123,6 +127,8 @@ data class PronunciationState(
     companion object {
         const val STARTING_POINTS = 10
         const val PASS_THRESHOLD = 95.0
+        const val RETRY_THRESHOLD = 80.0       // 80-94 on first attempt = can retry
+        const val RETRY_PASS_THRESHOLD = 85.0  // lower bar on second attempt
     }
 }
 
@@ -316,6 +322,8 @@ class PronunciationViewModel @Inject constructor(
                 highlightWord = entry.blank,
                 isRecording = false,
                 isProcessing = false,
+                isRetry = false,
+                canRetry = false,
                 pronScore = null,
                 wordScores = emptyList(),
                 feedback = null,
@@ -330,9 +338,66 @@ class PronunciationViewModel @Inject constructor(
      */
     fun nextSentence() {
         if (!_uiState.value.awaitingNext) return
-        _uiState.update { it.copy(awaitingNext = false) }
+        _uiState.update { it.copy(awaitingNext = false, isRetry = false, canRetry = false) }
         viewModelScope.launch {
             showNextSentence()
+        }
+    }
+
+    /**
+     * Called when the player taps "TRY AGAIN" after scoring 80-94 on the first attempt.
+     * Resets recording state so they can re-record the same sentence.
+     */
+    fun retryRecording() {
+        if (!_uiState.value.canRetry) return
+        _uiState.update {
+            it.copy(
+                isRetry = true,
+                canRetry = false,
+                pronScore = null,
+                wordScores = emptyList(),
+                feedback = null,
+                errorMessage = null
+            )
+        }
+    }
+
+    /**
+     * Called when the player taps "SKIP" during the retry prompt (skip without re-recording).
+     * Counts as wrong.
+     */
+    fun skipRetry() {
+        if (!_uiState.value.canRetry) return
+        val state = _uiState.value
+        val newPoints = (state.points - WRONG_PENALTY).coerceAtLeast(0)
+
+        // Count this as a decided attempt in run stats
+        runStats = runStats.copy(
+            sentencesAttempted = runStats.sentencesAttempted + 1,
+            sentencesWrong = runStats.sentencesWrong + 1,
+            totalPronScore = runStats.totalPronScore + (state.pronScore ?: 0.0),
+            worstPronScore = minOf(runStats.worstPronScore, state.pronScore ?: 100.0),
+            worstSentence = if ((state.pronScore ?: 100.0) < runStats.worstPronScore)
+                state.sentenceFr else runStats.worstSentence
+        )
+
+        _uiState.update {
+            it.copy(
+                feedback = false,
+                canRetry = false,
+                points = newPoints,
+                totalWrong = it.totalWrong + 1,
+                streak = 0,
+                runStats = runStats,
+                awaitingNext = true
+            )
+        }
+
+        if (newPoints <= 0) {
+            viewModelScope.launch {
+                delay(2000)
+                endGame()
+            }
         }
     }
 
@@ -384,21 +449,34 @@ class PronunciationViewModel @Inject constructor(
                     )
                 }
 
-                val isCorrect = result.pronScore >= PronunciationState.PASS_THRESHOLD
+                val isRetry = state.isRetry
+                val passThreshold = if (isRetry) {
+                    PronunciationState.RETRY_PASS_THRESHOLD
+                } else {
+                    PronunciationState.PASS_THRESHOLD
+                }
 
-                // Update run stats
-                runStats = runStats.copy(
-                    sentencesAttempted = runStats.sentencesAttempted + 1,
-                    sentencesCorrect = runStats.sentencesCorrect + if (isCorrect) 1 else 0,
-                    sentencesWrong = runStats.sentencesWrong + if (!isCorrect) 1 else 0,
-                    totalPronScore = runStats.totalPronScore + result.pronScore,
-                    bestPronScore = maxOf(runStats.bestPronScore, result.pronScore),
-                    worstPronScore = minOf(runStats.worstPronScore, result.pronScore),
-                    bestSentence = if (result.pronScore > runStats.bestPronScore)
-                        state.sentenceFr else runStats.bestSentence,
-                    worstSentence = if (result.pronScore < runStats.worstPronScore)
-                        state.sentenceFr else runStats.worstSentence
-                )
+                val isCorrect = result.pronScore >= passThreshold
+                val canRetry = !isRetry
+                    && !isCorrect
+                    && result.pronScore >= PronunciationState.RETRY_THRESHOLD
+
+                // Update run stats (only count as an "attempt" on the deciding result,
+                // not on a retry-eligible first attempt)
+                if (isCorrect || !canRetry) {
+                    runStats = runStats.copy(
+                        sentencesAttempted = runStats.sentencesAttempted + 1,
+                        sentencesCorrect = runStats.sentencesCorrect + if (isCorrect) 1 else 0,
+                        sentencesWrong = runStats.sentencesWrong + if (!isCorrect) 1 else 0,
+                        totalPronScore = runStats.totalPronScore + result.pronScore,
+                        bestPronScore = maxOf(runStats.bestPronScore, result.pronScore),
+                        worstPronScore = minOf(runStats.worstPronScore, result.pronScore),
+                        bestSentence = if (result.pronScore > runStats.bestPronScore)
+                            state.sentenceFr else runStats.bestSentence,
+                        worstSentence = if (result.pronScore < runStats.worstPronScore)
+                            state.sentenceFr else runStats.worstSentence
+                    )
+                }
 
                 // Track mispronounced words
                 for (ws in wordScores) {
@@ -422,15 +500,30 @@ class PronunciationViewModel @Inject constructor(
                             pronScore = result.pronScore,
                             wordScores = wordScores,
                             feedback = true,
+                            canRetry = false,
                             points = it.points + pointsGained,
                             score = it.score + pointsGained,
                             totalCorrect = it.totalCorrect + 1,
                             streak = newStreak,
                             bestStreak = maxOf(it.bestStreak, newStreak),
+                            runStats = runStats,
+                            awaitingNext = true
+                        )
+                    }
+                } else if (canRetry) {
+                    // Score 80-94 on first attempt: show results but allow retry
+                    _uiState.update {
+                        it.copy(
+                            isProcessing = false,
+                            pronScore = result.pronScore,
+                            wordScores = wordScores,
+                            feedback = null,  // not yet decided — show as "try again"
+                            canRetry = true,
                             runStats = runStats
                         )
                     }
                 } else {
+                    // Definitive wrong: < 80 on first attempt, or < 85 on retry
                     val newPoints = (state.points - WRONG_PENALTY).coerceAtLeast(0)
 
                     _uiState.update {
@@ -439,10 +532,12 @@ class PronunciationViewModel @Inject constructor(
                             pronScore = result.pronScore,
                             wordScores = wordScores,
                             feedback = false,
+                            canRetry = false,
                             points = newPoints,
                             totalWrong = it.totalWrong + 1,
                             streak = 0,
-                            runStats = runStats
+                            runStats = runStats,
+                            awaitingNext = true
                         )
                     }
 
@@ -452,9 +547,6 @@ class PronunciationViewModel @Inject constructor(
                         return@launch
                     }
                 }
-
-                // Wait for player to tap "Next" (manual advance)
-                _uiState.update { it.copy(awaitingNext = true) }
 
             } catch (e: Exception) {
                 Log.e("PronunciationVM",

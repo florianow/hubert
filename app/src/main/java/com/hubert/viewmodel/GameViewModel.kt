@@ -63,7 +63,8 @@ data class GameUiState(
 
 data class WordItem(
     val text: String,
-    val pairId: Int  // links French to German (same pairId = correct match)
+    val pairId: Int,  // links French to German (same pairId = correct match)
+    val ipa: String? = null  // IPA pronunciation (French cards only)
 )
 
 @HiltViewModel
@@ -141,7 +142,7 @@ class GameViewModel @Inject constructor(
         val words = vocabRepository.getRandomWords(SLOTS)
 
         val frenchItems = words.mapIndexed { index, word ->
-            WordItem(text = word.french, pairId = nextPairId + index)
+            WordItem(text = word.french, pairId = nextPairId + index, ipa = word.ipa)
         }
         val germanItems = words.mapIndexed { index, word ->
             WordItem(text = word.german, pairId = nextPairId + index)
@@ -314,7 +315,7 @@ class GameViewModel @Inject constructor(
         val newWord = vocabRepository.getRandomWords(1).first()
         val newPairId = nextPairId++
 
-        val newFrench = WordItem(text = newWord.french, pairId = newPairId)
+        val newFrench = WordItem(text = newWord.french, pairId = newPairId, ipa = newWord.ipa)
         val newGerman = WordItem(text = newWord.german, pairId = newPairId)
 
         // Pick a random german slot to place the new german word

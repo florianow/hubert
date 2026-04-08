@@ -275,7 +275,7 @@ class StatisticsRepository @Inject constructor(
             Achievement(
                 id = "gender_expert",
                 title = "Gender Expert",
-                description = "90%+ accuracy in le ou la? (10+ games)",
+                description = "90%+ accuracy in Le ou La Baguette (10+ games)",
                 icon = "\uD83C\uDDEB\uD83C\uDDF7",  // French flag
                 isUnlocked = genderSessions >= 10 && genderAccuracy >= 0.9,
                 progress = if (genderSessions < 10) "$genderSessions/10 games"
