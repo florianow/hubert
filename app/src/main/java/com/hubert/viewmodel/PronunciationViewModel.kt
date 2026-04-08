@@ -16,10 +16,12 @@ import com.hubert.utils.AzurePronunciationApi
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 // DataStore for Azure settings
@@ -183,6 +185,7 @@ class PronunciationViewModel @Inject constructor(
      * Save Azure settings and optionally proceed to game.
      */
     fun saveSettings(key: String, region: String) {
+        val wasWaitingForKey = _uiState.value.needsApiKey
         viewModelScope.launch {
             context.azureDataStore.edit { prefs ->
                 prefs[KEY_AZURE_KEY] = key
@@ -197,7 +200,7 @@ class PronunciationViewModel @Inject constructor(
                 )
             }
             // If we were waiting for key to start, start now
-            if (_uiState.value.needsApiKey.not() && key.isNotBlank() && region.isNotBlank()) {
+            if (wasWaitingForKey && key.isNotBlank() && region.isNotBlank()) {
                 startGame()
             }
         }
@@ -215,19 +218,7 @@ class PronunciationViewModel @Inject constructor(
         countdownJob?.cancel()
         runStats = RunStats()
 
-        // Build sentence pools
-        val allSentences = vocabRepository.getAllSentencesFlat()
-        easyPool = allSentences.filter { (_, e) ->
-            e.fr.split("\\s+".toRegex()).size <= 6
-        }.shuffled().toMutableList()
-        mediumPool = allSentences.filter { (_, e) ->
-            val wc = e.fr.split("\\s+".toRegex()).size
-            wc in 7..10
-        }.shuffled().toMutableList()
-        hardPool = allSentences.filter { (_, e) ->
-            e.fr.split("\\s+".toRegex()).size >= 11
-        }.shuffled().toMutableList()
-
+        // Show countdown immediately while loading sentences in background
         _uiState.update {
             PronunciationState(
                 isPlaying = false,
@@ -240,6 +231,21 @@ class PronunciationViewModel @Inject constructor(
         }
 
         countdownJob = viewModelScope.launch {
+            // Build sentence pools on IO thread during countdown
+            withContext(Dispatchers.IO) {
+                val allSentences = vocabRepository.getAllSentencesFlat()
+                easyPool = allSentences.filter { (_, e) ->
+                    e.fr.split("\\s+".toRegex()).size <= 6
+                }.shuffled().toMutableList()
+                mediumPool = allSentences.filter { (_, e) ->
+                    val wc = e.fr.split("\\s+".toRegex()).size
+                    wc in 7..10
+                }.shuffled().toMutableList()
+                hardPool = allSentences.filter { (_, e) ->
+                    e.fr.split("\\s+".toRegex()).size >= 11
+                }.shuffled().toMutableList()
+            }
+
             for (i in 3 downTo 1) {
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
@@ -249,7 +255,7 @@ class PronunciationViewModel @Inject constructor(
         }
     }
 
-    private fun showNextSentence() {
+    private suspend fun showNextSentence() {
         val state = _uiState.value
         val streak = state.streak
 
@@ -260,25 +266,27 @@ class PronunciationViewModel @Inject constructor(
             else -> Triple(easyPool, "Facile", null)
         }.let { Pair(it.first, it.second) }
 
-        // Refill pool if empty
+        // Refill pool if empty (on IO thread)
         if (pool.isEmpty()) {
-            val allSentences = vocabRepository.getAllSentencesFlat()
-            when (label) {
-                "Facile" -> {
-                    easyPool = allSentences.filter { (_, e) ->
-                        e.fr.split("\\s+".toRegex()).size <= 6
-                    }.shuffled().toMutableList()
-                }
-                "Moyen" -> {
-                    mediumPool = allSentences.filter { (_, e) ->
-                        val wc = e.fr.split("\\s+".toRegex()).size
-                        wc in 7..10
-                    }.shuffled().toMutableList()
-                }
-                "Difficile" -> {
-                    hardPool = allSentences.filter { (_, e) ->
-                        e.fr.split("\\s+".toRegex()).size >= 11
-                    }.shuffled().toMutableList()
+            withContext(Dispatchers.IO) {
+                val allSentences = vocabRepository.getAllSentencesFlat()
+                when (label) {
+                    "Facile" -> {
+                        easyPool = allSentences.filter { (_, e) ->
+                            e.fr.split("\\s+".toRegex()).size <= 6
+                        }.shuffled().toMutableList()
+                    }
+                    "Moyen" -> {
+                        mediumPool = allSentences.filter { (_, e) ->
+                            val wc = e.fr.split("\\s+".toRegex()).size
+                            wc in 7..10
+                        }.shuffled().toMutableList()
+                    }
+                    "Difficile" -> {
+                        hardPool = allSentences.filter { (_, e) ->
+                            e.fr.split("\\s+".toRegex()).size >= 11
+                        }.shuffled().toMutableList()
+                    }
                 }
             }
         }
