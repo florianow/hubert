@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Headphones
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
@@ -132,6 +133,7 @@ fun PronunciationScreen(
     onRetry: () -> Unit,
     onSkipRetry: () -> Unit,
     onSpeak: (String) -> Unit,
+    onPlayRecording: () -> Unit,
     onQuit: () -> Unit
 ) {
     val context = LocalContext.current
@@ -253,6 +255,69 @@ fun PronunciationScreen(
                     isCorrect = state.feedback == true,
                     isRetryEligible = state.canRetry
                 )
+
+                // Playback row — hear correct pronunciation vs your recording
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // TTS: hear correct pronunciation
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = FrenchBlue.copy(alpha = 0.1f),
+                        modifier = Modifier.clickable { onSpeak(state.sentenceFr) }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                                contentDescription = "Hear correct pronunciation",
+                                tint = FrenchBlue,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Text(
+                                text = "Correct",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Medium,
+                                color = FrenchBlue
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    // Playback: hear your own recording
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = AccentPurple.copy(alpha = if (state.isPlayingRecording) 0.25f else 0.1f),
+                        modifier = Modifier.clickable { onPlayRecording() }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Headphones,
+                                contentDescription = "Hear your recording",
+                                tint = AccentPurple,
+                                modifier = Modifier.size(18.dp)
+                            )
+                            Text(
+                                text = if (state.isPlayingRecording) "Playing..." else "Yours",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Medium,
+                                color = AccentPurple
+                            )
+                        }
+                    }
+                }
+
                 // "Almost there" hint when retry is available
                 if (state.canRetry) {
                     Spacer(modifier = Modifier.height(4.dp))

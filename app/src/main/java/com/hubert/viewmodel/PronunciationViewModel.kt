@@ -1,6 +1,9 @@
 package com.hubert.viewmodel
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.AudioFormat
+import android.media.AudioTrack
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -115,6 +118,9 @@ data class PronunciationState(
     val isRetry: Boolean = false,       // true if this is the second attempt on the same sentence
     val canRetry: Boolean = false,      // true when first attempt scored 80-94 and player can try again
 
+    // Playback of user's own recording
+    val isPlayingRecording: Boolean = false,
+
     // Manual advance — true when feedback is shown and player needs to tap "Next"
     val awaitingNext: Boolean = false,
 
@@ -148,6 +154,9 @@ class PronunciationViewModel @Inject constructor(
     private var audioRecorder: AudioRecorder? = null
     private var recordingJob: Job? = null
     private var gameStartTime = 0L
+    private var lastRecordingWav: ByteArray? = null
+    private var audioTrack: AudioTrack? = null
+    private var playbackJob: Job? = null
 
     // Sentence pools by difficulty tier
     private var easyPool: MutableList<Pair<Int, SentenceEntry>> = mutableListOf()
@@ -338,6 +347,8 @@ class PronunciationViewModel @Inject constructor(
      */
     fun nextSentence() {
         if (!_uiState.value.awaitingNext) return
+        stopPlayback()
+        lastRecordingWav = null
         _uiState.update { it.copy(awaitingNext = false, isRetry = false, canRetry = false) }
         viewModelScope.launch {
             showNextSentence()
@@ -429,7 +440,10 @@ class PronunciationViewModel @Inject constructor(
         audioRecorder = null
         recordingJob?.cancel()
 
-        _uiState.update { it.copy(isRecording = false, isProcessing = true) }
+        // Store the recording for playback after assessment
+        lastRecordingWav = wavData
+
+        _uiState.update { it.copy(isRecording = false, isProcessing = true, isPlayingRecording = false) }
 
         viewModelScope.launch {
             try {
@@ -598,6 +612,77 @@ class PronunciationViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Play back the user's own recording (the last WAV sent to Azure).
+     * Uses AudioTrack for direct PCM playback from the WAV byte array.
+     */
+    fun playRecording() {
+        val wav = lastRecordingWav ?: return
+        if (_uiState.value.isPlayingRecording) {
+            stopPlayback()
+            return
+        }
+
+        // WAV header is 44 bytes; PCM data starts at offset 44
+        if (wav.size <= 44) return
+        val pcmData = wav.copyOfRange(44, wav.size)
+
+        stopPlayback()  // clean up any previous playback
+
+        val bufferSize = AudioTrack.getMinBufferSize(
+            AudioRecorder.SAMPLE_RATE,
+            AudioFormat.CHANNEL_OUT_MONO,
+            AudioFormat.ENCODING_PCM_16BIT
+        ).coerceAtLeast(pcmData.size)
+
+        val track = AudioTrack.Builder()
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build()
+            )
+            .setAudioFormat(
+                AudioFormat.Builder()
+                    .setSampleRate(AudioRecorder.SAMPLE_RATE)
+                    .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                    .build()
+            )
+            .setBufferSizeInBytes(bufferSize)
+            .setTransferMode(AudioTrack.MODE_STATIC)
+            .build()
+
+        track.write(pcmData, 0, pcmData.size)
+        audioTrack = track
+
+        _uiState.update { it.copy(isPlayingRecording = true) }
+
+        track.play()
+
+        // Monitor playback completion in a coroutine
+        playbackJob = viewModelScope.launch(Dispatchers.IO) {
+            // Estimate playback duration from PCM data size
+            // 16-bit mono 16kHz = 32000 bytes/sec
+            val durationMs = (pcmData.size.toLong() * 1000L) / (AudioRecorder.SAMPLE_RATE * 2)
+            delay(durationMs + 100)  // small buffer for completion
+            withContext(Dispatchers.Main) {
+                stopPlayback()
+            }
+        }
+    }
+
+    private fun stopPlayback() {
+        playbackJob?.cancel()
+        playbackJob = null
+        try {
+            audioTrack?.stop()
+        } catch (_: Exception) { }
+        audioTrack?.release()
+        audioTrack = null
+        _uiState.update { it.copy(isPlayingRecording = false) }
+    }
+
     fun speak(text: String) {
         frenchTts.speak(text)
     }
@@ -605,6 +690,8 @@ class PronunciationViewModel @Inject constructor(
     fun resetToMenu() {
         countdownJob?.cancel()
         recordingJob?.cancel()
+        stopPlayback()
+        lastRecordingWav = null
         audioRecorder?.release()
         audioRecorder = null
 
@@ -622,6 +709,7 @@ class PronunciationViewModel @Inject constructor(
         super.onCleared()
         countdownJob?.cancel()
         recordingJob?.cancel()
+        stopPlayback()
         audioRecorder?.release()
     }
 }
