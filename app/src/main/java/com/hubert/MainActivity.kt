@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             HubertTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
+                Surface(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
                     HubertApp()
                 }
             }
@@ -102,7 +103,13 @@ fun HubertApp() {
         Screen.MATCHING_GAME -> {
             when {
                 matchingState.countdown != null -> {
-                    CountdownScreen(count = matchingState.countdown!!)
+                    CountdownScreen(
+                        count = matchingState.countdown!!,
+                        onBack = {
+                            matchingVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
                 }
                 matchingState.isPlaying -> {
                     GameScreen(
@@ -137,7 +144,13 @@ fun HubertApp() {
         Screen.GENDER_SNAP -> {
             when {
                 genderSnapState.countdown != null -> {
-                    CountdownScreen(count = genderSnapState.countdown!!)
+                    CountdownScreen(
+                        count = genderSnapState.countdown!!,
+                        onBack = {
+                            genderSnapVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
                 }
                 genderSnapState.isPlaying -> {
                     GenderSnapScreen(
@@ -171,7 +184,13 @@ fun HubertApp() {
         Screen.GAP_FILL -> {
             when {
                 gapFillState.countdown != null -> {
-                    CountdownScreen(count = gapFillState.countdown!!)
+                    CountdownScreen(
+                        count = gapFillState.countdown!!,
+                        onBack = {
+                            gapFillVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
                 }
                 gapFillState.isPlaying -> {
                     GapFillScreen(
@@ -205,7 +224,13 @@ fun HubertApp() {
         Screen.SPELLING_BEE -> {
             when {
                 spellingBeeState.countdown != null -> {
-                    CountdownScreen(count = spellingBeeState.countdown!!)
+                    CountdownScreen(
+                        count = spellingBeeState.countdown!!,
+                        onBack = {
+                            spellingBeeVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
                 }
                 spellingBeeState.isPlaying -> {
                     SpellingBeeScreen(
@@ -252,12 +277,19 @@ fun HubertApp() {
                     )
                 }
                 conjugationState.countdown != null -> {
-                    CountdownScreen(count = conjugationState.countdown!!)
+                    CountdownScreen(
+                        count = conjugationState.countdown!!,
+                        onBack = {
+                            conjugationVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
                 }
                 conjugationState.isPlaying -> {
                     ConjugationScreen(
                         state = conjugationState,
                         onAnswer = { conjugationVm.answer(it) },
+                        onSpeak = { conjugationVm.speak(it) },
                         onQuit = {
                             conjugationVm.resetToMenu()
                             currentScreen = Screen.MENU

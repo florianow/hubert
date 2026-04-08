@@ -11,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -225,7 +227,7 @@ private fun GameModeCard(
 }
 
 @Composable
-fun CountdownScreen(count: Int) {
+fun CountdownScreen(count: Int, onBack: (() -> Unit)? = null) {
     val scale by animateFloatAsState(
         targetValue = 1f,
         animationSpec = spring(dampingRatio = 0.4f, stiffness = 200f),
@@ -238,6 +240,23 @@ fun CountdownScreen(count: Int) {
             .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
+        // Back button in top-left corner
+        if (onBack != null) {
+            IconButton(
+                onClick = onBack,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .size(40.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back to menu",
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                )
+            }
+        }
+
         Surface(
             shape = CircleShape,
             color = AccentPurple.copy(alpha = 0.15f),

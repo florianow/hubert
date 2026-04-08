@@ -1,13 +1,19 @@
 package com.hubert.ui.screens
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,13 +29,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.ConjugationState
+import com.hubert.viewmodel.ConjugationViewModel
+import com.hubert.viewmodel.TenseInfo
 
 @Composable
 fun ConjugationScreen(
     state: ConjugationState,
     onAnswer: (Int) -> Unit,
+    onSpeak: (String) -> Unit,
     onQuit: () -> Unit
 ) {
+    // Tense info dialog state
+    var showTenseInfo by remember { mutableStateOf(false) }
+
+    // Show tense info dialog when tense badge is tapped
+    if (showTenseInfo) {
+        val tenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
+            .firstOrNull { it.value == state.tenseName }?.key
+        val tenseInfo = tenseKey?.let { ConjugationViewModel.TENSE_INFO[it] }
+
+        if (tenseInfo != null) {
+            TenseInfoDialog(
+                tenseName = state.tenseName,
+                tenseInfo = tenseInfo,
+                onDismiss = { showTenseInfo = false }
+            )
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,16 +67,13 @@ fun ConjugationScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Top bar
+            // Top bar with quit, score, title
             ConjugationTopBar(state, onQuit = onQuit)
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Timer bar
-            TimerBar(
-                fraction = state.timerFraction,
-                timeMs = state.timeRemainingMs
-            )
+            // Points bar (replaces timer)
+            PointsBar(points = state.points)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -88,20 +112,22 @@ fun ConjugationScreen(
                     sentenceDe = state.sentenceDe,
                     infinitive = state.infinitive,
                     german = state.german,
-                    personLabel = state.personLabel
+                    personLabel = state.personLabel,
+                    onSpeak = { onSpeak(state.infinitive) }
                 )
             } else {
                 // Drill view: infinitive + pronoun
                 DrillQuestionCard(
                     infinitive = state.infinitive,
                     german = state.german,
-                    personLabel = state.personLabel
+                    personLabel = state.personLabel,
+                    onSpeak = { onSpeak(state.infinitive) }
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Tense badge — between question and answers so it's clear what's needed
+            // Tense badge — tap to see tense explanation
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
@@ -109,19 +135,32 @@ fun ConjugationScreen(
                 Surface(
                     shape = RoundedCornerShape(24.dp),
                     color = AccentPurple.copy(alpha = 0.15f),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showTenseInfo = true }
                 ) {
-                    Text(
-                        text = state.tenseName,
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp, vertical = 10.dp),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Black,
-                        color = AccentPurple,
-                        textAlign = TextAlign.Center,
-                        letterSpacing = 1.sp
-                    )
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = state.tenseName,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Black,
+                            color = AccentPurple,
+                            letterSpacing = 1.sp
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Tense info",
+                            tint = AccentPurple.copy(alpha = 0.5f),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
                 }
             }
 
@@ -151,6 +190,7 @@ fun ConjugationScreen(
                                     feedback = state.feedback,
                                     enabled = state.isPlaying && state.feedback == null,
                                     onClick = { onAnswer(idx) },
+                                    onSpeak = { onSpeak(state.choices[idx]) },
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -199,7 +239,7 @@ private fun ConjugationTopBar(state: ConjugationState, onQuit: () -> Unit) {
             )
         }
 
-        Column {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = "Score",
                 style = MaterialTheme.typography.labelSmall,
@@ -240,12 +280,55 @@ private fun ConjugationTopBar(state: ConjugationState, onQuit: () -> Unit) {
 }
 
 @Composable
+private fun PointsBar(points: Int) {
+    val maxPoints = ConjugationState.STARTING_POINTS
+    val barColor by animateColorAsState(
+        targetValue = when {
+            points <= 3 -> WrongRed
+            points <= 6 -> GermanGold
+            else -> CorrectGreen
+        },
+        label = "points_color"
+    )
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // Points dots — show individual point pips
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val displayPoints = points.coerceAtMost(20) // cap visual at 20 dots
+            for (i in 0 until displayPoints) {
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 2.dp)
+                        .size(if (points <= maxPoints) 12.dp else 10.dp)
+                        .clip(CircleShape)
+                        .background(barColor)
+                )
+            }
+            if (points > 20) {
+                Text(
+                    text = "+${points - 20}",
+                    color = barColor,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun SentenceQuestionCard(
     sentenceFr: String,
     sentenceDe: String?,
     infinitive: String,
     german: String,
-    @Suppress("UNUSED_PARAMETER") personLabel: String
+    @Suppress("UNUSED_PARAMETER") personLabel: String,
+    onSpeak: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         // French sentence with gap
@@ -290,13 +373,27 @@ private fun SentenceQuestionCard(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Infinitive hint
-                Text(
-                    text = "$infinitive ($german)",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                    textAlign = TextAlign.Center
-                )
+                // Infinitive hint with speaker
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "$infinitive ($german)",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                        contentDescription = "Listen to $infinitive",
+                        tint = FrenchBlue.copy(alpha = 0.5f),
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onSpeak() }
+                    )
+                }
             }
         }
 
@@ -329,7 +426,8 @@ private fun SentenceQuestionCard(
 private fun DrillQuestionCard(
     infinitive: String,
     german: String,
-    personLabel: String
+    personLabel: String,
+    onSpeak: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -344,14 +442,28 @@ private fun DrillQuestionCard(
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Infinitive
-            Text(
-                text = infinitive,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center
-            )
+            // Infinitive with speaker
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = infinitive,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                    contentDescription = "Listen to $infinitive",
+                    tint = FrenchBlue.copy(alpha = 0.5f),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { onSpeak() }
+                )
+            }
 
             Spacer(modifier = Modifier.height(4.dp))
 
@@ -385,6 +497,7 @@ private fun ConjugationChoiceCard(
     feedback: Boolean?,
     enabled: Boolean,
     onClick: () -> Unit,
+    onSpeak: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val backgroundColor: Color
@@ -431,9 +544,20 @@ private fun ConjugationChoiceCard(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
-            contentAlignment = Alignment.Center
+                .padding(8.dp)
         ) {
+            // Speaker icon in top-right corner
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                contentDescription = "Listen to $text",
+                tint = textColor.copy(alpha = 0.35f),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(24.dp)
+                    .clickable { onSpeak() }
+            )
+
+            // Conjugation text centered
             Text(
                 text = text,
                 fontSize = 18.sp,
@@ -441,7 +565,8 @@ private fun ConjugationChoiceCard(
                     FontWeight.Bold else FontWeight.Medium,
                 color = textColor,
                 textAlign = TextAlign.Center,
-                maxLines = 2
+                maxLines = 2,
+                modifier = Modifier.align(Alignment.Center)
             )
         }
     }
@@ -459,6 +584,23 @@ fun TenseSelectionScreen(
         "present", "imparfait", "futur", "conditionnel",
         "subjonctif", "passe_simple", "imperatif"
     )
+
+    // Dialog state for tense info
+    var showInfoForTense by remember { mutableStateOf<String?>(null) }
+
+    // Info dialog
+    if (showInfoForTense != null) {
+        val tenseName = state.availableTenses[showInfoForTense] ?: showInfoForTense!!
+        val tenseInfo = ConjugationViewModel.TENSE_INFO[showInfoForTense]
+
+        if (tenseInfo != null) {
+            TenseInfoDialog(
+                tenseName = tenseName,
+                tenseInfo = tenseInfo,
+                onDismiss = { showInfoForTense = null }
+            )
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -490,13 +632,13 @@ fun TenseSelectionScreen(
 
                 Text(
                     text = "Conjuguez!",
-                    style = MaterialTheme.typography.headlineMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = AccentPurple
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Select tenses to practice",
@@ -504,10 +646,13 @@ fun TenseSelectionScreen(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            // Tense chips
+            // Tense chips with info buttons — scrollable
             Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 for (tenseKey in tenseOrder) {
@@ -517,12 +662,13 @@ fun TenseSelectionScreen(
                     TenseChip(
                         label = displayName,
                         isSelected = isSelected,
-                        onClick = { onToggleTense(tenseKey) }
+                        onClick = { onToggleTense(tenseKey) },
+                        onInfoClick = { showInfoForTense = tenseKey }
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(12.dp))
 
             // Start button
             Button(
@@ -552,7 +698,8 @@ fun TenseSelectionScreen(
 private fun TenseChip(
     label: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onInfoClick: () -> Unit
 ) {
     val backgroundColor = if (isSelected) {
         AccentPurple.copy(alpha = 0.15f)
@@ -588,7 +735,7 @@ private fun TenseChip(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 14.dp),
+                .padding(start = 20.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -596,8 +743,21 @@ private fun TenseChip(
                 text = label,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                color = textColor
+                color = textColor,
+                modifier = Modifier.weight(1f)
             )
+
+            IconButton(
+                onClick = onInfoClick,
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Info about $label",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
 
             Checkbox(
                 checked = isSelected,
@@ -609,4 +769,93 @@ private fun TenseChip(
             )
         }
     }
+}
+
+@Composable
+private fun TenseInfoDialog(
+    tenseName: String,
+    tenseInfo: TenseInfo,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = tenseName,
+                fontWeight = FontWeight.Bold,
+                color = AccentPurple
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .fillMaxWidth()
+            ) {
+                // Main description
+                Text(
+                    text = tenseInfo.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    lineHeight = 22.sp
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Sections
+                tenseInfo.sections.forEachIndexed { index, section ->
+                    if (index > 0) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+
+                    // Section title (bold)
+                    Text(
+                        text = section.title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    // Optional section description
+                    if (section.description != null) {
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = section.description,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                            lineHeight = 18.sp
+                        )
+                    }
+
+                    // Examples: French (blue) + German (muted)
+                    for ((fr, de) in section.examples) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(SpanStyle(
+                                    fontWeight = FontWeight.Medium,
+                                    color = FrenchBlue
+                                )) {
+                                    append(fr)
+                                }
+                            },
+                            style = MaterialTheme.typography.bodySmall,
+                            lineHeight = 18.sp
+                        )
+                        Text(
+                            text = de,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            lineHeight = 18.sp
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("OK", color = AccentPurple, fontWeight = FontWeight.Bold)
+            }
+        }
+    )
 }
