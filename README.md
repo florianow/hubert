@@ -23,27 +23,30 @@
 
 ## About
 
-Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables.
+Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables across 8 tenses.
 
 Two scoring systems keep things interesting:
-- **Timer-based** (Word Match, Gender Snap, Gap Fill, Spelling Bee): 60-second countdown with time bonuses for correct answers (+2s) and penalties for wrong ones (-5s).
+- **Timer-based** (Word Match, Le ou La Baguette, Gap Fill, Spelling Bee): 60-second countdown with time bonuses for correct answers (+2s) and penalties for wrong ones (-5s).
 - **Points-based** (Conjuguez!, Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
 
 French words and sentences are spoken aloud via Android's built-in Text-to-Speech engine, and Prononcez! uses Azure Speech Services to assess your pronunciation in real time.
 
 ## Features
 
-- **6 Game Modes** — Word Match, Gender Snap, Gap Fill, Spelling Bee, Conjuguez!, Prononcez!
+- **6 Game Modes** — Word Match, Le ou La Baguette, Gap Fill, Spelling Bee, Conjuguez!, Prononcez!
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
-- **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services
+- **IPA Phonetic Transcription** — shown alongside French words in Word Match, Le ou La Baguette, and Conjuguez!
+- **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services, with second-chance retry
 - **Text-to-Speech** — hear correct French pronunciation after every correct answer
 - **Streak System** — consecutive correct answers earn bonus points
 - **High Scores** — per-game-type leaderboard stored locally
+- **Statistics & Word Tracking** — per-word attempt tracking, "Words I Struggle With" section, achievements
 - **28 Thematic Categories** — Tiere, Farben, Essen und Trinken, Familie, and more
-- **3076 Nouns with Gender** — masculine/feminine data for Gender Snap
+- **3076 Nouns with Gender** — masculine/feminine data for Le ou La Baguette
 - **~2000 Example Sentences** — real French sentences with German translations for Gap Fill
-- **1182 Verbs with Conjugations** — full conjugation tables across 7 tenses for Conjuguez!
+- **1182 Verbs with Conjugations** — full conjugation tables across 8 tenses for Conjuguez!
 - **Adaptive Difficulty** — Prononcez! adjusts sentence length based on your streak; Conjuguez! error-weights tenses you struggle with
+- **Manual Advance** — Conjuguez! and Prononcez! wait for you to tap "Next" instead of auto-advancing
 - **Offline-first** — all data bundled as JSON assets, no network required (except Prononcez! which uses Azure Speech Services)
 - **Material Design 3** — clean, modern UI with themed game colors
 
@@ -51,14 +54,14 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ### 1. Word Match
 
-Match French words on the left with their German translations on the right. Four pairs are shown at a time — tap a French word, then tap its German match. Matched pairs are replaced immediately so the game flows continuously.
+Match French words on the left with their German translations on the right. Four pairs are shown at a time — tap a French word, then tap its German match. Matched pairs are replaced immediately so the game flows continuously. IPA phonetic transcription is shown on each French card.
 
 - **Scoring**: 100 pts per match + streak bonus
 - **Timer**: 60s, +2s correct, -5s wrong
 
-### 2. le ou la ?
+### 2. Le ou La Baguette
 
-A French noun appears on screen — tap whether it takes the masculine article (**le**) or the feminine article (**la**). Only pure nouns are included (no verbs, pronouns, or adjectives that happen to have a grammatical gender).
+A French noun appears on screen with its IPA transcription — tap whether it takes the masculine article (**le**) or the feminine article (**la**). Only pure nouns are included (no verbs, pronouns, or adjectives that happen to have a grammatical gender).
 
 - **Scoring**: 100 pts per correct + streak bonus
 - **Timer**: 60s, +2s correct, -5s wrong
@@ -82,21 +85,24 @@ Hear a French word spoken via TTS, then type it. The German translation is shown
 
 ### 5. Conjuguez!
 
-A verb conjugation challenge. Before the game starts, you choose which tenses to practice (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif). During gameplay, tenses are picked randomly from your selection with error-weighted repetition — tenses you get wrong appear more frequently.
+A verb conjugation challenge. Before the game starts, you choose which tenses to practice (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé). During gameplay, tenses are picked randomly from your selection with error-weighted repetition — tenses you get wrong appear more frequently.
 
-When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Tap the tense name to see a grammar info dialog with German explanations and examples.
+When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive (with IPA transcription) and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Passé composé has two question types that alternate: auxiliary selection (avoir/être) and verb form selection. Tap the tense name to see a grammar info dialog with German explanations and examples. After answering, tap "Next" to advance manually.
 
 - **Scoring**: Points-based — start with 10 pts, +3 correct + streak bonus, -5 wrong, game over at 0
-- **Pool**: 1182 verbs across 7 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif)
+- **Pool**: 1182 verbs across 8 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé)
 
 ### 6. Prononcez!
 
-Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results.
+Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results. After each attempt, the sentence is spoken correctly via TTS so you can hear how it should sound. Tap "Next" to advance manually.
 
-Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words), medium sentences as you improve (Moyen, 7-10 words), and long sentences at high streaks (Difficile, 11+ words). After each attempt, the sentence is spoken correctly via TTS so you can hear how it should sound.
+Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words), medium sentences as you improve (Moyen, 7-10 words), and long sentences at high streaks (Difficile, 11+ words).
+
+**Second chance**: If you score 80-94 on your first attempt, you get a retry — tap "TRY AGAIN" to re-record the same sentence at a lower pass threshold of 85. Score below 80 and it's an immediate fail; score 95+ and it's an immediate pass.
 
 - **Scoring**: Points-based — start with 10 pts, +3 correct + streak bonus, -5 wrong, game over at 0
-- **Pass threshold**: PronScore >= 95
+- **Pass threshold**: PronScore >= 95 (first attempt), >= 85 (second attempt)
+- **Retry range**: PronScore 80-94 on first attempt earns a second chance
 - **Requires**: Azure Speech Services API key (configured in-app via settings dialog)
 - **Game over stats**: Average/best/worst pronunciation scores, most mispronounced words
 
@@ -106,7 +112,7 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 - **UI**: Jetpack Compose with Material Design 3
 - **Architecture**: MVVM (Model-View-ViewModel)
 - **Dependency Injection**: Hilt
-- **Database**: Room (high scores)
+- **Database**: Room (high scores, game sessions, word attempts)
 - **Preferences**: Jetpack DataStore (Azure API settings)
 - **JSON Parsing**: Gson
 - **Text-to-Speech**: Android TTS (French locale)
@@ -229,26 +235,32 @@ Each vocabulary word includes:
 app/src/main/java/com/hubert/
 ├── data/
 │   ├── local/
-│   │   ├── AppDatabase.kt          # Room database (v2, high scores)
-│   │   └── HighScoreDao.kt         # Per-game-type score queries
+│   │   ├── AppDatabase.kt          # Room database (v4, high scores + sessions + word attempts)
+│   │   ├── HighScoreDao.kt         # Per-game-type score queries
+│   │   ├── GameSessionDao.kt       # Game session history queries
+│   │   └── WordAttemptDao.kt       # Per-word attempt tracking queries
 │   ├── model/
 │   │   ├── VocabWord.kt            # VocabWord, SentenceEntry, ConjugationVerb data classes
-│   │   └── HighScore.kt            # Room entity with gameType field
+│   │   ├── HighScore.kt            # Room entity with gameType field
+│   │   ├── GameSession.kt          # Room entity for game session history
+│   │   └── WordAttempt.kt          # Room entity for per-word attempt tracking
 │   └── repository/
-│       ├── VocabRepository.kt      # Vocab, categories, sentences, conjugations
-│       └── HighScoreRepository.kt  # Save/query scores by game type
+│       ├── VocabRepository.kt      # Vocab, categories, sentences, conjugations, IPA lookup
+│       ├── HighScoreRepository.kt  # Save/query scores by game type
+│       └── StatisticsRepository.kt # Game sessions, word attempts, achievements
 ├── di/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
 │   │   ├── MenuScreen.kt           # Main menu with 6 game mode cards + mascot
-│   │   ├── GameScreen.kt           # Word Match game UI
-│   │   ├── GenderSnapScreen.kt     # le ou la? game UI
+│   │   ├── GameScreen.kt           # Word Match game UI (with IPA on French cards)
+│   │   ├── GenderSnapScreen.kt     # Le ou La Baguette game UI (with IPA)
 │   │   ├── GapFillScreen.kt        # Gap Fill game UI
 │   │   ├── SpellingBeeScreen.kt    # Spelling Bee game UI
-│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI
-│   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback)
-│   │   ├── GameOverScreen.kt       # Generic game over screen
+│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI (with IPA, manual advance)
+│   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback, retry)
+│   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
+│   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
 │   └── theme/
 │       ├── Color.kt                # FrenchBlue, GermanGold, AccentPurple, etc.
@@ -259,11 +271,13 @@ app/src/main/java/com/hubert/
 │   └── AudioRecorder.kt            # PCM audio capture → WAV byte array
 ├── viewmodel/
 │   ├── GameViewModel.kt            # Word Match game logic
-│   ├── GenderSnapViewModel.kt      # Gender Snap game logic
+│   ├── GenderSnapViewModel.kt      # Le ou La Baguette game logic
 │   ├── GapFillViewModel.kt         # Gap Fill game logic
 │   ├── SpellingBeeViewModel.kt     # Spelling Bee game logic
-│   ├── ConjugationViewModel.kt     # Conjuguez! game logic
-│   └── PronunciationViewModel.kt   # Prononcez! game logic (Azure assessment, adaptive difficulty)
+│   ├── ConjugationViewModel.kt     # Conjuguez! game logic (8 tenses, IPA, manual advance)
+│   ├── PronunciationViewModel.kt   # Prononcez! game logic (Azure, adaptive difficulty, second chance)
+│   ├── StatisticsViewModel.kt      # Statistics and achievements
+│   └── AnswerRecord.kt             # Per-question answer log for detail views
 ├── HubertApplication.kt            # Hilt application class
 └── MainActivity.kt                 # Entry point, screen navigation
 
@@ -286,7 +300,7 @@ app/src/main/assets/
 │  MenuScreen · GameScreen · GenderSnapScreen │
 │  GapFillScreen · SpellingBeeScreen          │
 │  ConjugationScreen · PronunciationScreen    │
-│  GameOverScreen · HighScoresScreen          │
+│  GameOverScreen · StatisticsScreen          │
 └──────────────────┬──────────────────────────┘
                    │ observes StateFlow
 ┌──────────────────▼──────────────────────────┐
@@ -294,12 +308,14 @@ app/src/main/assets/
 │  GameViewModel · GenderSnapViewModel        │
 │  GapFillViewModel · SpellingBeeViewModel    │
 │  ConjugationViewModel · PronunciationVM     │
+│  StatisticsViewModel                        │
 │  (timer/points, scoring, streak, game state)│
 └──────────────────┬──────────────────────────┘
                    │ calls
 ┌──────────────────▼──────────────────────────┐
 │             Repository / API Layer           │
 │  VocabRepository     HighScoreRepository    │
+│  StatisticsRepository                       │
 │  (JSON assets)       (Room database)        │
 │  AzurePronunciationApi  AudioRecorder       │
 └──────────────────┬──────────────────────────┘
@@ -308,7 +324,8 @@ app/src/main/assets/
 │              Data Layer                      │
 │  vocab.json · categories.json · sentences.json │
 │  conjugations.json                              │
-│  Room SQLite (high_scores table)            │
+│  Room SQLite (high_scores, game_sessions,   │
+│              word_attempts tables)           │
 │  Azure Speech Services REST API             │
 └─────────────────────────────────────────────┘
 ```
@@ -367,7 +384,6 @@ Contributions are welcome!
 - Add more game modes (sentence ordering, listening comprehension, etc.)
 - Difficulty levels (filter by word frequency rank)
 - Daily challenges / spaced repetition
-- Statistics and progress tracking over time
 - Dark mode support
 - Localization (English hints instead of German)
 - Sound effects and animations
