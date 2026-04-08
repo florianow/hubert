@@ -35,11 +35,13 @@ fun MenuScreen(
     gapFillHighScore: Int,
     spellingBeeHighScore: Int,
     conjugationHighScore: Int,
+    pronunciationHighScore: Int,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
     onStartSpellingBee: () -> Unit,
     onStartConjugation: () -> Unit,
+    onStartPronunciation: () -> Unit,
     onShowHighScores: () -> Unit
 ) {
     Column(
@@ -129,6 +131,16 @@ fun MenuScreen(
             accentColor = FrenchBlue,
             highScore = conjugationHighScore,
             onClick = onStartConjugation
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Prononcez!",
+            description = "Read French aloud and get pronunciation feedback",
+            accentColor = WrongRed,
+            highScore = pronunciationHighScore,
+            onClick = onStartPronunciation
         )
 
         Spacer(modifier = Modifier.height(24.dp))
