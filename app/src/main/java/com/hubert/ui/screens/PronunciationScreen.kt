@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -559,10 +561,24 @@ private fun MicButton(
             contentAlignment = Alignment.Center
         ) {
             if (isProcessing) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(32.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                    strokeWidth = 3.dp
+                // Custom spinner — avoids Material3 CircularProgressIndicator which
+                // crashes on some devices due to a keyframes API mismatch (NoSuchMethodError).
+                val spinTransition = rememberInfiniteTransition(label = "spin")
+                val rotation by spinTransition.animateFloat(
+                    initialValue = 0f,
+                    targetValue = 360f,
+                    animationSpec = infiniteRepeatable(
+                        animation = tween(durationMillis = 1000, easing = LinearEasing)
+                    ),
+                    label = "rotation"
+                )
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "Processing",
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    modifier = Modifier
+                        .size(32.dp)
+                        .graphicsLayer { rotationZ = rotation }
                 )
             } else {
                 Icon(

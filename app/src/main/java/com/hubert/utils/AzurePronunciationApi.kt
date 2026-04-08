@@ -1,12 +1,15 @@
 package com.hubert.utils
 
 import android.util.Base64
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
+
+private const val TAG = "AzurePronunciationApi"
 
 /**
  * Azure Pronunciation Assessment via REST API.
@@ -63,11 +66,13 @@ object AzurePronunciationApi {
             Base64.NO_WRAP
         )
 
-        val url = URL(
-            "https://$region.stt.speech.microsoft.com/" +
-                "speech/recognition/conversation/cognitiveservices/v1" +
-                "?language=fr-FR"
-        )
+        val urlString = "https://$region.stt.speech.microsoft.com/" +
+            "speech/recognition/conversation/cognitiveservices/v1" +
+            "?language=fr-FR"
+        Log.d(TAG, "Calling Azure: $urlString")
+        Log.d(TAG, "Audio size: ${audioWav.size} bytes, reference: \"$referenceText\"")
+
+        val url = URL(urlString)
 
         val conn = url.openConnection() as HttpURLConnection
         try {
@@ -89,14 +94,17 @@ object AzurePronunciationApi {
             }
 
             val responseCode = conn.responseCode
+            Log.d(TAG, "Azure response code: $responseCode")
             if (responseCode != 200) {
                 val errorBody = try {
                     conn.errorStream?.bufferedReader()?.readText() ?: "No error body"
                 } catch (_: Exception) { "Could not read error" }
+                Log.e(TAG, "Azure error $responseCode: $errorBody")
                 throw RuntimeException("Azure returned $responseCode: $errorBody")
             }
 
             val responseBody = conn.inputStream.bufferedReader().readText()
+            Log.d(TAG, "Azure response: ${responseBody.take(500)}")
             parseResponse(responseBody)
         } finally {
             conn.disconnect()

@@ -1,6 +1,7 @@
 package com.hubert.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -441,10 +442,14 @@ class PronunciationViewModel @Inject constructor(
                 }
 
             } catch (e: Exception) {
+                Log.e("PronunciationVM",
+                    "Assessment failed [${e.javaClass.simpleName}]: ${e.message}" +
+                        (e.cause?.let { " caused by [${it.javaClass.simpleName}]: ${it.message}" } ?: ""),
+                    e)
                 _uiState.update {
                     it.copy(
                         isProcessing = false,
-                        errorMessage = e.message ?: "Assessment failed"
+                        errorMessage = "${e.javaClass.simpleName}: ${e.message ?: "Assessment failed"}"
                     )
                 }
             }
