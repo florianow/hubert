@@ -55,6 +55,7 @@ data class ConjugationState(
     // Current question
     val infinitive: String = "",
     val german: String = "",
+    val ipa: String? = null,               // IPA pronunciation of the infinitive
     val tenseName: String = "",        // Display name: "Présent", "Imparfait", etc.
     val personLabel: String = "",      // "je", "tu", "il/elle", etc.
 
@@ -444,6 +445,7 @@ class ConjugationViewModel @Inject constructor(
         }
 
         val verb = verbPool.removeFirst()
+        val verbIpa = vocabRepository.getIpaForFrench(verb.infinitive)
 
         // Pick tense using error-weighted random selection
         val tense = pickWeightedTense(verb)
@@ -522,6 +524,7 @@ class ConjugationViewModel @Inject constructor(
                     it.copy(
                         infinitive = verb.infinitive,
                         german = verb.german,
+                        ipa = verbIpa,
                         tenseName = TENSE_DISPLAY[tense] ?: tense,
                         personLabel = PERSON_LABELS[personIdx],
                         pcQuestionType = pcQuestionType,
@@ -611,6 +614,7 @@ class ConjugationViewModel @Inject constructor(
             it.copy(
                 infinitive = verb.infinitive,
                 german = verb.german,
+                ipa = verbIpa,
                 tenseName = TENSE_DISPLAY[tense] ?: tense,
                 personLabel = PERSON_LABELS[personIdx],
                 pcQuestionType = pcQuestionType,

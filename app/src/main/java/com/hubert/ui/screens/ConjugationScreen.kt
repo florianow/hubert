@@ -113,6 +113,7 @@ fun ConjugationScreen(
                     sentenceDe = state.sentenceDe,
                     infinitive = state.infinitive,
                     german = state.german,
+                    ipa = state.ipa,
                     personLabel = state.personLabel,
                     onSpeak = { onSpeak(state.infinitive) }
                 )
@@ -121,6 +122,7 @@ fun ConjugationScreen(
                 DrillQuestionCard(
                     infinitive = state.infinitive,
                     german = state.german,
+                    ipa = state.ipa,
                     personLabel = state.personLabel,
                     pcQuestionType = state.pcQuestionType,
                     participleShown = state.participleShown,
@@ -349,6 +351,7 @@ private fun SentenceQuestionCard(
     sentenceDe: String?,
     infinitive: String,
     german: String,
+    ipa: String? = null,
     @Suppress("UNUSED_PARAMETER") personLabel: String,
     onSpeak: () -> Unit
 ) {
@@ -400,8 +403,9 @@ private fun SentenceQuestionCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+                    val hintText = if (ipa != null) "$infinitive /$ipa/ ($german)" else "$infinitive ($german)"
                     Text(
-                        text = "$infinitive ($german)",
+                        text = hintText,
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         textAlign = TextAlign.Center
@@ -448,6 +452,7 @@ private fun SentenceQuestionCard(
 private fun DrillQuestionCard(
     infinitive: String,
     german: String,
+    ipa: String? = null,
     personLabel: String,
     pcQuestionType: String? = null,
     participleShown: String? = null,
@@ -499,6 +504,15 @@ private fun DrillQuestionCard(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                 textAlign = TextAlign.Center
             )
+
+            if (ipa != null) {
+                Text(
+                    text = "/$ipa/",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                    textAlign = TextAlign.Center
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 

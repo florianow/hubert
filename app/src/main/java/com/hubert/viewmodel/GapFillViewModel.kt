@@ -28,6 +28,7 @@ data class GapFillState(
     // Current question
     val sentenceWithGap: String = "",   // French sentence with "___" replacing the blank
     val germanTranslation: String = "", // Full German sentence
+    val targetWordIpa: String? = null,  // IPA of the blanked-out word
     val choices: List<String> = emptyList(), // 4 answer choices
     val correctIndex: Int = -1,         // index of correct answer in choices
 
@@ -148,6 +149,7 @@ class GapFillViewModel @Inject constructor(
             it.copy(
                 sentenceWithGap = gapSentence,
                 germanTranslation = sentence.de,
+                targetWordIpa = targetWord.ipa,
                 choices = allChoices,
                 correctIndex = correctIdx,
                 selectedIndex = null,
