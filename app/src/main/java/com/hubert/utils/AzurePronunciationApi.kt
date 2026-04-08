@@ -107,21 +107,17 @@ object AzurePronunciationApi {
      * Parse the Azure response JSON into our result model.
      *
      * The response has an NBest array; we take the first (best) entry.
-     * Structure:
+     * The pronunciation scores are directly on the NBest entry (not nested):
      * {
      *   "NBest": [{
-     *     "PronunciationAssessment": {
-     *       "AccuracyScore": 95.0,
-     *       "FluencyScore": 90.0,
-     *       "CompletenessScore": 100.0,
-     *       "PronScore": 93.0
-     *     },
+     *     "AccuracyScore": 95.0,
+     *     "FluencyScore": 90.0,
+     *     "CompletenessScore": 100.0,
+     *     "PronScore": 93.0,
      *     "Words": [{
      *       "Word": "bonjour",
-     *       "PronunciationAssessment": {
-     *         "AccuracyScore": 98.0,
-     *         "ErrorType": "None"
-     *       }
+     *       "AccuracyScore": 98.0,
+     *       "ErrorType": "None"
      *     }]
      *   }]
      * }
@@ -136,29 +132,34 @@ object AzurePronunciationApi {
         }
 
         val best = nBest.getJSONObject(0)
-        val pronAssessment = best.getJSONObject("PronunciationAssessment")
+
+        // Scores may be flat on the NBest entry or nested in PronunciationAssessment
+        val pronAssessment = best.optJSONObject("PronunciationAssessment")
+        val scoreSource = pronAssessment ?: best
 
         val words = mutableListOf<WordResult>()
         val wordsArray = best.optJSONArray("Words")
         if (wordsArray != null) {
             for (i in 0 until wordsArray.length()) {
                 val w = wordsArray.getJSONObject(i)
+                // Word scores may also be flat or nested
                 val wAssessment = w.optJSONObject("PronunciationAssessment")
+                val wSource = wAssessment ?: w
                 words.add(
                     WordResult(
                         word = w.getString("Word"),
-                        accuracyScore = wAssessment?.optDouble("AccuracyScore", 0.0) ?: 0.0,
-                        errorType = wAssessment?.optString("ErrorType", "None") ?: "None"
+                        accuracyScore = wSource.optDouble("AccuracyScore", 0.0),
+                        errorType = wSource.optString("ErrorType", "None")
                     )
                 )
             }
         }
 
         return PronunciationResult(
-            pronScore = pronAssessment.optDouble("PronScore", 0.0),
-            accuracyScore = pronAssessment.optDouble("AccuracyScore", 0.0),
-            fluencyScore = pronAssessment.optDouble("FluencyScore", 0.0),
-            completenessScore = pronAssessment.optDouble("CompletenessScore", 0.0),
+            pronScore = scoreSource.optDouble("PronScore", 0.0),
+            accuracyScore = scoreSource.optDouble("AccuracyScore", 0.0),
+            fluencyScore = scoreSource.optDouble("FluencyScore", 0.0),
+            completenessScore = scoreSource.optDouble("CompletenessScore", 0.0),
             words = words
         )
     }
