@@ -1,5 +1,9 @@
 package com.hubert.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
@@ -29,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.compose.ui.platform.LocalContext
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.PronunciationState
 import com.hubert.viewmodel.RunStats
@@ -107,6 +113,32 @@ fun PronunciationScreen(
     onSpeak: (String) -> Unit,
     onQuit: () -> Unit
 ) {
+    val context = LocalContext.current
+    var hasRecordPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) ==
+                PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        hasRecordPermission = granted
+        if (granted) {
+            onToggleRecording()
+        }
+    }
+
+    // Wrapper that checks permission before toggling recording
+    val onMicClick: () -> Unit = {
+        if (hasRecordPermission) {
+            onToggleRecording()
+        } else {
+            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -233,7 +265,7 @@ fun PronunciationScreen(
                     isRecording = state.isRecording,
                     isProcessing = state.isProcessing,
                     enabled = state.isPlaying && state.feedback == null && !state.isProcessing,
-                    onClick = onToggleRecording
+                    onClick = onMicClick
                 )
             }
 

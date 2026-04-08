@@ -30,13 +30,14 @@ class AudioRecorder {
     /**
      * Start recording. Call from a coroutine context.
      * This suspends while recording — call [stop] from another coroutine to end it.
+     * @throws IllegalStateException if AudioRecord could not be initialized (e.g. missing permission)
      */
     @SuppressLint("MissingPermission")
     suspend fun startRecording() = withContext(Dispatchers.IO) {
         val bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL, ENCODING)
             .coerceAtLeast(4096)
 
-        recorder = AudioRecord(
+        val rec = AudioRecord(
             MediaRecorder.AudioSource.MIC,
             SAMPLE_RATE,
             CHANNEL,
@@ -44,9 +45,17 @@ class AudioRecorder {
             bufferSize
         )
 
+        if (rec.state != AudioRecord.STATE_INITIALIZED) {
+            rec.release()
+            throw IllegalStateException(
+                "AudioRecord failed to initialize. Check that RECORD_AUDIO permission is granted."
+            )
+        }
+
+        recorder = rec
         pcmBuffer.reset()
         isRecording = true
-        recorder?.startRecording()
+        rec.startRecording()
 
         val buffer = ByteArray(bufferSize)
         while (isRecording) {
