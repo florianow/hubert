@@ -1,9 +1,11 @@
 package com.hubert.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.ConjugationVerb
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,6 +58,13 @@ data class ConjugationState(
     val tenseName: String = "",        // Display name: "Présent", "Imparfait", etc.
     val personLabel: String = "",      // "je", "tu", "il/elle", etc.
 
+    // Passé composé question type: null if not PC, "auxiliary" or "verb_form"
+    val pcQuestionType: String? = null,
+    // For auxiliary questions: the participle shown in the prompt (e.g., "mangé")
+    val participleShown: String? = null,
+    // Auxiliary hint for passé composé auxiliary questions (e.g., "j'ai" or "je suis")
+    val auxiliaryHint: String? = null,
+
     // Sentence context (null = use plain drill view)
     val sentenceFr: String? = null,    // French sentence with blank
     val sentenceDe: String? = null,    // German translation
@@ -77,6 +86,13 @@ data class ConjugationState(
     val bestStreak: Int = 0,
     val highScore: Int = 0,
 
+    // Post-game
+    val durationMs: Long = 0L,
+    val answerHistory: List<AnswerRecord> = emptyList(),
+
+    // Manual advance — true when feedback is shown and player needs to tap "Next"
+    val awaitingNext: Boolean = false,
+
     // Countdown
     val countdown: Int? = null
 ) {
@@ -89,6 +105,7 @@ data class ConjugationState(
 class ConjugationViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -96,12 +113,15 @@ class ConjugationViewModel @Inject constructor(
     val uiState: StateFlow<ConjugationState> = _uiState.asStateFlow()
 
     private var countdownJob: Job? = null
+    private var gameStartTime = 0L
 
     private var verbPool: MutableList<ConjugationVerb> = mutableListOf()
+    private var allVerbs: List<ConjugationVerb> = emptyList()  // for PC distractor generation
     private var activeTenses: Set<String> = setOf("present")
 
     // Error-weighted tense tracking: count of wrong answers per tense
     private var tenseErrorCounts: MutableMap<String, Int> = mutableMapOf()
+    private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
         const val POINTS_PER_CORRECT = 3
@@ -115,6 +135,7 @@ class ConjugationViewModel @Inject constructor(
         // Tense keys → display names
         val TENSE_DISPLAY = mapOf(
             "present" to "Présent",
+            "passe_compose" to "Passé composé",
             "imparfait" to "Imparfait",
             "futur" to "Futur simple",
             "conditionnel" to "Conditionnel",
@@ -132,7 +153,7 @@ class ConjugationViewModel @Inject constructor(
                     TenseSection("Gegenwärtiges Ereignis", examples = listOf(
                         "Sophie et Lucas préparent le dîner." to "Sophie und Lucas bereiten das Abendessen zu."
                     )),
-                    TenseSection("Andauernde Handlung mit „depuis“", examples = listOf(
+                    TenseSection("Andauernde Handlung mit \u201Edepuis\u201C", examples = listOf(
                         "Emma étudie le français depuis deux ans." to "Emma lernt seit zwei Jahren Französisch."
                     )),
                     TenseSection("Nahe Zukunft", examples = listOf(
@@ -142,11 +163,39 @@ class ConjugationViewModel @Inject constructor(
                         "Les Martin font du sport tous les weekends." to "Die Martins treiben jedes Wochenende Sport.",
                         "La patience est une vertu." to "Geduld ist eine Tugend."
                     )),
-                    TenseSection("Realisierbare Bedingung nach „si“", examples = listOf(
+                    TenseSection("Realisierbare Bedingung nach \u201Esi\u201C", examples = listOf(
                         "Si nous prenons le train de 8h, nous arriverons à temps pour la réunion." to "Wenn wir den Zug um 8 Uhr nehmen, kommen wir rechtzeitig zum Meeting an."
                     )),
                     TenseSection("Historisches Präsens", description = "In Erzählungen kann das Präsens vergangene Ereignisse lebendiger darstellen.", examples = listOf(
                         "Je regardais la télévision. Soudain, on sonne à la porte." to "Ich schaute fern. Plötzlich klingelt es an der Tür."
+                    ))
+                )
+            ),
+
+            "passe_compose" to TenseInfo(
+                description = "Das passé composé ist die wichtigste Vergangenheitsform im Französischen. Es beschreibt abgeschlossene Handlungen und wird mit einem Hilfsverb (avoir oder être) + Partizip gebildet.",
+                sections = listOf(
+                    TenseSection("Bildung", description = "Hilfsverb (avoir/être) im Präsens + Partizip Perfekt (participe passé). Die meisten Verben bilden das PC mit avoir. Verben der Bewegung/Zustandsänderung und alle reflexiven Verben verwenden être.", examples = listOf(
+                        "J'ai mangé une pomme." to "Ich habe einen Apfel gegessen.",
+                        "Elle est allée au cinéma." to "Sie ist ins Kino gegangen."
+                    )),
+                    TenseSection("Abgeschlossene Handlungen", examples = listOf(
+                        "Nous avons visité le musée hier." to "Wir haben gestern das Museum besucht.",
+                        "Il a plu toute la journée." to "Es hat den ganzen Tag geregnet."
+                    )),
+                    TenseSection("Aufeinanderfolgende Ereignisse", examples = listOf(
+                        "Elle s'est levée, a pris son café et est partie." to "Sie ist aufgestanden, hat ihren Kaffee getrunken und ist gegangen."
+                    )),
+                    TenseSection("Être-Verben", description = "Bewegungs- und Zustandsverben: aller, venir, arriver, partir, entrer, sortir, monter, descendre, naître, mourir, rester, tomber, retourner, devenir, passer.", examples = listOf(
+                        "Ils sont arrivés en retard." to "Sie sind zu spät angekommen.",
+                        "Marie est née en 1990." to "Marie wurde 1990 geboren."
+                    )),
+                    TenseSection("Angleichung des Partizips", description = "Bei être richtet sich das Partizip nach dem Subjekt (Geschlecht und Zahl). Bei avoir nur, wenn ein direktes Objekt vorangestellt ist.", examples = listOf(
+                        "Elles sont parties ensemble." to "Sie sind zusammen gegangen.",
+                        "Les fleurs que j'ai achetées sont belles." to "Die Blumen, die ich gekauft habe, sind schön."
+                    )),
+                    TenseSection("Zusammenspiel mit dem Imparfait", description = "Das passé composé beschreibt die Haupthandlung, das imparfait den Hintergrund.", examples = listOf(
+                        "Il faisait beau quand nous sommes arrivés." to "Es war schönes Wetter, als wir ankamen."
                     ))
                 )
             ),
@@ -363,7 +412,9 @@ class ConjugationViewModel @Inject constructor(
 
         activeTenses = _uiState.value.selectedTenses
         tenseErrorCounts = mutableMapOf()
-        verbPool = vocabRepository.getConjugations().shuffled().toMutableList()
+        answerLog.clear()
+        allVerbs = vocabRepository.getConjugations()
+        verbPool = allVerbs.shuffled().toMutableList()
 
         _uiState.update {
             ConjugationState(
@@ -382,13 +433,14 @@ class ConjugationViewModel @Inject constructor(
                 delay(800)
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
             showNextQuestion()
         }
     }
 
     private fun showNextQuestion() {
         if (verbPool.isEmpty()) {
-            verbPool = vocabRepository.getConjugations().shuffled().toMutableList()
+            verbPool = allVerbs.shuffled().toMutableList()
         }
 
         val verb = verbPool.removeFirst()
@@ -418,19 +470,122 @@ class ConjugationViewModel @Inject constructor(
         val personIdx = eligiblePersons.random()
         val correctForm = forms[personIdx]
 
-        // Build distractors: other forms of the SAME verb (different tenses/persons)
-        val distractorPool = mutableSetOf<String>()
-        for ((_, fs) in verb.tenses) {
-            for (f in fs) {
-                if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
-                    distractorPool.add(f)
+        // Build distractors
+        val distractors: List<String>
+        val auxiliaryHint: String?
+        val pcQuestionType: String?
+        val participleShown: String?
+
+        if (tense == "passe_compose") {
+            // Passé composé: randomly alternate between two question types
+            val questionType = if (Math.random() < 0.5) "auxiliary" else "verb_form"
+
+            if (questionType == "auxiliary") {
+                // AUXILIARY QUESTION: player picks the correct auxiliary form (ai/suis/as/est/etc.)
+                // The participle is shown in the prompt
+                val aux = verb.auxiliary ?: "avoir"
+                val correctAuxForm = getAuxiliaryForm(personIdx, aux)
+
+                // Distractors: mix forms from the WRONG auxiliary + wrong person forms
+                val auxDistractorPool = mutableSetOf<String>()
+                // Add all forms of the other auxiliary
+                val otherAux = if (aux == "etre") "avoir" else "etre"
+                for (pi in 0..5) {
+                    auxDistractorPool.add(getAuxiliaryForm(pi, otherAux))
+                }
+                // Add wrong-person forms of the correct auxiliary
+                for (pi in 0..5) {
+                    if (pi != personIdx) {
+                        auxDistractorPool.add(getAuxiliaryForm(pi, aux))
+                    }
+                }
+                auxDistractorPool.remove(correctAuxForm)
+
+                distractors = auxDistractorPool.shuffled().take(NUM_CHOICES - 1)
+                auxiliaryHint = null  // not used for auxiliary questions (UI uses pcQuestionType)
+                pcQuestionType = "auxiliary"
+                participleShown = correctForm // the participle (e.g., "mangé")
+
+                if (distractors.isEmpty()) {
+                    showNextQuestion()
+                    return
+                }
+
+                val allChoices = (listOf(correctAuxForm) + distractors).shuffled()
+                val correctIdx = allChoices.indexOf(correctAuxForm)
+
+                Log.d("Conjuguez", "AUX Q: ${verb.infinitive} person=$personIdx " +
+                    "label=${PERSON_LABELS[personIdx]} aux=${verb.auxiliary} " +
+                    "correctAux=$correctAuxForm participle=$correctForm")
+
+                _uiState.update {
+                    it.copy(
+                        infinitive = verb.infinitive,
+                        german = verb.german,
+                        tenseName = TENSE_DISPLAY[tense] ?: tense,
+                        personLabel = PERSON_LABELS[personIdx],
+                        pcQuestionType = pcQuestionType,
+                        participleShown = participleShown,
+                        auxiliaryHint = null,
+                        sentenceFr = null,
+                        sentenceDe = null,
+                        choices = allChoices,
+                        correctIndex = correctIdx,
+                        selectedIndex = null,
+                        feedback = null
+                    )
+                }
+                return
+
+            } else {
+                // VERB FORM QUESTION: player picks the correct PC form vs forms from other tenses
+                // Distractors come from the same verb's OTHER tenses (same person)
+                val distractorPool = mutableSetOf<String>()
+                for ((otherTense, otherForms) in verb.tenses) {
+                    if (otherTense == "passe_compose") continue
+                    if (personIdx < otherForms.size && otherForms[personIdx].isNotEmpty()) {
+                        val form = otherForms[personIdx]
+                        if (form.lowercase() != correctForm.lowercase()) {
+                            distractorPool.add(form)
+                        }
+                    }
+                }
+                // If same-person distractors are insufficient, add other persons' forms from other tenses
+                if (distractorPool.size < NUM_CHOICES - 1) {
+                    for ((otherTense, otherForms) in verb.tenses) {
+                        if (otherTense == "passe_compose") continue
+                        for (f in otherForms) {
+                            if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
+                                distractorPool.add(f)
+                            }
+                        }
+                    }
+                }
+                distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
+                pcQuestionType = "verb_form"
+                participleShown = null
+
+                // For verb_form, show auxiliary in the prompt so player knows context
+                val aux = verb.auxiliary ?: "avoir"
+                auxiliaryHint = buildAuxiliaryHint(personIdx, aux)
+            }
+        } else {
+            // Other tenses: distractors from same verb's other forms
+            val distractorPool = mutableSetOf<String>()
+            for ((_, fs) in verb.tenses) {
+                for (f in fs) {
+                    if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
+                        distractorPool.add(f)
+                    }
                 }
             }
+            distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
+            auxiliaryHint = null
+            pcQuestionType = null
+            participleShown = null
         }
 
-        val distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
-
-        // If not enough distractors from same verb, this is rare but handle it
+        // If not enough distractors, skip this question
         if (distractors.isEmpty()) {
             showNextQuestion()
             return
@@ -448,12 +603,19 @@ class ConjugationViewModel @Inject constructor(
             sentenceMatch.fr.replace(sentenceMatch.blank, "___")
         } else null
 
+        Log.d("Conjuguez", "Q: ${verb.infinitive} tense=$tense person=$personIdx " +
+            "label=${PERSON_LABELS[personIdx]} correct=$correctForm " +
+            "choices=${allChoices.joinToString()} correctIdx=$correctIdx")
+
         _uiState.update {
             it.copy(
                 infinitive = verb.infinitive,
                 german = verb.german,
                 tenseName = TENSE_DISPLAY[tense] ?: tense,
                 personLabel = PERSON_LABELS[personIdx],
+                pcQuestionType = pcQuestionType,
+                participleShown = participleShown,
+                auxiliaryHint = auxiliaryHint,
                 sentenceFr = sentenceFr,
                 sentenceDe = sentenceMatch?.de,
                 choices = allChoices,
@@ -462,6 +624,30 @@ class ConjugationViewModel @Inject constructor(
                 feedback = null
             )
         }
+    }
+
+    /**
+     * Build the auxiliary hint for passé composé drill view.
+     * Shows the conjugated auxiliary (avoir/être) for the given person.
+     */
+    private fun buildAuxiliaryHint(personIdx: Int, auxiliary: String): String {
+        val avoirForms = listOf("j'ai", "tu as", "il/elle a", "nous avons", "vous avez", "ils/elles ont")
+        val etreForms = listOf("je suis", "tu es", "il/elle est", "nous sommes", "vous êtes", "ils/elles sont")
+
+        val forms = if (auxiliary == "etre") etreForms else avoirForms
+        return if (personIdx in forms.indices) forms[personIdx] else forms[0]
+    }
+
+    /**
+     * Get just the auxiliary verb form (without pronoun) for a given person.
+     * Used as answer choices in auxiliary questions.
+     */
+    private fun getAuxiliaryForm(personIdx: Int, auxiliary: String): String {
+        val avoirForms = listOf("ai", "as", "a", "avons", "avez", "ont")
+        val etreForms = listOf("suis", "es", "est", "sommes", "êtes", "sont")
+
+        val forms = if (auxiliary == "etre") etreForms else avoirForms
+        return if (personIdx in forms.indices) forms[personIdx] else forms[0]
     }
 
     /**
@@ -491,8 +677,29 @@ class ConjugationViewModel @Inject constructor(
 
         val isCorrect = choiceIndex == state.correctIndex
 
-        // Always speak the correct conjugated form (learn from mistakes too)
-        frenchTts.speak(state.choices[state.correctIndex])
+        // Build appropriate question text for the answer log
+        val questionText = if (state.pcQuestionType == "auxiliary") {
+            "${state.infinitive} (${state.tenseName}, ${state.personLabel}) — avoir ou être?"
+        } else {
+            "${state.infinitive} (${state.tenseName}, ${state.personLabel})"
+        }
+
+        answerLog.add(
+            AnswerRecord(
+                question = questionText,
+                yourAnswer = state.choices[choiceIndex],
+                correctAnswer = state.choices[state.correctIndex],
+                isCorrect = isCorrect
+            )
+        )
+
+        // Always speak the correct form (learn from mistakes too)
+        // For auxiliary questions, speak the full PC form (auxiliary + participle)
+        if (state.pcQuestionType == "auxiliary" && state.participleShown != null) {
+            frenchTts.speak("${state.choices[state.correctIndex]} ${state.participleShown}")
+        } else {
+            frenchTts.speak(state.choices[state.correctIndex])
+        }
 
         // Find the current tense key for error tracking
         val currentTenseKey = TENSE_DISPLAY.entries
@@ -542,16 +749,22 @@ class ConjugationViewModel @Inject constructor(
             }
         }
 
-        viewModelScope.launch {
-            delay(if (isCorrect) 600 else 1200)
-            if (_uiState.value.isPlaying) {
-                showNextQuestion()
-            }
-        }
+        // Wait for player to tap "Next" (manual advance)
+        _uiState.update { it.copy(awaitingNext = true) }
+    }
+
+    /**
+     * Called when the player taps "Next" after seeing feedback.
+     */
+    fun nextQuestion() {
+        if (!_uiState.value.awaitingNext) return
+        _uiState.update { it.copy(awaitingNext = false) }
+        showNextQuestion()
     }
 
     private fun endGame() {
         val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore(gameType = "conjugation")
@@ -564,12 +777,25 @@ class ConjugationViewModel @Inject constructor(
                 gameType = "conjugation"
             )
 
+            statisticsRepository.saveSession(
+                gameType = "conjugation",
+                score = state.score,
+                totalCorrect = state.totalCorrect,
+                totalWrong = state.totalWrong,
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
+            )
+
+            statisticsRepository.saveWordAttempts("conjugation", answerLog)
+
             _uiState.update {
                 it.copy(
                     isPlaying = false,
                     isGameOver = true,
                     isNewHighScore = isNewHigh,
-                    highScore = maxOf(it.highScore, state.score)
+                    highScore = maxOf(it.highScore, state.score),
+                    durationMs = durationMs,
+                    answerHistory = answerLog.toList()
                 )
             }
         }
@@ -577,6 +803,7 @@ class ConjugationViewModel @Inject constructor(
 
     fun resetToMenu() {
         countdownJob?.cancel()
+        answerLog.clear()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
             _uiState.value = ConjugationState(highScore = hs)

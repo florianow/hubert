@@ -28,6 +28,7 @@ from html.parser import HTMLParser
 
 TENSE_CODES = {
     'P': 'present',
+    'PC': 'passe_compose',
     'IT': 'imparfait',
     'F': 'futur',
     'C': 'conditionnel',
@@ -36,14 +37,15 @@ TENSE_CODES = {
     'IF': 'imperatif',
 }
 
-# Tenses used in the game (skip PC/Gérondif/Subj.imp — PC needs auxiliary
-# construction which is a full sentence, not a single word form)
-GAME_TENSES = {'P', 'IT', 'F', 'C', 'S', 'PS', 'IF'}
+# Tenses used in the game — PC is included but handled specially:
+# the game tests the past participle, with the auxiliary shown as context.
+GAME_TENSES = {'P', 'PC', 'IT', 'F', 'C', 'S', 'PS', 'IF'}
 
 PERSON_LABELS = ['je', 'tu', 'il/elle', 'nous', 'vous', 'ils/elles']
 
 TENSE_DISPLAY = {
     'present': 'Présent',
+    'passe_compose': 'Passé composé',
     'imparfait': 'Imparfait',
     'futur': 'Futur simple',
     'conditionnel': 'Conditionnel',
@@ -376,6 +378,10 @@ def main():
             'german': german_clean,
             'tenses': tenses,
         }
+
+        # Add auxiliary info for passé composé
+        if 'passe_compose' in tenses and parsed.auxiliary:
+            entry['auxiliary'] = parsed.auxiliary
 
         if sentences:
             entry['sentences'] = sentences

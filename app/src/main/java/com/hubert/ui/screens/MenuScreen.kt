@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -42,7 +43,8 @@ fun MenuScreen(
     onStartSpellingBee: () -> Unit,
     onStartConjugation: () -> Unit,
     onStartPronunciation: () -> Unit,
-    onShowHighScores: () -> Unit
+    onPronunciationSettings: () -> Unit,
+    onShowStatistics: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -140,21 +142,22 @@ fun MenuScreen(
             description = "Read French aloud and get pronunciation feedback",
             accentColor = WrongRed,
             highScore = pronunciationHighScore,
-            onClick = onStartPronunciation
+            onClick = onStartPronunciation,
+            onSettingsClick = onPronunciationSettings
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // High scores button
+        // Statistics button
         OutlinedButton(
-            onClick = onShowHighScores,
+            onClick = onShowStatistics,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
-                text = "HIGH SCORES",
+                text = "STATISTICS",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -171,7 +174,8 @@ private fun GameModeCard(
     description: String,
     accentColor: Color,
     highScore: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onSettingsClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
@@ -196,12 +200,27 @@ private fun GameModeCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = accentColor
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = accentColor
+                    )
+                    if (onSettingsClick != null) {
+                        IconButton(
+                            onClick = onSettingsClick,
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Settings",
+                                tint = accentColor.copy(alpha = 0.6f),
+                                modifier = Modifier.size(18.dp)
+                            )
+                        }
+                    }
+                }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = description,

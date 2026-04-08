@@ -3,7 +3,9 @@ package com.hubert.di
 import android.content.Context
 import androidx.room.Room
 import com.hubert.data.local.AppDatabase
+import com.hubert.data.local.GameSessionDao
 import com.hubert.data.local.HighScoreDao
+import com.hubert.data.local.WordAttemptDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,5 +32,15 @@ object DatabaseModule {
     @Provides
     fun provideHighScoreDao(database: AppDatabase): HighScoreDao {
         return database.highScoreDao()
+    }
+
+    @Provides
+    fun provideGameSessionDao(database: AppDatabase): GameSessionDao {
+        return database.gameSessionDao()
+    }
+
+    @Provides
+    fun provideWordAttemptDao(database: AppDatabase): WordAttemptDao {
+        return database.wordAttemptDao()
     }
 }

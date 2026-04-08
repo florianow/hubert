@@ -20,6 +20,8 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,6 +33,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -53,6 +57,7 @@ fun AzureSettingsDialog(
 ) {
     var key by remember { mutableStateOf(currentKey) }
     var region by remember { mutableStateOf(currentRegion) }
+    var keyVisible by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -77,6 +82,17 @@ fun AzureSettingsDialog(
                     onValueChange = { key = it },
                     label = { Text("API Key") },
                     singleLine = true,
+                    visualTransformation = if (keyVisible) VisualTransformation.None
+                        else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { keyVisible = !keyVisible }) {
+                            Icon(
+                                imageVector = if (keyVisible) Icons.Default.VisibilityOff
+                                    else Icons.Default.Visibility,
+                                contentDescription = if (keyVisible) "Hide key" else "Show key"
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -112,6 +128,7 @@ fun AzureSettingsDialog(
 fun PronunciationScreen(
     state: PronunciationState,
     onToggleRecording: () -> Unit,
+    onNext: () -> Unit,
     onSpeak: (String) -> Unit,
     onQuit: () -> Unit
 ) {
@@ -258,17 +275,37 @@ fun PronunciationScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Mic button area
+            // Mic button or Next button
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
-                MicButton(
-                    isRecording = state.isRecording,
-                    isProcessing = state.isProcessing,
-                    enabled = state.isPlaying && state.feedback == null && !state.isProcessing,
-                    onClick = onMicClick
-                )
+                if (state.awaitingNext) {
+                    Button(
+                        onClick = onNext,
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .height(56.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (state.feedback == true) CorrectGreen else AccentPurple
+                        )
+                    ) {
+                        Text(
+                            text = "NEXT",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 2.sp
+                        )
+                    }
+                } else {
+                    MicButton(
+                        isRecording = state.isRecording,
+                        isProcessing = state.isProcessing,
+                        enabled = state.isPlaying && state.feedback == null && !state.isProcessing,
+                        onClick = onMicClick
+                    )
+                }
             }
 
             // Streak display

@@ -18,6 +18,7 @@ import com.hubert.viewmodel.GapFillViewModel
 import com.hubert.viewmodel.GenderSnapViewModel
 import com.hubert.viewmodel.PronunciationViewModel
 import com.hubert.viewmodel.SpellingBeeViewModel
+import com.hubert.viewmodel.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,7 +44,7 @@ enum class Screen {
     SPELLING_BEE,
     CONJUGATION,
     PRONUNCIATION,
-    HIGH_SCORES
+    STATISTICS
 }
 
 @Composable
@@ -54,6 +55,7 @@ fun HubertApp() {
     val spellingBeeVm: SpellingBeeViewModel = hiltViewModel()
     val conjugationVm: ConjugationViewModel = hiltViewModel()
     val pronunciationVm: PronunciationViewModel = hiltViewModel()
+    val statisticsVm: StatisticsViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
@@ -61,7 +63,7 @@ fun HubertApp() {
     val spellingBeeState by spellingBeeVm.uiState.collectAsState()
     val conjugationState by conjugationVm.uiState.collectAsState()
     val pronunciationState by pronunciationVm.uiState.collectAsState()
-    val topScores by matchingVm.topScores.collectAsState()
+    val statisticsState by statisticsVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
 
@@ -103,10 +105,13 @@ fun HubertApp() {
     }
 
     when (currentScreen) {
-        Screen.HIGH_SCORES -> {
-            HighScoresScreen(
-                scores = topScores,
-                onBack = { currentScreen = Screen.MENU }
+        Screen.STATISTICS -> {
+            StatisticsScreen(
+                state = statisticsState,
+                onSelectGameType = { statisticsVm.selectGameType(it) },
+                onBack = {
+                    currentScreen = Screen.MENU
+                }
             )
         }
 
@@ -134,13 +139,15 @@ fun HubertApp() {
                 }
                 matchingState.isGameOver -> {
                     GameOverScreen(
+                        title = "TIME'S UP!",
                         score = matchingState.score,
                         isNewHighScore = matchingState.isNewHighScore,
-                        stats = listOf(
-                            Triple("Streak", "${matchingState.bestStreak}", "streak"),
-                            Triple("Matches", "${matchingState.totalMatches}", "matches"),
-                            Triple("Best", "${matchingState.highScore}", "best")
-                        ),
+                        totalCorrect = matchingState.totalMatches,
+                        totalWrong = 0,
+                        bestStreak = matchingState.bestStreak,
+                        highScore = matchingState.highScore,
+                        durationMs = matchingState.durationMs,
+                        answerHistory = matchingState.answerHistory,
                         onPlayAgain = { matchingVm.startGame() },
                         onBackToMenu = {
                             matchingVm.resetToMenu()
@@ -174,13 +181,15 @@ fun HubertApp() {
                 }
                 genderSnapState.isGameOver -> {
                     GameOverScreen(
+                        title = "TIME'S UP!",
                         score = genderSnapState.score,
                         isNewHighScore = genderSnapState.isNewHighScore,
-                        stats = listOf(
-                            Triple("Streak", "${genderSnapState.bestStreak}", "streak"),
-                            Triple("Correct", "${genderSnapState.totalCorrect}", "correct"),
-                            Triple("Wrong", "${genderSnapState.totalWrong}", "wrong")
-                        ),
+                        totalCorrect = genderSnapState.totalCorrect,
+                        totalWrong = genderSnapState.totalWrong,
+                        bestStreak = genderSnapState.bestStreak,
+                        highScore = genderSnapState.highScore,
+                        durationMs = genderSnapState.durationMs,
+                        answerHistory = genderSnapState.answerHistory,
                         onPlayAgain = { genderSnapVm.startGame() },
                         onBackToMenu = {
                             genderSnapVm.resetToMenu()
@@ -214,13 +223,15 @@ fun HubertApp() {
                 }
                 gapFillState.isGameOver -> {
                     GameOverScreen(
+                        title = "TIME'S UP!",
                         score = gapFillState.score,
                         isNewHighScore = gapFillState.isNewHighScore,
-                        stats = listOf(
-                            Triple("Streak", "${gapFillState.bestStreak}", "streak"),
-                            Triple("Correct", "${gapFillState.totalCorrect}", "correct"),
-                            Triple("Wrong", "${gapFillState.totalWrong}", "wrong")
-                        ),
+                        totalCorrect = gapFillState.totalCorrect,
+                        totalWrong = gapFillState.totalWrong,
+                        bestStreak = gapFillState.bestStreak,
+                        highScore = gapFillState.highScore,
+                        durationMs = gapFillState.durationMs,
+                        answerHistory = gapFillState.answerHistory,
                         onPlayAgain = { gapFillVm.startGame() },
                         onBackToMenu = {
                             gapFillVm.resetToMenu()
@@ -256,13 +267,15 @@ fun HubertApp() {
                 }
                 spellingBeeState.isGameOver -> {
                     GameOverScreen(
+                        title = "TIME'S UP!",
                         score = spellingBeeState.score,
                         isNewHighScore = spellingBeeState.isNewHighScore,
-                        stats = listOf(
-                            Triple("Streak", "${spellingBeeState.bestStreak}", "streak"),
-                            Triple("Correct", "${spellingBeeState.totalCorrect}", "correct"),
-                            Triple("Wrong", "${spellingBeeState.totalWrong}", "wrong")
-                        ),
+                        totalCorrect = spellingBeeState.totalCorrect,
+                        totalWrong = spellingBeeState.totalWrong,
+                        bestStreak = spellingBeeState.bestStreak,
+                        highScore = spellingBeeState.highScore,
+                        durationMs = spellingBeeState.durationMs,
+                        answerHistory = spellingBeeState.answerHistory,
                         onPlayAgain = { spellingBeeVm.startGame() },
                         onBackToMenu = {
                             spellingBeeVm.resetToMenu()
@@ -299,6 +312,7 @@ fun HubertApp() {
                     ConjugationScreen(
                         state = conjugationState,
                         onAnswer = { conjugationVm.answer(it) },
+                        onNext = { conjugationVm.nextQuestion() },
                         onSpeak = { conjugationVm.speak(it) },
                         onQuit = {
                             conjugationVm.resetToMenu()
@@ -308,13 +322,15 @@ fun HubertApp() {
                 }
                 conjugationState.isGameOver -> {
                     GameOverScreen(
+                        title = "GAME OVER",
                         score = conjugationState.score,
                         isNewHighScore = conjugationState.isNewHighScore,
-                        stats = listOf(
-                            Triple("Streak", "${conjugationState.bestStreak}", "streak"),
-                            Triple("Correct", "${conjugationState.totalCorrect}", "correct"),
-                            Triple("Wrong", "${conjugationState.totalWrong}", "wrong")
-                        ),
+                        totalCorrect = conjugationState.totalCorrect,
+                        totalWrong = conjugationState.totalWrong,
+                        bestStreak = conjugationState.bestStreak,
+                        highScore = conjugationState.highScore,
+                        durationMs = conjugationState.durationMs,
+                        answerHistory = conjugationState.answerHistory,
                         onPlayAgain = { conjugationVm.startGame() },
                         onBackToMenu = {
                             conjugationVm.resetToMenu()
@@ -331,7 +347,13 @@ fun HubertApp() {
                 AzureSettingsDialog(
                     currentKey = pronunciationState.azureKey,
                     currentRegion = pronunciationState.azureRegion,
-                    onSave = { key, region -> pronunciationVm.saveSettings(key, region) },
+                    onSave = { key, region ->
+                        pronunciationVm.saveSettings(key, region)
+                        // If no game is active, go back to menu (settings opened from gear icon)
+                        if (!pronunciationState.needsApiKey) {
+                            currentScreen = Screen.MENU
+                        }
+                    },
                     onDismiss = {
                         pronunciationVm.dismissSettings()
                         if (!pronunciationState.isPlaying && !pronunciationState.isGameOver && pronunciationState.countdown == null) {
@@ -355,6 +377,7 @@ fun HubertApp() {
                     PronunciationScreen(
                         state = pronunciationState,
                         onToggleRecording = { pronunciationVm.toggleRecording() },
+                        onNext = { pronunciationVm.nextSentence() },
                         onSpeak = { pronunciationVm.speak(it) },
                         onQuit = {
                             pronunciationVm.resetToMenu()
@@ -391,7 +414,11 @@ fun HubertApp() {
                 onStartSpellingBee = { spellingBeeVm.startGame() },
                 onStartConjugation = { conjugationVm.showTenseSelection() },
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
-                onShowHighScores = { currentScreen = Screen.HIGH_SCORES }
+                onPronunciationSettings = { pronunciationVm.showSettings() },
+                onShowStatistics = {
+                    statisticsVm.loadStatistics()
+                    currentScreen = Screen.STATISTICS
+                }
             )
         }
     }

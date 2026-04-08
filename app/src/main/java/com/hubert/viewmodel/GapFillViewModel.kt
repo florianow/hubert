@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,10 @@ data class GapFillState(
     val timeRemainingMs: Long = 0L,
     val timerFraction: Float = 1f,
 
+    // Post-game
+    val durationMs: Long = 0L,
+    val answerHistory: List<AnswerRecord> = emptyList(),
+
     // Countdown
     val countdown: Int? = null
 )
@@ -54,6 +59,7 @@ data class GapFillState(
 class GapFillViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -63,6 +69,8 @@ class GapFillViewModel @Inject constructor(
     private var timerJob: Job? = null
     private var countdownJob: Job? = null
     private var timerDeadline = 0L
+    private var gameStartTime = 0L
+    private val answerLog = mutableListOf<AnswerRecord>()
 
     // Pool of available questions (rank -> word)
     private var questionPool: MutableList<Int> = mutableListOf()
@@ -86,6 +94,7 @@ class GapFillViewModel @Inject constructor(
     fun startGame() {
         countdownJob?.cancel()
         timerJob?.cancel()
+        answerLog.clear()
 
         // Build pool of words that have sentences
         val wordsWithSentences = vocabRepository.getWordsWithSentences()
@@ -105,6 +114,7 @@ class GapFillViewModel @Inject constructor(
                 delay(800)
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
             timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
             _uiState.update {
                 it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
@@ -151,6 +161,15 @@ class GapFillViewModel @Inject constructor(
         if (!state.isPlaying || state.feedback != null) return
 
         val isCorrect = choiceIndex == state.correctIndex
+
+        answerLog.add(
+            AnswerRecord(
+                question = state.sentenceWithGap,
+                yourAnswer = state.choices[choiceIndex],
+                correctAnswer = state.choices[state.correctIndex],
+                isCorrect = isCorrect
+            )
+        )
 
         if (isCorrect) {
             val newStreak = state.streak + 1
@@ -222,6 +241,7 @@ class GapFillViewModel @Inject constructor(
     private fun endGame() {
         timerJob?.cancel()
         val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore(gameType = "gap_fill")
@@ -234,12 +254,25 @@ class GapFillViewModel @Inject constructor(
                 gameType = "gap_fill"
             )
 
+            statisticsRepository.saveSession(
+                gameType = "gap_fill",
+                score = state.score,
+                totalCorrect = state.totalCorrect,
+                totalWrong = state.totalWrong,
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
+            )
+
+            statisticsRepository.saveWordAttempts("gap_fill", answerLog)
+
             _uiState.update {
                 it.copy(
                     isPlaying = false,
                     isGameOver = true,
                     isNewHighScore = isNewHigh,
-                    highScore = maxOf(it.highScore, state.score)
+                    highScore = maxOf(it.highScore, state.score),
+                    durationMs = durationMs,
+                    answerHistory = answerLog.toList()
                 )
             }
         }
@@ -248,6 +281,7 @@ class GapFillViewModel @Inject constructor(
     fun resetToMenu() {
         timerJob?.cancel()
         countdownJob?.cancel()
+        answerLog.clear()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "gap_fill")
             _uiState.value = GapFillState(highScore = hs)

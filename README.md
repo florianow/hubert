@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 5 game modes</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 6 game modes</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -25,12 +25,17 @@
 
 Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables.
 
-Each game mode runs on a 60-second timer with time bonuses for correct answers (+2s), penalties for wrong answers (-5s), and streak multipliers for consecutive correct answers. French words are spoken aloud via Android's built-in Text-to-Speech engine.
+Two scoring systems keep things interesting:
+- **Timer-based** (Word Match, Gender Snap, Gap Fill, Spelling Bee): 60-second countdown with time bonuses for correct answers (+2s) and penalties for wrong ones (-5s).
+- **Points-based** (Conjuguez!, Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
+
+French words and sentences are spoken aloud via Android's built-in Text-to-Speech engine, and Prononcez! uses Azure Speech Services to assess your pronunciation in real time.
 
 ## Features
 
-- **5 Game Modes** — Word Match, Gender Snap, Gap Fill, Spelling Bee, Conjuguez!
+- **6 Game Modes** — Word Match, Gender Snap, Gap Fill, Spelling Bee, Conjuguez!, Prononcez!
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
+- **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services
 - **Text-to-Speech** — hear correct French pronunciation after every correct answer
 - **Streak System** — consecutive correct answers earn bonus points
 - **High Scores** — per-game-type leaderboard stored locally
@@ -38,7 +43,8 @@ Each game mode runs on a 60-second timer with time bonuses for correct answers (
 - **3076 Nouns with Gender** — masculine/feminine data for Gender Snap
 - **~2000 Example Sentences** — real French sentences with German translations for Gap Fill
 - **1182 Verbs with Conjugations** — full conjugation tables across 7 tenses for Conjuguez!
-- **Offline-first** — all data bundled as JSON assets, no network required
+- **Adaptive Difficulty** — Prononcez! adjusts sentence length based on your streak; Conjuguez! error-weights tenses you struggle with
+- **Offline-first** — all data bundled as JSON assets, no network required (except Prononcez! which uses Azure Speech Services)
 - **Material Design 3** — clean, modern UI with themed game colors
 
 ## Game Modes
@@ -76,13 +82,23 @@ Hear a French word spoken via TTS, then type it. The German translation is shown
 
 ### 5. Conjuguez!
 
-A verb conjugation challenge. When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons).
+A verb conjugation challenge. Before the game starts, you choose which tenses to practice (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif). During gameplay, tenses are picked randomly from your selection with error-weighted repetition — tenses you get wrong appear more frequently.
 
-Difficulty ramps up as you play: questions 1–4 use Présent only, 5–9 add Imparfait and Futur, and from question 10 onward Conditionnel and Subjonctif are mixed in.
+When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Tap the tense name to see a grammar info dialog with German explanations and examples.
 
-- **Scoring**: 200 pts per correct + streak bonus
-- **Timer**: 60s, +2s correct, -5s wrong
+- **Scoring**: Points-based — start with 10 pts, +3 correct + streak bonus, -5 wrong, game over at 0
 - **Pool**: 1182 verbs across 7 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif)
+
+### 6. Prononcez!
+
+Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results.
+
+Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words), medium sentences as you improve (Moyen, 7-10 words), and long sentences at high streaks (Difficile, 11+ words). After each attempt, the sentence is spoken correctly via TTS so you can hear how it should sound.
+
+- **Scoring**: Points-based — start with 10 pts, +3 correct + streak bonus, -5 wrong, game over at 0
+- **Pass threshold**: PronScore >= 95
+- **Requires**: Azure Speech Services API key (configured in-app via settings dialog)
+- **Game over stats**: Average/best/worst pronunciation scores, most mispronounced words
 
 ## Tech Stack
 
@@ -91,10 +107,14 @@ Difficulty ramps up as you play: questions 1–4 use Présent only, 5–9 add Im
 - **Architecture**: MVVM (Model-View-ViewModel)
 - **Dependency Injection**: Hilt
 - **Database**: Room (high scores)
+- **Preferences**: Jetpack DataStore (Azure API settings)
 - **JSON Parsing**: Gson
 - **Text-to-Speech**: Android TTS (French locale)
+- **Pronunciation Assessment**: Azure Speech Services REST API
+- **Audio Recording**: Android AudioRecord (16 kHz, 16-bit, mono PCM → WAV)
 - **Asynchronous**: Kotlin Coroutines & Flow
 - **Build**: Gradle (Kotlin DSL)
+- **CI/CD**: GitHub Actions (automatic APK builds on tag push)
 - **Data Pipeline**: Python (YAML parsing, HTML scraping)
 
 ## Screenshots
@@ -221,25 +241,29 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with 5 game mode cards + mascot
+│   │   ├── MenuScreen.kt           # Main menu with 6 game mode cards + mascot
 │   │   ├── GameScreen.kt           # Word Match game UI
 │   │   ├── GenderSnapScreen.kt     # le ou la? game UI
 │   │   ├── GapFillScreen.kt        # Gap Fill game UI
 │   │   ├── SpellingBeeScreen.kt    # Spelling Bee game UI
 │   │   ├── ConjugationScreen.kt    # Conjuguez! game UI
+│   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback)
 │   │   ├── GameOverScreen.kt       # Generic game over screen
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
 │   └── theme/
 │       ├── Color.kt                # FrenchBlue, GermanGold, AccentPurple, etc.
 │       └── Theme.kt                # Material 3 theme configuration
 ├── utils/
-│   └── FrenchTts.kt                # Text-to-Speech wrapper (French locale)
+│   ├── FrenchTts.kt                # Text-to-Speech wrapper (French locale)
+│   ├── AzurePronunciationApi.kt    # Azure Speech Services REST client
+│   └── AudioRecorder.kt            # PCM audio capture → WAV byte array
 ├── viewmodel/
 │   ├── GameViewModel.kt            # Word Match game logic
 │   ├── GenderSnapViewModel.kt      # Gender Snap game logic
 │   ├── GapFillViewModel.kt         # Gap Fill game logic
 │   ├── SpellingBeeViewModel.kt     # Spelling Bee game logic
-│   └── ConjugationViewModel.kt     # Conjuguez! game logic
+│   ├── ConjugationViewModel.kt     # Conjuguez! game logic
+│   └── PronunciationViewModel.kt   # Prononcez! game logic (Azure assessment, adaptive difficulty)
 ├── HubertApplication.kt            # Hilt application class
 └── MainActivity.kt                 # Entry point, screen navigation
 
@@ -261,22 +285,23 @@ app/src/main/assets/
 │                 UI Layer                     │
 │  MenuScreen · GameScreen · GenderSnapScreen │
 │  GapFillScreen · SpellingBeeScreen          │
-│  ConjugationScreen · GameOverScreen         │
-│  HighScoresScreen                           │
+│  ConjugationScreen · PronunciationScreen    │
+│  GameOverScreen · HighScoresScreen          │
 └──────────────────┬──────────────────────────┘
                    │ observes StateFlow
 ┌──────────────────▼──────────────────────────┐
 │              ViewModel Layer                 │
 │  GameViewModel · GenderSnapViewModel        │
 │  GapFillViewModel · SpellingBeeViewModel    │
-│  ConjugationViewModel                       │
-│  (timer, scoring, streak, game state)       │
+│  ConjugationViewModel · PronunciationVM     │
+│  (timer/points, scoring, streak, game state)│
 └──────────────────┬──────────────────────────┘
                    │ calls
 ┌──────────────────▼──────────────────────────┐
-│             Repository Layer                 │
+│             Repository / API Layer           │
 │  VocabRepository     HighScoreRepository    │
 │  (JSON assets)       (Room database)        │
+│  AzurePronunciationApi  AudioRecorder       │
 └──────────────────┬──────────────────────────┘
                    │ reads/writes
 ┌──────────────────▼──────────────────────────┐
@@ -284,6 +309,7 @@ app/src/main/assets/
 │  vocab.json · categories.json · sentences.json │
 │  conjugations.json                              │
 │  Room SQLite (high_scores table)            │
+│  Azure Speech Services REST API             │
 └─────────────────────────────────────────────┘
 ```
 
@@ -314,6 +340,17 @@ sdk.dir=/Users/YOUR_USERNAME/Library/Android/sdk
 ### Database errors after updating
 
 The app uses `fallbackToDestructiveMigration()` — if the database schema changes, it will be recreated automatically. High scores will be lost on schema updates during development.
+
+### Prononcez! — "Assessment failed" error
+
+- Make sure you have a working internet connection — Prononcez! requires network access to Azure Speech Services
+- Check that your Azure Speech API key and region are correctly configured (tap the settings icon on the Prononcez! screen)
+- You can get a free Azure Speech Services key at [Azure Portal](https://portal.azure.com/) (free tier: 5 hours/month)
+
+### Prononcez! — recording not working
+
+- Grant the microphone permission when prompted (Settings → Apps → Hubert → Permissions → Microphone)
+- Make sure no other app is using the microphone
 
 ## Contributing
 

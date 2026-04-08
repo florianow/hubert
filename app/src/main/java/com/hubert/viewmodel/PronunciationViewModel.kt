@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.AudioRecorder
 import com.hubert.utils.AzurePronunciationApi
@@ -110,6 +111,9 @@ data class PronunciationState(
     // Difficulty
     val difficultyLabel: String = "Facile",
 
+    // Manual advance — true when feedback is shown and player needs to tap "Next"
+    val awaitingNext: Boolean = false,
+
     // Countdown
     val countdown: Int? = null,
 
@@ -127,6 +131,7 @@ class PronunciationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -136,6 +141,7 @@ class PronunciationViewModel @Inject constructor(
     private var countdownJob: Job? = null
     private var audioRecorder: AudioRecorder? = null
     private var recordingJob: Job? = null
+    private var gameStartTime = 0L
 
     // Sentence pools by difficulty tier
     private var easyPool: MutableList<Pair<Int, SentenceEntry>> = mutableListOf()
@@ -252,6 +258,7 @@ class PronunciationViewModel @Inject constructor(
                 delay(800)
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
             showNextSentence()
         }
     }
@@ -315,6 +322,17 @@ class PronunciationViewModel @Inject constructor(
                 errorMessage = null,
                 difficultyLabel = label
             )
+        }
+    }
+
+    /**
+     * Called when the player taps "Next" after seeing feedback.
+     */
+    fun nextSentence() {
+        if (!_uiState.value.awaitingNext) return
+        _uiState.update { it.copy(awaitingNext = false) }
+        viewModelScope.launch {
+            showNextSentence()
         }
     }
 
@@ -435,11 +453,8 @@ class PronunciationViewModel @Inject constructor(
                     }
                 }
 
-                // Auto-advance after showing results
-                delay(if (isCorrect) 2000 else 3000)
-                if (_uiState.value.isPlaying) {
-                    showNextSentence()
-                }
+                // Wait for player to tap "Next" (manual advance)
+                _uiState.update { it.copy(awaitingNext = true) }
 
             } catch (e: Exception) {
                 Log.e("PronunciationVM",
@@ -458,6 +473,7 @@ class PronunciationViewModel @Inject constructor(
 
     private fun endGame() {
         val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore(gameType = "pronunciation")
@@ -468,6 +484,15 @@ class PronunciationViewModel @Inject constructor(
                 matchesCompleted = state.totalCorrect,
                 roundsCompleted = state.bestStreak,
                 gameType = "pronunciation"
+            )
+
+            statisticsRepository.saveSession(
+                gameType = "pronunciation",
+                score = state.score,
+                totalCorrect = state.totalCorrect,
+                totalWrong = state.totalWrong,
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
             )
 
             _uiState.update {
