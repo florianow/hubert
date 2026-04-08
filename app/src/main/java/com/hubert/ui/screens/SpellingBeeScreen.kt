@@ -113,16 +113,7 @@ fun SpellingBeeScreen(
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center
                     )
-                    val ipa = state.currentWord?.ipa
-                    if (ipa != null) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "/$ipa/",
-                            fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                            textAlign = TextAlign.Center
-                        )
-                    }
+
                 }
             }
 

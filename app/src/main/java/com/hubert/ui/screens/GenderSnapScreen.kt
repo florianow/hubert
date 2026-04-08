@@ -241,7 +241,7 @@ private fun GenderSnapTopBar(state: GenderSnapState, onQuit: () -> Unit) {
 
         // Title
         Text(
-            text = "le ou la ?",
+            text = "Le ou La Baguette",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground

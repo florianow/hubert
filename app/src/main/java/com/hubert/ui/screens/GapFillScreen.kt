@@ -99,13 +99,6 @@ fun GapFillScreen(
                         style = MaterialTheme.typography.labelSmall,
                         color = FrenchBlue.copy(alpha = 0.6f)
                     )
-                    if (state.targetWordIpa != null) {
-                        Text(
-                            text = "/${state.targetWordIpa}/",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = FrenchBlue.copy(alpha = 0.4f)
-                        )
-                    }
                     Spacer(modifier = Modifier.height(8.dp))
 
                     // Sentence with highlighted gap

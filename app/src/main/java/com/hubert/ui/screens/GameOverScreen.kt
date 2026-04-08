@@ -141,8 +141,8 @@ fun GameOverScreen(
                     color = FrenchBlue
                 )
 
-                // Accuracy bar
-                if (totalAttempted > 0) {
+                // Accuracy bar (hide for games that don't track wrong answers)
+                if (totalAttempted > 0 && totalWrong > 0) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -204,21 +204,23 @@ fun GameOverScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     RunStatChip(
-                        label = if (hasHistory) "Correct  >" else "Correct",
+                        label = if (hasHistory && totalCorrect > 0) "Correct  >" else "Correct",
                         value = "$totalCorrect",
                         color = CorrectGreen,
                         onClick = if (hasHistory && totalCorrect > 0) {
                             { showDetailFilter = true }
                         } else null
                     )
-                    RunStatChip(
-                        label = if (hasHistory) "Wrong  >" else "Wrong",
-                        value = "$totalWrong",
-                        color = WrongRed,
-                        onClick = if (hasHistory && totalWrong > 0) {
-                            { showDetailFilter = false }
-                        } else null
-                    )
+                    if (totalWrong > 0) {
+                        RunStatChip(
+                            label = if (hasHistory) "Wrong  >" else "Wrong",
+                            value = "$totalWrong",
+                            color = WrongRed,
+                            onClick = if (hasHistory) {
+                                { showDetailFilter = false }
+                            } else null
+                        )
+                    }
                 }
 
                 // Best Streak

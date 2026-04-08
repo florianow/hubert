@@ -129,6 +129,8 @@ fun PronunciationScreen(
     state: PronunciationState,
     onToggleRecording: () -> Unit,
     onNext: () -> Unit,
+    onRetry: () -> Unit,
+    onSkipRetry: () -> Unit,
     onSpeak: (String) -> Unit,
     onQuit: () -> Unit
 ) {
@@ -248,9 +250,35 @@ fun PronunciationScreen(
                 ResultsOverlay(
                     pronScore = state.pronScore,
                     wordScores = state.wordScores,
-                    isCorrect = state.feedback == true
+                    isCorrect = state.feedback == true,
+                    isRetryEligible = state.canRetry
                 )
+                // "Almost there" hint when retry is available
+                if (state.canRetry) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Almost! Try again \u2014 need 85+ to pass",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium,
+                        color = GermanGold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
                 Spacer(modifier = Modifier.height(12.dp))
+            }
+
+            // "Second attempt" label when retrying
+            if (state.isRetry && state.pronScore == null) {
+                Text(
+                    text = "Second attempt \u2014 need 85+",
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = GermanGold,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             // Error message
@@ -275,12 +303,13 @@ fun PronunciationScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Mic button or Next button
+            // Mic button, Next button, or Try Again/Skip buttons
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 if (state.awaitingNext) {
+                    // Definitive result — show Next button
                     Button(
                         onClick = onNext,
                         modifier = Modifier
@@ -297,6 +326,44 @@ fun PronunciationScreen(
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 2.sp
                         )
+                    }
+                } else if (state.canRetry) {
+                    // Score 80-94 on first attempt — show Try Again + Skip
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Button(
+                            onClick = onRetry,
+                            modifier = Modifier
+                                .fillMaxWidth(0.7f)
+                                .height(56.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = GermanGold
+                            )
+                        ) {
+                            Text(
+                                text = "TRY AGAIN",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 2.sp
+                            )
+                        }
+                        OutlinedButton(
+                            onClick = onSkipRetry,
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .height(40.dp),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text(
+                                text = "SKIP",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 } else {
                     MicButton(
@@ -647,14 +714,19 @@ private fun MicButton(
 private fun ResultsOverlay(
     pronScore: Double,
     wordScores: List<WordScore>,
-    isCorrect: Boolean
+    isCorrect: Boolean,
+    isRetryEligible: Boolean = false
 ) {
+    val accentColor = when {
+        isCorrect -> CorrectGreen
+        isRetryEligible -> GermanGold
+        else -> WrongRed
+    }
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isCorrect) CorrectGreen.copy(alpha = 0.08f)
-            else WrongRed.copy(alpha = 0.08f)
+            containerColor = accentColor.copy(alpha = 0.08f)
         )
     ) {
         Column(
@@ -668,7 +740,7 @@ private fun ResultsOverlay(
                 text = "${pronScore.toInt()}",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Black,
-                color = if (isCorrect) CorrectGreen else WrongRed
+                color = accentColor
             )
             Text(
                 text = "PronScore",
