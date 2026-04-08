@@ -36,6 +36,7 @@ import com.hubert.viewmodel.TenseInfo
 fun ConjugationScreen(
     state: ConjugationState,
     onAnswer: (Int) -> Unit,
+    onNext: () -> Unit,
     onSpeak: (String) -> Unit,
     onQuit: () -> Unit
 ) {
@@ -116,11 +117,14 @@ fun ConjugationScreen(
                     onSpeak = { onSpeak(state.infinitive) }
                 )
             } else {
-                // Drill view: infinitive + pronoun
+                // Drill view: plain, auxiliary, or verb-form
                 DrillQuestionCard(
                     infinitive = state.infinitive,
                     german = state.german,
                     personLabel = state.personLabel,
+                    pcQuestionType = state.pcQuestionType,
+                    participleShown = state.participleShown,
+                    auxiliaryHint = state.auxiliaryHint,
                     onSpeak = { onSpeak(state.infinitive) }
                 )
             }
@@ -199,15 +203,33 @@ fun ConjugationScreen(
                 }
             }
 
-            // Streak display
+            // Streak display + Next button
             Spacer(modifier = Modifier.height(8.dp))
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(28.dp),
+                    .height(52.dp),
                 contentAlignment = Alignment.Center
             ) {
-                if (state.streak >= 2) {
+                if (state.awaitingNext) {
+                    Button(
+                        onClick = onNext,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(48.dp),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (state.feedback == true) CorrectGreen else AccentPurple
+                        )
+                    ) {
+                        Text(
+                            text = "NEXT",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 2.sp
+                        )
+                    }
+                } else if (state.streak >= 2) {
                     Text(
                         text = "Streak x${state.streak}",
                         color = GermanGold,
@@ -427,6 +449,9 @@ private fun DrillQuestionCard(
     infinitive: String,
     german: String,
     personLabel: String,
+    pcQuestionType: String? = null,
+    participleShown: String? = null,
+    auxiliaryHint: String? = null,
     onSpeak: () -> Unit
 ) {
     Card(
@@ -477,14 +502,48 @@ private fun DrillQuestionCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Subject pronoun with arrow
-            Text(
-                text = "$personLabel \u2192 ?",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = AccentPurple,
-                textAlign = TextAlign.Center
-            )
+            // Prompt line — depends on question type
+            when (pcQuestionType) {
+                "auxiliary" -> {
+                    // Auxiliary question: "je ___ mangé?"
+                    // Player must pick the correct avoir/être form
+                    Text(
+                        text = "$personLabel ___ $participleShown ?",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentPurple,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "avoir ou être ?",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        textAlign = TextAlign.Center
+                    )
+                }
+                "verb_form" -> {
+                    // Verb form question: "j'ai ___?"
+                    // Player must pick the correct participle (vs other tense forms)
+                    Text(
+                        text = "$auxiliaryHint ___ ?",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentPurple,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                else -> {
+                    // Other tenses: "je → ?"
+                    Text(
+                        text = "$personLabel \u2192 ?",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = AccentPurple,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
     }
 }
@@ -581,7 +640,7 @@ fun TenseSelectionScreen(
 ) {
     // Ordered list of tenses for consistent display
     val tenseOrder = listOf(
-        "present", "imparfait", "futur", "conditionnel",
+        "present", "passe_compose", "imparfait", "futur", "conditionnel",
         "subjonctif", "passe_simple", "imperatif"
     )
 

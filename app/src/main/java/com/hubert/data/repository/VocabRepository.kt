@@ -168,6 +168,32 @@ class VocabRepository @Inject constructor(
     }
 
     // ---------------------------------------------------------------
+    // Pronunciation game: sentences grouped by difficulty
+    // ---------------------------------------------------------------
+
+    /**
+     * Get all sentences as a flat list of (rank, SentenceEntry) pairs.
+     */
+    fun getAllSentencesFlat(): List<Pair<Int, SentenceEntry>> {
+        return getSentences().flatMap { (rankStr, entries) ->
+            val rank = rankStr.toIntOrNull() ?: return@flatMap emptyList()
+            entries.map { rank to it }
+        }
+    }
+
+    /**
+     * Get sentences filtered by word count.
+     * @param minWords minimum word count (inclusive)
+     * @param maxWords maximum word count (inclusive)
+     */
+    fun getSentencesByWordCount(minWords: Int, maxWords: Int): List<Pair<Int, SentenceEntry>> {
+        return getAllSentencesFlat().filter { (_, entry) ->
+            val wordCount = entry.fr.split("\\s+".toRegex()).size
+            wordCount in minWords..maxWords
+        }
+    }
+
+    // ---------------------------------------------------------------
     // Conjugations (for Conjuguez! game)
     // ---------------------------------------------------------------
 

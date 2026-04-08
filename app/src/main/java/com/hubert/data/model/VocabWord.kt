@@ -32,7 +32,8 @@ data class ConjugationVerb(
     val infinitive: String,
     val german: String,
     val tenses: Map<String, List<String>>,  // tense name -> [6 person forms]
-    val sentences: Map<String, Map<String, SentenceMatch>>? = null  // tense -> person_idx -> sentence
+    val sentences: Map<String, Map<String, SentenceMatch>>? = null,  // tense -> person_idx -> sentence
+    val auxiliary: String? = null  // "avoir" or "etre" — used for passé composé display
 )
 
 /**

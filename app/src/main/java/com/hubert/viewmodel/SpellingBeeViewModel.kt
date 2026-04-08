@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +45,10 @@ data class SpellingBeeState(
     val timeRemainingMs: Long = 0L,
     val timerFraction: Float = 1f,
 
+    // Post-game
+    val durationMs: Long = 0L,
+    val answerHistory: List<AnswerRecord> = emptyList(),
+
     // Countdown
     val countdown: Int? = null
 )
@@ -52,6 +57,7 @@ data class SpellingBeeState(
 class SpellingBeeViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -62,6 +68,8 @@ class SpellingBeeViewModel @Inject constructor(
     private var countdownJob: Job? = null
     private var timerDeadline = 0L
     private var wordPool: MutableList<VocabWord> = mutableListOf()
+    private var gameStartTime = 0L
+    private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
         const val GAME_TIME_MS = 60_000L
@@ -81,6 +89,7 @@ class SpellingBeeViewModel @Inject constructor(
     fun startGame() {
         countdownJob?.cancel()
         timerJob?.cancel()
+        answerLog.clear()
 
         // Use all words, shuffled
         wordPool = vocabRepository.getAllWords().shuffled().toMutableList()
@@ -99,6 +108,7 @@ class SpellingBeeViewModel @Inject constructor(
                 delay(800)
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
             timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
             _uiState.update {
                 it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
@@ -145,6 +155,15 @@ class SpellingBeeViewModel @Inject constructor(
         val word = state.currentWord ?: return
 
         val isCorrect = normalize(state.typedText) == normalize(word.french)
+
+        answerLog.add(
+            AnswerRecord(
+                question = "${word.german} →",
+                yourAnswer = state.typedText.trim(),
+                correctAnswer = word.french,
+                isCorrect = isCorrect
+            )
+        )
 
         if (isCorrect) {
             val newStreak = state.streak + 1
@@ -225,6 +244,7 @@ class SpellingBeeViewModel @Inject constructor(
     private fun endGame() {
         timerJob?.cancel()
         val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore(gameType = "spelling_bee")
@@ -237,12 +257,25 @@ class SpellingBeeViewModel @Inject constructor(
                 gameType = "spelling_bee"
             )
 
+            statisticsRepository.saveSession(
+                gameType = "spelling_bee",
+                score = state.score,
+                totalCorrect = state.totalCorrect,
+                totalWrong = state.totalWrong,
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
+            )
+
+            statisticsRepository.saveWordAttempts("spelling_bee", answerLog)
+
             _uiState.update {
                 it.copy(
                     isPlaying = false,
                     isGameOver = true,
                     isNewHighScore = isNewHigh,
-                    highScore = maxOf(it.highScore, state.score)
+                    highScore = maxOf(it.highScore, state.score),
+                    durationMs = durationMs,
+                    answerHistory = answerLog.toList()
                 )
             }
         }
@@ -251,6 +284,7 @@ class SpellingBeeViewModel @Inject constructor(
     fun resetToMenu() {
         timerJob?.cancel()
         countdownJob?.cancel()
+        answerLog.clear()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "spelling_bee")
             _uiState.value = SpellingBeeState(highScore = hs)

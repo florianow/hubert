@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,6 +53,10 @@ data class GameUiState(
     val totalTimeMs: Long = 0L,
     val timerFraction: Float = 1f,
 
+    // Post-game
+    val durationMs: Long = 0L,
+    val answerHistory: List<AnswerRecord> = emptyList(),
+
     // Countdown before game starts
     val countdown: Int? = null
 )
@@ -65,6 +70,7 @@ data class WordItem(
 class GameViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -81,6 +87,10 @@ class GameViewModel @Inject constructor(
     private var nextPairId = 0
     // Deadline timestamp for the timer (allows easy penalty subtraction)
     private var timerDeadline = 0L
+    // Track wall-clock start time for statistics
+    private var gameStartTime = 0L
+    // Track per-question answers for post-game review
+    private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
         const val SLOTS = 4
@@ -102,6 +112,7 @@ class GameViewModel @Inject constructor(
         countdownJob?.cancel()
         timerJob?.cancel()
         nextPairId = 0
+        answerLog.clear()
 
         _uiState.update {
             GameUiState(
@@ -118,6 +129,7 @@ class GameViewModel @Inject constructor(
                 delay(800)
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
             initBoard()
         }
     }
@@ -221,6 +233,19 @@ class GameViewModel @Inject constructor(
 
         val isCorrect = frenchItem.pairId == germanItem.pairId
 
+        // Find the actual correct German word for this French word
+        val correctGerman = if (isCorrect) germanItem.text
+            else state.germanWords.firstOrNull { it.pairId == frenchItem.pairId }?.text ?: "?"
+
+        answerLog.add(
+            AnswerRecord(
+                question = frenchItem.text,
+                yourAnswer = germanItem.text,
+                correctAnswer = correctGerman,
+                isCorrect = isCorrect
+            )
+        )
+
         if (isCorrect) {
             val newStreak = state.streak + 1
             val streakBonus = (newStreak - 1) * STREAK_BONUS
@@ -318,6 +343,7 @@ class GameViewModel @Inject constructor(
     private fun endGame() {
         timerJob?.cancel()
         val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore()
@@ -329,12 +355,25 @@ class GameViewModel @Inject constructor(
                 roundsCompleted = state.bestStreak
             )
 
+            statisticsRepository.saveSession(
+                gameType = "matching",
+                score = state.score,
+                totalCorrect = state.totalMatches,
+                totalWrong = 0,  // matching game doesn't track wrong separately, uses time penalty
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
+            )
+
+            statisticsRepository.saveWordAttempts("matching", answerLog)
+
             _uiState.update {
                 it.copy(
                     isPlaying = false,
                     isGameOver = true,
                     isNewHighScore = isNewHigh,
-                    highScore = maxOf(it.highScore, state.score)
+                    highScore = maxOf(it.highScore, state.score),
+                    durationMs = durationMs,
+                    answerHistory = answerLog.toList()
                 )
             }
         }
@@ -343,6 +382,7 @@ class GameViewModel @Inject constructor(
     fun resetToMenu() {
         timerJob?.cancel()
         countdownJob?.cancel()
+        answerLog.clear()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
             _uiState.value = GameUiState(highScore = hs)

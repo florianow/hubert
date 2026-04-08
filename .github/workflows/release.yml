@@ -83,6 +83,7 @@ jobs:
           - **Gap Fill** — Complete French sentences with the missing word
           - **Spelling Bee** — Hear a French word, type it correctly
           - **Conjuguez!** — Pick the correct verb conjugation
+          - **Prononcez!** — Read French sentences aloud, scored by Azure Speech Services
 
           ### Compatibility
           - All Android devices running Android 8.0 (API 26) or higher
