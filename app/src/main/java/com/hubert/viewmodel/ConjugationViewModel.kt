@@ -26,7 +26,9 @@ data class TenseInfo(
 data class TenseSection(
     val title: String,
     val description: String? = null,
-    val examples: List<Pair<String, String>> = emptyList()
+    val examples: List<Pair<String, String>> = emptyList(),
+    /** Optional conjugation table: first row = header, remaining rows = data. */
+    val table: List<List<String>>? = null
 )
 
 /**
@@ -151,6 +153,19 @@ class ConjugationViewModel @Inject constructor(
             "present" to TenseInfo(
                 description = "Das présent (Präsens) beschreibt gegenwärtige Ereignisse und Handlungen, die zum Sprechzeitpunkt stattfinden, sowie Gewohnheiten und allgemeine Tatsachen.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Stamm + Endungen. -er: -e, -es, -e, -ons, -ez, -ent. -ir (2. Gr.): -is, -is, -it, -issons, -issez, -issent. -re: -s, -s, \u2205, -ons, -ez, -ent.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "aller"),
+                            listOf("je", "parle", "finis", "vends", "vais"),
+                            listOf("tu", "parles", "finis", "vends", "vas"),
+                            listOf("il/elle", "parle", "finit", "vend", "va"),
+                            listOf("nous", "parlons", "finissons", "vendons", "allons"),
+                            listOf("vous", "parlez", "finissez", "vendez", "allez"),
+                            listOf("ils/elles", "parlent", "finissent", "vendent", "vont")
+                        )
+                    ),
                     TenseSection("Gegenwärtiges Ereignis", examples = listOf(
                         "Sophie et Lucas préparent le dîner." to "Sophie und Lucas bereiten das Abendessen zu."
                     )),
@@ -176,10 +191,21 @@ class ConjugationViewModel @Inject constructor(
             "passe_compose" to TenseInfo(
                 description = "Das passé composé ist die wichtigste Vergangenheitsform im Französischen. Es beschreibt abgeschlossene Handlungen und wird mit einem Hilfsverb (avoir oder être) + Partizip gebildet.",
                 sections = listOf(
-                    TenseSection("Bildung", description = "Hilfsverb (avoir/être) im Präsens + Partizip Perfekt (participe passé). Die meisten Verben bilden das PC mit avoir. Verben der Bewegung/Zustandsänderung und alle reflexiven Verben verwenden être.", examples = listOf(
-                        "J'ai mangé une pomme." to "Ich habe einen Apfel gegessen.",
-                        "Elle est allée au cinéma." to "Sie ist ins Kino gegangen."
-                    )),
+                    TenseSection(
+                        "Bildung",
+                        description = "Hilfsverb (avoir/être) im Präsens + Partizip Perfekt. Partizip: -er \u2192 -é, -ir \u2192 -i, -re \u2192 -u. Bei être richtet sich das Partizip nach dem Subjekt.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "aller"),
+                            listOf("Partizip", "parlé", "fini", "vendu", "allé"),
+                            listOf("Hilfsverb", "avoir", "avoir", "avoir", "être"),
+                            listOf("je", "j'ai parlé", "j'ai fini", "j'ai vendu", "je suis allé(e)"),
+                            listOf("tu", "tu as parlé", "tu as fini", "tu as vendu", "tu es allé(e)"),
+                            listOf("il/elle", "il a parlé", "il a fini", "il a vendu", "il est allé"),
+                            listOf("nous", "avons parlé", "avons fini", "avons vendu", "sommes allé(e)s"),
+                            listOf("vous", "avez parlé", "avez fini", "avez vendu", "êtes allé(e)(s)"),
+                            listOf("ils/elles", "ont parlé", "ont fini", "ont vendu", "sont allés")
+                        )
+                    ),
                     TenseSection("Abgeschlossene Handlungen", examples = listOf(
                         "Nous avons visité le musée hier." to "Wir haben gestern das Museum besucht.",
                         "Il a plu toute la journée." to "Es hat den ganzen Tag geregnet."
@@ -204,6 +230,19 @@ class ConjugationViewModel @Inject constructor(
             "imparfait" to TenseInfo(
                 description = "Das imparfait ist eine einfache Vergangenheitsform. Es beschreibt Hintergründe, Situationen und Handlungen, die zeitlich nicht genau begrenzt sind.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Stamm der nous-Form im Präsens + Endungen: -ais, -ais, -ait, -ions, -iez, -aient. Einzige Ausnahme: être \u2192 ét-.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "être"),
+                            listOf("je", "parlais", "finissais", "vendais", "étais"),
+                            listOf("tu", "parlais", "finissais", "vendais", "étais"),
+                            listOf("il/elle", "parlait", "finissait", "vendait", "était"),
+                            listOf("nous", "parlions", "finissions", "vendions", "étions"),
+                            listOf("vous", "parliez", "finissiez", "vendiez", "étiez"),
+                            listOf("ils/elles", "parlaient", "finissaient", "vendaient", "étaient")
+                        )
+                    ),
                     TenseSection("Laufende Handlungen und andauernde Zustände", examples = listOf(
                         "Les enfants jouaient dans le parc." to "Die Kinder spielten im Park.",
                         "Sophie semblait fatiguée et avait l'air préoccupée." to "Sophie schien müde und wirkte besorgt."
@@ -227,6 +266,19 @@ class ConjugationViewModel @Inject constructor(
             "futur" to TenseInfo(
                 description = "Das futur simple (Futur I) wird für zukünftige Handlungen verwendet. Im Deutschen wird oft dafür das Präsens benutzt.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Infinitiv + Endungen von avoir: -ai, -as, -a, -ons, -ez, -ont. Bei -re fällt das -e weg. Unregelmäßige Verben haben Sonderstämme.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "avoir"),
+                            listOf("je", "parlerai", "finirai", "vendrai", "aurai"),
+                            listOf("tu", "parleras", "finiras", "vendras", "auras"),
+                            listOf("il/elle", "parlera", "finira", "vendra", "aura"),
+                            listOf("nous", "parlerons", "finirons", "vendrons", "aurons"),
+                            listOf("vous", "parlerez", "finirez", "vendrez", "aurez"),
+                            listOf("ils/elles", "parleront", "finiront", "vendront", "auront")
+                        )
+                    ),
                     TenseSection("Zukünftige Handlungen", examples = listOf(
                         "Nous arriverons à la gare vers midi." to "Wir kommen gegen Mittag am Bahnhof an."
                     )),
@@ -250,6 +302,19 @@ class ConjugationViewModel @Inject constructor(
             "conditionnel" to TenseInfo(
                 description = "Das conditionnel ist sowohl Modus als auch Zeitform. Als Modus zeigt es an, dass eine Handlung möglicherweise stattfinden wird. Als Zeitform drückt es die Zukunft aus Sicht der Vergangenheit aus.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Gleicher Stamm wie futur simple + Endungen des imparfait: -ais, -ais, -ait, -ions, -iez, -aient.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "faire"),
+                            listOf("je", "parlerais", "finirais", "vendrais", "ferais"),
+                            listOf("tu", "parlerais", "finirais", "vendrais", "ferais"),
+                            listOf("il/elle", "parlerait", "finirait", "vendrait", "ferait"),
+                            listOf("nous", "parlerions", "finirions", "vendrions", "ferions"),
+                            listOf("vous", "parleriez", "finiriez", "vendriez", "feriez"),
+                            listOf("ils/elles", "parleraient", "finiraient", "vendraient", "feraient")
+                        )
+                    ),
                     TenseSection("Nicht erfüllte Bedingung", description = "In Bedingungssätzen mit si + imparfait.", examples = listOf(
                         "Si Thomas avait plus de temps, il apprendrait le japonais." to "Wenn Thomas mehr Zeit hätte, würde er Japanisch lernen."
                     )),
@@ -276,8 +341,21 @@ class ConjugationViewModel @Inject constructor(
             ),
 
             "subjonctif" to TenseInfo(
-                description = "Der subjonctif wird für subjektive Aussagen und Willensäußerungen verwendet, während der Indikativ Tatsachen beschreibt. Er steht meist in Nebensätzen mit „que“.",
+                description = "Der subjonctif wird f\u00FCr subjektive Aussagen und Willens\u00E4u\u00DFerungen verwendet, w\u00E4hrend der Indikativ Tatsachen beschreibt. Er steht meist in Nebens\u00E4tzen mit \u201Eque\u201C.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Stamm der ils-Form im Präsens + Endungen: -e, -es, -e, -ions, -iez, -ent. Nous/vous verwenden oft den imparfait-Stamm.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "pouvoir"),
+                            listOf("je", "parle", "finisse", "vende", "puisse"),
+                            listOf("tu", "parles", "finisses", "vendes", "puisses"),
+                            listOf("il/elle", "parle", "finisse", "vende", "puisse"),
+                            listOf("nous", "parlions", "finissions", "vendions", "puissions"),
+                            listOf("vous", "parliez", "finissiez", "vendiez", "puissiez"),
+                            listOf("ils/elles", "parlent", "finissent", "vendent", "puissent")
+                        )
+                    ),
                     TenseSection("Wille und Wunsch", description = "Nach vouloir, souhaiter, aimer, désirer, exiger …", examples = listOf(
                         "Paul aimerait bien qu'elle le conduise à l'aéroport." to "Paul möchte gern, dass sie ihn zum Flughafen fährt."
                     )),
@@ -321,6 +399,19 @@ class ConjugationViewModel @Inject constructor(
             "passe_simple" to TenseInfo(
                 description = "Das passé simple ist eine einfache Vergangenheitsform, die hauptsächlich in der Schriftsprache verwendet wird (Romane, Geschichtsbücher). In der gesprochenen Sprache wird stattdessen das passé composé verwendet.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Eigene Endungen je nach Gruppe. -er: -ai, -as, -a, -âmes, -âtes, -èrent. -ir/-re: -is, -is, -it, -îmes, -îtes, -irent. Viele unregelmäßige Verben nutzen -us-Endungen.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "avoir"),
+                            listOf("je", "parlai", "finis", "vendis", "eus"),
+                            listOf("tu", "parlas", "finis", "vendis", "eus"),
+                            listOf("il/elle", "parla", "finit", "vendit", "eut"),
+                            listOf("nous", "parlâmes", "finîmes", "vendîmes", "eûmes"),
+                            listOf("vous", "parlâtes", "finîtes", "vendîtes", "eûtes"),
+                            listOf("ils/elles", "parlèrent", "finirent", "vendirent", "eurent")
+                        )
+                    ),
                     TenseSection("Abgeschlossene Einzelereignisse", examples = listOf(
                         "Guy de Maupassant mourut en 1893." to "Guy de Maupassant starb 1893."
                     )),
@@ -339,6 +430,16 @@ class ConjugationViewModel @Inject constructor(
             "imperatif" to TenseInfo(
                 description = "Der impératif (Imperativ) drückt direkte Aufforderungen, Wünsche, Befehle, Bitten, Empfehlungen, Verbote und Ratschläge aus. Im Französischen gibt es ihn nur für tu, nous und vous.",
                 sections = listOf(
+                    TenseSection(
+                        "Bildung",
+                        description = "Wie Präsens, aber ohne Subjektpronomen. Bei -er-Verben fällt das -s der tu-Form weg. Nur 3 Formen: tu, nous, vous.",
+                        table = listOf(
+                            listOf("", "-er", "-ir", "-re", "être"),
+                            listOf("tu", "parle", "finis", "vends", "sois"),
+                            listOf("nous", "parlons", "finissons", "vendons", "soyons"),
+                            listOf("vous", "parlez", "finissez", "vendez", "soyez")
+                        )
+                    ),
                     TenseSection("Wunsch und Ratschlag", examples = listOf(
                         "Profite bien de tes vacances." to "Genieße deinen Urlaub!"
                     )),

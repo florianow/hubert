@@ -922,6 +922,71 @@ private fun TenseInfoDialog(
                             lineHeight = 18.sp
                         )
                     }
+
+                    // Optional conjugation table
+                    if (section.table != null && section.table.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        val headerRow = section.table.first()
+                        val dataRows = section.table.drop(1)
+                        val columnCount = headerRow.size
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                        ) {
+                            // Header row
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(AccentPurple.copy(alpha = 0.12f))
+                            ) {
+                                headerRow.forEachIndexed { colIdx, cell ->
+                                    Text(
+                                        text = cell,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = AccentPurple,
+                                        textAlign = if (colIdx == 0) TextAlign.Start else TextAlign.Center,
+                                        modifier = Modifier
+                                            .weight(if (colIdx == 0) 1.2f else 1f)
+                                            .padding(horizontal = 4.dp, vertical = 6.dp)
+                                    )
+                                }
+                            }
+
+                            // Data rows
+                            dataRows.forEachIndexed { rowIdx, row ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            if (rowIdx % 2 == 0) Color.Transparent
+                                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.04f)
+                                        )
+                                ) {
+                                    row.forEachIndexed { colIdx, cell ->
+                                        Text(
+                                            text = cell,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontWeight = if (colIdx == 0) FontWeight.Medium else FontWeight.Normal,
+                                            color = if (colIdx == 0) MaterialTheme.colorScheme.onSurface
+                                                    else FrenchBlue,
+                                            textAlign = if (colIdx == 0) TextAlign.Start else TextAlign.Center,
+                                            modifier = Modifier
+                                                .weight(if (colIdx == 0) 1.2f else 1f)
+                                                .padding(horizontal = 4.dp, vertical = 4.dp)
+                                        )
+                                    }
+                                    // Pad missing cells if row is shorter than header
+                                    repeat(columnCount - row.size) {
+                                        Spacer(modifier = Modifier.weight(1f))
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
