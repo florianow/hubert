@@ -14,7 +14,7 @@
   <p>
     <img src="https://img.shields.io/badge/Android-8.0%2B-green?logo=android" alt="Android 8.0+">
     <img src="https://img.shields.io/badge/Kotlin-1.9-blue?logo=kotlin" alt="Kotlin">
-    <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT License">
+    <img src="https://img.shields.io/badge/License-GPLv3-blue" alt="GPL v3 License">
     <img src="https://github.com/florianow/hubert/workflows/Android%20CI/badge.svg" alt="CI Status">
   </p>
 </div>
@@ -393,7 +393,7 @@ Contributions are welcome!
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
