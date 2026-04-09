@@ -125,7 +125,33 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 
 ## Screenshots
 
-> Screenshots coming soon! Install the app to see it in action.
+<table>
+  <tr>
+    <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Main Menu</b></td>
+    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 6 Game Modes</b></td>
+    <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Word Match</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/03-word-match-correct.png" width="240"><br><b>Word Match — Correct</b></td>
+    <td align="center"><img src="screenshots/04-le-ou-la-baguette.png" width="240"><br><b>Le ou La Baguette</b></td>
+    <td align="center"><img src="screenshots/05-gap-fill.png" width="240"><br><b>Gap Fill</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/14-conjuguez-tenses.png" width="240"><br><b>Conjuguez! — Tense Selection</b></td>
+    <td align="center"><img src="screenshots/15-conjuguez-gameplay.png" width="240"><br><b>Conjuguez! — Gameplay</b></td>
+    <td align="center"><img src="screenshots/09-prononcez-ready.png" width="240"><br><b>Prononcez! — Ready</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/10-prononcez-recording.png" width="240"><br><b>Prononcez! — Recording</b></td>
+    <td align="center"><img src="screenshots/11-prononcez-correct.png" width="240"><br><b>Prononcez! — Correct (100)</b></td>
+    <td align="center"><img src="screenshots/08-prononcez-wrong.png" width="240"><br><b>Prononcez! — Wrong (65)</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/12-prononcez-retry.png" width="240"><br><b>Prononcez! — Second Chance</b></td>
+    <td align="center"><img src="screenshots/07-statistics-detail.png" width="240"><br><b>Statistics & Score Trend</b></td>
+    <td align="center"><img src="screenshots/06-statistics-achievements.png" width="240"><br><b>Achievements</b></td>
+  </tr>
+</table>
 
 ## Getting Started
 
