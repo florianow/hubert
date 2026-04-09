@@ -94,7 +94,7 @@ When a matching example sentence exists in the dataset, you see a French sentenc
 
 ### 6. Prononcez!
 
-Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results. After each attempt, the sentence is spoken correctly via TTS so you can hear how it should sound. Tap "Next" to advance manually.
+Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results. After each attempt, you can compare your pronunciation to the correct one — tap "Correct" to hear the sentence via TTS, or "Yours" to play back your own recording. Tap "Next" to advance manually.
 
 Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words), medium sentences as you improve (Moyen, 7-10 words), and long sentences at high streaks (Difficile, 11+ words).
 
@@ -241,7 +241,7 @@ This reads the local Anki database (requires the "Französisch 5000" deck import
 
 | File | Contents | Size |
 |------|----------|------|
-| `app/src/main/assets/conjugations.json` | 1182 verbs with conjugation forms across 7 tenses + matched example sentences | ~2 MB |
+| `app/src/main/assets/conjugations.json` | 1182 verbs with conjugation forms across 8 tenses + matched example sentences | ~2 MB |
 
 ### Data Fields
 
