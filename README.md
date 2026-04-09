@@ -320,40 +320,16 @@ app/src/main/assets/
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────┐
-│                 UI Layer                     │
-│  MenuScreen · GameScreen · GenderSnapScreen │
-│  GapFillScreen · SpellingBeeScreen          │
-│  ConjugationScreen · PronunciationScreen    │
-│  GameOverScreen · StatisticsScreen          │
-└──────────────────┬──────────────────────────┘
-                   │ observes StateFlow
-┌──────────────────▼──────────────────────────┐
-│              ViewModel Layer                 │
-│  GameViewModel · GenderSnapViewModel        │
-│  GapFillViewModel · SpellingBeeViewModel    │
-│  ConjugationViewModel · PronunciationVM     │
-│  StatisticsViewModel                        │
-│  (timer/points, scoring, streak, game state)│
-└──────────────────┬──────────────────────────┘
-                   │ calls
-┌──────────────────▼──────────────────────────┐
-│             Repository / API Layer           │
-│  VocabRepository     HighScoreRepository    │
-│  StatisticsRepository                       │
-│  (JSON assets)       (Room database)        │
-│  AzurePronunciationApi  AudioRecorder       │
-└──────────────────┬──────────────────────────┘
-                   │ reads/writes
-┌──────────────────▼──────────────────────────┐
-│              Data Layer                      │
-│  vocab.json · categories.json · sentences.json │
-│  conjugations.json                              │
-│  Room SQLite (high_scores, game_sessions,   │
-│              word_attempts tables)           │
-│  Azure Speech Services REST API             │
-└─────────────────────────────────────────────┘
+```mermaid
+graph TD
+    UI["<b>UI Layer</b><br/>MenuScreen · GameScreen · GenderSnapScreen<br/>GapFillScreen · SpellingBeeScreen<br/>ConjugationScreen · PronunciationScreen<br/>GameOverScreen · StatisticsScreen"]
+    VM["<b>ViewModel Layer</b><br/>GameViewModel · GenderSnapViewModel<br/>GapFillViewModel · SpellingBeeViewModel<br/>ConjugationViewModel · PronunciationViewModel<br/>StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
+    REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · AudioRecorder"]
+    DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API"]
+
+    UI -- "observes StateFlow" --> VM
+    VM -- "calls" --> REPO
+    REPO -- "reads / writes" --> DATA
 ```
 
 **Data flow:** User taps answer → UI calls ViewModel → ViewModel checks answer, updates score/timer/streak → StateFlow emits new state → Compose redraws UI.
