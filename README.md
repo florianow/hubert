@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 6 game modes</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 6 game modes + smart practice picker</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -26,40 +26,46 @@
 Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables across 8 tenses.
 
 Two scoring systems keep things interesting:
-- **Timer-based** (Word Match, Le ou La Baguette, Gap Fill, Spelling Bee): 60-second countdown with time bonuses for correct answers (+2s) and penalties for wrong ones (-5s).
-- **Points-based** (Conjuguez!, Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
+- **Timer-based** (Trouvez!, Classez!, Compl\u00E9tez!, \u00C9crivez!, Conjuguez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
+- **Points-based** (Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake \u2014 game over when you hit 0.
 
 French words and sentences are spoken aloud via Android's built-in Text-to-Speech engine, and Prononcez! uses Azure Speech Services to assess your pronunciation in real time.
 
 ## Features
 
-- **6 Game Modes** — Word Match, Le ou La Baguette, Gap Fill, Spelling Bee, Conjuguez!, Prononcez!
+- **6 Game Modes** — Trouvez!, Classez!, Compl\u00E9tez!, \u00C9crivez!, Conjuguez!, Prononcez!
+- **Hubert choisit!** — Smart practice picker that launches the game mode you've played the least, encouraging balanced practice
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
-- **IPA Phonetic Transcription** — shown alongside French words in Word Match, Le ou La Baguette, and Conjuguez!
+- **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
 - **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services, with second-chance retry
 - **Text-to-Speech** — hear correct French pronunciation after every correct answer
 - **Streak System** — consecutive correct answers earn bonus points
 - **High Scores** — per-game-type leaderboard stored locally
 - **Statistics & Word Tracking** — per-word attempt tracking, "Words I Struggle With" section, achievements
 - **28 Thematic Categories** — Tiere, Farben, Essen und Trinken, Familie, and more
-- **3076 Nouns with Gender** — masculine/feminine data for Le ou La Baguette
-- **~2000 Example Sentences** — real French sentences with German translations for Gap Fill
+- **3076 Nouns with Gender** — masculine/feminine data for Classez!
+- **~2000 Example Sentences** — real French sentences with German translations for Compl\u00E9tez!
 - **1182 Verbs with Conjugations** — full conjugation tables across 8 tenses for Conjuguez!
 - **Adaptive Difficulty** — Prononcez! adjusts sentence length based on your streak; Conjuguez! error-weights tenses you struggle with
+- **Tense Info with Limits** — Conjuguez! shows grammar info dialogs with conjugation tables; limited to 3 views per tense per round with timer pause
 - **Manual Advance** — Conjuguez! and Prononcez! wait for you to tap "Next" instead of auto-advancing
 - **Offline-first** — all data bundled as JSON assets, no network required (except Prononcez! which uses Azure Speech Services)
 - **Material Design 3** — clean, modern UI with themed game colors
 
 ## Game Modes
 
-### 1. Word Match
+### Hubert choisit!
+
+A smart practice picker — tap to let Hubert choose which game you should play next. Hubert queries your total play time per game mode and launches the one you've practiced the least, encouraging balanced learning across all modes. A toast shows which game was selected.
+
+### 1. Trouvez!
 
 Match French words on the left with their German translations on the right. Four pairs are shown at a time — tap a French word, then tap its German match. Matched pairs are replaced immediately so the game flows continuously. IPA phonetic transcription is shown on each French card.
 
 - **Scoring**: 100 pts per match + streak bonus
 - **Timer**: 60s, +2s correct, -5s wrong
 
-### 2. Le ou La Baguette
+### 2. Classez!
 
 A French noun appears on screen with its IPA transcription — tap whether it takes the masculine article (**le**) or the feminine article (**la**). Only pure nouns are included (no verbs, pronouns, or adjectives that happen to have a grammatical gender).
 
@@ -67,7 +73,7 @@ A French noun appears on screen with its IPA transcription — tap whether it ta
 - **Timer**: 60s, +2s correct, -5s wrong
 - **Pool**: ~2100 nouns with known gender
 
-### 3. Gap Fill
+### 3. Compl\u00E9tez!
 
 A French sentence is shown with one word blanked out. The German translation is displayed as a hint. Pick the correct word from 4 choices — distractors are drawn from the same thematic category as the answer (e.g., if the answer is "chat", other options come from the "Tiere" category).
 
@@ -75,9 +81,9 @@ A French sentence is shown with one word blanked out. The German translation is 
 - **Timer**: 60s, +2s correct, -5s wrong
 - **Pool**: ~2000 words with example sentences
 
-### 4. Spelling Bee
+### 4. \u00C9crivez!
 
-Hear a French word spoken via TTS, then type it. The German translation is shown as a hint. Accents are forgiven — "cafe" matches "café".
+Hear a French word spoken via TTS, then type it. The German translation is shown as a hint. Accents are forgiven — "cafe" matches "caf\u00E9".
 
 - **Scoring**: 200 pts per correct + streak bonus
 - **Timer**: 60s, +2s correct, -5s wrong
@@ -87,10 +93,10 @@ Hear a French word spoken via TTS, then type it. The German translation is shown
 
 A verb conjugation challenge. Before the game starts, you choose which tenses to practice (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé). During gameplay, tenses are picked randomly from your selection with error-weighted repetition — tenses you get wrong appear more frequently.
 
-When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive (with IPA transcription) and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Passé composé has two question types that alternate: auxiliary selection (avoir/être) and verb form selection. Tap the tense name to see a grammar info dialog with German explanations and examples. After answering, tap "Next" to advance manually.
+When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive (with IPA transcription) and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Pass\u00E9 compos\u00E9 has two question types that alternate: auxiliary selection (avoir/\u00EAtre) and verb form selection. Tap the tense name to see a grammar info dialog with German explanations, examples, and conjugation formation tables (limited to 3 views per tense per round — timer pauses while viewing, lock icon shown when exhausted). After answering, tap "Next" to advance manually.
 
-- **Scoring**: Points-based — start with 10 pts, +3 correct + streak bonus, -5 wrong, game over at 0
-- **Pool**: 1182 verbs across 8 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé)
+- **Scoring**: Timer-based — 90s countdown, +5s correct, -5s wrong, 300s cap. 150 pts per correct + 30 per streak level
+- **Pool**: 1182 verbs across 8 tenses (Pr\u00E9sent, Imparfait, Futur, Conditionnel, Subjonctif, Pass\u00E9 simple, Imp\u00E9ratif, Pass\u00E9 compos\u00E9)
 
 ### 6. Prononcez!
 
@@ -129,12 +135,12 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
   <tr>
     <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Main Menu</b></td>
     <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 6 Game Modes</b></td>
-    <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Word Match</b></td>
+    <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Trouvez!</b></td>
   </tr>
   <tr>
-    <td align="center"><img src="screenshots/03-word-match-correct.png" width="240"><br><b>Word Match — Correct</b></td>
-    <td align="center"><img src="screenshots/04-le-ou-la-baguette.png" width="240"><br><b>Le ou La Baguette</b></td>
-    <td align="center"><img src="screenshots/05-gap-fill.png" width="240"><br><b>Gap Fill</b></td>
+    <td align="center"><img src="screenshots/03-word-match-correct.png" width="240"><br><b>Trouvez! — Correct</b></td>
+    <td align="center"><img src="screenshots/04-le-ou-la-baguette.png" width="240"><br><b>Classez!</b></td>
+    <td align="center"><img src="screenshots/05-gap-fill.png" width="240"><br><b>Compl\u00E9tez!</b></td>
   </tr>
   <tr>
     <td align="center"><img src="screenshots/14-conjuguez-tenses.png" width="240"><br><b>Conjuguez! — Tense Selection</b></td>
@@ -278,12 +284,12 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with 6 game mode cards + mascot
-│   │   ├── GameScreen.kt           # Word Match game UI (with IPA on French cards)
-│   │   ├── GenderSnapScreen.kt     # Le ou La Baguette game UI (with IPA)
-│   │   ├── GapFillScreen.kt        # Gap Fill game UI
-│   │   ├── SpellingBeeScreen.kt    # Spelling Bee game UI
-│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI (with IPA, manual advance)
+│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 6 game mode cards
+│   │   ├── GameScreen.kt           # Trouvez! game UI (with IPA on French cards)
+│   │   ├── GenderSnapScreen.kt     # Classez! game UI (with IPA)
+│   │   ├── GapFillScreen.kt        # Compl\u00E9tez! game UI
+│   │   ├── SpellingBeeScreen.kt    # \u00C9crivez! game UI
+│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI (with IPA, timer, info limits)
 │   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback, retry)
 │   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
 │   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
@@ -296,11 +302,11 @@ app/src/main/java/com/hubert/
 │   ├── AzurePronunciationApi.kt    # Azure Speech Services REST client
 │   └── AudioRecorder.kt            # PCM audio capture → WAV byte array
 ├── viewmodel/
-│   ├── GameViewModel.kt            # Word Match game logic
-│   ├── GenderSnapViewModel.kt      # Le ou La Baguette game logic
-│   ├── GapFillViewModel.kt         # Gap Fill game logic
-│   ├── SpellingBeeViewModel.kt     # Spelling Bee game logic
-│   ├── ConjugationViewModel.kt     # Conjuguez! game logic (8 tenses, IPA, manual advance)
+│   ├── GameViewModel.kt            # Trouvez! game logic
+│   ├── GenderSnapViewModel.kt      # Classez! game logic
+│   ├── GapFillViewModel.kt         # Compl\u00E9tez! game logic
+│   ├── SpellingBeeViewModel.kt     # \u00C9crivez! game logic
+│   ├── ConjugationViewModel.kt     # Conjuguez! game logic (8 tenses, timer, IPA, info limits)
 │   ├── PronunciationViewModel.kt   # Prononcez! game logic (Azure, adaptive difficulty, second chance)
 │   ├── StatisticsViewModel.kt      # Statistics and achievements
 │   └── AnswerRecord.kt             # Per-question answer log for detail views
@@ -322,7 +328,7 @@ app/src/main/assets/
 
 ```mermaid
 graph TD
-    UI["<b>UI Layer</b><br/>MenuScreen · GameScreen · GenderSnapScreen<br/>GapFillScreen · SpellingBeeScreen<br/>ConjugationScreen · PronunciationScreen<br/>GameOverScreen · StatisticsScreen"]
+    UI["<b>UI Layer</b><br/>MenuScreen \u00B7 GameScreen \u00B7 GenderSnapScreen<br/>GapFillScreen \u00B7 SpellingBeeScreen<br/>ConjugationScreen \u00B7 PronunciationScreen<br/>GameOverScreen \u00B7 StatisticsScreen"]
     VM["<b>ViewModel Layer</b><br/>GameViewModel · GenderSnapViewModel<br/>GapFillViewModel · SpellingBeeViewModel<br/>ConjugationViewModel · PronunciationViewModel<br/>StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
     REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · AudioRecorder"]
     DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API"]
