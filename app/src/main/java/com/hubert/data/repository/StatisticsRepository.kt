@@ -2,6 +2,7 @@ package com.hubert.data.repository
 
 import com.hubert.data.local.DayCount
 import com.hubert.data.local.GameSessionDao
+import com.hubert.data.local.GameTypeDuration
 import com.hubert.data.local.StruggledWord
 import com.hubert.data.local.WordAttemptDao
 import com.hubert.data.model.GameSession
@@ -86,6 +87,30 @@ class StatisticsRepository @Inject constructor(
 
     suspend fun getHighestScore(gameType: String): Int {
         return dao.getHighestScore(gameType) ?: 0
+    }
+
+    // ── Hubert choisit! ─────────────────────────────────────────────────
+
+    /**
+     * Returns the game type with the least total play time.
+     * Games never played get 0ms and are preferred.
+     * Ties are broken randomly.
+     */
+    suspend fun getLeastPlayedGameType(): String {
+        val allGameTypes = listOf(
+            "matching", "gender_snap", "gap_fill",
+            "spelling_bee", "conjugation", "pronunciation"
+        )
+        val durations = dao.getTotalDurationPerGameType()
+        val durationMap = durations.associate { it.gameType to it.totalMs }
+
+        // Fill in 0 for any game type not yet played
+        val full = allGameTypes.map { it to (durationMap[it] ?: 0L) }
+        val minDuration = full.minOf { it.second }
+
+        // Among all tied at minimum, pick randomly
+        val candidates = full.filter { it.second == minDuration }.map { it.first }
+        return candidates.random()
     }
 
     // ── Overview ─────────────────────────────────────────────────────────
@@ -275,7 +300,7 @@ class StatisticsRepository @Inject constructor(
             Achievement(
                 id = "gender_expert",
                 title = "Gender Expert",
-                description = "90%+ accuracy in Le ou La Baguette (10+ games)",
+                description = "90%+ accuracy in Classez! (10+ games)",
                 icon = "\uD83C\uDDEB\uD83C\uDDF7",  // French flag
                 isUnlocked = genderSessions >= 10 && genderAccuracy >= 0.9,
                 progress = if (genderSessions < 10) "$genderSessions/10 games"
@@ -285,7 +310,7 @@ class StatisticsRepository @Inject constructor(
             Achievement(
                 id = "spelling_ace",
                 title = "Spelling Ace",
-                description = "90%+ accuracy in Spelling Bee (10+ games)",
+                description = "90%+ accuracy in \u00C9crivez! (10+ games)",
                 icon = "\uD83D\uDCDD",       // memo
                 isUnlocked = spellingSessions >= 10 && spellingAccuracy >= 0.9,
                 progress = if (spellingSessions < 10) "$spellingSessions/10 games"

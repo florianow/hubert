@@ -21,10 +21,10 @@ import javax.inject.Inject
  * The 6 game types and their display names / colors.
  */
 enum class GameType(val key: String, val displayName: String) {
-    MATCHING("matching", "Word Match"),
-    GENDER_SNAP("gender_snap", "Le ou La Baguette"),
-    GAP_FILL("gap_fill", "Gap Fill"),
-    SPELLING_BEE("spelling_bee", "Spelling Bee"),
+    MATCHING("matching", "Trouvez!"),
+    GENDER_SNAP("gender_snap", "Classez!"),
+    GAP_FILL("gap_fill", "Compl\u00E9tez!"),
+    SPELLING_BEE("spelling_bee", "\u00C9crivez!"),
     CONJUGATION("conjugation", "Conjuguez!"),
     PRONUNCIATION("pronunciation", "Prononcez!");
 
@@ -103,5 +103,13 @@ class StatisticsViewModel @Inject constructor(
                 it.copy(gameStats = stats, scoreTrend = trend)
             }
         }
+    }
+
+    /**
+     * Returns the game type key with the least total play time.
+     * Used by "Hubert choisit!" to pick the game the user needs to practice.
+     */
+    suspend fun getLeastPlayedGameType(): String {
+        return statisticsRepository.getLeastPlayedGameType()
     }
 }

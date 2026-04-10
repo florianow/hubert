@@ -1,6 +1,7 @@
 package com.hubert
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,10 +10,12 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hubert.ui.screens.*
 import com.hubert.ui.theme.HubertTheme
 import com.hubert.viewmodel.ConjugationViewModel
+import com.hubert.viewmodel.GameType
 import com.hubert.viewmodel.GameViewModel
 import com.hubert.viewmodel.GapFillViewModel
 import com.hubert.viewmodel.GenderSnapViewModel
@@ -20,6 +23,7 @@ import com.hubert.viewmodel.PronunciationViewModel
 import com.hubert.viewmodel.SpellingBeeViewModel
 import com.hubert.viewmodel.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -66,6 +70,25 @@ fun HubertApp() {
     val statisticsState by statisticsVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    // "Hubert choisit!" — query least-played game, show toast, launch it
+    val onHubertChoisit: () -> Unit = {
+        coroutineScope.launch {
+            val gameTypeKey = statisticsVm.getLeastPlayedGameType()
+            val displayName = GameType.fromKey(gameTypeKey)?.displayName ?: gameTypeKey
+            Toast.makeText(context, displayName, Toast.LENGTH_SHORT).show()
+            when (gameTypeKey) {
+                "matching" -> matchingVm.startGame()
+                "gender_snap" -> genderSnapVm.startGame()
+                "gap_fill" -> gapFillVm.startGame()
+                "spelling_bee" -> spellingBeeVm.startGame()
+                "conjugation" -> conjugationVm.showTenseSelection()
+                "pronunciation" -> pronunciationVm.onGameSelected()
+            }
+        }
+    }
 
     // Navigate based on game states
     LaunchedEffect(matchingState.isPlaying, matchingState.isGameOver, matchingState.countdown) {
@@ -317,7 +340,10 @@ fun HubertApp() {
                         onQuit = {
                             conjugationVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onPauseTimer = { conjugationVm.pauseTimer() },
+                        onResumeTimer = { conjugationVm.resumeTimer() },
+                        onUseInfoView = { conjugationVm.useInfoView(it) }
                     )
                 }
                 conjugationState.isGameOver -> {
@@ -411,6 +437,7 @@ fun HubertApp() {
                 spellingBeeHighScore = spellingBeeState.highScore,
                 conjugationHighScore = conjugationState.highScore,
                 pronunciationHighScore = pronunciationState.highScore,
+                onHubertChoisit = onHubertChoisit,
                 onStartMatching = { matchingVm.startGame() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },

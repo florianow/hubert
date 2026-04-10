@@ -95,6 +95,14 @@ interface GameSessionDao {
     @Query("SELECT gameType FROM game_sessions GROUP BY gameType ORDER BY COUNT(*) DESC LIMIT 1")
     suspend fun getMostPlayedGameType(): String?
 
+    /** Total play time per game type (for "Hubert choisit!" least-played logic). */
+    @Query("""
+        SELECT gameType, COALESCE(SUM(durationMs), 0) AS totalMs
+        FROM game_sessions
+        GROUP BY gameType
+    """)
+    suspend fun getTotalDurationPerGameType(): List<GameTypeDuration>
+
     @Query("DELETE FROM game_sessions")
     suspend fun clearAll()
 }
@@ -103,4 +111,10 @@ interface GameSessionDao {
 data class DayCount(
     val day: String,    // "2026-04-08"
     val count: Int
+)
+
+/** Helper class for total duration per game type. */
+data class GameTypeDuration(
+    val gameType: String,
+    val totalMs: Long
 )

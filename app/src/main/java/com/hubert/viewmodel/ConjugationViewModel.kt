@@ -80,14 +80,18 @@ data class ConjugationState(
     val selectedIndex: Int? = null,
     val feedback: Boolean? = null,     // true=correct, false=wrong
 
-    // Scoring — points-based: start at 10, +3 correct (+streak), -5 wrong, game over at 0
-    val points: Int = STARTING_POINTS,
+    // Timer-based scoring
+    val timeRemainingMs: Long = 0L,
+    val timerFraction: Float = 1f,
     val score: Int = 0,
     val totalCorrect: Int = 0,
     val totalWrong: Int = 0,
     val streak: Int = 0,
     val bestStreak: Int = 0,
     val highScore: Int = 0,
+
+    // Info view limits: tenseKey -> remaining uses
+    val infoUsesRemaining: Map<String, Int> = emptyMap(),
 
     // Post-game
     val durationMs: Long = 0L,
@@ -98,11 +102,7 @@ data class ConjugationState(
 
     // Countdown
     val countdown: Int? = null
-) {
-    companion object {
-        const val STARTING_POINTS = 10
-    }
-}
+)
 
 @HiltViewModel
 class ConjugationViewModel @Inject constructor(
@@ -116,6 +116,9 @@ class ConjugationViewModel @Inject constructor(
     val uiState: StateFlow<ConjugationState> = _uiState.asStateFlow()
 
     private var countdownJob: Job? = null
+    private var timerJob: Job? = null
+    private var timerDeadline = 0L
+    private var timerPausedRemaining = 0L   // >0 means timer is paused
     private var gameStartTime = 0L
 
     private var verbPool: MutableList<ConjugationVerb> = mutableListOf()
@@ -127,10 +130,14 @@ class ConjugationViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
-        const val POINTS_PER_CORRECT = 3
-        const val STREAK_BONUS = 1
-        const val WRONG_PENALTY = 5
+        const val GAME_TIME_MS = 90_000L
+        const val MAX_TIME_MS = 300_000L
+        const val CORRECT_BONUS_MS = 5_000L
+        const val WRONG_PENALTY_MS = 5_000L
+        const val POINTS_PER_CORRECT = 150
+        const val STREAK_BONUS = 30
         const val NUM_CHOICES = 4
+        const val INFO_USES_PER_TENSE = 3
 
         // Error weight: each error on a tense adds this much extra selection weight
         const val ERROR_WEIGHT_BONUS = 2
@@ -511,6 +518,7 @@ class ConjugationViewModel @Inject constructor(
      */
     fun startGame() {
         countdownJob?.cancel()
+        timerJob?.cancel()
 
         activeTenses = _uiState.value.selectedTenses
         tenseErrorCounts = mutableMapOf()
@@ -518,14 +526,17 @@ class ConjugationViewModel @Inject constructor(
         allVerbs = vocabRepository.getConjugations()
         verbPool = allVerbs.shuffled().toMutableList()
 
+        // Initialize info uses: 3 per selected tense
+        val infoUses = activeTenses.associateWith { INFO_USES_PER_TENSE }
+
         _uiState.update {
             ConjugationState(
                 isPlaying = false,
                 isTenseSelection = false,
                 countdown = 3,
-                points = ConjugationState.STARTING_POINTS,
                 highScore = it.highScore,
-                selectedTenses = it.selectedTenses  // preserve for next round
+                selectedTenses = it.selectedTenses,
+                infoUsesRemaining = infoUses
             )
         }
 
@@ -536,7 +547,12 @@ class ConjugationViewModel @Inject constructor(
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
+            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            _uiState.update {
+                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+            }
             showNextQuestion()
+            startTimer()
         }
     }
 
@@ -815,11 +831,15 @@ class ConjugationViewModel @Inject constructor(
             val streakBonus = if (newStreak >= 2) (newStreak - 1) * STREAK_BONUS else 0
             val pointsGained = POINTS_PER_CORRECT + streakBonus
 
+            // Add time bonus, capped at MAX_TIME_MS
+            val now = System.currentTimeMillis()
+            val maxDeadline = now + MAX_TIME_MS
+            timerDeadline = (timerDeadline + CORRECT_BONUS_MS).coerceAtMost(maxDeadline)
+
             _uiState.update {
                 it.copy(
                     selectedIndex = choiceIndex,
                     feedback = true,
-                    points = it.points + pointsGained,
                     score = it.score + pointsGained,
                     totalCorrect = it.totalCorrect + 1,
                     streak = newStreak,
@@ -833,19 +853,19 @@ class ConjugationViewModel @Inject constructor(
                     (tenseErrorCounts[currentTenseKey] ?: 0) + 1
             }
 
-            val newPoints = (state.points - WRONG_PENALTY).coerceAtLeast(0)
+            timerDeadline -= WRONG_PENALTY_MS
 
             _uiState.update {
                 it.copy(
                     selectedIndex = choiceIndex,
                     feedback = false,
-                    points = newPoints,
                     totalWrong = it.totalWrong + 1,
                     streak = 0
                 )
             }
 
-            if (newPoints <= 0) {
+            if (timerDeadline <= System.currentTimeMillis()) {
+                _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
                 viewModelScope.launch {
                     delay(1200)
                     endGame()
@@ -867,7 +887,64 @@ class ConjugationViewModel @Inject constructor(
         showNextQuestion()
     }
 
+    private fun startTimer() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (true) {
+                val remaining = timerDeadline - System.currentTimeMillis()
+                if (remaining <= 0) {
+                    _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                    endGame()
+                    break
+                }
+                _uiState.update {
+                    it.copy(
+                        timeRemainingMs = remaining,
+                        timerFraction = (remaining.toFloat() / GAME_TIME_MS).coerceIn(0f, 1f)
+                    )
+                }
+                delay(50)
+            }
+        }
+    }
+
+    /**
+     * Pause the timer (e.g., when info dialog opens).
+     */
+    fun pauseTimer() {
+        val remaining = timerDeadline - System.currentTimeMillis()
+        if (remaining > 0) {
+            timerPausedRemaining = remaining
+            timerJob?.cancel()
+        }
+    }
+
+    /**
+     * Resume the timer (e.g., when info dialog closes).
+     */
+    fun resumeTimer() {
+        if (timerPausedRemaining > 0) {
+            timerDeadline = System.currentTimeMillis() + timerPausedRemaining
+            timerPausedRemaining = 0L
+            startTimer()
+        }
+    }
+
+    /**
+     * Try to use an info view for the given tense.
+     * Returns true if allowed (uses remaining > 0), false if exhausted.
+     */
+    fun useInfoView(tenseKey: String): Boolean {
+        val remaining = _uiState.value.infoUsesRemaining[tenseKey] ?: 0
+        if (remaining <= 0) return false
+        _uiState.update {
+            it.copy(infoUsesRemaining = it.infoUsesRemaining + (tenseKey to (remaining - 1)))
+        }
+        return true
+    }
+
     private fun endGame() {
+        timerJob?.cancel()
         val state = _uiState.value
         val durationMs = System.currentTimeMillis() - gameStartTime
 
@@ -908,6 +985,7 @@ class ConjugationViewModel @Inject constructor(
 
     fun resetToMenu() {
         countdownJob?.cancel()
+        timerJob?.cancel()
         answerLog.clear()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
@@ -922,5 +1000,6 @@ class ConjugationViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         countdownJob?.cancel()
+        timerJob?.cancel()
     }
 }
