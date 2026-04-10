@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.ConjugationState
 import com.hubert.viewmodel.ConjugationViewModel
@@ -850,21 +852,35 @@ private fun TenseInfoDialog(
     tenseInfo: TenseInfo,
     onDismiss: () -> Unit
 ) {
-    AlertDialog(
+    Dialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = tenseName,
-                fontWeight = FontWeight.Bold,
-                color = AccentPurple
-            )
-        },
-        text = {
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .fillMaxWidth()
-            ) {
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 24.dp),
+            shape = RoundedCornerShape(16.dp),
+            tonalElevation = 6.dp
+        ) {
+            Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 8.dp)) {
+                // Title
+                Text(
+                    text = tenseName,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = AccentPurple
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Scrollable content
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .weight(1f, fill = false)
+                        .fillMaxWidth()
+                ) {
                 // Main description
                 Text(
                     text = tenseInfo.description,
@@ -988,12 +1004,18 @@ private fun TenseInfoDialog(
                         }
                     }
                 }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text("OK", color = AccentPurple, fontWeight = FontWeight.Bold)
+                }
+
+                // OK button
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = onDismiss) {
+                        Text("OK", color = AccentPurple, fontWeight = FontWeight.Bold)
+                    }
+                }
             }
         }
-    )
+    }
 }
