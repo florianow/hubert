@@ -80,7 +80,7 @@ class GapFillViewModel @Inject constructor(
         const val POINTS_PER_CORRECT = 150
         const val STREAK_BONUS = 30
         const val WRONG_PENALTY_MS = 5_000L
-        const val CORRECT_BONUS_MS = 2_000L
+        const val CORRECT_BONUS_MS = 5_000L
         const val NUM_CHOICES = 4
     }
 
