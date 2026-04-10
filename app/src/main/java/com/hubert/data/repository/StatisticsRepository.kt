@@ -275,7 +275,7 @@ class StatisticsRepository @Inject constructor(
             Achievement(
                 id = "gender_expert",
                 title = "Gender Expert",
-                description = "90%+ accuracy in Le ou La Baguette (10+ games)",
+                description = "90%+ accuracy in Classez! (10+ games)",
                 icon = "\uD83C\uDDEB\uD83C\uDDF7",  // French flag
                 isUnlocked = genderSessions >= 10 && genderAccuracy >= 0.9,
                 progress = if (genderSessions < 10) "$genderSessions/10 games"
@@ -285,7 +285,7 @@ class StatisticsRepository @Inject constructor(
             Achievement(
                 id = "spelling_ace",
                 title = "Spelling Ace",
-                description = "90%+ accuracy in Spelling Bee (10+ games)",
+                description = "90%+ accuracy in \u00C9crivez! (10+ games)",
                 icon = "\uD83D\uDCDD",       // memo
                 isUnlocked = spellingSessions >= 10 && spellingAccuracy >= 0.9,
                 progress = if (spellingSessions < 10) "$spellingSessions/10 games"

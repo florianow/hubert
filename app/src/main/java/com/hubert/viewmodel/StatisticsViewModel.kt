@@ -22,7 +22,7 @@ import javax.inject.Inject
  */
 enum class GameType(val key: String, val displayName: String) {
     MATCHING("matching", "Trouvez!"),
-    GENDER_SNAP("gender_snap", "Le ou La Baguette"),
+    GENDER_SNAP("gender_snap", "Classez!"),
     GAP_FILL("gap_fill", "Compl\u00E9tez!"),
     SPELLING_BEE("spelling_bee", "\u00C9crivez!"),
     CONJUGATION("conjugation", "Conjuguez!"),

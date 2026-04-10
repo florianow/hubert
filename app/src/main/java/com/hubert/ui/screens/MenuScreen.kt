@@ -98,7 +98,7 @@ fun MenuScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         GameModeCard(
-            title = "Le ou La Baguette",
+            title = "Classez!",
             description = "Guess the gender of French nouns",
             accentColor = AccentPurple,
             highScore = genderSnapHighScore,
