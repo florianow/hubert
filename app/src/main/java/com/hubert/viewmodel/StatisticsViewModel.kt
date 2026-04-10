@@ -21,10 +21,10 @@ import javax.inject.Inject
  * The 6 game types and their display names / colors.
  */
 enum class GameType(val key: String, val displayName: String) {
-    MATCHING("matching", "Word Match"),
+    MATCHING("matching", "Trouvez!"),
     GENDER_SNAP("gender_snap", "Le ou La Baguette"),
-    GAP_FILL("gap_fill", "Gap Fill"),
-    SPELLING_BEE("spelling_bee", "Spelling Bee"),
+    GAP_FILL("gap_fill", "Compl\u00E9tez!"),
+    SPELLING_BEE("spelling_bee", "\u00C9crivez!"),
     CONJUGATION("conjugation", "Conjuguez!"),
     PRONUNCIATION("pronunciation", "Prononcez!");
 

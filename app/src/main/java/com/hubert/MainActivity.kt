@@ -317,7 +317,10 @@ fun HubertApp() {
                         onQuit = {
                             conjugationVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onPauseTimer = { conjugationVm.pauseTimer() },
+                        onResumeTimer = { conjugationVm.resumeTimer() },
+                        onUseInfoView = { conjugationVm.useInfoView(it) }
                     )
                 }
                 conjugationState.isGameOver -> {

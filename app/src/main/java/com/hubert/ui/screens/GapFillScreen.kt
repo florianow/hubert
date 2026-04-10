@@ -249,7 +249,7 @@ private fun GapFillTopBar(state: GapFillState, onQuit: () -> Unit) {
         }
 
         Text(
-            text = "Gap Fill",
+            text = "Compl\u00E9tez!",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground

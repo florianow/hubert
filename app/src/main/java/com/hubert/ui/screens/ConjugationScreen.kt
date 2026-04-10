@@ -1,6 +1,6 @@
 package com.hubert.ui.screens
 
-import androidx.compose.animation.animateColorAsState
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.platform.LocalContext
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.ConjugationState
 import com.hubert.viewmodel.ConjugationViewModel
@@ -40,7 +42,10 @@ fun ConjugationScreen(
     onAnswer: (Int) -> Unit,
     onNext: () -> Unit,
     onSpeak: (String) -> Unit,
-    onQuit: () -> Unit
+    onQuit: () -> Unit,
+    onPauseTimer: () -> Unit = {},
+    onResumeTimer: () -> Unit = {},
+    onUseInfoView: (String) -> Boolean = { true }
 ) {
     // Tense info dialog state
     var showTenseInfo by remember { mutableStateOf(false) }
@@ -55,7 +60,10 @@ fun ConjugationScreen(
             TenseInfoDialog(
                 tenseName = state.tenseName,
                 tenseInfo = tenseInfo,
-                onDismiss = { showTenseInfo = false }
+                onDismiss = {
+                    showTenseInfo = false
+                    onResumeTimer()
+                }
             )
         }
     }
@@ -75,8 +83,8 @@ fun ConjugationScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Points bar (replaces timer)
-            PointsBar(points = state.points)
+            // Timer bar
+            TimerBar(fraction = state.timerFraction, timeMs = state.timeRemainingMs)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -135,17 +143,36 @@ fun ConjugationScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Tense badge — tap to see tense explanation
+            // Tense badge — tap to see tense explanation (limited uses)
+            val currentTenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
+                .firstOrNull { it.value == state.tenseName }?.key
+            val infoRemaining = currentTenseKey?.let { state.infoUsesRemaining[it] } ?: 0
+            val infoEnabled = infoRemaining > 0
+            val context = LocalContext.current
+
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.Center
             ) {
                 Surface(
                     shape = RoundedCornerShape(24.dp),
-                    color = AccentPurple.copy(alpha = 0.15f),
+                    color = AccentPurple.copy(alpha = if (infoEnabled) 0.15f else 0.06f),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { showTenseInfo = true }
+                        .clickable {
+                            if (infoEnabled) {
+                                if (currentTenseKey != null && onUseInfoView(currentTenseKey)) {
+                                    onPauseTimer()
+                                    showTenseInfo = true
+                                }
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "No more info views this round",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                 ) {
                     Row(
                         modifier = Modifier
@@ -158,16 +185,25 @@ fun ConjugationScreen(
                             text = state.tenseName,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Black,
-                            color = AccentPurple,
+                            color = if (infoEnabled) AccentPurple else AccentPurple.copy(alpha = 0.5f),
                             letterSpacing = 1.sp
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = "Tense info",
-                            tint = AccentPurple.copy(alpha = 0.5f),
+                            imageVector = if (infoEnabled) Icons.Default.Info else Icons.Default.Lock,
+                            contentDescription = if (infoEnabled) "Tense info" else "Info exhausted",
+                            tint = AccentPurple.copy(alpha = if (infoEnabled) 0.5f else 0.3f),
                             modifier = Modifier.size(18.dp)
                         )
+                        if (infoEnabled) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "$infoRemaining",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = AccentPurple.copy(alpha = 0.6f)
+                            )
+                        }
                     }
                 }
             }
@@ -301,48 +337,6 @@ private fun ConjugationTopBar(state: ConjugationState, onQuit: () -> Unit) {
             }
         } else {
             Spacer(modifier = Modifier.width(60.dp))
-        }
-    }
-}
-
-@Composable
-private fun PointsBar(points: Int) {
-    val maxPoints = ConjugationState.STARTING_POINTS
-    val barColor by animateColorAsState(
-        targetValue = when {
-            points <= 3 -> WrongRed
-            points <= 6 -> GermanGold
-            else -> CorrectGreen
-        },
-        label = "points_color"
-    )
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        // Points dots — show individual point pips
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val displayPoints = points.coerceAtMost(20) // cap visual at 20 dots
-            for (i in 0 until displayPoints) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 2.dp)
-                        .size(if (points <= maxPoints) 12.dp else 10.dp)
-                        .clip(CircleShape)
-                        .background(barColor)
-                )
-            }
-            if (points > 20) {
-                Text(
-                    text = "+${points - 20}",
-                    color = barColor,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
         }
     }
 }

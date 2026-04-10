@@ -88,7 +88,7 @@ fun MenuScreen(
 
         // Game mode cards
         GameModeCard(
-            title = "Word Match",
+            title = "Trouvez!",
             description = "Match French words with German translations",
             accentColor = FrenchBlue,
             highScore = matchingHighScore,
@@ -108,7 +108,7 @@ fun MenuScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         GameModeCard(
-            title = "Gap Fill",
+            title = "Compl\u00E9tez!",
             description = "Complete French sentences with the missing word",
             accentColor = CorrectGreen,
             highScore = gapFillHighScore,
@@ -118,7 +118,7 @@ fun MenuScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         GameModeCard(
-            title = "Spelling Bee",
+            title = "\u00C9crivez!",
             description = "Hear a French word, type it correctly",
             accentColor = GermanGold,
             highScore = spellingBeeHighScore,

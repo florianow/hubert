@@ -334,7 +334,7 @@ private fun SpellingBeeTopBar(state: SpellingBeeState, onQuit: () -> Unit) {
         }
 
         Text(
-            text = "Spelling Bee",
+            text = "\u00C9crivez!",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
