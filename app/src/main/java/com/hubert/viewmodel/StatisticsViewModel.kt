@@ -104,4 +104,12 @@ class StatisticsViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Returns the game type key with the least total play time.
+     * Used by "Hubert choisit!" to pick the game the user needs to practice.
+     */
+    suspend fun getLeastPlayedGameType(): String {
+        return statisticsRepository.getLeastPlayedGameType()
+    }
 }
