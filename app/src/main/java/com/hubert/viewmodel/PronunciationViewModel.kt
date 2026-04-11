@@ -397,8 +397,8 @@ class PronunciationViewModel @Inject constructor(
         if (!_uiState.value.canRetry) return
         val state = _uiState.value
 
-        // Apply time penalty
-        timerDeadline -= WRONG_PENALTY_MS
+        // Apply time penalty (timer is paused, so adjust paused remaining)
+        timerPausedRemaining = (timerPausedRemaining - WRONG_PENALTY_MS).coerceAtLeast(0L)
 
         // Count this as a decided attempt in run stats
         runStats = runStats.copy(
@@ -422,7 +422,7 @@ class PronunciationViewModel @Inject constructor(
         }
 
         // Check if time penalty killed the timer
-        if (timerDeadline <= System.currentTimeMillis()) {
+        if (timerPausedRemaining <= 0L) {
             _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
             viewModelScope.launch {
                 delay(1200)
@@ -528,10 +528,8 @@ class PronunciationViewModel @Inject constructor(
                     val streakBonus = if (newStreak >= 2) (newStreak - 1) * STREAK_BONUS else 0
                     val pointsGained = POINTS_PER_CORRECT + streakBonus
 
-                    // Add time bonus, capped at MAX_TIME_MS
-                    val now = System.currentTimeMillis()
-                    val maxDeadline = now + MAX_TIME_MS
-                    timerDeadline = (timerDeadline + CORRECT_BONUS_MS).coerceAtMost(maxDeadline)
+                    // Add time bonus (timer is paused, so adjust paused remaining), capped at MAX_TIME_MS
+                    timerPausedRemaining = (timerPausedRemaining + CORRECT_BONUS_MS).coerceAtMost(MAX_TIME_MS)
 
                     _uiState.update {
                         it.copy(
@@ -564,7 +562,7 @@ class PronunciationViewModel @Inject constructor(
                     }
                 } else {
                     // Definitive wrong: < 80 on first attempt, or < 85 on retry
-                    timerDeadline -= WRONG_PENALTY_MS
+                    timerPausedRemaining = (timerPausedRemaining - WRONG_PENALTY_MS).coerceAtLeast(0L)
 
                     _uiState.update {
                         it.copy(
@@ -581,7 +579,7 @@ class PronunciationViewModel @Inject constructor(
                     }
 
                     // Check if time penalty killed the timer
-                    if (timerDeadline <= System.currentTimeMillis()) {
+                    if (timerPausedRemaining <= 0L) {
                         _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
                         delay(1200)
                         endGame()

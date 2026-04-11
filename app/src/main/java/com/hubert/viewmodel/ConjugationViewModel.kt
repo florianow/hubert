@@ -883,6 +883,7 @@ class ConjugationViewModel @Inject constructor(
             }
 
             if (timerDeadline <= System.currentTimeMillis()) {
+                timerJob?.cancel()
                 _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
                 viewModelScope.launch {
                     delay(1200)
