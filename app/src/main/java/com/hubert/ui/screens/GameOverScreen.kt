@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.AnswerRecord
 
@@ -51,6 +52,13 @@ fun GameOverScreen(
 ) {
     val totalAttempted = totalCorrect + totalWrong
     val accuracyPct = if (totalAttempted > 0) (totalCorrect * 100f / totalAttempted) else 0f
+
+    // Prevent accidental taps: buttons stay disabled for the first second
+    var buttonsEnabled by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(1000L)
+        buttonsEnabled = true
+    }
 
     // Track which detail view to show: null = none, true = correct, false = wrong
     var showDetailFilter by remember { mutableStateOf<Boolean?>(null) }
@@ -251,6 +259,7 @@ fun GameOverScreen(
         // Play again button
         Button(
             onClick = onPlayAgain,
+            enabled = buttonsEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp),
@@ -270,6 +279,7 @@ fun GameOverScreen(
         // Menu button
         OutlinedButton(
             onClick = onBackToMenu,
+            enabled = buttonsEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),

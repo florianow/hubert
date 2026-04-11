@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,6 +45,7 @@ import com.hubert.ui.theme.*
 import com.hubert.viewmodel.PronunciationState
 import com.hubert.viewmodel.RunStats
 import com.hubert.viewmodel.WordScore
+import kotlinx.coroutines.delay
 
 // ─── Settings Dialog ─────────────────────────────────────────────────────────
 
@@ -177,8 +177,8 @@ fun PronunciationScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Points bar
-            PronunciationPointsBar(points = state.points)
+            // Timer bar
+            TimerBar(fraction = state.timerFraction, timeMs = state.timeRemainingMs)
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -532,49 +532,6 @@ private fun PronunciationTopBar(state: PronunciationState, onQuit: () -> Unit) {
     }
 }
 
-// ─── Points Bar (same pattern as Conjuguez!) ─────────────────────────────────
-
-@Composable
-private fun PronunciationPointsBar(points: Int) {
-    val maxPoints = PronunciationState.STARTING_POINTS
-    val barColor by animateColorAsState(
-        targetValue = when {
-            points <= 3 -> WrongRed
-            points <= 6 -> GermanGold
-            else -> CorrectGreen
-        },
-        label = "points_color"
-    )
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val displayPoints = points.coerceAtMost(20)
-            for (i in 0 until displayPoints) {
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 2.dp)
-                        .size(if (points <= maxPoints) 12.dp else 10.dp)
-                        .clip(CircleShape)
-                        .background(barColor)
-                )
-            }
-            if (points > 20) {
-                Text(
-                    text = "+${points - 20}",
-                    color = barColor,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
-        }
-    }
-}
-
 // ─── Sentence Card ───────────────────────────────────────────────────────────
 
 @Composable
@@ -860,6 +817,13 @@ fun PronunciationGameOverScreen(
     onPlayAgain: () -> Unit,
     onBackToMenu: () -> Unit
 ) {
+    // Prevent accidental taps: buttons stay disabled for the first second
+    var buttonsEnabled by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        delay(1000L)
+        buttonsEnabled = true
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -871,7 +835,7 @@ fun PronunciationGameOverScreen(
     ) {
         // Game Over title
         Text(
-            text = "GAME OVER",
+            text = "TIME'S UP!",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Black,
             color = WrongRed,
@@ -1038,6 +1002,7 @@ fun PronunciationGameOverScreen(
         // Play again button
         Button(
             onClick = onPlayAgain,
+            enabled = buttonsEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp),
@@ -1057,6 +1022,7 @@ fun PronunciationGameOverScreen(
         // Menu button
         OutlinedButton(
             onClick = onBackToMenu,
+            enabled = buttonsEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),
