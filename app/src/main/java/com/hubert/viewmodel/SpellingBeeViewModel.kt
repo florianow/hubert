@@ -285,9 +285,10 @@ class SpellingBeeViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
+        _uiState.value = SpellingBeeState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "spelling_bee")
-            _uiState.value = SpellingBeeState(highScore = hs)
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 

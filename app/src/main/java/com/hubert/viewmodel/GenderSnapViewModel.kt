@@ -264,9 +264,10 @@ class GenderSnapViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
+        _uiState.value = GenderSnapState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "gender_snap")
-            _uiState.value = GenderSnapState(highScore = hs)
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 

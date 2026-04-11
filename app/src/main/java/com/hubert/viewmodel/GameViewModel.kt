@@ -384,9 +384,10 @@ class GameViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
+        _uiState.value = GameUiState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
-            _uiState.value = GameUiState(highScore = hs)
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 

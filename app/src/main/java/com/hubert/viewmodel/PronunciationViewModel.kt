@@ -70,11 +70,8 @@ data class RunStats(
  *   - Streak 3-5: 7-10 words (Moyen)
  *   - Streak 6+:  11+ words (Difficile)
  *
- * Points system: same as Conjuguez!
- *   - Start with 10 points
- *   - Correct: +3 base + streak bonus
- *   - Wrong: -5 points
- *   - Game over when points hit 0
+ * Timer system: 90 s base, +10 s correct, −10 s wrong, 300 s cap.
+ * Timer pauses during recording, Azure processing, feedback, and retry prompts.
  */
 data class PronunciationState(
     val isPlaying: Boolean = false,
@@ -102,8 +99,11 @@ data class PronunciationState(
     val wordScores: List<WordScore> = emptyList(),
     val feedback: Boolean? = null,      // true=correct (>=95), false=wrong
 
+    // Timer
+    val timeRemainingMs: Long = 0L,
+    val timerFraction: Float = 1f,
+
     // Scoring
-    val points: Int = STARTING_POINTS,
     val score: Int = 0,
     val totalCorrect: Int = 0,
     val totalWrong: Int = 0,
@@ -131,7 +131,6 @@ data class PronunciationState(
     val runStats: RunStats = RunStats()
 ) {
     companion object {
-        const val STARTING_POINTS = 10
         const val PASS_THRESHOLD = 95.0
         const val RETRY_THRESHOLD = 80.0       // 80-94 on first attempt = can retry
         const val RETRY_PASS_THRESHOLD = 85.0  // lower bar on second attempt
@@ -151,6 +150,9 @@ class PronunciationViewModel @Inject constructor(
     val uiState: StateFlow<PronunciationState> = _uiState.asStateFlow()
 
     private var countdownJob: Job? = null
+    private var timerJob: Job? = null
+    private var timerDeadline = 0L
+    private var timerPausedRemaining = 0L
     private var audioRecorder: AudioRecorder? = null
     private var recordingJob: Job? = null
     private var gameStartTime = 0L
@@ -166,9 +168,12 @@ class PronunciationViewModel @Inject constructor(
     private var runStats = RunStats()
 
     companion object {
-        const val POINTS_PER_CORRECT = 3
-        const val STREAK_BONUS = 1
-        const val WRONG_PENALTY = 5
+        const val GAME_TIME_MS = 90_000L
+        const val MAX_TIME_MS = 300_000L
+        const val CORRECT_BONUS_MS = 10_000L
+        const val WRONG_PENALTY_MS = 10_000L
+        const val POINTS_PER_CORRECT = 150
+        const val STREAK_BONUS = 30
 
         private val KEY_AZURE_KEY = stringPreferencesKey("azure_speech_key")
         private val KEY_AZURE_REGION = stringPreferencesKey("azure_speech_region")
@@ -238,6 +243,7 @@ class PronunciationViewModel @Inject constructor(
 
     fun startGame() {
         countdownJob?.cancel()
+        timerJob?.cancel()
         runStats = RunStats()
 
         // Show countdown immediately while loading sentences in background
@@ -245,7 +251,8 @@ class PronunciationViewModel @Inject constructor(
             PronunciationState(
                 isPlaying = false,
                 countdown = 3,
-                points = PronunciationState.STARTING_POINTS,
+                timeRemainingMs = GAME_TIME_MS,
+                timerFraction = 1f,
                 highScore = it.highScore,
                 azureKey = it.azureKey,
                 azureRegion = it.azureRegion
@@ -274,6 +281,11 @@ class PronunciationViewModel @Inject constructor(
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
+            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            _uiState.update {
+                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+            }
+            startTimer()
             showNextSentence()
         }
     }
@@ -344,12 +356,14 @@ class PronunciationViewModel @Inject constructor(
 
     /**
      * Called when the player taps "Next" after seeing feedback.
+     * Resumes the timer.
      */
     fun nextSentence() {
         if (!_uiState.value.awaitingNext) return
         stopPlayback()
         lastRecordingWav = null
         _uiState.update { it.copy(awaitingNext = false, isRetry = false, canRetry = false) }
+        resumeTimer()
         viewModelScope.launch {
             showNextSentence()
         }
@@ -358,6 +372,7 @@ class PronunciationViewModel @Inject constructor(
     /**
      * Called when the player taps "TRY AGAIN" after scoring 80-94 on the first attempt.
      * Resets recording state so they can re-record the same sentence.
+     * Resumes the timer (it will pause again when they start recording).
      */
     fun retryRecording() {
         if (!_uiState.value.canRetry) return
@@ -371,6 +386,7 @@ class PronunciationViewModel @Inject constructor(
                 errorMessage = null
             )
         }
+        resumeTimer()
     }
 
     /**
@@ -380,7 +396,9 @@ class PronunciationViewModel @Inject constructor(
     fun skipRetry() {
         if (!_uiState.value.canRetry) return
         val state = _uiState.value
-        val newPoints = (state.points - WRONG_PENALTY).coerceAtLeast(0)
+
+        // Apply time penalty
+        timerDeadline -= WRONG_PENALTY_MS
 
         // Count this as a decided attempt in run stats
         runStats = runStats.copy(
@@ -396,7 +414,6 @@ class PronunciationViewModel @Inject constructor(
             it.copy(
                 feedback = false,
                 canRetry = false,
-                points = newPoints,
                 totalWrong = it.totalWrong + 1,
                 streak = 0,
                 runStats = runStats,
@@ -404,16 +421,18 @@ class PronunciationViewModel @Inject constructor(
             )
         }
 
-        if (newPoints <= 0) {
+        // Check if time penalty killed the timer
+        if (timerDeadline <= System.currentTimeMillis()) {
+            _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
             viewModelScope.launch {
-                delay(2000)
+                delay(1200)
                 endGame()
             }
         }
     }
 
     /**
-     * Start or stop recording.
+     * Start or stop recording. Pauses the timer during recording.
      */
     fun toggleRecording() {
         val state = _uiState.value
@@ -422,6 +441,7 @@ class PronunciationViewModel @Inject constructor(
         if (state.isRecording) {
             stopRecordingAndAssess()
         } else {
+            pauseTimer()
             startRecording()
         }
     }
@@ -508,6 +528,11 @@ class PronunciationViewModel @Inject constructor(
                     val streakBonus = if (newStreak >= 2) (newStreak - 1) * STREAK_BONUS else 0
                     val pointsGained = POINTS_PER_CORRECT + streakBonus
 
+                    // Add time bonus, capped at MAX_TIME_MS
+                    val now = System.currentTimeMillis()
+                    val maxDeadline = now + MAX_TIME_MS
+                    timerDeadline = (timerDeadline + CORRECT_BONUS_MS).coerceAtMost(maxDeadline)
+
                     _uiState.update {
                         it.copy(
                             isProcessing = false,
@@ -515,7 +540,6 @@ class PronunciationViewModel @Inject constructor(
                             wordScores = wordScores,
                             feedback = true,
                             canRetry = false,
-                            points = it.points + pointsGained,
                             score = it.score + pointsGained,
                             totalCorrect = it.totalCorrect + 1,
                             streak = newStreak,
@@ -524,8 +548,10 @@ class PronunciationViewModel @Inject constructor(
                             awaitingNext = true
                         )
                     }
+                    // Timer stays paused — will resume when player taps "Next"
                 } else if (canRetry) {
                     // Score 80-94 on first attempt: show results but allow retry
+                    // Timer stays paused — will resume when player taps "Try Again" or "Skip"
                     _uiState.update {
                         it.copy(
                             isProcessing = false,
@@ -538,7 +564,7 @@ class PronunciationViewModel @Inject constructor(
                     }
                 } else {
                     // Definitive wrong: < 80 on first attempt, or < 85 on retry
-                    val newPoints = (state.points - WRONG_PENALTY).coerceAtLeast(0)
+                    timerDeadline -= WRONG_PENALTY_MS
 
                     _uiState.update {
                         it.copy(
@@ -547,7 +573,6 @@ class PronunciationViewModel @Inject constructor(
                             wordScores = wordScores,
                             feedback = false,
                             canRetry = false,
-                            points = newPoints,
                             totalWrong = it.totalWrong + 1,
                             streak = 0,
                             runStats = runStats,
@@ -555,11 +580,14 @@ class PronunciationViewModel @Inject constructor(
                         )
                     }
 
-                    if (newPoints <= 0) {
-                        delay(2000)
+                    // Check if time penalty killed the timer
+                    if (timerDeadline <= System.currentTimeMillis()) {
+                        _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                        delay(1200)
                         endGame()
                         return@launch
                     }
+                    // Timer stays paused — will resume when player taps "Next"
                 }
 
             } catch (e: Exception) {
@@ -573,11 +601,59 @@ class PronunciationViewModel @Inject constructor(
                         errorMessage = "${e.javaClass.simpleName}: ${e.message ?: "Assessment failed"}"
                     )
                 }
+                // Resume timer so the game continues after an error
+                resumeTimer()
             }
         }
     }
 
+    // ─── Timer ───────────────────────────────────────────────────────────────────
+
+    private fun startTimer() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (true) {
+                val remaining = timerDeadline - System.currentTimeMillis()
+                if (remaining <= 0) {
+                    _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                    endGame()
+                    break
+                }
+                _uiState.update {
+                    it.copy(
+                        timeRemainingMs = remaining,
+                        timerFraction = (remaining.toFloat() / GAME_TIME_MS).coerceIn(0f, 1f)
+                    )
+                }
+                delay(50)
+            }
+        }
+    }
+
+    /**
+     * Pause the timer (during recording, processing, feedback, retry prompt).
+     */
+    private fun pauseTimer() {
+        val remaining = timerDeadline - System.currentTimeMillis()
+        if (remaining > 0) {
+            timerPausedRemaining = remaining
+            timerJob?.cancel()
+        }
+    }
+
+    /**
+     * Resume the timer (when player taps Next, Try Again, or after an error).
+     */
+    private fun resumeTimer() {
+        if (timerPausedRemaining > 0) {
+            timerDeadline = System.currentTimeMillis() + timerPausedRemaining
+            timerPausedRemaining = 0L
+            startTimer()
+        }
+    }
+
     private fun endGame() {
+        timerJob?.cancel()
         val state = _uiState.value
         val durationMs = System.currentTimeMillis() - gameStartTime
 
@@ -689,25 +765,26 @@ class PronunciationViewModel @Inject constructor(
 
     fun resetToMenu() {
         countdownJob?.cancel()
+        timerJob?.cancel()
         recordingJob?.cancel()
         stopPlayback()
         lastRecordingWav = null
         audioRecorder?.release()
         audioRecorder = null
 
+        val currentKey = _uiState.value.azureKey
+        val currentRegion = _uiState.value.azureRegion
+        _uiState.value = PronunciationState(azureKey = currentKey, azureRegion = currentRegion)
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "pronunciation")
-            _uiState.value = PronunciationState(
-                highScore = hs,
-                azureKey = _uiState.value.azureKey,
-                azureRegion = _uiState.value.azureRegion
-            )
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 
     override fun onCleared() {
         super.onCleared()
         countdownJob?.cancel()
+        timerJob?.cancel()
         recordingJob?.cancel()
         stopPlayback()
         audioRecorder?.release()

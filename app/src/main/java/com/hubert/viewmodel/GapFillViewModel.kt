@@ -282,9 +282,10 @@ class GapFillViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
+        _uiState.value = GapFillState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "gap_fill")
-            _uiState.value = GapFillState(highScore = hs)
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 
