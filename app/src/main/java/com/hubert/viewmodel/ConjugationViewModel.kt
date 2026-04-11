@@ -690,15 +690,33 @@ class ConjugationViewModel @Inject constructor(
                 auxiliaryHint = buildAuxiliaryHint(personIdx, aux)
             }
         } else {
-            // Other tenses: distractors from same verb's other forms
+            // Other tenses: prefer same-person, different-tense distractors (excludes passé composé)
+            // This forces the player to distinguish tense endings rather than just recognizing person patterns
             val distractorPool = mutableSetOf<String>()
-            for ((_, fs) in verb.tenses) {
-                for (f in fs) {
-                    if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
-                        distractorPool.add(f)
+
+            // Phase 1: same person, different tenses (not passé composé)
+            for ((otherTense, otherForms) in verb.tenses) {
+                if (otherTense == tense || otherTense == "passe_compose") continue
+                if (personIdx < otherForms.size && otherForms[personIdx].isNotEmpty()) {
+                    val form = otherForms[personIdx]
+                    if (form.lowercase() != correctForm.lowercase()) {
+                        distractorPool.add(form)
                     }
                 }
             }
+
+            // Phase 2 fallback: if not enough same-person distractors, add different persons from other tenses
+            if (distractorPool.size < NUM_CHOICES - 1) {
+                for ((otherTense, otherForms) in verb.tenses) {
+                    if (otherTense == "passe_compose") continue
+                    for (f in otherForms) {
+                        if (f.isNotEmpty() && f.lowercase() != correctForm.lowercase()) {
+                            distractorPool.add(f)
+                        }
+                    }
+                }
+            }
+
             distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
             auxiliaryHint = null
             pcQuestionType = null
@@ -987,9 +1005,10 @@ class ConjugationViewModel @Inject constructor(
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
+        _uiState.value = ConjugationState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
-            _uiState.value = ConjugationState(highScore = hs)
+            _uiState.update { it.copy(highScore = hs) }
         }
     }
 
