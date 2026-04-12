@@ -18,8 +18,10 @@ import javax.inject.Inject
 /**
  * Game state for the matching screen.
  *
- * Continuous flow: 4 French words on the left, 4 German words on the right.
- * When you match a pair correctly, that slot immediately gets a new word.
+ * 6 French words on the left, 6 German words on the right (shuffled).
+ * Match pairs by tapping one French + one German word.
+ * Matched pairs fade out. After 2 pairs are greyed out, the oldest gets
+ * replaced with a new word (rolling replacement — always fresh words coming in).
  * Wrong match = -5 seconds penalty. Timer runs out = game over.
  */
 data class GameUiState(
@@ -27,13 +29,13 @@ data class GameUiState(
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
 
-    // Current 4 word slots (always 4 visible on each side)
+    // Current 6 word slots (always 6 visible on each side)
     val frenchWords: List<WordItem> = emptyList(),
     val germanWords: List<WordItem> = emptyList(),
 
     // Selection state
-    val selectedFrench: Int? = null,  // index (0-3)
-    val selectedGerman: Int? = null,  // index (0-3)
+    val selectedFrench: Int? = null,  // index (0-5)
+    val selectedGerman: Int? = null,  // index (0-5)
 
     // Per-slot feedback: index -> true (correct flash) or false (wrong flash)
     val frenchFeedback: Map<Int, Boolean> = emptyMap(),
@@ -65,8 +67,7 @@ data class WordItem(
     val text: String,
     val pairId: Int,  // links French to German (same pairId = correct match)
     val ipa: String? = null,  // IPA pronunciation (French cards only)
-    val matched: Boolean = false,  // true while fading out after a correct match
-    val fadeDurationMs: Int = 800  // per-match random fade duration
+    val matched: Boolean = false  // greyed out after a correct match
 )
 
 @HiltViewModel
@@ -96,15 +97,17 @@ class GameViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
-        const val SLOTS = 4
+        const val SLOTS = 6
         const val GAME_TIME_MS = 60_000L      // 60 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 5_000L   // lose 5 seconds on wrong match
         const val CORRECT_BONUS_MS = 2_000L   // gain 2 seconds on correct match
-        const val FADE_OUT_MIN_MS = 500L      // minimum fade-out duration for matched cards
-        const val FADE_OUT_MAX_MS = 1200L     // maximum fade-out duration for matched cards
+        const val MAX_GREYED_OUT = 2          // after this many greyed-out pairs, oldest gets replaced
     }
+
+    // Queue of greyed-out matched pairs: Pair(frenchIndex, germanIndex), oldest first
+    private val matchedQueue = mutableListOf<Pair<Int, Int>>()
 
     init {
         viewModelScope.launch {
@@ -118,6 +121,7 @@ class GameViewModel @Inject constructor(
         timerJob?.cancel()
         nextPairId = 0
         answerLog.clear()
+        matchedQueue.clear()
 
         _uiState.update {
             GameUiState(
@@ -140,7 +144,7 @@ class GameViewModel @Inject constructor(
     }
 
     /**
-     * Set up the initial 4x4 board and start the timer.
+     * Set up the initial 6x2 board and start the timer.
      */
     private fun initBoard() {
         val words = vocabRepository.getRandomWords(SLOTS)
@@ -264,13 +268,12 @@ class GameViewModel @Inject constructor(
             // Reward: +2 seconds
             timerDeadline += CORRECT_BONUS_MS
 
-            // Mark both cards as matched (triggers fade-out animation in UI)
-            val fadeDuration = (FADE_OUT_MIN_MS..FADE_OUT_MAX_MS).random().toInt()
+            // Mark both cards as matched (faded out in UI, not clickable)
             _uiState.update {
                 val updatedFrench = it.frenchWords.toMutableList()
                 val updatedGerman = it.germanWords.toMutableList()
-                updatedFrench[frenchIndex] = updatedFrench[frenchIndex].copy(matched = true, fadeDurationMs = fadeDuration)
-                updatedGerman[germanIndex] = updatedGerman[germanIndex].copy(matched = true, fadeDurationMs = fadeDuration)
+                updatedFrench[frenchIndex] = updatedFrench[frenchIndex].copy(matched = true)
+                updatedGerman[germanIndex] = updatedGerman[germanIndex].copy(matched = true)
 
                 it.copy(
                     selectedFrench = null,
@@ -286,10 +289,23 @@ class GameViewModel @Inject constructor(
                 )
             }
 
-            // After fade-out completes, replace with new word
+            // Track this greyed-out pair
+            matchedQueue.add(Pair(frenchIndex, germanIndex))
+
+            // Rolling replacement: when too many greyed-out, oldest gets a new word
+            if (matchedQueue.size > MAX_GREYED_OUT) {
+                replaceOldestMatch()
+            }
+
+            // Clear correct feedback after a short flash
             viewModelScope.launch {
-                delay(fadeDuration.toLong())
-                replaceSlot(frenchIndex, germanIndex)
+                delay(400)
+                _uiState.update {
+                    it.copy(
+                        frenchFeedback = it.frenchFeedback - frenchIndex,
+                        germanFeedback = it.germanFeedback - germanIndex
+                    )
+                }
             }
         } else {
             // Wrong match: -5 second penalty
@@ -327,10 +343,12 @@ class GameViewModel @Inject constructor(
     }
 
     /**
-     * Replace a faded-out matched pair with a new word.
-     * New words appear in the same slot positions (no shuffling of existing cards).
+     * Replace the oldest greyed-out matched pair with a new word.
      */
-    private fun replaceSlot(frenchIndex: Int, germanIndex: Int) {
+    private fun replaceOldestMatch() {
+        if (matchedQueue.isEmpty()) return
+        val (oldFrenchIdx, oldGermanIdx) = matchedQueue.removeFirst()
+
         val newWord = vocabRepository.getRandomWords(1).first()
         val newPairId = nextPairId++
 
@@ -341,14 +359,14 @@ class GameViewModel @Inject constructor(
             val updatedFrench = it.frenchWords.toMutableList()
             val updatedGerman = it.germanWords.toMutableList()
 
-            updatedFrench[frenchIndex] = newFrench
-            updatedGerman[germanIndex] = newGerman
+            updatedFrench[oldFrenchIdx] = newFrench
+            updatedGerman[oldGermanIdx] = newGerman
 
             it.copy(
                 frenchWords = updatedFrench,
                 germanWords = updatedGerman,
-                frenchFeedback = it.frenchFeedback - frenchIndex,
-                germanFeedback = it.germanFeedback - germanIndex
+                frenchFeedback = it.frenchFeedback - oldFrenchIdx,
+                germanFeedback = it.germanFeedback - oldGermanIdx
             )
         }
     }

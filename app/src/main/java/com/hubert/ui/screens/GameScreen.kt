@@ -86,7 +86,7 @@ fun GameScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 for (i in 0 until state.frenchWords.size) {
                     val frenchCorrect = state.frenchFeedback[i] == true
@@ -108,7 +108,6 @@ fun GameScreen(
                             isCorrectFlash = frenchCorrect,
                             isWrongFlash = frenchWrong,
                             isMatched = state.frenchWords[i].matched,
-                            fadeDurationMs = state.frenchWords[i].fadeDurationMs,
                             accentColor = FrenchBlue,
                             onClick = { onSelectFrench(i) },
                             modifier = Modifier.weight(1f)
@@ -121,7 +120,6 @@ fun GameScreen(
                             isCorrectFlash = germanCorrect,
                             isWrongFlash = germanWrong,
                             isMatched = state.germanWords[i].matched,
-                            fadeDurationMs = state.germanWords[i].fadeDurationMs,
                             accentColor = GermanGold,
                             onClick = { onSelectGerman(i) },
                             modifier = Modifier.weight(1f)
@@ -288,15 +286,14 @@ fun WordCard(
     isCorrectFlash: Boolean,
     isWrongFlash: Boolean,
     isMatched: Boolean = false,
-    fadeDurationMs: Int = 800,
     accentColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Fade out matched cards over a random duration per match
+    // Matched cards fade out completely (slot stays as invisible placeholder)
     val alpha by animateFloatAsState(
         targetValue = if (isMatched) 0f else 1f,
-        animationSpec = tween(durationMillis = fadeDurationMs),
+        animationSpec = tween(durationMillis = 400),
         label = "matchedAlpha"
     )
 
