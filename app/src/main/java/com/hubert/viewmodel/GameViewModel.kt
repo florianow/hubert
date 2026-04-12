@@ -98,10 +98,10 @@ class GameViewModel @Inject constructor(
 
     companion object {
         const val SLOTS = 4
-        const val GAME_TIME_MS = 60_000L      // 60 seconds total
+        const val GAME_TIME_MS = 30_000L      // 30 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
-        const val WRONG_PENALTY_MS = 5_000L   // lose 5 seconds on wrong match
+        const val WRONG_PENALTY_MS = 2_000L   // lose 2 seconds on wrong match
         const val CORRECT_BONUS_MS = 2_000L   // gain 2 seconds on correct match
         const val MAX_GREYED_OUT = 2          // after this many greyed-out pairs, oldest gets replaced
     }
@@ -302,7 +302,7 @@ class GameViewModel @Inject constructor(
                 }
             } else if (matchedQueue.size > MAX_GREYED_OUT) {
                 viewModelScope.launch {
-                    delay(300)  // give player time to solve remaining pairs
+                    delay(400)  // give player time to solve remaining pairs
                     // Re-check: maybe all matched in the meantime
                     val stillNeedsReplace = !_uiState.value.frenchWords.all { it.matched }
                     if (stillNeedsReplace && matchedQueue.isNotEmpty()) {

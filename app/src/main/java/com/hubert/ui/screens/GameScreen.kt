@@ -147,14 +147,14 @@ fun GameScreen(
             }
         }
 
-        // Penalty overlay: "-5s" flash
+        // Penalty overlay: "-2s" flash
         if (state.showPenalty) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "-5s",
+                    text = "-2s",
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Black,
                     color = WrongRed.copy(alpha = 0.8f)
