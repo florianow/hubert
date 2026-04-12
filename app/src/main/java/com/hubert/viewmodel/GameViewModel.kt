@@ -64,7 +64,9 @@ data class GameUiState(
 data class WordItem(
     val text: String,
     val pairId: Int,  // links French to German (same pairId = correct match)
-    val ipa: String? = null  // IPA pronunciation (French cards only)
+    val ipa: String? = null,  // IPA pronunciation (French cards only)
+    val matched: Boolean = false,  // true while fading out after a correct match
+    val fadeDurationMs: Int = 800  // per-match random fade duration
 )
 
 @HiltViewModel
@@ -100,6 +102,8 @@ class GameViewModel @Inject constructor(
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 5_000L   // lose 5 seconds on wrong match
         const val CORRECT_BONUS_MS = 2_000L   // gain 2 seconds on correct match
+        const val FADE_OUT_MIN_MS = 500L      // minimum fade-out duration for matched cards
+        const val FADE_OUT_MAX_MS = 1200L     // maximum fade-out duration for matched cards
     }
 
     init {
@@ -192,6 +196,7 @@ class GameViewModel @Inject constructor(
     fun selectFrench(index: Int) {
         val state = _uiState.value
         if (!state.isPlaying) return
+        if (state.frenchWords[index].matched) return  // fading out, not selectable
 
         // Deselect if tapping the same one
         if (state.selectedFrench == index) {
@@ -211,6 +216,7 @@ class GameViewModel @Inject constructor(
     fun selectGerman(index: Int) {
         val state = _uiState.value
         if (!state.isPlaying) return
+        if (state.germanWords[index].matched) return  // fading out, not selectable
 
         // Deselect if tapping the same one
         if (state.selectedGerman == index) {
@@ -258,13 +264,21 @@ class GameViewModel @Inject constructor(
             // Reward: +2 seconds
             timerDeadline += CORRECT_BONUS_MS
 
-            // Show correct feedback on both slots
+            // Mark both cards as matched (triggers fade-out animation in UI)
+            val fadeDuration = (FADE_OUT_MIN_MS..FADE_OUT_MAX_MS).random().toInt()
             _uiState.update {
+                val updatedFrench = it.frenchWords.toMutableList()
+                val updatedGerman = it.germanWords.toMutableList()
+                updatedFrench[frenchIndex] = updatedFrench[frenchIndex].copy(matched = true, fadeDurationMs = fadeDuration)
+                updatedGerman[germanIndex] = updatedGerman[germanIndex].copy(matched = true, fadeDurationMs = fadeDuration)
+
                 it.copy(
                     selectedFrench = null,
                     selectedGerman = null,
-                    frenchFeedback = mapOf(frenchIndex to true),
-                    germanFeedback = mapOf(germanIndex to true),
+                    frenchWords = updatedFrench,
+                    germanWords = updatedGerman,
+                    frenchFeedback = it.frenchFeedback + (frenchIndex to true),
+                    germanFeedback = it.germanFeedback + (germanIndex to true),
                     score = it.score + matchScore,
                     totalMatches = it.totalMatches + 1,
                     streak = newStreak,
@@ -272,9 +286,9 @@ class GameViewModel @Inject constructor(
                 )
             }
 
-            // Green flash visible for 500ms, then replace with new word
+            // After fade-out completes, replace with new word
             viewModelScope.launch {
-                delay(500)
+                delay(fadeDuration.toLong())
                 replaceSlot(frenchIndex, germanIndex)
             }
         } else {
@@ -285,8 +299,8 @@ class GameViewModel @Inject constructor(
                 it.copy(
                     selectedFrench = null,
                     selectedGerman = null,
-                    frenchFeedback = mapOf(frenchIndex to false),
-                    germanFeedback = mapOf(germanIndex to false),
+                    frenchFeedback = it.frenchFeedback + (frenchIndex to false),
+                    germanFeedback = it.germanFeedback + (germanIndex to false),
                     showPenalty = true,
                     streak = 0  // reset streak
                 )
@@ -302,14 +316,19 @@ class GameViewModel @Inject constructor(
             viewModelScope.launch {
                 delay(500)
                 _uiState.update {
-                    it.copy(frenchFeedback = emptyMap(), germanFeedback = emptyMap(), showPenalty = false)
+                    it.copy(
+                        frenchFeedback = it.frenchFeedback - frenchIndex,
+                        germanFeedback = it.germanFeedback - germanIndex,
+                        showPenalty = false
+                    )
                 }
             }
         }
     }
 
     /**
-     * Replace a matched pair with a new word at the same slot positions.
+     * Replace a faded-out matched pair with a new word.
+     * New words appear in the same slot positions (no shuffling of existing cards).
      */
     private fun replaceSlot(frenchIndex: Int, germanIndex: Int) {
         val newWord = vocabRepository.getRandomWords(1).first()
@@ -317,13 +336,6 @@ class GameViewModel @Inject constructor(
 
         val newFrench = WordItem(text = newWord.french, pairId = newPairId, ipa = newWord.ipa)
         val newGerman = WordItem(text = newWord.german, pairId = newPairId)
-
-        // Pick a random german slot to place the new german word
-        // (to avoid the new pair always being at the same row)
-        val germanSlots = (0 until SLOTS).toMutableList()
-        germanSlots.shuffle()
-        // Use the same germanIndex slot for simplicity
-        // (the words are already shuffled on the german side)
 
         _uiState.update {
             val updatedFrench = it.frenchWords.toMutableList()
@@ -335,8 +347,8 @@ class GameViewModel @Inject constructor(
             it.copy(
                 frenchWords = updatedFrench,
                 germanWords = updatedGerman,
-                frenchFeedback = emptyMap(),
-                germanFeedback = emptyMap()
+                frenchFeedback = it.frenchFeedback - frenchIndex,
+                germanFeedback = it.germanFeedback - germanIndex
             )
         }
     }

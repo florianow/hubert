@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -106,6 +107,8 @@ fun GameScreen(
                             isSelected = state.selectedFrench == i,
                             isCorrectFlash = frenchCorrect,
                             isWrongFlash = frenchWrong,
+                            isMatched = state.frenchWords[i].matched,
+                            fadeDurationMs = state.frenchWords[i].fadeDurationMs,
                             accentColor = FrenchBlue,
                             onClick = { onSelectFrench(i) },
                             modifier = Modifier.weight(1f)
@@ -117,6 +120,8 @@ fun GameScreen(
                             isSelected = state.selectedGerman == i,
                             isCorrectFlash = germanCorrect,
                             isWrongFlash = germanWrong,
+                            isMatched = state.germanWords[i].matched,
+                            fadeDurationMs = state.germanWords[i].fadeDurationMs,
                             accentColor = GermanGold,
                             onClick = { onSelectGerman(i) },
                             modifier = Modifier.weight(1f)
@@ -282,10 +287,19 @@ fun WordCard(
     isSelected: Boolean,
     isCorrectFlash: Boolean,
     isWrongFlash: Boolean,
+    isMatched: Boolean = false,
+    fadeDurationMs: Int = 800,
     accentColor: Color,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Fade out matched cards over a random duration per match
+    val alpha by animateFloatAsState(
+        targetValue = if (isMatched) 0f else 1f,
+        animationSpec = tween(durationMillis = fadeDurationMs),
+        label = "matchedAlpha"
+    )
+
     val scale by animateFloatAsState(
         targetValue = when {
             isCorrectFlash -> 0.95f
@@ -297,6 +311,7 @@ fun WordCard(
     )
 
     val backgroundColor = when {
+        isMatched -> CorrectGreen.copy(alpha = 0.15f)
         isCorrectFlash -> CorrectGreen.copy(alpha = 0.3f)
         isWrongFlash -> WrongRed.copy(alpha = 0.3f)
         isSelected -> accentColor.copy(alpha = 0.2f)
@@ -304,6 +319,7 @@ fun WordCard(
     }
 
     val borderColor = when {
+        isMatched -> CorrectGreen.copy(alpha = 0.3f)
         isCorrectFlash -> CorrectGreen
         isWrongFlash -> WrongRed
         isSelected -> accentColor
@@ -314,13 +330,14 @@ fun WordCard(
         modifier = modifier
             .fillMaxHeight()
             .scale(scale)
+            .graphicsLayer { this.alpha = alpha }
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = if (isSelected || isCorrectFlash || isWrongFlash) 2.dp else 1.dp,
                 color = borderColor,
                 shape = RoundedCornerShape(12.dp)
             )
-            .clickable { onClick() },
+            .then(if (!isMatched) Modifier.clickable { onClick() } else Modifier),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         shape = RoundedCornerShape(12.dp)
     ) {
