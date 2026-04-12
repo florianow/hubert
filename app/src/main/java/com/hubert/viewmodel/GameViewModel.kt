@@ -102,7 +102,7 @@ class GameViewModel @Inject constructor(
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 2_000L   // lose 2 seconds on wrong match
-        const val CORRECT_BONUS_MS = 2_000L   // gain 2 seconds on correct match
+        const val CLEAR_BOARD_BONUS_MS = 5_000L  // gain 5 seconds when all pairs cleared
         const val MAX_GREYED_OUT = 2          // after this many greyed-out pairs, oldest gets replaced
     }
 
@@ -265,9 +265,6 @@ class GameViewModel @Inject constructor(
             // Speak the French word aloud
             frenchTts.speak(frenchItem.text)
 
-            // Reward: +2 seconds
-            timerDeadline += CORRECT_BONUS_MS
-
             // Mark both cards as matched (faded out in UI, not clickable)
             _uiState.update {
                 val updatedFrench = it.frenchWords.toMutableList()
@@ -292,9 +289,10 @@ class GameViewModel @Inject constructor(
             // Track this greyed-out pair
             matchedQueue.add(Pair(frenchIndex, germanIndex))
 
-            // All pairs matched -> fresh board! Otherwise rolling replacement after delay
+            // All pairs matched -> bonus time + fresh board!
             val allMatched = _uiState.value.frenchWords.all { it.matched }
             if (allMatched) {
+                timerDeadline += CLEAR_BOARD_BONUS_MS
                 viewModelScope.launch {
                     delay(600)
                     matchedQueue.clear()
