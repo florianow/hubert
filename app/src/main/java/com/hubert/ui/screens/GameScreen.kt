@@ -293,7 +293,7 @@ fun WordCard(
     // Matched cards fade out completely (slot stays as invisible placeholder)
     val alpha by animateFloatAsState(
         targetValue = if (isMatched) 0f else 1f,
-        animationSpec = tween(durationMillis = 400),
+        animationSpec = tween(durationMillis = 800),
         label = "matchedAlpha"
     )
 

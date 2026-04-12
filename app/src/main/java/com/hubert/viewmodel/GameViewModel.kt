@@ -97,7 +97,7 @@ class GameViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
-        const val SLOTS = 6
+        const val SLOTS = 4
         const val GAME_TIME_MS = 60_000L      // 60 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
@@ -292,9 +292,23 @@ class GameViewModel @Inject constructor(
             // Track this greyed-out pair
             matchedQueue.add(Pair(frenchIndex, germanIndex))
 
-            // Rolling replacement: when too many greyed-out, oldest gets a new word
-            if (matchedQueue.size > MAX_GREYED_OUT) {
-                replaceOldestMatch()
+            // All pairs matched -> fresh board! Otherwise rolling replacement after delay
+            val allMatched = _uiState.value.frenchWords.all { it.matched }
+            if (allMatched) {
+                viewModelScope.launch {
+                    delay(600)
+                    matchedQueue.clear()
+                    loadNewBoard()
+                }
+            } else if (matchedQueue.size > MAX_GREYED_OUT) {
+                viewModelScope.launch {
+                    delay(300)  // give player time to solve remaining pairs
+                    // Re-check: maybe all matched in the meantime
+                    val stillNeedsReplace = !_uiState.value.frenchWords.all { it.matched }
+                    if (stillNeedsReplace && matchedQueue.isNotEmpty()) {
+                        replaceOldestMatch()
+                    }
+                }
             }
 
             // Clear correct feedback after a short flash
@@ -339,6 +353,34 @@ class GameViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    /**
+     * Load a completely new set of word pairs (all slots).
+     * Score, streak, and timer continue.
+     */
+    private fun loadNewBoard() {
+        val words = vocabRepository.getRandomWords(SLOTS)
+
+        val frenchItems = words.mapIndexed { index, word ->
+            WordItem(text = word.french, pairId = nextPairId + index, ipa = word.ipa)
+        }
+        val germanItems = words.mapIndexed { index, word ->
+            WordItem(text = word.german, pairId = nextPairId + index)
+        }.shuffled()
+
+        nextPairId += SLOTS
+
+        _uiState.update {
+            it.copy(
+                frenchWords = frenchItems,
+                germanWords = germanItems,
+                selectedFrench = null,
+                selectedGerman = null,
+                frenchFeedback = emptyMap(),
+                germanFeedback = emptyMap()
+            )
         }
     }
 
