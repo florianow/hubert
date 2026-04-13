@@ -97,13 +97,13 @@ class GameViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
 
     companion object {
-        const val SLOTS = 4
+        const val SLOTS = 5
         const val GAME_TIME_MS = 30_000L      // 30 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 2_000L   // lose 2 seconds on wrong match
         const val CLEAR_BOARD_BONUS_MS = 5_000L  // gain 5 seconds when all pairs cleared
-        const val MAX_GREYED_OUT = 2          // after this many greyed-out pairs, oldest gets replaced
+        const val MAX_GREYED_OUT = 3         // after this many greyed-out pairs, oldest gets replaced
     }
 
     // Queue of greyed-out matched pairs: Pair(frenchIndex, germanIndex), oldest first
@@ -277,7 +277,7 @@ class GameViewModel @Inject constructor(
                     selectedGerman = null,
                     frenchWords = updatedFrench,
                     germanWords = updatedGerman,
-                    frenchFeedback = it.frenchFeedback + (frenchIndex to true),
+                    // frenchFeedback = it.frenchFeedback + (frenchIndex to true),
                     germanFeedback = it.germanFeedback + (germanIndex to true),
                     score = it.score + matchScore,
                     totalMatches = it.totalMatches + 1,
@@ -300,7 +300,7 @@ class GameViewModel @Inject constructor(
                 }
             } else if (matchedQueue.size > MAX_GREYED_OUT) {
                 viewModelScope.launch {
-                    delay(400)  // give player time to solve remaining pairs
+                    delay(600)  // give player time to solve remaining pairs
                     // Re-check: maybe all matched in the meantime
                     val stillNeedsReplace = !_uiState.value.frenchWords.all { it.matched }
                     if (stillNeedsReplace && matchedQueue.isNotEmpty()) {
