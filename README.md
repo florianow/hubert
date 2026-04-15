@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 6 game modes + smart practice picker</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 7 game modes + smart practice picker</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -33,7 +33,7 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Features
 
-- **6 Game Modes** — Trouvez!, Classez!, Compl\u00E9tez!, \u00C9crivez!, Conjuguez!, Prononcez!
+- **7 Game Modes** — Trouvez!, Classez!, Compl\u00E9tez!, \u00C9crivez!, Conjuguez!, Prononcez!, Préposez!
 - **Hubert choisit!** — Smart practice picker that launches the game mode you've played the least, encouraging balanced practice
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
@@ -97,6 +97,14 @@ When a matching example sentence exists in the dataset, you see a French sentenc
 
 - **Scoring**: Timer-based — 90s countdown, +5s correct, -5s wrong, 300s cap. 150 pts per correct + 30 per streak level
 - **Pool**: 1182 verbs across 8 tenses (Pr\u00E9sent, Imparfait, Futur, Conditionnel, Subjonctif, Pass\u00E9 simple, Imp\u00E9ratif, Pass\u00E9 compos\u00E9)
+
+### 7. Préposez!
+
+A French sentence is shown with the preposition blanked out. The German translation is shown as a hint. Pick the correct preposition from 4 choices — covering à, de, en, dans, sur, avec, sans, par, pour, avant, après, entre, contre, sous, vers, chez.
+
+- **Scoring**: 150 pts per correct + streak bonus
+- **Timer**: 60s, +5s correct, -5s wrong
+- **Pool**: 764 sentences extracted from [anki_french](https://github.com/jacbz/anki_french) preposition cards
 
 ### 6. Prononcez!
 
@@ -284,13 +292,14 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 6 game mode cards
+│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 7 game mode cards
 │   │   ├── GameScreen.kt           # Trouvez! game UI (with IPA on French cards)
 │   │   ├── GenderSnapScreen.kt     # Classez! game UI (with IPA)
 │   │   ├── GapFillScreen.kt        # Compl\u00E9tez! game UI
 │   │   ├── SpellingBeeScreen.kt    # \u00C9crivez! game UI
 │   │   ├── ConjugationScreen.kt    # Conjuguez! game UI (with IPA, timer, info limits)
 │   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback, retry)
+│   │   ├── PrepositionScreen.kt    # Préposez! game UI
 │   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
 │   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
@@ -308,6 +317,7 @@ app/src/main/java/com/hubert/
 │   ├── SpellingBeeViewModel.kt     # \u00C9crivez! game logic
 │   ├── ConjugationViewModel.kt     # Conjuguez! game logic (8 tenses, timer, IPA, info limits)
 │   ├── PronunciationViewModel.kt   # Prononcez! game logic (Azure, adaptive difficulty, second chance)
+│   ├── PrepositionViewModel.kt     # Préposez! game logic
 │   ├── StatisticsViewModel.kt      # Statistics and achievements
 │   └── AnswerRecord.kt             # Per-question answer log for detail views
 ├── HubertApplication.kt            # Hilt application class
@@ -315,13 +325,15 @@ app/src/main/java/com/hubert/
 
 scripts/
 ├── convert_vocab.py                # Data pipeline: YAML + HTML → JSON assets
-└── extract_conjugations.py         # Conjugation pipeline: Anki DB → conjugations.json
+├── extract_conjugations.py         # Conjugation pipeline: Anki DB → conjugations.json
+└── extract_prepositions.py         # Preposition pipeline: anki_french YAML → prepositions.json
 
 app/src/main/assets/
 ├── vocab.json                      # 5000 vocabulary words
 ├── categories.json                 # 28 thematic categories
 ├── sentences.json                  # ~2000 words with example sentences
-└── conjugations.json               # 1182 verbs with conjugation tables + sentence matches
+├── conjugations.json               # 1182 verbs with conjugation tables + sentence matches
+└── prepositions.json               # 764 preposition fill-in-the-blank sentences (16 prepositions)
 ```
 
 ## Architecture
@@ -329,7 +341,7 @@ app/src/main/assets/
 ```mermaid
 graph TD
     UI["<b>UI Layer</b><br/>MenuScreen \u00B7 GameScreen \u00B7 GenderSnapScreen<br/>GapFillScreen \u00B7 SpellingBeeScreen<br/>ConjugationScreen \u00B7 PronunciationScreen<br/>GameOverScreen \u00B7 StatisticsScreen"]
-    VM["<b>ViewModel Layer</b><br/>GameViewModel · GenderSnapViewModel<br/>GapFillViewModel · SpellingBeeViewModel<br/>ConjugationViewModel · PronunciationViewModel<br/>StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
+    VM["<b>ViewModel Layer</b><br/>GameViewModel · GenderSnapViewModel<br/>GapFillViewModel · SpellingBeeViewModel<br/>ConjugationViewModel · PronunciationViewModel<br/>PrepositionViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
     REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · AudioRecorder"]
     DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API"]
 
