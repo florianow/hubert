@@ -1,0 +1,7642 @@
+[
+  {
+    "fr": "L'Hôtel ___ la Poste se trouve au centre-ville.",
+    "de": "Das Hotel zur Post befindet sich im Stadtzentrum.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ces ___ libres expriment parfaitement ses émotions.",
+    "de": "Diese freien Verse drücken ihre Gefühle perfekt aus.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle dort paisiblement ___ une couverture chaude.",
+    "de": "Sie schläft friedlich unter einer warmen Decke.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous habitons ___ la boulangerie et la pharmacie.",
+    "de": "Wir wohnen zwischen der Bäckerei und der Apotheke.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le vote a été adopté à vingt voix ___ quinze.",
+    "de": "Die Abstimmung wurde mit zwanzig zu fünfzehn Stimmen angenommen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ce médicament est efficace ___ soulager la douleur.",
+    "de": "Dieses Medikament ist wirksam gegen Schmerzen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le soleil se couche ___ l'ouest.",
+    "de": "Die Sonne geht im Westen unter.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il aime écrire des ___ pour sa bien-aimée.",
+    "de": "Er schreibt gerne Verse für seine Geliebte.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il se penche ___ elle pour lui murmurer quelque chose.",
+    "de": "Er beugt sich zu ihr hin, um ihr etwas zuzuflüstern.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Notre chat aime se frotter ___ les jambes des visiteurs.",
+    "de": "Unsere Katze reibt sich gerne an den Beinen der Besucher.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le sentier monte ___ la colline.",
+    "de": "Der Pfad führt den Hügel hinauf.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le patient est ___ anesthésie générale.",
+    "de": "Der Patient liegt in Vollnarkose.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ l'attente de votre réponse, je vous prie d'agréer mes salutations distinguées.",
+    "de": "In Erwartung Ihrer Antwort verbleibe ich mit freundlichen Grüßen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le conflit ___ ces deux groupes dure depuis des années.",
+    "de": "Der Konflikt zwischen diesen beiden Gruppen dauert schon Jahre.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ vous être bien reposé, vous vous sentirez mieux.",
+    "de": "Nachdem Sie sich gut ausgeruht haben, werden Sie sich besser fühlen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a parlé ___ éloquence lors de la conférence.",
+    "de": "Sie hat mit Beredsamkeit auf der Konferenz gesprochen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle a chanté ___ passion devant un public enthousiaste.",
+    "de": "Sie hat mit Leidenschaft vor einem begeisterten Publikum gesungen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ 2025, nous célébrerons notre anniversaire de mariage.",
+    "de": "Im Jahr 2025 werden wir unseren Hochzeitstag feiern.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il faut mettre ce mot ___ guillemets.",
+    "de": "Man muss dieses Wort in Anführungszeichen setzen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ le passé, les gens voyageaient moins.",
+    "de": "Früher reisten die Leute weniger.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "La tension monte ___ les deux pays.",
+    "de": "Die Spannung zwischen den beiden Ländern steigt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous comptons ___ votre discrétion.",
+    "de": "Wir zählen auf Ihre Verschwiegenheit.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il a obtenu le poste ___ plusieurs tentatives.",
+    "de": "Er hat die Stelle nach mehreren Versuchen bekommen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous vivions différemment ___ l'invention d'Internet.",
+    "de": "Wir lebten anders vor der Erfindung des Internets.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les ingénieurs de ___ Toyota ont développé une nouvelle technologie.",
+    "de": "Die Ingenieure bei Toyota haben eine neue Technologie entwickelt.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "C'est facile ___ dire, mais difficile à faire.",
+    "de": "Das ist leicht zu sagen, aber schwer zu tun.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut toujours vérifier l'huile ___ un long voyage en voiture.",
+    "de": "Man sollte immer das Öl überprüfen, bevor man eine lange Autofahrt macht.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle s'est plongée ___ la lecture de ce roman passionnant.",
+    "de": "Sie hat sich in die Lektüre dieses spannenden Romans vertieft.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le vase est tombé et s'est brisé ___ mille morceaux.",
+    "de": "Die Vase ist heruntergefallen und in tausend Stücke zerbrochen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle travaille ___ cesse du matin au soir.",
+    "de": "Sie arbeitet ohne Unterlass von morgens bis abends.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ mai à juin, les jardins sont en fleurs.",
+    "de": "Von Mai bis Juni blühen die Gärten.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ ce que j'ai fait pour lui, il pourrait être plus reconnaissant !",
+    "de": "Nach allem, was ich für ihn getan habe, könnte er dankbarer sein!",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il n'y a rien de commun ___ ces deux projets.",
+    "de": "Es gibt nichts Gemeinsames zwischen diesen beiden Projekten.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'ai acheté un billet ___ cent euros pour le concert.",
+    "de": "Ich habe eine Eintrittskarte für hundert Euro für das Konzert gekauft.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle s'est assise à l'___ du bus pour éviter le mal des transports.",
+    "de": "Sie setzte sich in den vorderen Teil des Busses, um der Reisekrankheit vorzubeugen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Ils ont juré fidélité ___ leur foi.",
+    "de": "Sie haben bei ihrem Glauben Treue geschworen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il est mort ___ vieillesse.",
+    "de": "Er ist an Altersschwäche gestorben.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ quelle heure commence le spectacle ?",
+    "de": "Um wie viel Uhr beginnt die Vorstellung?",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ temps en temps, j'aime me promener dans le parc.",
+    "de": "Von Zeit zu Zeit spaziere ich gerne im Park.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous partirons ___ l'Italie demain.",
+    "de": "Wir werden morgen nach Italien aufbrechen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le concert commencera ___ vingt heures précises.",
+    "de": "Das Konzert wird um genau zwanzig Uhr beginnen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'avion vole ___ la ville.",
+    "de": "Das Flugzeug fliegt über der Stadt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "\"Cet idiot ___ voisin fait toujours du bruit la nuit !\"",
+    "de": "\"Dieser Idiot von einem Nachbarn macht immer nachts Lärm!\"",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons organisé une fête ___ célébrer son succès.",
+    "de": "Wir haben eine Party organisiert, um seinen Erfolg zu feiern.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le concert aura lieu ___ la salle des fêtes.",
+    "de": "Das Konzert wird in der Festhalle stattfinden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il faut traiter les animaux ___ respect.",
+    "de": "Man muss Tiere mit Respekt behandeln.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ coup, je me suis rendu compte de mon erreur.",
+    "de": "Im Nachhinein wurde mir mein Fehler bewusst.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ que le soleil se fut couché, les étoiles apparurent.",
+    "de": "Nachdem die Sonne untergegangen war, erschienen die Sterne.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous devrions arriver ___ la tombée de la nuit.",
+    "de": "Wir sollten vor Einbruch der Dunkelheit ankommen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Notre équipe a pris l'avantage ___ l'adversaire.",
+    "de": "Unsere Mannschaft hat die Oberhand über den Gegner gewonnen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ avoir tout considéré, nous avons décidé de déménager.",
+    "de": "Nachdem wir alles bedacht hatten, beschlossen wir umzuziehen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous avons besoin de plus de temps ___ terminer le projet.",
+    "de": "Wir brauchen mehr Zeit, um das Projekt abzuschließen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut réfléchir à l'___-Covid.",
+    "de": "Man muss über die Zeit nach Covid nachdenken.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a été critiqué ___ ses commentaires inappropriés.",
+    "de": "Er wurde für seine unangemessenen Kommentare kritisiert.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il est sorti ___ parapluie sous la pluie.",
+    "de": "Er ist ohne Regenschirm in den Regen hinausgegangen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a acheté un sac ___ pommes au marché.",
+    "de": "Sie hat einen Sack Äpfel auf dem Markt gekauft.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est toujours ___ son téléphone.",
+    "de": "Sie hängt ständig an ihrem Handy.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ ces nouvelles informations, nous devons revoir notre stratégie.",
+    "de": "Mit diesen neuen Informationen müssen wir unsere Strategie überdenken.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il a été condamné ___ vol.",
+    "de": "Er wurde wegen Diebstahls verurteilt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Regardez ___ votre droite, vous verrez le monument.",
+    "de": "Schauen Sie nach rechts, dort werden Sie das Denkmal sehen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il y a eu dix votes pour et quinze ___.",
+    "de": "Es gab zehn Stimmen dafür und fünfzehn dagegen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons acheté des cadeaux ___ tout le monde.",
+    "de": "Wir haben Geschenke für alle gekauft.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cette assurance vous protège ___ le vol.",
+    "de": "Diese Versicherung schützt Sie gegen Diebstahl.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'ai appris quelque chose d'intéressant ___ lui.",
+    "de": "Ich habe etwas Interessantes über ihn erfahren.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le chat est entré ___ la fenêtre ouverte.",
+    "de": "Die Katze ist durch das offene Fenster hereingekommen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je suis passé ___ Marie, mais elle n'était pas là.",
+    "de": "Ich bin bei Marie vorbeigegangen, aber sie war nicht da.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai donné un cadeau ___ ma mère pour son anniversaire.",
+    "de": "Ich habe meiner Mutter ein Geschenk zum Geburtstag gegeben.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "La neige s'accumule ___ le toit de la maison.",
+    "de": "Der Schnee häuft sich auf dem Dach des Hauses.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle hésite ___ plusieurs options.",
+    "de": "Sie schwankt zwischen mehreren Optionen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les nuages se déplacent ___ l'est.",
+    "de": "Die Wolken ziehen nach Osten.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a commandé ___ la bière et des gâteaux pour la fête.",
+    "de": "Er hat Bier und Kuchen für die Party bestellt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chat s'est blotti confortablement ___ le fauteuil.",
+    "de": "Die Katze hat es sich gemütlich in dem Sessel gemacht.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Vous voulez aller au ciné ___ moi ?",
+    "de": "Willst du mit mir ins Kino gehen?",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Nous avons parié une glace ___ un gâteau.",
+    "de": "Wir haben ein Eis gegen einen Kuchen gewettet.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le général ___ Gaulle a joué un rôle important dans l'histoire de France.",
+    "de": "General de Gaulle hat eine wichtige Rolle in der französischen Geschichte gespielt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les joueurs se sont battus trois ___ un.",
+    "de": "Die Spieler kämpften drei gegen einen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est à vous ___ jouer maintenant.",
+    "de": "Sie sind jetzt an der Reihe zu spielen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ les temps qui courent, il est difficile de trouver un emploi.",
+    "de": "In der heutigen Zeit ist es schwierig, einen Job zu finden.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ GPS, nous nous sommes perdus en ville.",
+    "de": "Ohne GPS haben wir uns in der Stadt verirrt.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a acheté une robe ___ manches pour l'été.",
+    "de": "Sie hat ein ärmelloses Sommerkleid gekauft.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le guide nous a conseillé de bien nous hydrater ___ la randonnée.",
+    "de": "Der Führer riet uns, uns gut zu hydratisieren, bevor wir die Wanderung beginnen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La situation s'améliore de jour ___ jour.",
+    "de": "Die Situation verbessert sich von Tag zu Tag.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les chances sont de cent ___ un.",
+    "de": "Die Chancen stehen hundert zu eins.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a échangé sa vieille voiture ___ une neuve.",
+    "de": "Er hat sein altes Auto gegen ein neues eingetauscht.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle s'est tournée ___ moi avec un grand sourire.",
+    "de": "Sie wandte sich zu mir hin mit einem breiten Lächeln.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les négociations évoluent ___ une solution pacifique.",
+    "de": "Die Verhandlungen entwickeln sich hin zu einer friedlichen Lösung.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons trouvé un message secret ___ la bouteille.",
+    "de": "Wir haben eine geheime Nachricht in der Flasche gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "L'équipe s'est entraînée dur ___ sa défaite.",
+    "de": "Die Mannschaft hat nach ihrer Niederlage hart trainiert.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous allons ___ ville pour faire des courses.",
+    "de": "Wir fahren in die Stadt zum Einkaufen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La page d'___ contient la solution.",
+    "de": "Die nächste Seite enthält die Lösung.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "L'enfant s'est endormi ___ les étoiles.",
+    "de": "Das Kind ist unter den Sternen eingeschlafen.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "La pièce de théâtre est ___ trois actes.",
+    "de": "Das Theaterstück ist in drei Akten.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants se sont battus deux ___ deux.",
+    "de": "Die Kinder kämpften zwei gegen zwei.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ cette apparence se cache une personne sensible.",
+    "de": "Unter diesem Äußeren verbirgt sich ein sensibler Mensch.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous devrions réserver une table ___ d'aller au restaurant.",
+    "de": "Wir sollten einen Tisch reservieren, bevor wir ins Restaurant gehen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'aimerais terminer ce travail ___ la fin de la semaine.",
+    "de": "Ich möchte diese Arbeit vor Ende der Woche abschließen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les oiseaux volent ___ le nord pour l'été.",
+    "de": "Die Vögel fliegen für den Sommer nach Norden.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a été remercié ___ ses années de service.",
+    "de": "Ihm wurde für seine Jahre des Dienstes gedankt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il travaille souvent ___ nuit dans cet hôpital.",
+    "de": "Er arbeitet oft nachts in diesem Krankenhaus.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il y a une erreur ___ ce calcul.",
+    "de": "Es gibt einen Fehler in dieser Berechnung.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Je suis ___ nouvelles de lui depuis des mois.",
+    "de": "Ich bin seit Monaten ohne Nachricht von ihm.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous habitons ___ la gare centrale.",
+    "de": "Wir wohnen bei dem Hauptbahnhof.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La route ___ ces deux villages est très pittoresque.",
+    "de": "Die Straße zwischen diesen beiden Dörfern ist sehr malerisch.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous devons nous unir ___ l'injustice.",
+    "de": "Wir müssen uns gegen Ungerechtigkeit zusammenschließen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'___ du navire fendait les vagues avec puissance.",
+    "de": "Der Bug des Schiffes durchschnitt kraftvoll die Wellen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'échangerais volontiers mon vélo ___ une trottinette électrique.",
+    "de": "Ich würde mein Fahrrad gerne gegen einen E-Roller tauschen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous nous sommes mariés peu ___ notre rencontre.",
+    "de": "Wir haben kurz nach unserer Begegnung geheiratet.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les joueurs ___ ont marqué trois buts pendant le match.",
+    "de": "Die Stürmer haben während des Spiels drei Tore geschossen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ ce temps pluvieux, je préfère rester à la maison.",
+    "de": "Bei diesem regnerischen Wetter bleibe ich lieber zu Hause.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Nous avons marché ___ la neige pendant des heures.",
+    "de": "Wir sind stundenlang durch den Schnee gelaufen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il faut peser le pour et le ___ avant de décider.",
+    "de": "Man muss das Für und Wider abwägen, bevor man entscheidet.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La ville était différente ___ la neige.",
+    "de": "Die Stadt sah anders aus im Schnee.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je suis d'accord pour partir en vacances, mais pas ___ lui.",
+    "de": "Ich bin einverstanden, in den Urlaub zu fahren, aber nicht mit ihm.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle est partie en vacances ___ réserver d'hôtel.",
+    "de": "Sie ist in den Urlaub gefahren, ohne ein Hotel zu buchen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a déménagé ___ que je le sache.",
+    "de": "Sie ist umgezogen, ohne dass ich es wusste.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "La rivière coule ___ la mer.",
+    "de": "Der Fluss fließt zum Meer hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est le livre ___ ma sœur.",
+    "de": "Das ist das Buch meiner Schwester.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je dois passer ___ le pharmacien avant de rentrer.",
+    "de": "Ich muss noch in die Apotheke, bevor ich heimgehe.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce tableau est ___ eux, ils l'ont hérité de leur grand-père.",
+    "de": "Dieses Gemälde gehört ihnen, sie haben es von ihrem Großvater geerbt.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a réussi son examen ___ mention.",
+    "de": "Sie hat ihre Prüfung mit Auszeichnung bestanden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle est arrivée peu ___ le début de la réunion.",
+    "de": "Sie kam kurz vor Beginn der Besprechung an.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous avons décidé de nous promener ___ les bois ce week-end.",
+    "de": "Wir haben beschlossen, am Wochenende durch den Wald zu spazieren.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "La température varie ___ 20 et 25 degrés.",
+    "de": "Die Temperatur schwankt zwischen 20 und 25 Grad.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette coutume existe ___ plusieurs peuples africains.",
+    "de": "Dieser Brauch existiert bei mehreren afrikanischen Völkern.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "La façade de notre maison est orientée ___ le sud.",
+    "de": "Die Fassade unseres Hauses ist nach Süden ausgerichtet.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ lumière, je ne peux pas lire.",
+    "de": "Ohne Licht kann ich nicht lesen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le médecin m'a conseillé de faire des étirements ___ de faire du sport.",
+    "de": "Der Arzt hat mir geraten, mich vor dem Sport zu dehnen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous avons trouvé un trésor enfoui ___ le jardin.",
+    "de": "Wir haben einen vergrabenen Schatz im Garten gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle a quitté la réunion ___ dire un mot.",
+    "de": "Sie hat die Besprechung verlassen, ohne ein Wort zu sagen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il a avoué ___ la contrainte.",
+    "de": "Er hat unter Zwang gestanden.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai lu cette histoire fascinante ___ un vieux livre de contes.",
+    "de": "Ich habe diese faszinierende Geschichte in einem alten Märchenbuch gelesen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle est la plus douée ___ sa classe en mathématiques.",
+    "de": "Sie ist die Begabteste ihrer Klasse in Mathematik.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut compter ___ trois et quatre heures pour faire ce trajet.",
+    "de": "Man muss zwischen drei und vier Stunden für diese Strecke rechnen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ loin en loin, on aperçoit des maisons dans la campagne.",
+    "de": "Hier und da sieht man Häuser auf dem Land.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chien aboie ___ les passants.",
+    "de": "Der Hund bellt die Passanten an.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La maison est restée ___ chauffage tout l'hiver.",
+    "de": "Das Haus blieb den ganzen Winter ohne Heizung.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le patient est ___ la vie et la mort.",
+    "de": "Der Patient schwebt zwischen Leben und Tod.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ne jugez pas les gens ___ la mine.",
+    "de": "Beurteilen Sie Menschen nicht nach ihrem Aussehen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle garde ses économies ___ son matelas.",
+    "de": "Sie bewahrt ihre Ersparnisse unter ihrer Matratze auf.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je serai absent ___ une semaine.",
+    "de": "Ich werde für eine Woche abwesend sein.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le pont s'est effondré ___ le poids des voitures.",
+    "de": "Die Brücke ist unter dem Gewicht der Autos eingestürzt.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a pris une profonde inspiration ___ de plonger dans la piscine.",
+    "de": "Sie nahm einen tiefen Atemzug, bevor sie in den Pool sprang.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a jeté son sac ___ le mur de frustration.",
+    "de": "Er hat seine Tasche vor Frust gegen die Wand geworfen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La plage s'étend ___ huit kilomètres.",
+    "de": "Der Strand erstreckt sich über acht Kilometer.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Je t'échange mon dessert ___ ton fruit.",
+    "de": "Ich tausche meinen Nachtisch gegen dein Obst.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a peint le mur ___ une couleur vive.",
+    "de": "Sie hat die Wand mit einer leuchtenden Farbe gestrichen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il publie ses romans ___ un pseudonyme.",
+    "de": "Er veröffentlicht seine Romane unter einem Pseudonym.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le printemps vient ___ l'hiver.",
+    "de": "Der Frühling kommt nach dem Winter.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous vendons des produits ___ conservateurs.",
+    "de": "Wir verkaufen konservierungsfreie Produkte.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'___ ai vraiment besoin pour finir mon travail.",
+    "de": "Ich brauche es wirklich, um meine Arbeit zu beenden.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ ce vent, il vaut mieux rentrer les plantes.",
+    "de": "Bei diesem Wind ist es besser, die Pflanzen reinzuholen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "As-tu quelque chose ___ mon frère?",
+    "de": "Hast du etwas gegen meinen Bruder?",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est un médicament ___ soulager les maux de tête.",
+    "de": "Das ist ein Medikament ⁠zur⁠ Linderung von Kopfschmerzen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons mangé une salade ___ des noix et du fromage.",
+    "de": "Wir haben einen Salat mit Nüssen und Käse gegessen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il s'est spécialisé ___ chirurgie cardiaque.",
+    "de": "Er hat sich auf Herzchirurgie spezialisiert.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il faut mettre ses lunettes ___ de conduire la nuit.",
+    "de": "Man muss seine Brille aufsetzen, bevor man nachts fährt.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Ils restent ___ l'école le plus longtemps possible.",
+    "de": "Sie bleiben so lange wie möglich in der Schule.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai payé ___ carte bancaire.",
+    "de": "Ich habe mit Kreditkarte bezahlt.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ sa jeunesse, il rêvait de devenir astronaute.",
+    "de": "In seiner Jugend träumte er davon, Astronaut zu werden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "On mange bien ___ ce restaurateur.",
+    "de": "Man isst gut bei diesem Restaurantbesitzer.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle ___ est malade d'inquiétude.",
+    "de": "Sie ist deshalb krank vor Sorge.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Vingt ans ___, ils se sont retrouvés.",
+    "de": "Zwanzig Jahre später haben sie sich wiedergetroffen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le train d'___ part dans une heure.",
+    "de": "Der nächste Zug fährt in einer Stunde.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ ailleurs, j'aimerais discuter de votre promotion.",
+    "de": "Übrigens möchte ich über Ihre Beförderung sprechen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je suis ___ cette proposition.",
+    "de": "Ich bin für diesen Vorschlag.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous sommes ___ le lieutenant dans la hiérarchie militaire.",
+    "de": "Wir stehen in der militärischen Hierarchie unter dem Leutnant.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Je préfère le thé ___ sucre.",
+    "de": "Ich bevorzuge den Tee ohne Zucker.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle est partie tôt ___ éviter les embouteillages.",
+    "de": "Sie ist früh losgefahren, um Staus zu vermeiden.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ autres choses, il aime lire.",
+    "de": "Unter anderem liest er gerne.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il n'est pas parti ___ une certaine tristesse.",
+    "de": "Er ist nicht ohne eine gewisse Traurigkeit gegangen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le chat s'est faufilé ___ mes jambes.",
+    "de": "Die Katze ist durch meine Beine geschlüpft.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle travaille un jour ___ deux.",
+    "de": "Sie arbeitet jeden zweiten Tag.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle a fait un exposé ___ l'histoire de l'art.",
+    "de": "Sie hat einen Vortrag über Kunstgeschichte gehalten.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "La porte claque ___ le chambranle.",
+    "de": "Die Tür schlägt gegen den Rahmen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons confiance ___ notre équipe pour gagner le match.",
+    "de": "Wir haben Vertrauen zu unserem Team, das Spiel zu gewinnen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ne jette pas ces fleurs, j'aimerais ___ garder quelques pétales.",
+    "de": "Wirf diese Blumen nicht weg, ich möchte einige ihrer Blütenblätter aufheben.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous allons ___ la piscine tous les samedis.",
+    "de": "Wir gehen jeden Samstag ins Schwimmbad.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il boit toujours ___ la bouteille.",
+    "de": "Er trinkt immer aus der Flasche.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a cogné ___ la table dans l'obscurité.",
+    "de": "Er ist im Dunkeln gegen den Tisch gestoßen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je dois aller ___ le dentist cette après-midi.",
+    "de": "Ich muss heute Nachmittag zum Zahnarzt gehen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est partie ___ le sourire ce matin.",
+    "de": "Sie ist heute Morgen mit einem Lächeln gegangen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "La pièce mesure 6 mètres ___ 4.",
+    "de": "Der Raum misst 6 mal 4 Meter.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ ces conditions, il est difficile de prendre une décision.",
+    "de": "Unter diesen Bedingungen ist es schwierig, eine Entscheidung zu treffen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Tu dois finir tes devoirs, ___ quoi tu seras puni.",
+    "de": "Du musst deine Hausaufgaben fertig machen, sonst wirst du bestraft.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai trouvé la solution ___ les dernières pages du livre.",
+    "de": "Ich habe die Lösung auf den letzten Seiten des Buches gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il habite ___ ici, dans le quartier.",
+    "de": "Er wohnt hier in der Gegend.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous gardons ce secret ___ nous.",
+    "de": "Das bleibt unter uns.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons partagé le gâteau ___ nous.",
+    "de": "Wir haben den Kuchen unter uns aufgeteilt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "D'___ moi, ce n'est pas une bonne idée.",
+    "de": "Meiner Meinung nach ist das keine gute Idee.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Appuie ton dos ___ le mur et fais des abdos.",
+    "de": "Lehne deinen Rücken an die Wand und mache Sit-ups.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ la chaleur, le chocolat a fondu.",
+    "de": "In der Hitze ist die Schokolade geschmolzen.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous avons voté ___ ce candidat.",
+    "de": "Wir haben für diesen Kandidaten gestimmt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le pilote a vérifié tous les systèmes ___ le décollage.",
+    "de": "Der Pilot überprüfte alle Systeme vor dem Start.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Cette symphonie est ___ si mineur.",
+    "de": "Diese Symphonie ist in h-Moll.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle est liée à cette famille ___ alliance.",
+    "de": "Sie ist durch Heirat mit dieser Familie verbunden.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le chef a goûté le plat ___ de l'envoyer en salle.",
+    "de": "Der Küchenchef hat das Gericht probiert, bevor er es in den Speisesaal schickte.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a agi ___ jalousie.",
+    "de": "Er hat aus Eifersucht gehandelt.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut agir ___ les règles pour obtenir ce permis.",
+    "de": "Man muss nach den Regeln handeln, um diese Genehmigung zu erhalten.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le cinéma est juste ___ la mairie.",
+    "de": "Das Kino ist gleich hinter dem Rathaus.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il s'est insurgé ___ cette décision injuste.",
+    "de": "Er hat sich gegen diese ungerechte Entscheidung aufgelehnt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle ne sort plus de ___ elle depuis des semaines.",
+    "de": "Sie geht seit Wochen nicht mehr aus dem Haus.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'équipe s'est entraînée dur ___ le grand match.",
+    "de": "Das Team hat hart trainiert vor dem großen Spiel.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous sommes partis en vacances ___ trois.",
+    "de": "Wir sind zu dritt in den Urlaub gefahren.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a crié ___ son chien qui s'enfuyait.",
+    "de": "Sie hat ihren Hund angeschrien, der davonlief.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous marchons ___ un ciel étoilé.",
+    "de": "Wir laufen unter einem Sternenhimmel.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le colonel marche ___ le commandant dans le défilé militaire.",
+    "de": "Der Oberst marschiert vor dem Kommandanten in der Militärparade.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a compris d'___ son regard qu'il était fâché.",
+    "de": "Sie hat an seinem Blick erkannt, dass er verärgert war.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le train arrivera en gare ___ une heure.",
+    "de": "Der Zug wird in einer Stunde am Bahnhof ankommen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "La crainte ___ l'échec ne doit pas nous empêcher d'essayer.",
+    "de": "Die Angst vor dem Scheitern sollte uns nicht davon abhalten, es zu versuchen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous devons nous battre ___ nos préjugés.",
+    "de": "Wir müssen gegen unsere Vorurteile kämpfen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons discuté ___ plusieurs sujets intéressants.",
+    "de": "Wir haben über mehrere interessante Themen diskutiert.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "C'est un bon restaurant ___ les familles.",
+    "de": "Das ist ein gutes Restaurant für Familien.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chien a foncé ___ le facteur.",
+    "de": "Der Hund ist auf den Briefträger losgestürzt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "L'échelle est posée ___ l'arbre.",
+    "de": "Die Leiter steht an dem Baum.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette lotion agit ___ les piqûres d'insectes.",
+    "de": "Diese Lotion wirkt gegen Insektenstiche.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle est partie en vacances ___ ses amis.",
+    "de": "Sie ist mit ihren Freunden in den Urlaub gefahren.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Le médecin ausculte le patient allongé ___ la table d'examen.",
+    "de": "Der Arzt untersucht den Patienten, der auf dem Untersuchungstisch liegt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "\"___ demain !\" dit-elle en partant.",
+    "de": "\"Bis morgen!\" sagte sie beim Weggehen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je reviendrai ___ dix minutes.",
+    "de": "Ich komme in zehn Minuten zurück.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ la pluie battante, elle continue sa route.",
+    "de": "Im strömenden Regen setzt sie ihren Weg fort.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Faites comme ___ vous, servez-vous du café !",
+    "de": "Fühlen Sie sich wie zu Hause, nehmen Sie sich ruhig Kaffee!",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ sa direction, l'entreprise a prospéré.",
+    "de": "Unter seiner Leitung hat das Unternehmen floriert.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je vais ___ moi prendre une douche.",
+    "de": "Ich gehe nach Hause duschen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il tend la main ___ le petit chat effrayé.",
+    "de": "Er streckt seine Hand zu dem verängstigten Kätzchen hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a été félicité ___ son excellent travail.",
+    "de": "Er wurde für seine ausgezeichnete Arbeit gelobt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est arrivée ___ le lever du soleil.",
+    "de": "Sie ist mit Sonnenaufgang angekommen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Le trésor est caché ___ cinq mètres de fond.",
+    "de": "Der Schatz ist in fünf Meter Tiefe verborgen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il parle toujours ___ son nom propre, jamais au nom du groupe.",
+    "de": "Er spricht immer in seinem eigenen Namen, nie im Namen der Gruppe.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les pèlerins marchent ___ la cathédrale.",
+    "de": "Die Pilger laufen zur Kathedrale hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le prix varie ___ 10 et 15 euros.",
+    "de": "Der Preis variiert zwischen 10 und 15 Euro.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle s'est excusée ___ son retard.",
+    "de": "Sie hat sich für ihre Verspätung entschuldigt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce projet n'est pas ___ me déplaire.",
+    "de": "Dieses Projekt gefällt mir durchaus.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous partirons en vacances ___ trois semaines.",
+    "de": "Wir fahren in drei Wochen in den Urlaub.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "\"Allons faire une balade ___ vélo !\" a-t-il proposé.",
+    "de": "\"Lass uns eine Fahrt mit dem Rad machen!\" schlug er vor.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Tu vas te pencher en ___.",
+    "de": "Du wirst dich nach vorne beugen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il dort ___ la tente.",
+    "de": "Er schläft im Zelt.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous avons trouvé un message caché ___ le tableau.",
+    "de": "Wir haben eine versteckte Botschaft in dem Gemälde gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le poème se compose de douze ___ rimés.",
+    "de": "Das Gedicht besteht aus zwölf gereimten Versen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'ai rangé les documents importants ___ le coffre-fort.",
+    "de": "Ich habe die wichtigen Dokumente im Safe verstaut.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Nous luttons ___ la liberté.",
+    "de": "Wir kämpfen für die Freiheit.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "As-tu rangé ta chambre ___ toi ?",
+    "de": "Hast du dein Zimmer zu Hause aufgeräumt?",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ avoir dîné, nous sommes allés au cinéma.",
+    "de": "Nachdem wir zu Abend gegessen hatten, sind wir ins Kino gegangen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "L'___ du bateau fendait les vagues avec élégance.",
+    "de": "Der Bug des Schiffes durchschnitt elegant die Wellen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le chat s'est glissé ___ l'armoire.",
+    "de": "Die Katze ist unter den Schrank geschlüpft.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle écrit des ___ depuis son adolescence.",
+    "de": "Sie schreibt seit ihrer Jugend Verse.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons dîné ___ un restaurant étoilé.",
+    "de": "Wir haben in einem Sterne-Restaurant zu Abend gegessen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ sa précipitation, elle a oublié ses clés sur la table.",
+    "de": "In ihrer Eile hat sie ihre Schlüssel auf dem Tisch vergessen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Nous avons besoin d'un volontaire ___ cette tâche.",
+    "de": "Wir brauchen einen Freiwilligen für diese Aufgabe.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"Je compte ___ toi pour garder le secret.\"",
+    "de": "\"Ich verlasse mich darauf, dass du das Geheimnis bewahrst.\"",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Je fais du sport trois fois ___ semaine.",
+    "de": "Ich treibe dreimal pro Woche Sport.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le pont a été construit ___ des ouvriers expérimentés.",
+    "de": "Die Brücke wurde von erfahrenen Arbeitern gebaut.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut toujours vérifier la météo ___ de planifier une sortie en plein air.",
+    "de": "Man sollte immer das Wetter überprüfen, bevor man einen Ausflug im Freien plant.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La pharmacie est ___ cinq minutes d'ici.",
+    "de": "Die Apotheke ist fünf Minuten von hier entfernt.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut examiner cette question ___ tous les angles.",
+    "de": "Man muss diese Frage von allen Seiten betrachten.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je préfère le café ___ un peu de lait.",
+    "de": "Ich trinke Kaffee lieber mit etwas Milch.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Le pont suspendu passe ___ deux falaises.",
+    "de": "Die Hängebrücke führt zwischen zwei Klippen hindurch.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je viendrai te voir ___ 14h et 15h.",
+    "de": "Ich komme dich zwischen 14 und 15 Uhr besuchen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le document est classé ___ le numéro 7.",
+    "de": "Das Dokument ist unter der Nummer 7 eingeordnet.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "La voiture est tombée en panne ___ un petit village.",
+    "de": "Das Auto ist in einem kleinen Dorf liegengeblieben.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Cette machine est conçue ___ simplifier le travail.",
+    "de": "Diese Maschine ist dazu konzipiert, die Arbeit zu vereinfachen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a terminé son travail bien ___ la date limite.",
+    "de": "Sie hat ihre Arbeit weit vor dem Abgabetermin beendet.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle cuisine toujours ___ sel.",
+    "de": "Sie kocht immer ohne Salz.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous partirons en vacances ___ Pâques.",
+    "de": "Wir werden zu Ostern in den Urlaub fahren.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous devrions nous exercer ___ la représentation.",
+    "de": "Wir sollten vor der Aufführung üben.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ tous mes cousins, c'est lui que je préfère.",
+    "de": "Von allen meinen Cousins mag ich ihn am liebsten.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les prix sont affichés ___ la vitrine du magasin.",
+    "de": "Die Preise sind im Schaufenster des Geschäfts ausgestellt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il faut être patient ___ les enfants.",
+    "de": "Man muss mit Kindern geduldig sein.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Cette boisson est ___ calories.",
+    "de": "Dieses Getränk ist kalorienfrei.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Les chances sont de trois ___ deux qu'il pleuve demain.",
+    "de": "Die Chancen stehen drei zu zwei, dass es morgen regnet.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a juré ___ son honneur de dire la vérité.",
+    "de": "Er hat bei seiner Ehre geschworen, die Wahrheit zu sagen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le bateau navigue ___ le port.",
+    "de": "Das Boot fährt in Richtung Hafen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le trésor était enterré trois mètres ___ terre.",
+    "de": "Der Schatz war drei Meter unter der Erde vergraben.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ de la volonté, on peut surmonter bien des obstacles.",
+    "de": "Mit Willenskraft kann man viele Hindernisse überwinden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Des problèmes, j'___ ai plus que je ne peux en gérer !",
+    "de": "Probleme, ich habe mehr davon, als ich bewältigen kann!",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Plusieurs années se sont écoulées ___ ces deux événements.",
+    "de": "Zwischen diesen beiden Ereignissen sind mehrere Jahre vergangen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle travaille ___ le secteur privé depuis cinq ans.",
+    "de": "Sie arbeitet seit fünf Jahren in der Privatwirtschaft.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "L'armoire est placée ___ le mur du salon.",
+    "de": "Der Schrank steht an der Wohnzimmerwand.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'impôt ___ le revenu augmente chaque année.",
+    "de": "Die Einkommensteuer steigt jedes Jahr.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "C'est une manie ___ lui de toujours arriver en retard.",
+    "de": "Es ist eine Marotte von ihm, immer zu spät zu kommen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous devrions réviser nos notes ___ l'examen final.",
+    "de": "Wir sollten unsere Notizen durchgehen, bevor wir die Abschlussprüfung schreiben.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a été récompensé ___ sa fidélité à l'entreprise.",
+    "de": "Er wurde für seine Treue zum Unternehmen belohnt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a reconnu son ami ___ la foule.",
+    "de": "Sie hat ihren Freund in der Menge erkannt.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ conséquent, nous devons annuler le voyage.",
+    "de": "Folglich müssen wir die Reise absagen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai mis les documents importants ___ clé.",
+    "de": "Ich habe die wichtigen Dokumente unter Verschluss gebracht.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut aborder ce sujet délicat ___ tact.",
+    "de": "Man muss dieses heikle Thema mit Taktgefühl angehen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle a réagi ___ calme face à la situation.",
+    "de": "Sie hat mit Ruhe auf die Situation reagiert.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il est sorti ___ manteau malgré le froid.",
+    "de": "Er ist trotz der Kälte ohne Mantel rausgegangen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut traiter cette information ___ prudence.",
+    "de": "Man muss mit dieser Information vorsichtig umgehen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "La Ville ___ Paris organise un festival cet été.",
+    "de": "Die Stadt Paris organisiert diesen Sommer ein Festival.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce médicament est efficace ___ le rhume.",
+    "de": "Dieses Medikament ist wirksam gegen Erkältungen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les archéologues ont trouvé des ossements ___ les ruines.",
+    "de": "Die Archäologen haben Knochen unter den Ruinen gefunden.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a rompu ___ son petit ami hier soir.",
+    "de": "Sie hat sich gestern Abend von ihrem Freund getrennt.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il a succombé à ses blessures peu ___.",
+    "de": "Er erlag kurz danach seinen Verletzungen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle range ses chaussures ___ l'escalier.",
+    "de": "Sie verstaut ihre Schuhe unter der Treppe.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cette ville se trouve ___ Paris et Lyon.",
+    "de": "Diese Stadt liegt zwischen Paris und Lyon.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "\"Réfléchissez bien ___ de vous engager,\" a conseillé le professeur.",
+    "de": "\"Überlegen Sie gut, bevor Sie sich verpflichten,\" riet der Lehrer.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle est partie ___ prétexte d'un rendez-vous.",
+    "de": "Sie ist unter dem Vorwand eines Termins gegangen.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il a été arrêté ___ excès de vitesse.",
+    "de": "Er wurde wegen zu schnellen Fahrens angehalten.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "La réponse se trouve quelque part ___ ce dossier.",
+    "de": "Die Antwort befindet sich irgendwo in dieser Akte.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ sortant du cinéma, nous avons croisé nos voisins.",
+    "de": "Beim Verlassen des Kinos sind wir unseren Nachbarn begegnet.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ ce gouvernement, les impôts ont augmenté.",
+    "de": "Unter dieser Regierung sind die Steuern gestiegen.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a parié cent euros ___ dix.",
+    "de": "Sie hat hundert Euro gegen zehn gewettet.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Marie est très forte ___ langues étrangères.",
+    "de": "Marie ist sehr stark in Fremdsprachen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle s'est rebellée ___ l'autorité de ses parents.",
+    "de": "Sie hat sich gegen die Autorität ihrer Eltern aufgelehnt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est une bonne crème solaire ___ protéger la peau.",
+    "de": "Das ist eine gute Sonnencreme zum Schutz der Haut.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"Cette recette est bien de ___ nous !\"",
+    "de": "\"Dieses Rezept ist typisch für unsere Region!\"",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai acheté du riz ___ vrac au marché.",
+    "de": "Ich habe auf dem Markt losen Reis gekauft.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Mon fils excelle ___ mathématiques.",
+    "de": "Mein Sohn ist hervorragend in Mathematik.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le conférencier a abordé ce sujet ___ son discours d'ouverture.",
+    "de": "Der Redner hat dieses Thema in seiner Eröffnungsrede angesprochen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "La pluie frappe ___ les vitres.",
+    "de": "Der Regen schlägt gegen die Scheiben.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il faut remplir ce formulaire ___ les 24 heures.",
+    "de": "Dieses Formular muss innerhalb von 24 Stunden ausgefüllt werden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle s'acharne ___ lui sans raison apparente.",
+    "de": "Sie verfolgt ihn hartnäckig ohne ersichtlichen Grund.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le chemin mène ___ la plage.",
+    "de": "Der Weg führt zum Strand hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il est parti ___ Paris ce matin.",
+    "de": "Er ist heute Morgen nach Paris abgereist.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"___ toi, on ne s'ennuie jamais !\"",
+    "de": "\"Mit dir wird es nie langweilig!\"",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Nous avons discuté de ce projet ___ les moindres détails.",
+    "de": "Wir haben dieses Projekt bis ins kleinste Detail besprochen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il marche ___ but dans les rues désertes.",
+    "de": "Er läuft ziellos durch die leeren Straßen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ semaine, je me lève toujours à 6 heures.",
+    "de": "Während der Woche stehe ich immer um 6 Uhr auf.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il sort ___ la maison tous les matins à 8 heures.",
+    "de": "Er verlässt das Haus jeden Morgen um 8 Uhr.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a grandi ___ une famille nombreuse.",
+    "de": "Sie ist in einer großen Familie aufgewachsen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il a réussi à réparer la voiture ___ dix minutes.",
+    "de": "Es ist ihm gelungen, das Auto innerhalb von zehn Minuten zu reparieren.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons passé une semaine ___ mer.",
+    "de": "Wir haben eine Woche auf See verbracht.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette crème est ___ parfum.",
+    "de": "Diese Creme ist parfümfrei.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ ces nouvelles lunettes, je vois beaucoup mieux.",
+    "de": "Mit dieser neuen Brille sehe ich viel besser.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle est partie ___ hier et aujourd'hui.",
+    "de": "Sie ist zwischen gestern und heute abgereist.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je ne peux pas dormir ___ un oreiller confortable.",
+    "de": "Ich kann nicht ohne ein bequemes Kissen schlafen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "L'équipe était ___ la défensive pendant tout le match.",
+    "de": "Die Mannschaft war während des ganzen Spiels in der Defensive.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous avons besoin d'un plan B ___ cette situation.",
+    "de": "Wir brauchen einen Plan B für diese Situation.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ ma grande surprise, il parlait couramment français.",
+    "de": "Zu meiner großen Überraschung sprach er fließend Französisch.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'économie s'oriente ___ une reprise.",
+    "de": "Die Wirtschaft bewegt sich auf einen Aufschwung zu.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle habite ___ Lyon, dans un petit village.",
+    "de": "Sie wohnt bei Lyon in einem kleinen Dorf.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est un bon endroit ___ observer les étoiles.",
+    "de": "Das ist ein guter Ort, um Sterne zu beobachten.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "La plupart d'___ eux sont déjà partis.",
+    "de": "Die meisten von ihnen sind schon gegangen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a été nominée ___ le prix du meilleur roman.",
+    "de": "Sie wurde für den Preis des besten Romans nominiert.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a été récompensé ___ ses efforts.",
+    "de": "Er wurde für seine Bemühungen belohnt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"___ la pluie, le beau temps\", dit le proverbe.",
+    "de": "\"Nach Regen folgt Sonnenschein\", sagt das Sprichwort.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous nous sommes promenés ___ le dîner.",
+    "de": "Wir sind nach dem Abendessen spazieren gegangen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Ces ___ alternés créent un rythme intéressant.",
+    "de": "Diese Kreuzverse erzeugen einen interessanten Rhythmus.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ce bruit est ___ rendre fou !",
+    "de": "Dieser Lärm ist zum Verrücktwerden!",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je suis en désaccord ___ cette décision.",
+    "de": "Ich bin mit dieser Entscheidung nicht einverstanden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Cette timidité ___ elle ne date pas d'hier.",
+    "de": "Diese Schüchternheit bei ihr ist nichts Neues.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut toujours regarder ___ de traverser la rue.",
+    "de": "Man muss immer schauen, bevor man die Straße überquert.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a évité ___ répondre à cette question délicate.",
+    "de": "Er hat es vermieden, auf diese heikle Frage zu antworten.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai obtenu 15 ___ 20 à mon examen.",
+    "de": "Ich habe 15 von 20 Punkten in meiner Prüfung erreicht.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "J'ai parlé ___ ma sœur au téléphone hier soir.",
+    "de": "Ich habe gestern Abend mit meiner Schwester telefoniert.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il ne fait rien ___ la journée sauf regarder la télévision.",
+    "de": "Er tut den ganzen Tag über nichts außer fernsehen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'avion vole ___ les nuages.",
+    "de": "Das Flugzeug fliegt unter den Wolken.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle travaille ___ la lumière d'une lampe.",
+    "de": "Sie arbeitet im Licht einer Lampe.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ le soir, un orage violent a éclaté.",
+    "de": "Gegen Abend brach ein heftiges Gewitter aus.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Cette idée est déjà présente ___ les écrits de Platon.",
+    "de": "Diese Idee ist bereits in den Schriften Platons vorhanden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Ne le jugez pas ___ les apparences.",
+    "de": "Beurteilen Sie ihn nicht nach dem Äußeren.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "La réunion se tiendra ___ la salle de conférence au deuxième étage.",
+    "de": "Die Besprechung findet im Konferenzraum im zweiten Stock statt.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle habite ___ Corse depuis deux ans.",
+    "de": "Sie wohnt seit zwei Jahren auf Korsika.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons acheté ce cadeau ___ toi.",
+    "de": "Wir haben dieses Geschenk für dich gekauft.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a coupé les légumes ___ un couteau bien aiguisé.",
+    "de": "Sie hat das Gemüse mit einem gut geschärften Messer geschnitten.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "\"___ lundi !\" s'est-elle exclamée en quittant le bureau.",
+    "de": "\"Bis Montag!\" rief sie aus, als sie das Büro verließ.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous partons en vacances ___ deux semaines.",
+    "de": "Wir fahren für zwei Wochen in den Urlaub.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cette règle s'applique ___ exception.",
+    "de": "Diese Regel gilt ohne Ausnahme.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il gagne cinquante euros ___ l'heure comme consultant.",
+    "de": "Er verdient fünfzig Euro pro Stunde als Berater.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chien s'est caché ___ la table pendant l'orage.",
+    "de": "Der Hund hat sich während des Gewitters unter dem Tisch versteckt.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il est parti ___ fermer la porte à clé.",
+    "de": "Er ist gegangen, ohne die Tür abzuschließen.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il a répondu ___ insolence au professeur.",
+    "de": "Er hat dem Lehrer mit Frechheit geantwortet.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "L'équipe joue ___ la pression du public.",
+    "de": "Das Team spielt unter dem Druck des Publikums.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a reculé ___ trois pas, effrayée par le chien.",
+    "de": "Sie ist um drei Schritte zurückgewichen, erschrocken von dem Hund.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle nage ___ le courant pour s'entraîner.",
+    "de": "Sie schwimmt gegen den Strom, um zu trainieren.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous vivons ___ la menace d'une guerre.",
+    "de": "Wir leben unter der Bedrohung eines Krieges.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Ne tirez pas ___ le messager !",
+    "de": "Schießen Sie nicht auf den Boten!",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous avons voyagé ___ tout le confort moderne.",
+    "de": "Wir sind mit allem modernen Komfort gereist.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Nous communiquons principalement ___ e-mail.",
+    "de": "Wir kommunizieren hauptsächlich per E-Mail.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ un peu de chance, nous gagnerons le concours.",
+    "de": "Mit ein bisschen Glück werden wir den Wettbewerb gewinnen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je marche ___ les maisons.",
+    "de": "Ich gehe zwischen den Häusern.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous marchons ___ le centre-ville.",
+    "de": "Wir laufen in Richtung Stadtzentrum.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je fais plus jeune ___ maquillage.",
+    "de": "Ich sehe ohne Make-up jünger aus.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Les soldats défilent ___ uniforme dans la rue principale.",
+    "de": "Die Soldaten marschieren in Uniform durch die Hauptstraße.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ moments, je me sens vraiment fatigué.",
+    "de": "Zeitweise fühle ich mich wirklich müde.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle est très avancée ___ son âge.",
+    "de": "Sie ist sehr fortgeschritten für ihr Alter.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a un grand respect ___ ses parents.",
+    "de": "Sie hat großen Respekt vor ihren Eltern.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Tournez à gauche ___ le pont.",
+    "de": "Biegen Sie nach der Brücke links ab.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le train partira ___ midi.",
+    "de": "Der Zug wird vor Mittag abfahren.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle coud ses vêtements ___ la machine.",
+    "de": "Sie näht ihre Kleidung mit der Maschine.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je suis ___ la violence sous toutes ses formes.",
+    "de": "Ich bin gegen Gewalt in all ihren Formen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous devrions manger ___ d'aller au cinéma.",
+    "de": "Wir sollten essen, bevor wir ins Kino gehen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous allons ___ la montagne pour les vacances.",
+    "de": "Wir fahren für die Ferien ins Gebirge.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce livre est ___ moi, je l'ai acheté hier.",
+    "de": "Dieses Buch gehört mir, ich habe es gestern gekauft.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je préfère le thé ___ du citron.",
+    "de": "Ich mag Tee lieber mit Zitrone.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle a mis ses lunettes de soleil ___ de sortir.",
+    "de": "Sie setzte ihre Sonnenbrille auf, bevor sie hinausging.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le comité doit se prononcer ___ ce projet demain.",
+    "de": "Das Komitee muss sich morgen zu diesem Projekt äußern.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ cette chaleur, on ne peut pas travailler efficacement.",
+    "de": "Bei dieser Hitze kann man nicht effizient arbeiten.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je passerai vous voir ___ les vacances.",
+    "de": "Ich werde Sie nach den Ferien besuchen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le guide nous conduit ___ le sommet.",
+    "de": "Der Führer führt uns zum Gipfel hinauf.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons discuté ___ le professeur de nos projets d'avenir.",
+    "de": "Wir haben mit dem Lehrer über unsere Zukunftspläne gesprochen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ contre, je ne suis pas d'accord avec cette décision.",
+    "de": "Hingegen bin ich mit dieser Entscheidung nicht einverstanden.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "C'est un cadeau ___ vous remercier.",
+    "de": "Das ist ein Geschenk, um Ihnen zu danken.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ cette promotion, il pourra enfin s'acheter une voiture.",
+    "de": "Mit dieser Beförderung wird er sich endlich ein Auto kaufen können.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Cette somme sera retenue ___ votre salaire.",
+    "de": "Dieser Betrag wird von Ihrem Gehalt einbehalten.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous vivons ___ le même toit.",
+    "de": "Wir leben unter einem Dach.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "La discussion ___ les deux présidents a duré deux heures.",
+    "de": "Das Gespräch zwischen den beiden Präsidenten dauerte zwei Stunden.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'ai acheté des fleurs ___ l'anniversaire de ma mère.",
+    "de": "Ich habe Blumen zum Geburtstag meiner Mutter gekauft.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a trouvé un trésor caché ___ une vieille malle au grenier.",
+    "de": "Er hat einen versteckten Schatz in einer alten Truhe auf dem Dachboden gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Je m'___ souviens comme si c'était hier.",
+    "de": "Ich erinnere mich daran, als wäre es gestern gewesen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il y a une ressemblance frappante ___ les deux sœurs.",
+    "de": "Es gibt eine verblüffende Ähnlichkeit zwischen den beiden Schwestern.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a été choisie ___ ses compétences en leadership.",
+    "de": "Sie wurde aufgrund ihrer Führungsqualitäten ausgewählt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Aussitôt ___ l'accident, les secours sont arrivés.",
+    "de": "Unmittelbar nach dem Unfall trafen die Rettungskräfte ein.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il faut toujours faire un plan ___ de commencer un projet important.",
+    "de": "Man sollte immer einen Plan machen, bevor man ein wichtiges Projekt beginnt.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Cherchez la ville ___ la carte.",
+    "de": "Suchen Sie die Stadt auf der Karte.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle a réussi l'examen ___ difficulté.",
+    "de": "Sie hat die Prüfung ohne Schwierigkeiten bestanden.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "La foudre est tombée ___ le clocher de l'église.",
+    "de": "Der Blitz ist in den Kirchturm eingeschlagen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "L'___ du train a été endommagé dans l'accident.",
+    "de": "Der vordere Teil des Zuges wurde bei dem Unfall beschädigt.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a acheté la maison ___ condition de rénovation.",
+    "de": "Er hat das Haus unter der Bedingung einer Renovierung gekauft.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il commet gaffe ___ gaffe depuis ce matin.",
+    "de": "Er macht seit heute Morgen einen Fehler nach dem anderen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ son éducation, il a appris à être poli.",
+    "de": "Durch seine Erziehung hat er gelernt, höflich zu sein.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il court ___ les honneurs depuis des années.",
+    "de": "Er jagt seit Jahren dem Ruhm hinterher.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'ai besoin d'une roue ___ secours pour ma voiture.",
+    "de": "Ich brauche ein Ersatzrad für mein Auto.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce couteau ___ cuisine est très bien aiguisé.",
+    "de": "Dieses Küchenmesser ist sehr gut geschärft.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il est arrivé ___ moi au bureau ce matin.",
+    "de": "Er ist heute Morgen vor mir im Büro angekommen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Ils rentrent ___ eux, en Espagne, après dix ans à l'étranger.",
+    "de": "Sie kehren nach zehn Jahren im Ausland nach Spanien heim.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'___-guerre a été une période de reconstruction.",
+    "de": "Die Nachkriegszeit war eine Phase des Wiederaufbaus.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous devons partir maintenant ___ arriver à l'heure.",
+    "de": "Wir müssen jetzt losfahren, um pünktlich anzukommen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ de la patience, tu réussiras.",
+    "de": "Mit Geduld wirst du Erfolg haben.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ ce nouvel ordinateur, je travaille beaucoup plus vite.",
+    "de": "Mit diesem neuen Computer arbeite ich viel schneller.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il a signé le contrat ___ la contrainte.",
+    "de": "Er hat den Vertrag unter Zwang unterschrieben.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il a bu son café ___ une tasse en porcelaine.",
+    "de": "Er hat seinen Kaffee aus einer Porzellantasse getrunken.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ toi, je n'aurais jamais réussi !",
+    "de": "Ohne dich hätte ich es nie geschafft!",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Tu reviens de la bibliothèque ? Oui, j'___ viens.",
+    "de": "Kommst du gerade aus der Bibliothek? Ja, ich komme von dort.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'accident s'est produit ___ Lyon et Marseille.",
+    "de": "Der Unfall ereignete sich zwischen Lyon und Marseille.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons partagé le gâteau ___ nos voisins.",
+    "de": "Wir haben den Kuchen mit unseren Nachbarn geteilt.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il est toujours gentil ___ tout le monde.",
+    "de": "Er ist immer nett zu allen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle tend les bras ___ le ciel.",
+    "de": "Sie streckt die Arme zum Himmel empor.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle jouait ___ gagner.",
+    "de": "Sie spielte, um zu gewinnen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ mes habitudes, j'ai pris un café ce matin.",
+    "de": "Entgegen meinen Gewohnheiten habe ich heute Morgen einen Kaffee getrunken.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ce costume a été fait ___ mesure.",
+    "de": "Dieser Anzug wurde nach Maß gefertigt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le bateau navigue ___ une mer agitée.",
+    "de": "Das Boot segelt auf einem unruhigen Meer.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "La porte a été ouverte ___ le vent.",
+    "de": "Die Tür wurde vom Wind geöffnet.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ un peu d'effort, tu peux y arriver.",
+    "de": "Mit ein bisschen Anstrengung kannst du es schaffen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je cours ___ la sortie pour ne pas rater mon bus.",
+    "de": "Ich renne zum Ausgang, um meinen Bus nicht zu verpassen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous nous sommes perdus ___ la gare et l'hôtel.",
+    "de": "Wir haben uns zwischen dem Bahnhof und dem Hotel verirrt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le bateau se trouve ___ 30° de latitude sud.",
+    "de": "Das Schiff befindet sich auf 30° südlicher Breite.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a fait signe ___ la main à son ami.",
+    "de": "Sie hat ihrem Freund mit der Hand zugewinkt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons discuté longuement ___ la réunion.",
+    "de": "Wir haben nach der Besprechung lange diskutiert.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a glissé la lettre ___ les pages du livre.",
+    "de": "Er hat den Brief zwischen die Seiten des Buches geschoben.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle ___ est fière et ne s'en cache pas.",
+    "de": "Sie ist stolz darauf und macht kein Geheimnis daraus.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les oiseaux volent ___ place face au vent fort.",
+    "de": "Die Vögel fliegen auf der Stelle gegen den starken Wind.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Cette maison ___ vendre est vraiment charmante.",
+    "de": "Dieses zu verkaufende Haus ist wirklich charmant.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le restaurant se trouve ___ la rue principale.",
+    "de": "Das Restaurant befindet sich in der Hauptstraße.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "As-tu des stylos ? Oui, j'___ ai plusieurs.",
+    "de": "Hast du Kugelschreiber? Ja, ich habe mehrere davon.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle est toujours ___ ses enfants pour qu'ils rangent leur chambre.",
+    "de": "Sie ist ständig hinter ihren Kindern her, damit sie ihr Zimmer aufräumen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a répondu ___ sincérité à toutes les questions.",
+    "de": "Sie hat alle Fragen mit Aufrichtigkeit beantwortet.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "\"Cette chienne ___ vie me fatigue parfois !\"",
+    "de": "\"Dieses Hundeleben macht mich manchmal müde!\"",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Regarde ___ la fenêtre, il neige !",
+    "de": "Schau aus dem Fenster, es schneit!",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le brochet ___ dix livres a impressionné tous les pêcheurs.",
+    "de": "Der zehn Pfund schwere Hecht hat alle Angler beeindruckt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je viens de ___ le médecin.",
+    "de": "Ich komme gerade vom Arzt.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le train arrive ___ midi et deux heures.",
+    "de": "Der Zug kommt zwischen zwölf und zwei Uhr an.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous nous reverrons ___ Noël pour échanger des cadeaux.",
+    "de": "Wir sehen uns zu Weihnachten wieder, um Geschenke auszutauschen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a prélevé de l'argent ___ ses économies.",
+    "de": "Er hat Geld von seinen Ersparnissen abgehoben.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Cette eau est ___ goût ni odeur.",
+    "de": "Dieses Wasser ist geschmacks- und geruchlos.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cette crème protège ___ les coups de soleil.",
+    "de": "Diese Creme schützt gegen Sonnenbrand.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ toute attente, elle a réussi l'examen.",
+    "de": "Entgegen aller Erwartungen hat sie die Prüfung bestanden.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Choisis ___ le gâteau et la glace.",
+    "de": "Wähle zwischen dem Kuchen und dem Eis.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ le choc, il est resté muet.",
+    "de": "Unter Schock blieb er stumm.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le chat dort ___ le canapé.",
+    "de": "Die Katze schläft auf dem Sofa.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous avons appris la nouvelle ___ des amis.",
+    "de": "Wir haben die Neuigkeit von Freunden erfahren.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je rentre ___ moi en bus.",
+    "de": "Ich fahre mit dem Bus nach Hause.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les soldats marchent ___ le drapeau national.",
+    "de": "Die Soldaten marschieren unter der Nationalfahne.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous avons réservé une table ___ huit heures.",
+    "de": "Wir haben einen Tisch für acht Uhr reserviert.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"Et ___ ?\", a-t-il demandé avec indifférence.",
+    "de": "\"Und dann?\", fragte er gleichgültig.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle est contente ___ partir en vacances la semaine prochaine.",
+    "de": "Sie freut sich darauf, nächste Woche in den Urlaub zu fahren.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les troupes marchaient ___ la capitale.",
+    "de": "Die Truppen marschierten auf die Hauptstadt zu.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous avons dîné ___ des amis hier soir.",
+    "de": "Wir haben gestern Abend mit Freunden zu Abend gegessen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "La température va monter ___ les 30 degrés aujourd'hui.",
+    "de": "Die Temperatur wird heute gegen 30 Grad steigen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a récité le poème ___ mémoire devant toute la classe.",
+    "de": "Sie hat das Gedicht aus dem Gedächtnis vor der ganzen Klasse aufgesagt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Et ___ ? Qu'est-ce que ça peut faire ?",
+    "de": "Und dann? Was macht das schon?",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a reçu une médaille ___ son courage.",
+    "de": "Sie hat eine Medaille für ihren Mut erhalten.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ bon citoyen, il participe à toutes les réunions municipales.",
+    "de": "Als guter Bürger nimmt er an allen Gemeinderatssitzungen teil.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il n'y a rien ___ faire, la décision est déjà prise.",
+    "de": "Da ist nichts zu machen, die Entscheidung ist bereits getroffen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le soleil brille ___ la mer.",
+    "de": "Die Sonne scheint auf das Meer.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Ce poème contient cinq ___ rimés.",
+    "de": "Dieses Gedicht enthält fünf gereimte Verse.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il attend ___ cette somme pour financer son projet.",
+    "de": "Er wartet auf diesen Betrag, um sein Projekt zu finanzieren.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Victor Hugo a écrit ce ___ en 1840.",
+    "de": "Victor Hugo schrieb diesen Vers im Jahr 1840.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'équipe de France jouera ___ l'Allemagne ce soir.",
+    "de": "Die französische Mannschaft spielt heute Abend gegen Deutschland.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "\"___ tout ça, on n'a toujours pas résolu le problème !\"",
+    "de": "\"Bei all dem haben wir das Problem immer noch nicht gelöst!\"",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il faut traiter ce problème ___ beaucoup de délicatesse.",
+    "de": "Man muss dieses Problem mit viel Fingerspitzengefühl behandeln.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "La petite librairie est située juste ___ la boulangerie.",
+    "de": "Der kleine Buchladen liegt direkt an der Bäckerei.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette espèce ne survit que ___ les tropiques.",
+    "de": "Diese Art überlebt nur in den Tropen.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "L'entreprise a investi ___ de nouvelles technologies.",
+    "de": "Das Unternehmen hat in neue Technologien investiert.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il est ___ argent depuis qu'il a perdu son travail.",
+    "de": "Er ist ohne Geld, seit er seine Arbeit verloren hat.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "La voiture s'est arrêtée juste ___ le feu rouge.",
+    "de": "Das Auto hielt genau vor der roten Ampel an.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'ai oublié mon mot de passe et je suis ___ accès à mes emails.",
+    "de": "Ich habe mein Passwort vergessen und bin ohne Zugang zu meinen E-Mails.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ cet angle, je comprends mieux le problème.",
+    "de": "Unter diesem Blickwinkel verstehe ich das Problem besser.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ ces circonstances, il vaut mieux reporter la réunion.",
+    "de": "Unter diesen Umständen ist es besser, das Treffen zu verschieben.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le train ___ Paris à Lyon part dans une heure.",
+    "de": "Der Zug von Paris nach Lyon fährt in einer Stunde ab.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "D'___ les journaux, il se serait enfui.",
+    "de": "Den Zeitungen zufolge sei er geflohen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle se disait ___ elle-même qu'il avait raison.",
+    "de": "Sie dachte bei sich, dass er Recht hatte.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Passez par ___ nous quand vous voulez !",
+    "de": "Kommen Sie bei uns vorbei, wann immer Sie möchten!",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ces ___ ont été écrits au XVIII<sup>e</sup> siècle.",
+    "de": "Diese Verse wurden im 18. Jahrhundert geschrieben.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants se sont blottis ___ leur mère.",
+    "de": "Die Kinder haben sich an ihre Mutter geschmiegt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle est assise ___ sa mère et son père.",
+    "de": "Sie sitzt zwischen ihrer Mutter und ihrem Vater.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous irons à Paris ___ train.",
+    "de": "Wir werden mit dem Zug nach Paris fahren.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Tous les députés ont voté ___ cette loi.",
+    "de": "Alle Abgeordneten haben gegen dieses Gesetz gestimmt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a caché le cadeau ___ son lit.",
+    "de": "Er hat das Geschenk unter seinem Bett versteckt.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut regarder ___ le rétroviseur avant de changer de voie.",
+    "de": "Man muss in den Rückspiegel schauen, bevor man die Spur wechselt.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "J'aime ___ lui sa générosité.",
+    "de": "Ich mag an ihm seine Großzügigkeit.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'___ connais qui ne seraient pas d'accord avec cette décision.",
+    "de": "Ich kenne welche, die mit dieser Entscheidung nicht einverstanden wären.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il existe une grande amitié ___ ces deux familles.",
+    "de": "Zwischen diesen beiden Familien besteht eine große Freundschaft.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous devons réfléchir ___ de prendre une décision importante.",
+    "de": "Wir müssen bevor wir eine wichtige Entscheidung treffen nachdenken.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La collaboration ___ ces deux entreprises est excellente.",
+    "de": "Die Zusammenarbeit zwischen diesen beiden Unternehmen ist ausgezeichnet.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il s'est assis ___ son bureau pour travailler.",
+    "de": "Er setzte sich an seinen Schreibtisch, um zu arbeiten.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il vit ___ téléphone portable.",
+    "de": "Er lebt ohne Handy.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous irons à la plage ___ le déjeuner.",
+    "de": "Wir werden nach dem Mittagessen an den Strand gehen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les Alpes se trouvent ___ la France et l'Italie.",
+    "de": "Die Alpen liegen zwischen Frankreich und Italien.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les plantes poussent ___ serre.",
+    "de": "Die Pflanzen wachsen im Gewächshaus.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ l'âge, il est devenu plus sage.",
+    "de": "Mit dem Alter ist er weiser geworden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ cette nouvelle, tout le monde a applaudi.",
+    "de": "Bei dieser Nachricht klatschten alle Beifall.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le petit chat s'est blotti ___ moi.",
+    "de": "Die kleine Katze hat sich an mich gekuschelt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le match ___ ces deux équipes sera passionnant.",
+    "de": "Das Spiel zwischen diesen beiden Mannschaften wird spannend.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous participons ___ un projet de bénévolat ce week-end.",
+    "de": "Wir nehmen dieses Wochenende an einem Freiwilligenprojekt teil.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je n'ai pas d'argent ___ moi.",
+    "de": "Ich habe kein Geld bei mir.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le chat s'est faufilé ___ la clôture.",
+    "de": "Die Katze ist unter dem Zaun durchgeschlüpft.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "L'équipe joue ___ les couleurs nationales.",
+    "de": "Das Team spielt unter den Nationalfarben.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "C'est une bonne application ___ apprendre les langues.",
+    "de": "Das ist eine gute App zum Sprachenlernen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle travaille ___ la direction de Pierre.",
+    "de": "Sie arbeitet unter Pierres Leitung.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous avons réservé une table ___ deux personnes.",
+    "de": "Wir haben einen Tisch für zwei Personen reserviert.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ lui, c'est vraiment spacieux et lumineux.",
+    "de": "Seine Wohnung ist wirklich geräumig und hell.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le capitaine vient ___ le commandant dans la hiérarchie.",
+    "de": "Der Kapitän steht in der Hierarchie unter dem Kommandanten.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La réunion commencera ___ 15 heures.",
+    "de": "Die Besprechung beginnt gegen 15 Uhr.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les gens dormaient les uns ___ les autres dans le train bondé.",
+    "de": "Die Menschen schliefen im überfüllten Zug übereinander.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Découpez la tarte ___ six parts égales.",
+    "de": "Schneiden Sie den Kuchen in sechs gleiche Stücke.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il faut apprendre à vivre ___ ses défauts.",
+    "de": "Man muss lernen, mit seinen Fehlern zu leben.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il faut toujours goûter la sauce ___ de servir le plat.",
+    "de": "Man sollte die Soße immer vor dem Servieren probieren.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les enfants vont ___ l'école tous les matins.",
+    "de": "Die Kinder gehen jeden Morgen in die Schule.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les enfants sont rentrés ___ courant de l'école.",
+    "de": "Die Kinder sind im Laufschritt von der Schule nach Hause gekommen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous nous chauffons ___ l'électricité.",
+    "de": "Wir heizen mit Strom.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cette piscine utilise un système ___ chlore.",
+    "de": "Dieses Schwimmbad verwendet ein chlorfreies System.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a regardé à gauche et à droite ___ de traverser la route.",
+    "de": "Sie schaute nach links und rechts, bevor sie die Straße überquerte.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Marie travaille ___ contrat temporaire.",
+    "de": "Marie arbeitet unter befristetem Vertrag.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il faut être prudent ___ les médicaments.",
+    "de": "Man muss mit Medikamenten vorsichtig sein.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il y a beaucoup de différences ___ ces deux versions.",
+    "de": "Es gibt viele Unterschiede zwischen diesen beiden Versionen.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le petit garçon court ___ son père.",
+    "de": "Der kleine Junge rennt zu seinem Vater hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La famille est ___ deuil après le décès de leur grand-mère.",
+    "de": "Die Familie ist nach dem Tod ihrer Großmutter in Trauer.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants jouent joyeusement ___ la cour de l'école.",
+    "de": "Die Kinder spielen fröhlich auf dem Schulhof.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il faut toujours se renseigner ___ de signer un contrat.",
+    "de": "Man sollte sich immer informieren, bevor man einen Vertrag unterschreibt.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle peint d'___ nature dans les montagnes.",
+    "de": "Sie malt in den Bergen nach der Natur.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'ai écrit mon nom ___ le formulaire.",
+    "de": "Ich habe meinen Namen auf das Formular geschrieben.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "\"On n'a plus de café, il va falloir faire ___.\"",
+    "de": "\"Wir haben keinen Kaffee mehr, wir werden ohne auskommen müssen.\"",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai payé 50 euros ___ ce livre.",
+    "de": "Ich habe 50 Euro für dieses Buch bezahlt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons erré ___ les rues de la vieille ville toute la journée.",
+    "de": "Wir sind den ganzen Tag durch die Straßen der Altstadt geirrt.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il faut s'assurer ___ les risques d'incendie.",
+    "de": "Man muss sich gegen Brandrisiken versichern.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants apprennent à compter ___ leurs doigts.",
+    "de": "Die Kinder lernen, an den Fingern zu zählen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "T'avais une chance ___ un million.",
+    "de": "Du hattest eine Chance von eins zu einer Million.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "L'___-Mitterrand a marqué un tournant politique.",
+    "de": "Die Zeit nach Mitterrand markierte eine politische Wende.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ avoir bien réfléchi, j'ai accepté l'offre.",
+    "de": "Nach reiflicher Überlegung habe ich das Angebot angenommen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "\"___ tout ça, j'ai complètement oublié mon rendez-vous !\"",
+    "de": "\"Bei all dem habe ich meinen Termin völlig vergessen!\"",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il est parti ___ les applaudissements.",
+    "de": "Er ging unter Applaus.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il s'est mis ___ l'ombre pour éviter le soleil.",
+    "de": "Er hat sich in den Schatten gesetzt, um der Sonne auszuweichen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je passerai ___ toi demain matin.",
+    "de": "Ich komme morgen früh zu dir.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il se met ___ pleuvoir, prenons un parapluie.",
+    "de": "Es fängt an zu regnen, nehmen wir einen Regenschirm.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ la demande du public, le concert a été prolongé.",
+    "de": "Auf Wunsch des Publikums wurde das Konzert verlängert.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est aimée ___ tous ses collègues.",
+    "de": "Sie wird von all ihren Kollegen geliebt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a renvoyé sa fille ___ ses grands-parents.",
+    "de": "Er hat seine Tochter zu ihren Großeltern zurückgeschickt.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ l'attente de vos nouvelles, je reste à votre disposition.",
+    "de": "In Erwartung Ihrer Nachricht stehe ich Ihnen zur Verfügung.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "L'accès à l'éducation est un droit fondamental ___ l'homme.",
+    "de": "Der Zugang zur Bildung ist ein Grundrecht des Menschen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ un bon guide, la visite sera plus intéressante.",
+    "de": "Mit einem guten Führer wird die Besichtigung interessanter sein.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Les poissons nagent ___ la surface de l'eau.",
+    "de": "Die Fische schwimmen unter der Wasseroberfläche.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le nouveau roman de cet auteur paraîtra ___ les prochains jours.",
+    "de": "Der neue Roman dieses Autors wird in den nächsten Tagen erscheinen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Ce terrain ___ lequel on a bâti est magnifique.",
+    "de": "Das Grundstück, auf dem wir gebaut haben, ist wunderschön.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "On ___ parle depuis des semaines dans les médias.",
+    "de": "Man spricht seit Wochen darüber in den Medien.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette teinte est ___ le rouge et l'orange.",
+    "de": "Diese Farbe liegt zwischen Rot und Orange.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il soupire ___ les vacances d'été.",
+    "de": "Er sehnt sich nach den Sommerferien.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les enfants jouent ___ eux dans le jardin.",
+    "de": "Die Kinder spielen unter sich im Garten.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les manifestants marchent ___ la hausse des prix.",
+    "de": "Die Demonstranten marschieren gegen die Preiserhöhung.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants jouent ___ la surveillance des parents.",
+    "de": "Die Kinder spielen unter der Aufsicht der Eltern.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cette loi a été promulguée ___ le roi.",
+    "de": "Dieses Gesetz wurde vom König erlassen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle s'est perdue ___ ses pensées pendant la réunion.",
+    "de": "Sie ist während der Besprechung in Gedanken versunken.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le vent souffle ___ nous.",
+    "de": "Der Wind weht uns entgegen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le train passe ___ le tunnel.",
+    "de": "Der Zug fährt durch den Tunnel.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai mis mon destin ___ tes mains.",
+    "de": "Ich habe mein Schicksal in deine Hände gelegt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "\"___ quatre heures\", on prend le goûter en Belgique.",
+    "de": "In Belgien gibt es nach vier Uhr eine Zwischenmahlzeit.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il a glissé la lettre ___ la porte.",
+    "de": "Er hat den Brief unter der Tür durchgeschoben.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a donné de l'argent ___ une bonne cause.",
+    "de": "Sie hat Geld für einen guten Zweck gespendet.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'___-midi, je fais généralement une sieste.",
+    "de": "Nachmittags mache ich normalerweise ein Nickerchen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "C'était un film complètement ___ intérêt.",
+    "de": "Es war ein völlig reizloser Film.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Vous ___ avez, de la patience avec ces enfants !",
+    "de": "Sie haben ja wirklich Geduld mit diesen Kindern!",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il ___ est tellement stressé qu'il n'arrive plus à dormir.",
+    "de": "Er ist deshalb so gestresst, dass er nicht mehr schlafen kann.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Déjeunons, ___ quoi nous nous mettrons en route.",
+    "de": "Lasst uns zu Mittag essen, danach machen wir uns auf den Weg.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "L'émission passera ___ la télévision ce soir.",
+    "de": "Die Sendung wird heute Abend im Fernsehen laufen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ voiture, je mets une heure pour aller au travail.",
+    "de": "Ohne Auto brauche ich eine Stunde zur Arbeit.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Ils sont partis ___ Iran pour leurs vacances.",
+    "de": "Sie sind für ihren Urlaub in den Iran geflogen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le chat s'élance ___ sa gamelle.",
+    "de": "Die Katze stürzt sich auf ihren Napf zu.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle cache son anxiété ___ un sourire.",
+    "de": "Sie verbirgt ihre Ängstlichkeit hinter einem Lächeln.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il a posé le livre ___ la table.",
+    "de": "Er hat das Buch auf den Tisch gelegt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Je pense ___ toi tous les jours.",
+    "de": "Ich denke jeden Tag an dich.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons marché ___ la plage pendant des heures.",
+    "de": "Wir sind stundenlang am Strand entlang gelaufen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le voleur l'a attrapé ___ le bras.",
+    "de": "Der Dieb packte ihn am Arm.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Nous avons célébré son anniversaire ___ un grand repas.",
+    "de": "Wir haben seinen Geburtstag mit einem großen Essen gefeiert.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "J'achète toujours mon pain ___ le petit boulanger du coin.",
+    "de": "Ich kaufe mein Brot immer beim kleinen Bäcker an der Ecke.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai augmenté mon salaire ___ cinq pour cent cette année.",
+    "de": "Ich habe mein Gehalt dieses Jahr um fünf Prozent erhöht.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il est resté ___ emploi pendant six mois.",
+    "de": "Er war sechs Monate lang ohne Arbeit.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a préparé un gâteau ___ amour pour son anniversaire.",
+    "de": "Sie hat mit Liebe einen Kuchen für ihren Geburtstag gebacken.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il ne rêve que d'argent et ___ plaisirs.",
+    "de": "Er träumt nur von Geld und Vergnügungen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ils président l'un ___ l'autre.",
+    "de": "Sie führen nacheinander den Vorsitz.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "D'___ le témoin, la voiture roulait trop vite.",
+    "de": "Laut dem Zeugen fuhr das Auto zu schnell.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a été nommée ___ un Oscar.",
+    "de": "Sie wurde für einen Oscar nominiert.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ un peu d'imagination, on peut faire des merveilles.",
+    "de": "Mit etwas Fantasie kann man Wunder vollbringen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Nous nous dirigeons ___ une nouvelle ère technologique.",
+    "de": "Wir bewegen uns auf ein neues technologisches Zeitalter zu.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les traditions sont différentes ___ les Japonais.",
+    "de": "Die Traditionen sind bei den Japanern anders.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "La balle rebondit ___ le mur.",
+    "de": "Der Ball prallt gegen die Wand.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous sommes passés ___ la côte pour arriver plus vite.",
+    "de": "Wir sind an der Küste entlang gefahren, um schneller anzukommen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Ce pull est fait ___ laine mérinos.",
+    "de": "Dieser Pullover ist aus Merinowolle gemacht.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle court ___ son bus qui vient de partir.",
+    "de": "Sie rennt ihrem Bus hinterher, der gerade abgefahren ist.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle s'est excusée ___ le dérangement.",
+    "de": "Sie hat sich für die Störung entschuldigt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les enfants sont ___ surveillance dans la cour.",
+    "de": "Die Kinder sind ohne Aufsicht auf dem Hof.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le jardin est magnifique ___ la lune.",
+    "de": "Der Garten ist wunderschön im Mondlicht.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cette table est faite ___ bois précieux.",
+    "de": "Dieser Tisch ist aus wertvollem Holz gefertigt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "J'ai commencé à apprendre le français ___ l'âge de dix ans.",
+    "de": "Ich habe mit etwa zehn Jahren angefangen, Französisch zu lernen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a été choisie ___ représenter l'entreprise.",
+    "de": "Sie wurde ausgewählt, um das Unternehmen zu vertreten.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "La lettre M se trouve ___ L et N dans l'alphabet.",
+    "de": "Der Buchstabe M steht zwischen L und N im Alphabet.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je pars en vacances ___ la fin du mois.",
+    "de": "Ich fahre gegen Ende des Monats in den Urlaub.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il n'y a personne ___ eux aujourd'hui.",
+    "de": "Es ist heute niemand bei ihnen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le bébé rampe ___ ses jouets.",
+    "de": "Das Baby krabbelt zu seinen Spielsachen hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Un tram se dirige ___ toi. Monte dedans.",
+    "de": "Eine Straßenbahn fährt auf dich zu. Steig ein.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je serai là ___ huit heures du matin.",
+    "de": "Ich werde gegen acht Uhr morgens da sein.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je crois ___ toi et en tes capacités.",
+    "de": "Ich glaube an dich und deine Fähigkeiten.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je voudrais du pain et ___ la confiture, s'il vous plaît.",
+    "de": "Ich hätte gerne Brot und Marmelade, bitte.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est partie peu ___ notre arrivée.",
+    "de": "Sie ist kurz nach unserer Ankunft gegangen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Appuyez ___ le bouton pour commencer.",
+    "de": "Drücken Sie auf den Knopf, um zu beginnen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ quoi, nous sommes rentrés chez nous.",
+    "de": "Danach sind wir nach Hause gegangen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "C'est un homme ___ scrupules qui ferait n'importe quoi pour réussir.",
+    "de": "Er ist ein skrupelloser Mann, der alles tun würde, um Erfolg zu haben.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "L'art a beaucoup évolué ___ la Renaissance.",
+    "de": "Die Kunst entwickelte sich stark unter der Renaissance.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "N'oublie pas de fermer la porte ___ de partir.",
+    "de": "Vergiss nicht, die Tür zu schließen, bevor du gehst.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il faut se laver les mains ___ de manger.",
+    "de": "Man muss sich die Hände waschen, bevor man isst.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ l'arrivée du train, une foule l'attendait.",
+    "de": "Bei der Ankunft des Zuges wartete eine Menge auf ihn.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle s'est mise ___ le radiateur pour se réchauffer.",
+    "de": "Sie stellte sich an die Heizung, um sich aufzuwärmen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle ira peut-être vivre définitivement ___ lui.",
+    "de": "Sie wird vielleicht dauerhaft bei ihm wohnen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Tu restes ___ toi aujourd'hui ?",
+    "de": "Bleibst du heute zu Hause?",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons besoin de bénévoles ___ organiser l'événement.",
+    "de": "Wir brauchen Freiwillige, um die Veranstaltung zu organisieren.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a réussi à terminer son projet ___ une seule fois.",
+    "de": "Es ist ihr gelungen, ihr Projekt in einem Zug fertigzustellen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'information importante est ___ la page 36.",
+    "de": "Die wichtige Information steht auf Seite 36.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est ___ bonne santé malgré son âge avancé.",
+    "de": "Sie ist trotz ihres fortgeschrittenen Alters bei guter Gesundheit.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il est parti en voyage ___ bagages.",
+    "de": "Er ist ohne Gepäck verreist.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ tout, ce n'est pas si grave.",
+    "de": "Letztendlich ist es nicht so schlimm.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Cette crème est spécialement conçue ___ les mains sèches.",
+    "de": "Diese Creme ist speziell für trockene Hände entwickelt.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le restaurant est situé ___ le niveau de la mer.",
+    "de": "Das Restaurant liegt unter dem Meeresspiegel.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle a récité les premiers ___ du poème par cœur.",
+    "de": "Sie hat die ersten Verse des Gedichts auswendig vorgetragen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "\"Rangez vos affaires ___ de quitter la salle,\" a demandé le professeur.",
+    "de": "\"Räumt eure Sachen weg, bevor ihr den Raum verlasst,\" bat der Lehrer.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "L'équipe a réussi un beau ___ en fin de match.",
+    "de": "Der Mannschaft gelang am Ende des Spiels ein schöner Konter.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Qui d'___ vous sait parler chinois?",
+    "de": "Wer von euch kann Chinesisch sprechen?",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Cette vaccination nous protège ___ plusieurs maladies.",
+    "de": "Diese Impfung schützt uns gegen mehrere Krankheiten.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle a écrit un essai ___ la philosophie moderne.",
+    "de": "Sie hat einen Aufsatz über moderne Philosophie geschrieben.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "___ tout, c'est à vous de décider.",
+    "de": "Schließlich müssen Sie entscheiden.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'ai dîné ___ les Martin hier soir.",
+    "de": "Ich habe gestern Abend bei Familie Martin gegessen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "La clé est ___ la porte.",
+    "de": "Der Schlüssel steckt in der Tür.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "On trouve ce thème ___ plusieurs auteurs du XIX<sup>e</sup> siècle.",
+    "de": "Man findet dieses Thema bei mehreren Autoren des 19. Jahrhunderts.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ils arriveront ___ le soir.",
+    "de": "Sie werden gegen Abend ankommen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il travaille dur ___ réussir.",
+    "de": "Er arbeitet hart, um erfolgreich zu sein.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les relations ___ ces deux pays s'améliorent.",
+    "de": "Die Beziehungen zwischen diesen beiden Ländern verbessern sich.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les enfants étaient impatients d'ouvrir leurs cadeaux ___ Noël.",
+    "de": "Die Kinder konnten es kaum erwarten, ihre Geschenke vor Weihnachten zu öffnen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle traverse une période ___ stress.",
+    "de": "Sie durchlebt eine stressfreie Zeit.",
+    "answer": "sans",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le patient est tombé ___ le coma après l'accident.",
+    "de": "Der Patient ist nach dem Unfall ins Koma gefallen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "La décision a été prise ___ le conseil d'administration.",
+    "de": "Die Entscheidung wurde vom Vorstand getroffen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Je n'ai rien ___ cette idée.",
+    "de": "Ich habe nichts gegen diese Idee.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ sa colère, il a dit des choses qu'il regrette maintenant.",
+    "de": "In seinem Zorn hat er Dinge gesagt, die er jetzt bereut.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le magasin est ouvert de 10h ___ 19h sans interruption.",
+    "de": "Das Geschäft ist von 10 bis 19 Uhr durchgehend geöffnet.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cet enfant est ___doué en mathématiques.",
+    "de": "Dieses Kind ist in Mathematik hochbegabt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle a vérifié son sac ___ de partir en vacances.",
+    "de": "Sie hat ihre Tasche überprüft, bevor sie in den Urlaub fuhr.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Nous irons ___ le chemin le plus court.",
+    "de": "Wir werden den kürzesten Weg nehmen.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "\"C'est beau de ___ beau !\"",
+    "de": "\"Das ist richtig schön!\"",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a trouvé l'inspiration ___ la nature pour sa nouvelle collection.",
+    "de": "Sie hat in der Natur Inspiration für ihre neue Kollektion gefunden.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Ce film était ___ mourir de rire !",
+    "de": "Dieser Film war zum Totlachen!",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je suis d'accord ___ ta proposition.",
+    "de": "Ich bin mit deinem Vorschlag einverstanden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ les délais impartis, nous avons terminé le projet.",
+    "de": "Innerhalb der vorgegebenen Frist haben wir das Projekt abgeschlossen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Je vois, tu es en colère ___ moi.",
+    "de": "Ich sehe, du bist wütend auf mich.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les manifestants sont ___ la surveillance de la police.",
+    "de": "Die Demonstranten stehen unter polizeilicher Überwachung.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le gouvernement a institué un nouvel impôt ___ le capital.",
+    "de": "Die Regierung hat eine neue Steuer auf Kapital eingeführt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il faut tourner juste ___ l'église pour trouver la maison.",
+    "de": "Man muss genau vor der Kirche abbiegen, um das Haus zu finden.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il n'y a que trois kilomètres ___ ces deux villages.",
+    "de": "Es sind nur drei Kilometer zwischen diesen beiden Dörfern.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous avons besoin de plus d'informations ___ prendre une décision.",
+    "de": "Wir brauchen mehr Informationen, um eine Entscheidung zu treffen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il y a une fête ___ les voisins ce soir.",
+    "de": "Es gibt heute Abend eine Party bei den Nachbarn.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je l'ai reconnu ___ qu'il eut parlé.",
+    "de": "Ich habe ihn erkannt, nachdem er gesprochen hatte.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "C'est un bon livre ___ apprendre le français.",
+    "de": "Das ist ein gutes Buch, um Französisch zu lernen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le train arrivera ___ midi.",
+    "de": "Der Zug wird gegen Mittag ankommen.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Juste ___ ton nez.",
+    "de": "Direkt vor deiner Nase.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ mon avis, cette décision est la meilleure.",
+    "de": "Meiner Meinung nach ist diese Entscheidung die beste.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chat dort ___ le radiateur.",
+    "de": "Die Katze schläft unter der Heizung.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le ___lendemain, tout était rentré dans l'ordre.",
+    "de": "Am übernächsten Tag war alles wieder in Ordnung.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Il y a environ mille personnes ___ cette salle.",
+    "de": "Es sind ungefähr tausend Personen in diesem Saal.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "\"___ lui, c'est toujours la même histoire !\"",
+    "de": "\"Mit ihm ist es immer dasselbe!\"",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "\"Tant pis, on fera ___ !\"",
+    "de": "\"Was soll's, wir werden schon damit zurechtkommen!\"",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "J'ai pris un jour de congé ___ me reposer.",
+    "de": "Ich habe einen Tag frei genommen, um mich auszuruhen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a réussi ___ brio son examen de conduite.",
+    "de": "Sie hat ihre Fahrprüfung mit Bravour bestanden.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Le patient est ___ antibiotiques depuis trois jours.",
+    "de": "Der Patient wird seit drei Tagen mit Antibiotika behandelt.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il y a une grande différence ___ la théorie et la pratique.",
+    "de": "Es gibt einen großen Unterschied zwischen Theorie und Praxis.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je reviendrai ___ la fin de la semaine.",
+    "de": "Ich komme gegen Ende der Woche zurück.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "C'est comme ça qu'on parle par ___ nous.",
+    "de": "So spricht man bei uns.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cette sculpture ___ forme de cœur est magnifique.",
+    "de": "Diese Skulptur in Herzform ist wunderschön.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "On trouve beaucoup d'ironie ___ Molière.",
+    "de": "Man findet viel Ironie bei Molière.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il y a plusieurs appartements ___ louer dans ce quartier.",
+    "de": "Es gibt mehrere Wohnungen zu vermieten in diesem Viertel.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "\"___ mon honneur, je n'ai rien volé !\"",
+    "de": "\"Bei meiner Ehre, ich habe nichts gestohlen!\"",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Nous avons passé nos vacances ___ un petit village de montagne.",
+    "de": "Wir haben unseren Urlaub in einem kleinen Bergdorf verbracht.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le bateau a coulé ___ les vagues.",
+    "de": "Das Boot ist unter den Wellen gesunken.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Elle habite ___ Londres depuis cinq ans.",
+    "de": "Sie lebt seit fünf Jahren in London.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "La salle peut accueillir jusqu'___ 100 personnes.",
+    "de": "Der Saal kann bis zu 100 Personen fassen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons aperçu un cerf ___ la forêt.",
+    "de": "Wir haben im Wald einen Hirsch gesehen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "___ mon avis, ils ont continué le projet.",
+    "de": "Gegen meinen Rat haben sie das Projekt fortgesetzt.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ ce bruit, je n'arrive pas à me concentrer.",
+    "de": "Bei diesem Lärm kann ich mich nicht konzentrieren.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ le soleil brûlant, les touristes cherchent l'ombre.",
+    "de": "In der brennenden Sonne suchen die Touristen Schatten.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cette découverte a été faite ___ Louis XIV.",
+    "de": "Diese Entdeckung wurde unter Ludwig XIV. gemacht.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Ils ont réussi ___ tous les moyens.",
+    "de": "Sie haben es mit allen Mitteln geschafft.",
+    "answer": "par",
+    "distractors": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "___ tout ce temps, ils se sont enfin retrouvés.",
+    "de": "Nach all dieser Zeit haben sie sich endlich wiedergefunden.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Son aptitude ___ résoudre des problèmes est impressionnante.",
+    "de": "Seine Fähigkeit, Probleme zu lösen, ist beeindruckend.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a regardé l'___ de la voiture pour vérifier les dégâts.",
+    "de": "Sie hat die Vorderseite des Autos untersucht, um die Schäden zu überprüfen.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "J'___ suis bien conscient, mais je ne peux rien y faire.",
+    "de": "Ich bin mir dessen durchaus bewusst, aber ich kann nichts dagegen tun.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous examinerons cette question plus en détail ci-___.",
+    "de": "Wir werden diese Frage weiter unten ausführlicher untersuchen.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La frontière ___ ces deux régions est mal définie.",
+    "de": "Die Grenze zwischen diesen beiden Regionen ist schlecht definiert.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le magasin est ouvert de 9h ___ 18h.",
+    "de": "Das Geschäft ist von 9 bis 18 Uhr geöffnet.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ ce, je vous laisse réfléchir à ma proposition.",
+    "de": "Damit überlasse ich es Ihnen, über meinen Vorschlag nachzudenken.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Les joueurs de volley ont fait un excellent ___.",
+    "de": "Die Volleyballspieler haben einen exzellenten Block gemacht.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il est venu ___ sa famille à la fête.",
+    "de": "Er ist mit seiner Familie zum Fest gekommen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ cette vue, l'appartement vaut une fortune.",
+    "de": "Mit dieser Aussicht ist die Wohnung ein Vermögen wert.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ travaillant dur, tu atteindras tes objectifs.",
+    "de": "Wenn du hart arbeitest, wirst du deine Ziele erreichen.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les roues ___ de la voiture ont besoin d'être alignées.",
+    "de": "Die Vorderräder des Autos müssen ausgerichtet werden.",
+    "answer": "avant",
+    "distractors": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Ne te mets pas ___ colère pour si peu !",
+    "de": "Werde nicht wütend wegen so einer Kleinigkeit!",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il travaille ___ Microsoft depuis cinq ans.",
+    "de": "Er arbeitet seit fünf Jahren bei Microsoft.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous avons voyagé ___ peu de bagages.",
+    "de": "Wir sind mit wenig Gepäck gereist.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Le chirurgien a opéré ___ des conditions difficiles.",
+    "de": "Der Chirurg hat unter schwierigen Bedingungen operiert.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Nous avons une réunion ___ discuter du projet.",
+    "de": "Wir haben ein Treffen, um über das Projekt zu sprechen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous nous réunissons ___ nous ce soir.",
+    "de": "Wir treffen uns heute Abend bei uns.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ le temps, la douleur s'atténuera.",
+    "de": "Mit der Zeit wird der Schmerz nachlassen.",
+    "answer": "avec",
+    "distractors": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "La démocratie existait déjà ___ les Grecs.",
+    "de": "Die Demokratie gab es schon bei den Griechen.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous nous retrouverons ___ midi à la cafétéria.",
+    "de": "Wir treffen uns gegen Mittag in der Cafeteria.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il étudie dur ___ réussir ses examens.",
+    "de": "Er lernt hart, um seine Prüfungen zu bestehen.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le comte ___ Monte-Cristo est un personnage célèbre.",
+    "de": "Der Graf von Monte Christo ist eine berühmte Figur.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il joue magnifiquement ___ un clavecin ancien.",
+    "de": "Er spielt wunderbar auf einem alten Cembalo.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Le chien s'est frotté ___ mes jambes.",
+    "de": "Der Hund hat sich an meinen Beinen gerieben.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je l'ai reconnu ___ mille.",
+    "de": "Ich habe ihn unter Tausenden erkannt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a observé les étoiles ___ une longue-vue.",
+    "de": "Er hat die Sterne durch ein Fernrohr beobachtet.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il a mis le livre ___ les deux dictionnaires.",
+    "de": "Er hat das Buch zwischen die beiden Wörterbücher gelegt.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'hospitalité est une valeur importante ___ les Berbères.",
+    "de": "Gastfreundschaft ist ein wichtiger Wert bei den Berbern.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "La société évolue ___ plus d'égalité.",
+    "de": "Die Gesellschaft entwickelt sich hin zu mehr Gleichheit.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ la menace, il a donné son portefeuille.",
+    "de": "Unter der Bedrohung gab er seine Brieftasche her.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  },
+  {
+    "fr": "Il y a une boulangerie à côté de ___ moi.",
+    "de": "Es gibt eine Bäckerei in meiner Nähe.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ son enfance, il passait ses étés à la campagne.",
+    "de": "In seiner Kindheit verbrachte er seine Sommer auf dem Land.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Les manifestants luttent ___ la corruption.",
+    "de": "Die Demonstranten kämpfen gegen die Korruption.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Un jeune homme ___ vingt ans a remporté le concours.",
+    "de": "Ein zwanzigjähriger junger Mann hat den Wettbewerb gewonnen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le bateau lutte ___ les vagues.",
+    "de": "Das Boot kämpft gegen die Wellen.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "\"___ vous, je vous en prie\", dit-il poliment.",
+    "de": "\"Nach Ihnen, bitte\", sagte er höflich.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a expliqué le problème ___ les moindres détails.",
+    "de": "Sie hat das Problem bis ins kleinste Detail erklärt.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Nous sommes montés ___ le train juste avant son départ.",
+    "de": "Wir sind kurz vor der Abfahrt in den Zug eingestiegen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le directeur est ___ déplacement cette semaine.",
+    "de": "Der Direktor ist diese Woche auf Geschäftsreise.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il est difficile ___ trouver un emploi dans ce secteur.",
+    "de": "Es ist schwierig, in diesem Sektor eine Anstellung zu finden.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je n'écoute jamais ___ musique classique.",
+    "de": "Ich höre nie klassische Musik.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chat s'est glissé ___ les barreaux de la fenêtre.",
+    "de": "Die Katze ist durch die Gitterstäbe des Fensters geschlüpft.",
+    "answer": "entre",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous luttons ___ le temps pour finir ce projet.",
+    "de": "Wir kämpfen gegen die Zeit, um dieses Projekt zu beenden.",
+    "answer": "contre",
+    "distractors": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Les cerisiers fleurissent ___ avril dans notre région.",
+    "de": "Die Kirschbäume blühen im April in unserer Region.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il est furieux ___ son voisin à cause du bruit.",
+    "de": "Er ist auf seinen Nachbarn wütend wegen des Lärms.",
+    "answer": "après",
+    "distractors": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Les enfants courent ___ leur mère en souriant.",
+    "de": "Die Kinder laufen lächelnd zu ihrer Mutter hin.",
+    "answer": "vers",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "As-tu ce pull ___ plus petit ?",
+    "de": "Hast du diesen Pullover in einer kleineren Größe?",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je me sens vraiment ___ moi dans cette ville.",
+    "de": "Ich fühle mich in dieser Stadt wirklich heimisch.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il a été puni ___ son comportement.",
+    "de": "Er wurde wegen seines Verhaltens bestraft.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle s'est assise confortablement ___ le fauteuil pour lire.",
+    "de": "Sie hat sich gemütlich in den Sessel gesetzt, um zu lesen.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle a versé du sirop ___ ses crêpes.",
+    "de": "Sie hat Sirup über ihre Pfannkuchen gegossen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Elle l'a emporté ___ tous ses concurrents.",
+    "de": "Sie hat sich gegen alle ihre Konkurrenten durchgesetzt.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "sous"
+    ]
+  },
+  {
+    "fr": "Les enfants jouent ___ leurs copains.",
+    "de": "Die Kinder spielen bei ihren Freunden.",
+    "answer": "chez",
+    "distractors": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "C'est l'occasion ___ nous réunir en famille.",
+    "de": "Das ist eine gute Gelegenheit, uns als Familie zu versammeln.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle est experte ___ marketing digital.",
+    "de": "Sie ist Expertin im Bereich digitales Marketing.",
+    "answer": "en",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Je t'attendrai ___ l'horloge de la gare.",
+    "de": "Ich werde unter der Bahnhofsuhr auf dich warten.",
+    "answer": "sous",
+    "distractors": [
+      "sur",
+      "dans",
+      "à"
+    ]
+  }
+]

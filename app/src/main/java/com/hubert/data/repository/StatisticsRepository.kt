@@ -99,7 +99,7 @@ class StatisticsRepository @Inject constructor(
     suspend fun getLeastPlayedGameType(): String {
         val allGameTypes = listOf(
             "matching", "gender_snap", "gap_fill",
-            "spelling_bee", "conjugation", "pronunciation"
+            "spelling_bee", "conjugation", "pronunciation", "preposition"
         )
         val durations = dao.getTotalDurationPerGameType()
         val durationMap = durations.associate { it.gameType to it.totalMs }

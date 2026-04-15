@@ -26,7 +26,8 @@ enum class GameType(val key: String, val displayName: String) {
     GAP_FILL("gap_fill", "Compl\u00E9tez!"),
     SPELLING_BEE("spelling_bee", "\u00C9crivez!"),
     CONJUGATION("conjugation", "Conjuguez!"),
-    PRONUNCIATION("pronunciation", "Prononcez!");
+    PRONUNCIATION("pronunciation", "Prononcez!"),
+    PREPOSITION("preposition", "Pr\u00E9posez!");
 
     companion object {
         fun fromKey(key: String): GameType? = entries.find { it.key == key }

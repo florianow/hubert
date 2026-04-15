@@ -23,7 +23,7 @@ ideas below would require re-blanking or entirely new datasets.
 | 1 | Relativisez! | Needs new dataset | High |
 | 2 | Démontrez! | Partially sufficient (simple forms only) | Medium |
 | 3 | Possédez! | Needs new dataset | High |
-| 4 | **Préposez!** | **Sufficient (~4,500 sentences)** | **Low** |
+| 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
 | 5 | Partagez! | Partially sufficient (needs disambiguation) | Medium |
 | 6 | **Subjonctiez!** | **Sufficient (1,182 verbs + conjugation tables)** | **Low** |
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
@@ -126,37 +126,12 @@ A purpose-built dataset of ~200+ sentences (10+ per form) is needed.
 
 ---
 
-## 4. Préposez! — Prépositions (verbes + à/de)
+## ~~4. Préposez!~~ — ✅ Implemented
 
-Choose the correct preposition for verb + preposition constructions: **à, de, en, dans, par, pour, sur, avec, sans, chez**.
-
-**Example questions:**
-- Il commence ___ pleuvoir. → **à**
-- Elle a décidé ___ partir. → **de**
-- Je pense ___ toi. → **à**
-- Il rêve ___ voyager. → **de**
-- Nous nous intéressons ___ l'art. → **à**
-
-**Key forms:** Verbs taking à (penser à, commencer à, réussir à...), verbs taking de (décider de, essayer de, rêver de...), verbs with no preposition (regarder, écouter, chercher...).
-
-### Data Feasibility: SUFFICIENT ✓
-
-| Pattern | Sentences found |
-|---------|---------------:|
-| verb + de | 1,934 |
-| verb + à | 1,252 |
-| verb + dans | 716 |
-| verb + en | 599 |
-| verb + pour | 464 |
-| verb + sur | 430 |
-| verb + par | 238 |
-| verb + avec | 161 |
-| **Total** | **~4,500+** (after removing noise) |
-
-Top combos: commence à (22), manque de (27), arrête de (23), réussi à (16), décidé de (20).
-All blanks need repositioning to target the preposition. Some false positives exist where noun
-homographs match verb forms (~20% noise), but the volume is more than enough.
-**Strongest candidate of all 10 ideas — ready to build.**
+Fully integrated as game mode #7. 764 sentences extracted from anki_french preposition cards
+covering 16 prepositions: à, de, en, dans, sur, avec, sans, par, pour, avant, après, entre,
+contre, sous, vers, chez. See `app/src/main/assets/prepositions.json` and
+`scripts/extract_prepositions.py`.
 
 ---
 

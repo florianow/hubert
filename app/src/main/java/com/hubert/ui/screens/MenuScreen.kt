@@ -38,6 +38,7 @@ fun MenuScreen(
     spellingBeeHighScore: Int,
     conjugationHighScore: Int,
     pronunciationHighScore: Int,
+    prepositionHighScore: Int,
     onHubertChoisit: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
@@ -46,6 +47,7 @@ fun MenuScreen(
     onStartConjugation: () -> Unit,
     onStartPronunciation: () -> Unit,
     onPronunciationSettings: () -> Unit,
+    onStartPreposition: () -> Unit,
     onShowStatistics: () -> Unit
 ) {
     Column(
@@ -195,6 +197,16 @@ fun MenuScreen(
             highScore = pronunciationHighScore,
             onClick = onStartPronunciation,
             onSettingsClick = onPronunciationSettings
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Préposez!",
+            description = "Pick the right preposition",
+            accentColor = FrenchBlue,
+            highScore = prepositionHighScore,
+            onClick = onStartPreposition
         )
 
         Spacer(modifier = Modifier.height(24.dp))

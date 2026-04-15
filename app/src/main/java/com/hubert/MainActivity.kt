@@ -19,6 +19,7 @@ import com.hubert.viewmodel.GameType
 import com.hubert.viewmodel.GameViewModel
 import com.hubert.viewmodel.GapFillViewModel
 import com.hubert.viewmodel.GenderSnapViewModel
+import com.hubert.viewmodel.PrepositionViewModel
 import com.hubert.viewmodel.PronunciationViewModel
 import com.hubert.viewmodel.SpellingBeeViewModel
 import com.hubert.viewmodel.StatisticsViewModel
@@ -48,6 +49,7 @@ enum class Screen {
     SPELLING_BEE,
     CONJUGATION,
     PRONUNCIATION,
+    PREPOSITION,
     STATISTICS
 }
 
@@ -59,6 +61,7 @@ fun HubertApp() {
     val spellingBeeVm: SpellingBeeViewModel = hiltViewModel()
     val conjugationVm: ConjugationViewModel = hiltViewModel()
     val pronunciationVm: PronunciationViewModel = hiltViewModel()
+    val prepositionVm: PrepositionViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
@@ -67,6 +70,7 @@ fun HubertApp() {
     val spellingBeeState by spellingBeeVm.uiState.collectAsState()
     val conjugationState by conjugationVm.uiState.collectAsState()
     val pronunciationState by pronunciationVm.uiState.collectAsState()
+    val prepositionState by prepositionVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
@@ -86,6 +90,7 @@ fun HubertApp() {
                 "spelling_bee" -> spellingBeeVm.startGame()
                 "conjugation" -> conjugationVm.showTenseSelection()
                 "pronunciation" -> pronunciationVm.onGameSelected()
+                "preposition" -> prepositionVm.startGame()
             }
         }
     }
@@ -124,6 +129,12 @@ fun HubertApp() {
     LaunchedEffect(pronunciationState.showSettings, pronunciationState.isPlaying, pronunciationState.isGameOver, pronunciationState.countdown) {
         if (pronunciationState.showSettings || pronunciationState.countdown != null || pronunciationState.isPlaying || pronunciationState.isGameOver) {
             currentScreen = Screen.PRONUNCIATION
+        }
+    }
+
+    LaunchedEffect(prepositionState.isPlaying, prepositionState.isGameOver, prepositionState.countdown) {
+        if (prepositionState.countdown != null || prepositionState.isPlaying || prepositionState.isGameOver) {
+            currentScreen = Screen.PREPOSITION
         }
     }
 
@@ -429,6 +440,48 @@ fun HubertApp() {
             }
         }
 
+        Screen.PREPOSITION -> {
+            when {
+                prepositionState.countdown != null -> {
+                    CountdownScreen(
+                        count = prepositionState.countdown!!,
+                        onBack = {
+                            prepositionVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                prepositionState.isPlaying -> {
+                    PrepositionScreen(
+                        state = prepositionState,
+                        onAnswer = { prepositionVm.answer(it) },
+                        onQuit = {
+                            prepositionVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                prepositionState.isGameOver -> {
+                    GameOverScreen(
+                        title = "TIME'S UP!",
+                        score = prepositionState.score,
+                        isNewHighScore = prepositionState.isNewHighScore,
+                        totalCorrect = prepositionState.totalCorrect,
+                        totalWrong = prepositionState.totalWrong,
+                        bestStreak = prepositionState.bestStreak,
+                        highScore = prepositionState.highScore,
+                        durationMs = prepositionState.durationMs,
+                        answerHistory = prepositionState.answerHistory,
+                        onPlayAgain = { prepositionVm.startGame() },
+                        onBackToMenu = {
+                            prepositionVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+            }
+        }
+
         Screen.MENU -> {
             MenuScreen(
                 matchingHighScore = matchingState.highScore,
@@ -437,6 +490,7 @@ fun HubertApp() {
                 spellingBeeHighScore = spellingBeeState.highScore,
                 conjugationHighScore = conjugationState.highScore,
                 pronunciationHighScore = pronunciationState.highScore,
+                prepositionHighScore = prepositionState.highScore,
                 onHubertChoisit = onHubertChoisit,
                 onStartMatching = { matchingVm.startGame() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
@@ -445,6 +499,7 @@ fun HubertApp() {
                 onStartConjugation = { conjugationVm.showTenseSelection() },
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
                 onPronunciationSettings = { pronunciationVm.showSettings() },
+                onStartPreposition = { prepositionVm.startGame() },
                 onShowStatistics = {
                     statisticsVm.loadStatistics()
                     currentScreen = Screen.STATISTICS
