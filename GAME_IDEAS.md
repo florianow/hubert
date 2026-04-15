@@ -35,7 +35,7 @@ ideas below would require re-blanking or entirely new datasets.
 
 ## 1. Relativisez! — Pronoms relatifs
 
-Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, lesquels, lesquelles, auquel, auxquels, duquel, desquels**.
+Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, lesquels, lesquelles, auquel, auxquels, duquel, desquels, ce qui, ce que**.
 
 **Example questions:**
 - La fille ___ parle est ma sœur. → **qui**
@@ -43,8 +43,12 @@ Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, l
 - L'homme ___ je parle est mon prof. → **dont**
 - La ville ___ je suis né est petite. → **où**
 - La table sur ___ j'ai posé le livre. → **laquelle**
+- Je ne sais pas ___ tu as mis dedans. → **ce que** (indefinite direct object)
+- Je ne sais pas ___ est dedans. → **ce qui** (indefinite subject)
+- C'est ___ lui a donné l'idée. → **ce qui**
+- J'ai lu ___ elle a écrit. → **ce qu'** (ce que before vowel)
 
-**Key forms:** qui (subject), que (direct object), dont (de + relative), où (place/time), lequel/laquelle/lesquels/lesquelles (after prepositions), contractions auquel/auxquels/duquel/desquels.
+**Key forms:** qui (subject), que (direct object), dont (de + relative), où (place/time), lequel/laquelle/lesquels/lesquelles (after prepositions), contractions auquel/auxquels/duquel/desquels. **Indefinite relative pronouns:** ce qui (indefinite subject, no antecedent), ce que (indefinite direct object, no antecedent). Unlike qui/que, ce qui/ce que cannot refer to people.
 
 ### Data Feasibility: NEEDS NEW DATASET
 
@@ -57,10 +61,14 @@ Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, l
 | lequel/laquelle | **5** |
 | lesquels/lesquelles | **0** |
 | auquel/auxquels/duquel/desquels | **0** |
+| ce qui | **needs curation** |
+| ce que / ce qu' | **needs curation** |
 
-The rare but important forms (dont, lequel family, contractions) have near-zero coverage.
+The rare but important forms (dont, lequel family, contractions, ce qui/ce que) have near-zero coverage.
 All existing sentence blanks target vocabulary words, not relative pronouns.
-A dedicated `relative_pronouns.json` with ~200+ curated sentences (10-20 per form) is needed.
+A dedicated `relative_pronouns.json` with ~300+ curated sentences (10-20 per form) is needed,
+including ce qui/ce que examples that highlight the distinction between definite (qui/que with
+antecedent) and indefinite (ce qui/ce que without antecedent) relative pronouns.
 
 ---
 
