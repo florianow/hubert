@@ -354,7 +354,9 @@ fun HubertApp() {
                         },
                         onPauseTimer = { conjugationVm.pauseTimer() },
                         onResumeTimer = { conjugationVm.resumeTimer() },
-                        onUseInfoView = { conjugationVm.useInfoView(it) }
+                        onUseInfoView = { conjugationVm.useInfoView(it) },
+                        onTypedTextChanged = { conjugationVm.onTypedTextChanged(it) },
+                        onSubmitTyped = { conjugationVm.submitTyped() },
                     )
                 }
                 conjugationState.isGameOver -> {

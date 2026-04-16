@@ -31,6 +31,8 @@ data class TenseSection(
     val table: List<List<String>>? = null
 )
 
+enum class QuestionMode { PICK, TYPE }
+
 /**
  * Conjuguez! — verb conjugation game.
  *
@@ -101,7 +103,11 @@ data class ConjugationState(
     val awaitingNext: Boolean = false,
 
     // Countdown
-    val countdown: Int? = null
+    val countdown: Int? = null,
+
+    val questionMode: QuestionMode = QuestionMode.PICK,
+    val typedText: String = "",
+    val isMoodQuestion: Boolean = false,
 )
 
 @HiltViewModel
@@ -561,6 +567,11 @@ class ConjugationViewModel @Inject constructor(
             verbPool = allVerbs.shuffled().toMutableList()
         }
 
+        // Mood question: ~25% chance when subjonctif + present both active
+        if ("subjonctif" in activeTenses && "present" in activeTenses && Math.random() < 0.25) {
+            if (tryShowMoodQuestion()) return
+        }
+
         val verb = verbPool.removeFirst()
         val verbIpa = vocabRepository.getIpaForFrench(verb.infinitive)
 
@@ -637,6 +648,9 @@ class ConjugationViewModel @Inject constructor(
                     "label=${PERSON_LABELS[personIdx]} aux=${verb.auxiliary} " +
                     "correctAux=$correctAuxForm participle=$correctForm")
 
+                val auxMode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
+                if (auxMode == QuestionMode.TYPE) frenchTts.speak(verb.infinitive)
+
                 _uiState.update {
                     it.copy(
                         infinitive = verb.infinitive,
@@ -652,7 +666,11 @@ class ConjugationViewModel @Inject constructor(
                         choices = allChoices,
                         correctIndex = correctIdx,
                         selectedIndex = null,
-                        feedback = null
+                        feedback = null,
+                        questionMode = auxMode,
+                        typedText = "",
+                        isMoodQuestion = false,
+                        awaitingNext = false,
                     )
                 }
                 return
@@ -745,6 +763,10 @@ class ConjugationViewModel @Inject constructor(
             "label=${PERSON_LABELS[personIdx]} correct=$correctForm " +
             "choices=${allChoices.joinToString()} correctIdx=$correctIdx")
 
+        // Pick question mode: 20% chance of TYPE
+        val mode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
+        if (mode == QuestionMode.TYPE) frenchTts.speak(verb.infinitive)
+
         _uiState.update {
             it.copy(
                 infinitive = verb.infinitive,
@@ -760,7 +782,11 @@ class ConjugationViewModel @Inject constructor(
                 choices = allChoices,
                 correctIndex = correctIdx,
                 selectedIndex = null,
-                feedback = null
+                feedback = null,
+                questionMode = mode,
+                typedText = "",
+                isMoodQuestion = false,
+                awaitingNext = false,
             )
         }
     }
@@ -904,6 +930,157 @@ class ConjugationViewModel @Inject constructor(
         if (!_uiState.value.awaitingNext) return
         _uiState.update { it.copy(awaitingNext = false) }
         showNextQuestion()
+    }
+
+    /**
+     * Attempt to show a mood-recognition question (subjonctif vs indicatif présent).
+     * Returns true if a suitable question was generated, false if no candidate found.
+     */
+    private fun tryShowMoodQuestion(): Boolean {
+        val candidate = allVerbs.shuffled().firstOrNull { verb ->
+            val pForms = verb.tenses["present"] ?: return@firstOrNull false
+            val sForms = verb.tenses["subjonctif"] ?: return@firstOrNull false
+            pForms.indices.any { idx ->
+                idx < sForms.size &&
+                pForms[idx].isNotEmpty() && sForms[idx].isNotEmpty() &&
+                pForms[idx].lowercase() != sForms[idx].lowercase()
+            }
+        } ?: return false
+
+        val pForms = candidate.tenses["present"]!!
+        val sForms = candidate.tenses["subjonctif"]!!
+
+        val eligiblePersons = pForms.indices.filter { idx ->
+            idx < sForms.size &&
+            pForms[idx].isNotEmpty() && sForms[idx].isNotEmpty() &&
+            pForms[idx].lowercase() != sForms[idx].lowercase()
+        }
+        if (eligiblePersons.isEmpty()) return false
+        val personIdx = eligiblePersons.random()
+
+        val correctIsSub = Math.random() < 0.5
+        val correctForm = if (correctIsSub) sForms[personIdx] else pForms[personIdx]
+        val otherMoodForm = if (correctIsSub) pForms[personIdx] else sForms[personIdx]
+        val correctTense = if (correctIsSub) "subjonctif" else "present"
+
+        val distractorPool = mutableSetOf(otherMoodForm)
+        for ((otherTense, otherForms) in candidate.tenses) {
+            if (otherTense == "subjonctif" || otherTense == "present" || otherTense == "passe_compose") continue
+            if (personIdx < otherForms.size && otherForms[personIdx].isNotEmpty()) {
+                val f = otherForms[personIdx]
+                if (f.lowercase() != correctForm.lowercase() && f.lowercase() != otherMoodForm.lowercase()) {
+                    distractorPool.add(f)
+                }
+            }
+        }
+        val distractors = distractorPool.take(NUM_CHOICES - 1).toList()
+        if (distractors.isEmpty()) return false
+
+        val allChoices = (listOf(correctForm) + distractors).shuffled()
+        val correctIdx = allChoices.indexOf(correctForm)
+
+        val sentence = candidate.sentences?.get(correctTense)?.get(personIdx.toString())
+        val sentenceFr = sentence?.let { it.fr.replace(it.blank, "___") }
+        val verbIpa = vocabRepository.getIpaForFrench(candidate.infinitive)
+
+        val mode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
+        if (mode == QuestionMode.TYPE) frenchTts.speak(candidate.infinitive)
+
+        _uiState.update {
+            it.copy(
+                infinitive = candidate.infinitive,
+                german = candidate.german,
+                ipa = verbIpa,
+                tenseName = "Subjonctif ou Indicatif?",
+                personLabel = PERSON_LABELS[personIdx],
+                pcQuestionType = null,
+                participleShown = null,
+                auxiliaryHint = null,
+                sentenceFr = sentenceFr,
+                sentenceDe = sentence?.de,
+                choices = allChoices,
+                correctIndex = correctIdx,
+                selectedIndex = null,
+                feedback = null,
+                questionMode = mode,
+                typedText = "",
+                isMoodQuestion = true,
+                awaitingNext = false
+            )
+        }
+        return true
+    }
+
+    fun onTypedTextChanged(text: String) {
+        if (_uiState.value.feedback != null) return
+        _uiState.update { it.copy(typedText = text) }
+    }
+
+    fun submitTyped() {
+        val state = _uiState.value
+        if (!state.isPlaying || state.feedback != null) return
+        if (state.questionMode != QuestionMode.TYPE) return
+        if (state.typedText.isBlank()) return
+
+        val correctForm = state.choices[state.correctIndex]
+        val isCorrect = normalize(state.typedText) == normalize(correctForm)
+
+        val questionText = "${state.infinitive} (${state.tenseName}, ${state.personLabel})"
+        answerLog.add(AnswerRecord(
+            question = questionText,
+            yourAnswer = state.typedText.trim(),
+            correctAnswer = correctForm,
+            isCorrect = isCorrect
+        ))
+
+        frenchTts.speak(correctForm)
+
+        val currentTenseKey = TENSE_DISPLAY.entries.firstOrNull { it.value == state.tenseName }?.key
+
+        if (isCorrect) {
+            val newStreak = state.streak + 1
+            val streakBonus = if (newStreak >= 2) (newStreak - 1) * STREAK_BONUS else 0
+            val now = System.currentTimeMillis()
+            val maxDeadline = now + MAX_TIME_MS
+            timerDeadline = (timerDeadline + CORRECT_BONUS_MS).coerceAtMost(maxDeadline)
+            _uiState.update {
+                it.copy(
+                    feedback = true,
+                    score = it.score + POINTS_PER_CORRECT + streakBonus,
+                    totalCorrect = it.totalCorrect + 1,
+                    streak = newStreak,
+                    bestStreak = maxOf(it.bestStreak, newStreak)
+                )
+            }
+        } else {
+            if (currentTenseKey != null) {
+                tenseErrorCounts[currentTenseKey] = (tenseErrorCounts[currentTenseKey] ?: 0) + 1
+            }
+            timerDeadline -= WRONG_PENALTY_MS
+            _uiState.update {
+                it.copy(
+                    feedback = false,
+                    totalWrong = it.totalWrong + 1,
+                    streak = 0
+                )
+            }
+            if (timerDeadline <= System.currentTimeMillis()) {
+                timerJob?.cancel()
+                _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                viewModelScope.launch {
+                    delay(1200)
+                    endGame()
+                }
+                return
+            }
+        }
+        _uiState.update { it.copy(awaitingNext = true) }
+    }
+
+    private fun normalize(text: String): String {
+        val trimmed = text.trim().lowercase()
+        val decomposed = java.text.Normalizer.normalize(trimmed, java.text.Normalizer.Form.NFD)
+        return decomposed.replace(Regex("[\\p{InCombiningDiacriticalMarks}]"), "")
     }
 
     private fun startTimer() {
