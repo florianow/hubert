@@ -25,7 +25,7 @@ ideas below would require re-blanking or entirely new datasets.
 | 3 | Possédez! | Needs new dataset | High |
 | 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
 | 5 | Partagez! | Partially sufficient (needs disambiguation) | Medium |
-| 6 | **Subjonctiez!** | **Sufficient (1,182 verbs + conjugation tables)** | **Low** |
+| 6 | ~~Subjonctiez!~~ → Conjuguez! enhancement | Sufficient — integrate when Subjonctif + Présent both enabled | Medium |
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
 | 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
@@ -169,33 +169,35 @@ Needs either NLP-based filtering or manual curation to separate partitives from 
 
 ---
 
-## 6. Subjonctiez! — Subjonctif ou indicatif?
+## 6. ~~Subjonctiez!~~ → Conjuguez! enhancement
 
-Decide whether the subordinate clause requires the **subjunctive** or **indicative** mood, then choose the correct verb form.
+~~A standalone game~~ — instead, integrate mood-recognition questions directly into **Conjuguez!**
+when the player has both **Subjonctif** and at least one indicatif tense (e.g. Présent) enabled.
 
-**Example questions:**
-- Je veux que tu ___ (venir). → **viennes** (subjonctif)
-- Je sais que tu ___ (venir). → **viens** (indicatif)
-- Il faut que nous ___ (faire). → **fassions** (subjonctif)
-- Je pense qu'il ___ (avoir) raison. → **a** (indicatif)
-- Bien qu'il ___ (pleuvoir), je sors. → **pleuve** (subjonctif)
+**Why not a separate game:** Conjuguez! already shows sentences with the verb blanked and offers
+4 conjugated forms as choices. The only unique value of a standalone Subjonctiez! would be forcing
+the player to *decide* which mood is needed by reading the trigger phrase — but Conjuguez! already
+teaches this implicitly when multiple tenses are selected.
 
-**Key triggers:** Subjunctive after: vouloir que, il faut que, bien que, pour que, avant que, à moins que, douter que. Indicative after: savoir que, penser que (affirmative), espérer que, après que.
+### Proposed Conjuguez! enhancement
 
-### Data Feasibility: SUFFICIENT ✓
+When **Subjonctif + Présent** (or any indicatif tense) are both enabled, add a new question type:
 
+> *"Il faut que nous ___ attention."* **(faire)**
+>
+> `fassions` · `faisons` · `ferons` · `ferions`
+
+- The trigger phrase is always visible in the sentence (*il faut que, bien que, je veux que* → subjonctif / *je sais que, il dit que, je pense que* → indicatif)
+- The 4 choices are: correct form + the "other mood" form of the same verb + 2 other tenses — so the core decision is always **subjonctif vs indicatif**
+- Only fires when the player has enabled both moods — opt-in, no surprise
+
+### Data available
 | Metric | Count |
 |--------|------:|
 | Verbs with subjonctif conjugation data | 1,182 (100%) |
 | Subjonctif-tagged sentences in conjugations.json | 2,598 |
-| Verbs with distinct subjonctif vs present forms | 244 (e.g. est→soit, a→ait, peut→puisse) |
-| Sentences containing subjunctive triggers | 107 |
-
-**Questions are generatable from conjugation tables:** pair a trigger phrase with a verb and
-ask the player to choose subjonctif or indicatif. The 244 verbs with distinct forms provide
-the most interesting questions. The 2,598 pre-made subjonctif sentences already have the
-conjugated verb as the blank — ready to use. The 107 naturally occurring trigger sentences
-add realistic context.
+| Verbs with distinct subjonctif vs présent forms | 244 (e.g. est→soit, a→ait, peut→puisse) |
+| Naturally occurring trigger sentences | 107 |
 
 ---
 
