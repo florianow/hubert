@@ -1,0 +1,231 @@
+SYSTEM:
+You are a French language teacher creating example sentences for a language learning app.
+Return ONLY valid JSON, no explanation, no markdown fences.
+
+USER:
+Generate French example sentences for each verb+person combination listed below.
+
+For each entry generate the sentence type(s) marked with NEED:
+- SUBJONCTIF: a short natural sentence (5-12 words) using a trigger phrase. Vary the triggers:
+  il faut que, je veux que, je souhaite que, il est important que, il est possible que,
+  je suis content/triste/surpris que, j'ai peur que, bien que, pour que, avant que,
+  à moins que, il est nécessaire que
+- PRESENT: a short factual statement in present tense (no trigger phrase)
+
+Rules:
+- The conjugated form must appear EXACTLY as listed
+- Replace it in the sentence with ___ (three underscores)
+- "blank" field = the exact conjugated form
+- German translation must be natural
+
+Output format (return ONLY this JSON, nothing else):
+{
+  "parler": {
+    "subjonctif": {"3": {"fr": "Il faut que nous ___ plus souvent.", "de": "Wir müssen öfter sprechen.", "blank": "parlions"}},
+    "present":    {"3": {"fr": "Nous ___ français au bureau.", "de": "Wir sprechen Französisch im Büro.", "blank": "parlons"}}
+  }
+}
+
+Use the infinitive as the top-level key. Only include tenses/persons you were asked to generate.
+
+Verbs to process:
+apercevoir (bemerken) | tu | NEED: subjonctif=aperçoives, present=aperçois
+apercevoir (bemerken) | il/elle | NEED: subjonctif=aperçoive
+apercevoir (bemerken) | nous | NEED: subjonctif=apercevions
+apercevoir (bemerken) | vous | NEED: subjonctif=aperceviez, present=apercevez
+refléter (widerspiegeln) | nous | NEED: subjonctif=reflétions, present=reflétons
+refléter (widerspiegeln) | vous | NEED: subjonctif=reflétiez, present=reflétez
+bouger (sich bewegen) | nous | NEED: subjonctif=bougions, present=bougeons
+bouger (sich bewegen) | vous | NEED: subjonctif=bougiez
+isoler (isolieren) | nous | NEED: subjonctif=isolions, present=isolons
+isoler (isolieren) | vous | NEED: subjonctif=isoliez, present=isolez
+animer (beleben) | nous | NEED: subjonctif=animions, present=animons
+animer (beleben) | vous | NEED: subjonctif=animiez, present=animez
+préserver (bewahren) | nous | NEED: subjonctif=préservions, present=préservons
+préserver (bewahren) | vous | NEED: subjonctif=préserviez, present=préservez
+exécuter (ausführen) | nous | NEED: subjonctif=exécutions, present=exécutons
+exécuter (ausführen) | vous | NEED: subjonctif=exécutiez, present=exécutez
+briser (zerbrechen) | nous | NEED: subjonctif=brisions
+briser (zerbrechen) | vous | NEED: subjonctif=brisiez, present=brisez
+reculer (zurückweichen) | nous | NEED: subjonctif=reculions, present=reculons
+reculer (zurückweichen) | vous | NEED: subjonctif=reculiez
+transporter (transportieren) | nous | NEED: subjonctif=transportions, present=transportons
+transporter (transportieren) | vous | NEED: subjonctif=transportiez, present=transportez
+brûler (verbrennen) | nous | NEED: subjonctif=brûlions, present=brûlons
+brûler (verbrennen) | vous | NEED: subjonctif=brûliez, present=brûlez
+grandir (wachsen) | je | NEED: subjonctif=grandisse
+grandir (wachsen) | tu | NEED: subjonctif=grandisses
+grandir (wachsen) | il/elle | NEED: subjonctif=grandisse
+grandir (wachsen) | nous | NEED: subjonctif=grandissions, present=grandissons
+grandir (wachsen) | vous | NEED: subjonctif=grandissiez, present=grandissez
+élaborer (ausarbeiten) | nous | NEED: subjonctif=élaborions, present=élaborons
+élaborer (ausarbeiten) | vous | NEED: subjonctif=élaboriez, present=élaborez
+illustrer (illustrieren) | nous | NEED: subjonctif=illustrions, present=illustrons
+illustrer (illustrieren) | vous | NEED: subjonctif=illustriez, present=illustrez
+affronter (sich stellen) | nous | NEED: subjonctif=affrontions
+affronter (sich stellen) | vous | NEED: subjonctif=affrontiez, present=affrontez
+éclater (platzen) | nous | NEED: subjonctif=éclations, present=éclatons
+éclater (platzen) | vous | NEED: subjonctif=éclatiez, present=éclatez
+presser (drücken) | nous | NEED: subjonctif=pressions
+presser (drücken) | vous | NEED: subjonctif=pressiez
+mêler ((ver-)mischen, verbinden) | nous | NEED: subjonctif=mêlions, present=mêlons
+mêler ((ver-)mischen, verbinden) | vous | NEED: subjonctif=mêliez
+formuler (formulieren) | nous | NEED: subjonctif=formulions, present=formulons
+formuler (formulieren) | vous | NEED: subjonctif=formuliez, present=formulez
+crier (schreien) | nous | NEED: subjonctif=criions, present=crions
+crier (schreien) | vous | NEED: subjonctif=criiez, present=criez
+élargir (erweitern) | je | NEED: subjonctif=élargisse, present=élargis
+élargir (erweitern) | tu | NEED: subjonctif=élargisses, present=élargis
+élargir (erweitern) | il/elle | NEED: subjonctif=élargisse
+élargir (erweitern) | nous | NEED: subjonctif=élargissions, present=élargissons
+élargir (erweitern) | vous | NEED: subjonctif=élargissiez, present=élargissez
+plonger ((ein-)tauchen) | nous | NEED: subjonctif=plongions, present=plongeons
+plonger ((ein-)tauchen) | vous | NEED: subjonctif=plongiez, present=plongez
+fuir (fliehen) | je | NEED: subjonctif=fuie, present=fuis
+fuir (fliehen) | tu | NEED: subjonctif=fuies, present=fuis
+fuir (fliehen) | il/elle | NEED: subjonctif=fuie
+fuir (fliehen) | nous | NEED: subjonctif=fuyions, present=fuyons
+fuir (fliehen) | vous | NEED: subjonctif=fuyiez, present=fuyez
+varier (variieren) | nous | NEED: subjonctif=variions, present=varions
+varier (variieren) | vous | NEED: subjonctif=variiez, present=variez
+inventer (erfinden) | nous | NEED: subjonctif=inventions, present=inventons
+inventer (erfinden) | vous | NEED: subjonctif=inventiez, present=inventez
+ordonner (anordnen) | nous | NEED: subjonctif=ordonnions, present=ordonnons
+ordonner (anordnen) | vous | NEED: subjonctif=ordonniez, present=ordonnez
+contester (bestreiten) | nous | NEED: subjonctif=contestions, present=contestons
+contester (bestreiten) | vous | NEED: subjonctif=contestiez, present=contestez
+préoccuper (beschäftigen) | nous | NEED: subjonctif=préoccupions, present=préoccupons
+préoccuper (beschäftigen) | vous | NEED: subjonctif=préoccupiez
+multiplier (vervielfachen) | nous | NEED: subjonctif=multipliions, present=multiplions
+multiplier (vervielfachen) | vous | NEED: subjonctif=multipliiez, present=multipliez
+excuser (entschuldigen) | nous | NEED: subjonctif=excusions, present=excusons
+excuser (entschuldigen) | vous | NEED: subjonctif=excusiez
+recommander (empfehlen) | nous | NEED: subjonctif=recommandions, present=recommandons
+recommander (empfehlen) | vous | NEED: subjonctif=recommandiez, present=recommandez
+diffuser (verbreiten) | nous | NEED: subjonctif=diffusions, present=diffusons
+diffuser (verbreiten) | vous | NEED: subjonctif=diffusiez, present=diffusez
+inclure (einschließen) | je | NEED: subjonctif=inclue
+inclure (einschließen) | tu | NEED: subjonctif=inclues
+inclure (einschließen) | il/elle | NEED: subjonctif=inclue
+inclure (einschließen) | nous | NEED: subjonctif=incluions, present=incluons
+inclure (einschließen) | vous | NEED: subjonctif=incluiez
+combler ((auf-)füllen, aufholen) | nous | NEED: subjonctif=comblions, present=comblons
+combler ((auf-)füllen, aufholen) | vous | NEED: subjonctif=combliez, present=comblez
+annuler (stornieren) | nous | NEED: subjonctif=annulions, present=annulons
+annuler (stornieren) | vous | NEED: subjonctif=annuliez, present=annulez
+bloquer (blockieren) | nous | NEED: subjonctif=bloquions
+bloquer (blockieren) | vous | NEED: subjonctif=bloquiez, present=bloquez
+guider (leiten) | nous | NEED: subjonctif=guidions, present=guidons
+guider (leiten) | vous | NEED: subjonctif=guidiez, present=guidez
+spécialiser (spezialisieren) | nous | NEED: subjonctif=spécialisions, present=spécialisons
+spécialiser (spezialisieren) | vous | NEED: subjonctif=spécialisiez, present=spécialisez
+détourner (umleiten) | nous | NEED: subjonctif=détournions, present=détournons
+détourner (umleiten) | vous | NEED: subjonctif=détourniez, present=détournez
+blesser (verletzen) | nous | NEED: subjonctif=blessions, present=blessons
+blesser (verletzen) | vous | NEED: subjonctif=blessiez, present=blessez
+reporter (zurückbringen) | nous | NEED: subjonctif=reportions, present=reportons
+reporter (zurückbringen) | vous | NEED: subjonctif=reportiez, present=reportez
+compléter (vervollständigen) | nous | NEED: subjonctif=complétions
+compléter (vervollständigen) | vous | NEED: subjonctif=complétiez, present=complétez
+procurer (beschaffen) | nous | NEED: subjonctif=procurions, present=procurons
+procurer (beschaffen) | vous | NEED: subjonctif=procuriez, present=procurez
+officier (Offizier) | nous | NEED: subjonctif=officiions, present=officions
+officier (Offizier) | vous | NEED: subjonctif=officiiez, present=officiez
+efforcer (sich bemühen) | nous | NEED: subjonctif=efforcions
+efforcer (sich bemühen) | vous | NEED: subjonctif=efforciez, present=efforcez
+éclairer (beleuchten) | nous | NEED: subjonctif=éclairions, present=éclairons
+éclairer (beleuchten) | vous | NEED: subjonctif=éclairiez, present=éclairez
+consommer (verbrauchen) | nous | NEED: subjonctif=consommions
+consommer (verbrauchen) | vous | NEED: subjonctif=consommiez, present=consommez
+dépenser (ausgeben) | nous | NEED: subjonctif=dépensions
+dépenser (ausgeben) | vous | NEED: subjonctif=dépensiez, present=dépensez
+détenir (besitzen) | je | NEED: subjonctif=détienne, present=détiens
+détenir (besitzen) | tu | NEED: subjonctif=détiennes, present=détiens
+détenir (besitzen) | il/elle | NEED: subjonctif=détienne
+détenir (besitzen) | nous | NEED: subjonctif=détenions, present=détenons
+détenir (besitzen) | vous | NEED: subjonctif=déteniez, present=détenez
+cultiver (anbauen) | nous | NEED: subjonctif=cultivions
+cultiver (anbauen) | vous | NEED: subjonctif=cultiviez, present=cultivez
+gouverner (regieren) | nous | NEED: subjonctif=gouvernions, present=gouvernons
+gouverner (regieren) | vous | NEED: subjonctif=gouverniez, present=gouvernez
+jouir (genießen) | je | NEED: subjonctif=jouisse
+jouir (genießen) | tu | NEED: subjonctif=jouisses
+jouir (genießen) | il/elle | NEED: subjonctif=jouisse
+jouir (genießen) | nous | NEED: subjonctif=jouissions
+jouir (genießen) | vous | NEED: subjonctif=jouissiez
+parcourir (durchlaufen) | je | NEED: subjonctif=parcoure
+parcourir (durchlaufen) | tu | NEED: subjonctif=parcoures
+parcourir (durchlaufen) | il/elle | NEED: subjonctif=parcoure
+parcourir (durchlaufen) | nous | NEED: subjonctif=parcourions, present=parcourons
+parcourir (durchlaufen) | vous | NEED: subjonctif=parcouriez, present=parcourez
+classer ((ein-)ordnen) | nous | NEED: subjonctif=classions, present=classons
+classer ((ein-)ordnen) | vous | NEED: subjonctif=classiez, present=classez
+renverser (umkippen) | nous | NEED: subjonctif=renversions, present=renversons
+renverser (umkippen) | vous | NEED: subjonctif=renversiez
+désoler (bedauern) | nous | NEED: subjonctif=désolions, present=désolons
+désoler (bedauern) | vous | NEED: subjonctif=désoliez
+accélérer (beschleunigen) | nous | NEED: subjonctif=accélérions, present=accélérons
+accélérer (beschleunigen) | vous | NEED: subjonctif=accélériez, present=accélérez
+résider (wohnen) | nous | NEED: subjonctif=résidions
+résider (wohnen) | vous | NEED: subjonctif=résidiez
+dessiner (zeichnen) | nous | NEED: subjonctif=dessinions, present=dessinons
+dessiner (zeichnen) | vous | NEED: subjonctif=dessiniez, present=dessinez
+rompre (brechen) | je | NEED: subjonctif=rompe, present=romps
+rompre (brechen) | tu | NEED: subjonctif=rompes, present=romps
+rompre (brechen) | il/elle | NEED: subjonctif=rompe
+rompre (brechen) | nous | NEED: subjonctif=rompions, present=rompons
+rompre (brechen) | vous | NEED: subjonctif=rompiez
+armer (bewaffnen) | nous | NEED: subjonctif=armions, present=armons
+armer (bewaffnen) | vous | NEED: subjonctif=armiez, present=armez
+bâtir (bauen) | je | NEED: subjonctif=bâtisse
+bâtir (bauen) | tu | NEED: subjonctif=bâtisses
+bâtir (bauen) | il/elle | NEED: subjonctif=bâtisse
+bâtir (bauen) | nous | NEED: subjonctif=bâtissions, present=bâtissons
+bâtir (bauen) | vous | NEED: subjonctif=bâtissiez, present=bâtissez
+emmener ([jemanden] mitnehmen) | nous | NEED: subjonctif=emmenions, present=emmenons
+emmener ([jemanden] mitnehmen) | vous | NEED: subjonctif=emmeniez, present=emmenez
+dresser (aufstellen, (auf-)richten) | nous | NEED: subjonctif=dressions, present=dressons
+dresser (aufstellen, (auf-)richten) | vous | NEED: subjonctif=dressiez, present=dressez
+afficher (anzeigen) | nous | NEED: subjonctif=affichions, present=affichons
+afficher (anzeigen) | vous | NEED: subjonctif=affichiez, present=affichez
+survenir ((plötzlich) passieren) | je | NEED: subjonctif=survienne, present=surviens
+survenir ((plötzlich) passieren) | tu | NEED: subjonctif=surviennes, present=surviens
+survenir ((plötzlich) passieren) | il/elle | NEED: subjonctif=survienne
+survenir ((plötzlich) passieren) | nous | NEED: subjonctif=survenions, present=survenons
+survenir ((plötzlich) passieren) | vous | NEED: subjonctif=surveniez, present=survenez
+sauter (springen) | nous | NEED: subjonctif=sautions, present=sautons
+sauter (springen) | vous | NEED: subjonctif=sautiez, present=sautez
+orienter (ausrichten) | nous | NEED: subjonctif=orientions, present=orientons
+orienter (ausrichten) | vous | NEED: subjonctif=orientiez, present=orientez
+reproduire (nachmachen) | je | NEED: subjonctif=reproduise, present=reproduis
+reproduire (nachmachen) | tu | NEED: subjonctif=reproduises, present=reproduis
+reproduire (nachmachen) | il/elle | NEED: subjonctif=reproduise
+reproduire (nachmachen) | nous | NEED: subjonctif=reproduisions, present=reproduisons
+reproduire (nachmachen) | vous | NEED: subjonctif=reproduisiez, present=reproduisez
+transférer (verlegen) | nous | NEED: subjonctif=transférions, present=transférons
+transférer (verlegen) | vous | NEED: subjonctif=transfériez, present=transférez
+croître (wachsen) | je | NEED: subjonctif=croisse, present=croîs
+croître (wachsen) | tu | NEED: subjonctif=croisses, present=croîs
+croître (wachsen) | il/elle | NEED: subjonctif=croisse
+croître (wachsen) | nous | NEED: subjonctif=croissions, present=croissons
+croître (wachsen) | vous | NEED: subjonctif=croissiez, present=croissez
+tolérer (dulden) | nous | NEED: subjonctif=tolérions, present=tolérons
+tolérer (dulden) | vous | NEED: subjonctif=tolériez, present=tolérez
+enseigner (lehren) | nous | NEED: subjonctif=enseignions, present=enseignons
+enseigner (lehren) | vous | NEED: subjonctif=enseigniez, present=enseignez
+rédiger (verfassen) | nous | NEED: subjonctif=rédigions, present=rédigeons
+rédiger (verfassen) | vous | NEED: subjonctif=rédigiez, present=rédigez
+contraindre (zwingen) | je | NEED: subjonctif=contraigne, present=contrains
+contraindre (zwingen) | tu | NEED: subjonctif=contraignes, present=contrains
+contraindre (zwingen) | il/elle | NEED: subjonctif=contraigne
+contraindre (zwingen) | nous | NEED: subjonctif=contraignions, present=contraignons
+contraindre (zwingen) | vous | NEED: subjonctif=contraigniez, present=contraignez
+trancher ((durch-)schneiden) | nous | NEED: subjonctif=tranchions
+trancher ((durch-)schneiden) | vous | NEED: subjonctif=tranchiez, present=tranchez
+retarder (aufhalten) | nous | NEED: subjonctif=retardions, present=retardons
+retarder (aufhalten) | vous | NEED: subjonctif=retardiez, present=retardez
+réjouir ((er-)freuen) | je | NEED: subjonctif=réjouisse
+réjouir ((er-)freuen) | tu | NEED: subjonctif=réjouisses
+réjouir ((er-)freuen) | il/elle | NEED: subjonctif=réjouisse
+réjouir ((er-)freuen) | nous | NEED: subjonctif=réjouissions
+réjouir ((er-)freuen) | vous | NEED: subjonctif=réjouissiez, present=réjouissez

@@ -1,0 +1,105 @@
+SYSTEM:
+You are a French language teacher creating example sentences for a language learning app.
+Return ONLY valid JSON, no explanation, no markdown fences.
+
+USER:
+Generate French example sentences for each verb+person combination listed below.
+
+For each entry generate the sentence type(s) marked with NEED:
+- SUBJONCTIF: a short natural sentence (5-12 words) using a trigger phrase. Vary the triggers:
+  il faut que, je veux que, je souhaite que, il est important que, il est possible que,
+  je suis content/triste/surpris que, j'ai peur que, bien que, pour que, avant que,
+  à moins que, il est nécessaire que
+- PRESENT: a short factual statement in present tense (no trigger phrase)
+
+Rules:
+- The conjugated form must appear EXACTLY as listed
+- Replace it in the sentence with ___ (three underscores)
+- "blank" field = the exact conjugated form
+- German translation must be natural
+
+Output format (return ONLY this JSON, nothing else):
+{
+  "parler": {
+    "subjonctif": {"3": {"fr": "Il faut que nous ___ plus souvent.", "de": "Wir müssen öfter sprechen.", "blank": "parlions"}},
+    "present":    {"3": {"fr": "Nous ___ français au bureau.", "de": "Wir sprechen Französisch im Büro.", "blank": "parlons"}}
+  }
+}
+
+Use the infinitive as the top-level key. Only include tenses/persons you were asked to generate.
+
+Verbs to process:
+caresser (streicheln) | vous | NEED: subjonctif=caressiez
+écrier ([vor Emotion] rufen) | nous | NEED: subjonctif=écriions, present=écrions
+écrier ([vor Emotion] rufen) | vous | NEED: subjonctif=écriiez, present=écriez
+militer (sich engagieren) | nous | NEED: subjonctif=militions, present=militons
+militer (sich engagieren) | vous | NEED: subjonctif=militiez, present=militez
+craquer (krachen) | nous | NEED: subjonctif=craquions, present=craquons
+craquer (krachen) | vous | NEED: subjonctif=craquiez, present=craquez
+clarifier (klären) | nous | NEED: subjonctif=clarifiions, present=clarifions
+clarifier (klären) | vous | NEED: subjonctif=clarifiiez, present=clarifiez
+claquer (zuschlagen) | nous | NEED: subjonctif=claquions, present=claquons
+claquer (zuschlagen) | vous | NEED: subjonctif=claquiez, present=claquez
+buter ((an-)stoßen, stolpern) | nous | NEED: subjonctif=butions, present=butons
+buter ((an-)stoßen, stolpern) | vous | NEED: subjonctif=butiez, present=butez
+exciter (erregen) | nous | NEED: subjonctif=excitions, present=excitons
+exciter (erregen) | vous | NEED: subjonctif=excitiez, present=excitez
+capturer (einfangen) | nous | NEED: subjonctif=capturions, present=capturons
+capturer (einfangen) | vous | NEED: subjonctif=capturiez, present=capturez
+allouer (zuteilen) | nous | NEED: subjonctif=allouions, present=allouons
+allouer (zuteilen) | vous | NEED: subjonctif=allouiez, present=allouez
+scandaliser (schockieren) | nous | NEED: subjonctif=scandalisions, present=scandalisons
+scandaliser (schockieren) | vous | NEED: subjonctif=scandalisiez
+empresser (sich beeilen) | nous | NEED: subjonctif=empressions, present=empressons
+empresser (sich beeilen) | vous | NEED: subjonctif=empressiez, present=empressez
+inonder (überfluten) | nous | NEED: subjonctif=inondions, present=inondons
+inonder (überfluten) | vous | NEED: subjonctif=inondiez, present=inondez
+réglementer ((gesetzlich) regeln) | nous | NEED: subjonctif=réglementions, present=réglementons
+réglementer ((gesetzlich) regeln) | vous | NEED: subjonctif=réglementiez, present=réglementez
+sonder (befragen) | nous | NEED: subjonctif=sondions, present=sondons
+sonder (befragen) | vous | NEED: subjonctif=sondiez, present=sondez
+ravager (verwüsten) | nous | NEED: subjonctif=ravagions, present=ravageons
+ravager (verwüsten) | vous | NEED: subjonctif=ravagiez, present=ravagez
+ajourner (aufschieben) | nous | NEED: subjonctif=ajournions, present=ajournons
+ajourner (aufschieben) | vous | NEED: subjonctif=ajourniez, present=ajournez
+ancrer (verankern) | nous | NEED: subjonctif=ancrions, present=ancrons
+ancrer (verankern) | vous | NEED: subjonctif=ancriez, present=ancrez
+raccrocher (aufhängen) | nous | NEED: subjonctif=raccrochions, present=raccrochons
+raccrocher (aufhängen) | vous | NEED: subjonctif=raccrochiez
+agrandir (vergrößern) | je | NEED: subjonctif=agrandisse, present=agrandis
+agrandir (vergrößern) | tu | NEED: subjonctif=agrandisses, present=agrandis
+agrandir (vergrößern) | il/elle | NEED: subjonctif=agrandisse
+agrandir (vergrößern) | nous | NEED: subjonctif=agrandissions, present=agrandissons
+agrandir (vergrößern) | vous | NEED: subjonctif=agrandissiez, present=agrandissez
+occasionner (verursachen) | nous | NEED: subjonctif=occasionnions, present=occasionnons
+occasionner (verursachen) | vous | NEED: subjonctif=occasionniez, present=occasionnez
+cuire (kochen) | je | NEED: subjonctif=cuise, present=cuis
+cuire (kochen) | tu | NEED: subjonctif=cuises, present=cuis
+cuire (kochen) | il/elle | NEED: subjonctif=cuise
+cuire (kochen) | nous | NEED: subjonctif=cuisions, present=cuisons
+cuire (kochen) | vous | NEED: subjonctif=cuisiez, present=cuisez
+raser (rasieren) | nous | NEED: subjonctif=rasions, present=rasons
+raser (rasieren) | vous | NEED: subjonctif=rasiez, present=rasez
+revivre (wieder aufleben) | je | NEED: subjonctif=revive, present=revis
+revivre (wieder aufleben) | tu | NEED: subjonctif=revives, present=revis
+revivre (wieder aufleben) | il/elle | NEED: subjonctif=revive
+revivre (wieder aufleben) | nous | NEED: subjonctif=revivions, present=revivons
+revivre (wieder aufleben) | vous | NEED: subjonctif=reviviez, present=revivez
+hisser (hochziehen) | nous | NEED: subjonctif=hissions, present=hissons
+hisser (hochziehen) | vous | NEED: subjonctif=hissiez, present=hissez
+agréer (annehmen) | nous | NEED: subjonctif=agréions, present=agréons
+agréer (annehmen) | vous | NEED: subjonctif=agréiez, present=agréez
+décoller (starten) | nous | NEED: subjonctif=décollions, present=décollons
+décoller (starten) | vous | NEED: subjonctif=décolliez, present=décollez
+dépouiller (berauben) | nous | NEED: subjonctif=dépouillions, present=dépouillons
+dépouiller (berauben) | vous | NEED: subjonctif=dépouilliez, present=dépouillez
+aménager (einrichten) | nous | NEED: subjonctif=aménagions, present=aménageons
+aménager (einrichten) | vous | NEED: subjonctif=aménagiez, present=aménagez
+rigoler (lachen) | nous | NEED: subjonctif=rigolions, present=rigolons
+rigoler (lachen) | vous | NEED: subjonctif=rigoliez, present=rigolez
+expérimenter (erproben) | nous | NEED: subjonctif=expérimentions, present=expérimentons
+expérimenter (erproben) | vous | NEED: subjonctif=expérimentiez, present=expérimentez
+détériorer (verschlechtern) | nous | NEED: subjonctif=détériorions, present=détériorons
+détériorer (verschlechtern) | vous | NEED: subjonctif=détérioriez, present=détériorez
+écrouler (einstürzen) | nous | NEED: subjonctif=écroulions, present=écroulons
+écrouler (einstürzen) | vous | NEED: subjonctif=écrouliez, present=écroulez
