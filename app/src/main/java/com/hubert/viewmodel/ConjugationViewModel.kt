@@ -440,6 +440,38 @@ class ConjugationViewModel @Inject constructor(
                 )
             ),
 
+            "mood_question" to TenseInfo(
+                description = "Subjonctif oder Indikativ? Der Modus hängt davon ab, ob eine subjektive Einstellung (Wunsch, Zweifel, Gefühl, Pflicht) oder eine Tatsache ausgedrückt wird. Entscheidend ist meist das einleitende Verb oder die Konjunktion.",
+                sections = listOf(
+                    TenseSection(
+                        "Subjonctif — nach diesen Auslösern",
+                        description = "Wille & Wunsch: vouloir que, souhaiter que, aimer que\nPflicht: il faut que, il est nécessaire que\nMöglichkeit: il se peut que, il est possible que\nZweifel & Verneinung: douter que, ne pas croire que\nGefühle: être content que, avoir peur que, regretter que\nKonjunktionen: bien que, avant que, pour que, afin que, à moins que",
+                        examples = listOf(
+                            "Il faut que tu finisses avant midi." to "Du musst vor Mittag fertig sein.",
+                            "Je suis ravi qu'elle vienne ce soir." to "Ich bin froh, dass sie heute Abend kommt.",
+                            "Bien qu'il fasse froid, nous sortons." to "Obwohl es kalt ist, gehen wir raus."
+                        )
+                    ),
+                    TenseSection(
+                        "Indikativ — nach diesen Auslösern",
+                        description = "Tatsachen & Gewissheit: savoir que, être sûr que, il est certain que\nWahrnehmung: voir que, entendre que, remarquer que\nMeinung (bejahend): penser que, croire que, trouver que\nZeit & Kausalität: parce que, puisque, quand (+ futur)",
+                        examples = listOf(
+                            "Je sais qu'elle parle bien français." to "Ich weiß, dass sie gut Französisch spricht.",
+                            "Il est certain qu'il viendra demain." to "Es ist sicher, dass er morgen kommt.",
+                            "Je pense qu'il a raison." to "Ich glaube, dass er Recht hat."
+                        )
+                    ),
+                    TenseSection(
+                        "Umschlag bei Verneinung / Inversionsfrage",
+                        description = "Verben des Meinens (penser, croire, trouver) verlangen den Subjonctif, wenn sie verneint sind oder eine Inversionsfrage bilden.",
+                        examples = listOf(
+                            "Je ne crois pas qu'il soit là." to "Ich glaube nicht, dass er da ist.",
+                            "Pensez-vous qu'il faille reporter la réunion?" to "Denken Sie, dass die Sitzung verschoben werden muss?"
+                        )
+                    )
+                )
+            ),
+
             "imperatif" to TenseInfo(
                 description = "Der impératif (Imperativ) drückt direkte Aufforderungen, Wünsche, Befehle, Bitten, Empfehlungen, Verbote und Ratschläge aus. Im Französischen gibt es ihn nur für tu, nous und vous.",
                 sections = listOf(
@@ -533,7 +565,10 @@ class ConjugationViewModel @Inject constructor(
         verbPool = allVerbs.shuffled().toMutableList()
 
         // Initialize info uses: 3 per selected tense
-        val infoUses = activeTenses.associateWith { INFO_USES_PER_TENSE }
+        val infoUses = activeTenses.associateWith { INFO_USES_PER_TENSE }.toMutableMap()
+        if ("subjonctif" in activeTenses && "present" in activeTenses) {
+            infoUses["mood_question"] = INFO_USES_PER_TENSE
+        }
 
         _uiState.update {
             ConjugationState(
@@ -980,7 +1015,18 @@ class ConjugationViewModel @Inject constructor(
         val correctIdx = allChoices.indexOf(correctForm)
 
         val sentence = candidate.sentences?.get(correctTense)?.get(personIdx.toString())
-        val sentenceFr = sentence?.let { it.fr.replace(it.blank, "___") }
+        val personLabel = PERSON_LABELS[personIdx]
+        val (sentenceFr, sentenceDe) = if (sentence != null) {
+            sentence.fr.replace(sentence.blank, "___") to sentence.de
+        } else {
+            // No real sentence — generate a trigger phrase so the player has mood context
+            val que = if (personLabel.startsWith("il") || personLabel.startsWith("ils")) "qu'" else "que "
+            if (correctTense == "subjonctif") {
+                "Il faut $que$personLabel ___." to "Es ist nötig, dass …"
+            } else {
+                "Je sais $que$personLabel ___." to "Ich weiß, dass …"
+            }
+        }
         val verbIpa = vocabRepository.getIpaForFrench(candidate.infinitive)
 
         val mode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
@@ -992,12 +1038,12 @@ class ConjugationViewModel @Inject constructor(
                 german = candidate.german,
                 ipa = verbIpa,
                 tenseName = "Subjonctif ou Indicatif?",
-                personLabel = PERSON_LABELS[personIdx],
+                personLabel = personLabel,
                 pcQuestionType = null,
                 participleShown = null,
                 auxiliaryHint = null,
                 sentenceFr = sentenceFr,
-                sentenceDe = sentence?.de,
+                sentenceDe = sentenceDe,
                 choices = allChoices,
                 correctIndex = correctIdx,
                 selectedIndex = null,

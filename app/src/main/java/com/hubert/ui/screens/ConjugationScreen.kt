@@ -58,8 +58,9 @@ fun ConjugationScreen(
 
     // Show tense info dialog when tense badge is tapped
     if (showTenseInfo) {
-        val tenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
-            .firstOrNull { it.value == state.tenseName }?.key
+        val tenseKey = if (state.isMoodQuestion) "mood_question"
+            else ConjugationViewModel.TENSE_DISPLAY.entries
+                .firstOrNull { it.value == state.tenseName }?.key
         val tenseInfo = tenseKey?.let { ConjugationViewModel.TENSE_INFO[it] }
 
         if (tenseInfo != null) {
@@ -150,8 +151,9 @@ fun ConjugationScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Tense badge — tap to see tense explanation (limited uses)
-            val currentTenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
-                .firstOrNull { it.value == state.tenseName }?.key
+            val currentTenseKey = if (state.isMoodQuestion) "mood_question"
+                else ConjugationViewModel.TENSE_DISPLAY.entries
+                    .firstOrNull { it.value == state.tenseName }?.key
             val infoRemaining = currentTenseKey?.let { state.infoUsesRemaining[it] } ?: 0
             val infoEnabled = infoRemaining > 0
             val context = LocalContext.current
