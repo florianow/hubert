@@ -35,14 +35,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.platform.LocalContext
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.ConjugationState
-import com.hubert.viewmodel.ConjugationViewModel
+import com.hubert.viewmodel.ConjuguezState
+import com.hubert.viewmodel.ConjuguezViewModel
 import com.hubert.viewmodel.QuestionMode
 import com.hubert.viewmodel.TenseInfo
 
 @Composable
-fun ConjugationScreen(
-    state: ConjugationState,
+fun ConjuguezScreen(
+    state: ConjuguezState,
     onAnswer: (Int) -> Unit,
     onNext: () -> Unit,
     onSpeak: (String) -> Unit,
@@ -59,9 +59,9 @@ fun ConjugationScreen(
     // Show tense info dialog when tense badge is tapped
     if (showTenseInfo) {
         val tenseKey = if (state.isMoodQuestion) "mood_question"
-            else ConjugationViewModel.TENSE_DISPLAY.entries
+            else ConjuguezViewModel.TENSE_DISPLAY.entries
                 .firstOrNull { it.value == state.tenseName }?.key
-        val tenseInfo = tenseKey?.let { ConjugationViewModel.TENSE_INFO[it] }
+        val tenseInfo = tenseKey?.let { ConjuguezViewModel.TENSE_INFO[it] }
 
         if (tenseInfo != null) {
             TenseInfoDialog(
@@ -152,7 +152,7 @@ fun ConjugationScreen(
 
             // Tense badge — tap to see tense explanation (limited uses)
             val currentTenseKey = if (state.isMoodQuestion) "mood_question"
-                else ConjugationViewModel.TENSE_DISPLAY.entries
+                else ConjuguezViewModel.TENSE_DISPLAY.entries
                     .firstOrNull { it.value == state.tenseName }?.key
             val infoRemaining = currentTenseKey?.let { state.infoUsesRemaining[it] } ?: 0
             val infoEnabled = infoRemaining > 0
@@ -304,7 +304,7 @@ fun ConjugationScreen(
 }
 
 @Composable
-private fun ConjugationTopBar(state: ConjugationState, onQuit: () -> Unit) {
+private fun ConjugationTopBar(state: ConjuguezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -664,7 +664,7 @@ private fun ConjugationChoiceCard(
 
 @Composable
 fun TenseSelectionScreen(
-    state: ConjugationState,
+    state: ConjuguezState,
     onToggleTense: (String) -> Unit,
     onStart: () -> Unit,
     onBack: () -> Unit
@@ -681,7 +681,7 @@ fun TenseSelectionScreen(
     // Info dialog
     if (showInfoForTense != null) {
         val tenseName = state.availableTenses[showInfoForTense] ?: showInfoForTense!!
-        val tenseInfo = ConjugationViewModel.TENSE_INFO[showInfoForTense]
+        val tenseInfo = ConjuguezViewModel.TENSE_INFO[showInfoForTense]
 
         if (tenseInfo != null) {
             TenseInfoDialog(

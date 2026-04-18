@@ -73,7 +73,7 @@ data class RunStats(
  * Timer system: 90 s base, +10 s correct, −10 s wrong, 300 s cap.
  * Timer pauses during recording, Azure processing, feedback, and retry prompts.
  */
-data class PronunciationState(
+data class PrononcezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
@@ -138,7 +138,7 @@ data class PronunciationState(
 }
 
 @HiltViewModel
-class PronunciationViewModel @Inject constructor(
+class PrononcezViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
@@ -146,8 +146,8 @@ class PronunciationViewModel @Inject constructor(
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PronunciationState())
-    val uiState: StateFlow<PronunciationState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(PrononcezState())
+    val uiState: StateFlow<PrononcezState> = _uiState.asStateFlow()
 
     private var countdownJob: Job? = null
     private var timerJob: Job? = null
@@ -164,6 +164,8 @@ class PronunciationViewModel @Inject constructor(
     private var easyPool: MutableList<Pair<Int, SentenceEntry>> = mutableListOf()
     private var mediumPool: MutableList<Pair<Int, SentenceEntry>> = mutableListOf()
     private var hardPool: MutableList<Pair<Int, SentenceEntry>> = mutableListOf()
+    private val replayPool: ArrayDeque<Pair<Int, SentenceEntry>> = ArrayDeque()
+    private var currentSentenceEntry: Pair<Int, SentenceEntry>? = null
 
     private var runStats = RunStats()
 
@@ -245,10 +247,12 @@ class PronunciationViewModel @Inject constructor(
         countdownJob?.cancel()
         timerJob?.cancel()
         runStats = RunStats()
+        replayPool.clear()
+        currentSentenceEntry = null
 
         // Show countdown immediately while loading sentences in background
         _uiState.update {
-            PronunciationState(
+            PrononcezState(
                 isPlaying = false,
                 countdown = 3,
                 timeRemainingMs = GAME_TIME_MS,
@@ -334,7 +338,13 @@ class PronunciationViewModel @Inject constructor(
 
         if (activePool.isEmpty()) return  // should never happen
 
-        val (_, entry) = activePool.removeFirst()
+        val pair = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            replayPool.removeFirst()
+        } else {
+            activePool.removeFirst()
+        }
+        currentSentenceEntry = pair
+        val (_, entry) = pair
 
         _uiState.update {
             it.copy(
@@ -396,6 +406,11 @@ class PronunciationViewModel @Inject constructor(
     fun skipRetry() {
         if (!_uiState.value.canRetry) return
         val state = _uiState.value
+
+        val cur = currentSentenceEntry
+        if (cur != null && replayPool.none { it.second.fr == cur.second.fr }) {
+            replayPool.addLast(cur)
+        }
 
         // Apply time penalty (timer is paused, so adjust paused remaining)
         timerPausedRemaining = (timerPausedRemaining - WRONG_PENALTY_MS).coerceAtLeast(0L)
@@ -485,15 +500,15 @@ class PronunciationViewModel @Inject constructor(
 
                 val isRetry = state.isRetry
                 val passThreshold = if (isRetry) {
-                    PronunciationState.RETRY_PASS_THRESHOLD
+                    PrononcezState.RETRY_PASS_THRESHOLD
                 } else {
-                    PronunciationState.PASS_THRESHOLD
+                    PrononcezState.PASS_THRESHOLD
                 }
 
                 val isCorrect = result.pronScore >= passThreshold
                 val canRetry = !isRetry
                     && !isCorrect
-                    && result.pronScore >= PronunciationState.RETRY_THRESHOLD
+                    && result.pronScore >= PrononcezState.RETRY_THRESHOLD
 
                 // Update run stats (only count as an "attempt" on the deciding result,
                 // not on a retry-eligible first attempt)
@@ -562,6 +577,11 @@ class PronunciationViewModel @Inject constructor(
                     }
                 } else {
                     // Definitive wrong: < 80 on first attempt, or < 85 on retry
+                    val cur = currentSentenceEntry
+                    if (cur != null && replayPool.none { it.second.fr == cur.second.fr }) {
+                        replayPool.addLast(cur)
+                    }
+
                     timerPausedRemaining = (timerPausedRemaining - WRONG_PENALTY_MS).coerceAtLeast(0L)
 
                     _uiState.update {
@@ -770,9 +790,11 @@ class PronunciationViewModel @Inject constructor(
         audioRecorder?.release()
         audioRecorder = null
 
+        replayPool.clear()
+        currentSentenceEntry = null
         val currentKey = _uiState.value.azureKey
         val currentRegion = _uiState.value.azureRegion
-        _uiState.value = PronunciationState(azureKey = currentKey, azureRegion = currentRegion)
+        _uiState.value = PrononcezState(azureKey = currentKey, azureRegion = currentRegion)
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "pronunciation")
             _uiState.update { it.copy(highScore = hs) }

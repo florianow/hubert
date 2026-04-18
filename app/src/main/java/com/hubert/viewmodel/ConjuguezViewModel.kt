@@ -46,7 +46,7 @@ enum class QuestionMode { PICK, TYPE }
  *
  * ALL data comes directly from the Anki deck — nothing is generated.
  */
-data class ConjugationState(
+data class ConjuguezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
@@ -111,15 +111,15 @@ data class ConjugationState(
 )
 
 @HiltViewModel
-class ConjugationViewModel @Inject constructor(
+class ConjuguezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ConjugationState())
-    val uiState: StateFlow<ConjugationState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ConjuguezState())
+    val uiState: StateFlow<ConjuguezState> = _uiState.asStateFlow()
 
     private var countdownJob: Job? = null
     private var timerJob: Job? = null
@@ -134,6 +134,13 @@ class ConjugationViewModel @Inject constructor(
     // Error-weighted tense tracking: count of wrong answers per tense
     private var tenseErrorCounts: MutableMap<String, Int> = mutableMapOf()
     private val answerLog = mutableListOf<AnswerRecord>()
+
+    private data class ConjugationReplay(val verb: ConjugationVerb, val tense: String, val personIdx: Int)
+    private val replayPool: ArrayDeque<ConjugationReplay> = ArrayDeque()
+    private var currentReplayItem: ConjugationReplay? = null
+    private var currentVerb: ConjugationVerb? = null
+    private var currentTenseKey: String? = null
+    private var currentPersonIdx: Int = -1
 
     companion object {
         const val GAME_TIME_MS = 90_000L
@@ -571,7 +578,7 @@ class ConjugationViewModel @Inject constructor(
         }
 
         _uiState.update {
-            ConjugationState(
+            ConjuguezState(
                 isPlaying = false,
                 isTenseSelection = false,
                 countdown = 3,
@@ -607,13 +614,23 @@ class ConjugationViewModel @Inject constructor(
             if (tryShowMoodQuestion()) return
         }
 
+        // Replay pool: 30% chance to re-show a previously wrong question
+        if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            val replay = replayPool.removeFirst()
+            currentReplayItem = replay
+            currentVerb = replay.verb
+            currentTenseKey = replay.tense
+            currentPersonIdx = replay.personIdx
+            showQuestionForVerb(replay.verb, replay.tense, replay.personIdx)
+            return
+        }
+        currentReplayItem = null
+
         val verb = verbPool.removeFirst()
-        val verbIpa = vocabRepository.getIpaForFrench(verb.infinitive)
 
         // Pick tense using error-weighted random selection
         val tense = pickWeightedTense(verb)
         if (tense == null) {
-            // This verb doesn't have any of the selected tenses, skip
             showNextQuestion()
             return
         }
@@ -633,9 +650,18 @@ class ConjugationViewModel @Inject constructor(
         }
 
         val personIdx = eligiblePersons.random()
+        currentVerb = verb
+        currentTenseKey = tense
+        currentPersonIdx = personIdx
+        showQuestionForVerb(verb, tense, personIdx)
+    }
+
+    private fun showQuestionForVerb(verb: ConjugationVerb, tense: String, personIdx: Int) {
+        val verbIpa = vocabRepository.getIpaForFrench(verb.infinitive)
+        val forms = verb.tenses[tense] ?: return
+        if (personIdx >= forms.size || forms[personIdx].isEmpty()) return
         val correctForm = forms[personIdx]
 
-        // Build distractors
         val distractors: List<String>
         val auxiliaryHint: String?
         val pcQuestionType: String?
@@ -646,19 +672,14 @@ class ConjugationViewModel @Inject constructor(
             val questionType = if (Math.random() < 0.5) "auxiliary" else "verb_form"
 
             if (questionType == "auxiliary") {
-                // AUXILIARY QUESTION: player picks the correct auxiliary form (ai/suis/as/est/etc.)
-                // The participle is shown in the prompt
                 val aux = verb.auxiliary ?: "avoir"
                 val correctAuxForm = getAuxiliaryForm(personIdx, aux)
 
-                // Distractors: mix forms from the WRONG auxiliary + wrong person forms
                 val auxDistractorPool = mutableSetOf<String>()
-                // Add all forms of the other auxiliary
                 val otherAux = if (aux == "etre") "avoir" else "etre"
                 for (pi in 0..5) {
                     auxDistractorPool.add(getAuxiliaryForm(pi, otherAux))
                 }
-                // Add wrong-person forms of the correct auxiliary
                 for (pi in 0..5) {
                     if (pi != personIdx) {
                         auxDistractorPool.add(getAuxiliaryForm(pi, aux))
@@ -666,17 +687,13 @@ class ConjugationViewModel @Inject constructor(
                 }
                 auxDistractorPool.remove(correctAuxForm)
 
-                distractors = auxDistractorPool.shuffled().take(NUM_CHOICES - 1)
-                auxiliaryHint = null  // not used for auxiliary questions (UI uses pcQuestionType)
-                pcQuestionType = "auxiliary"
-                participleShown = correctForm // the participle (e.g., "mangé")
-
-                if (distractors.isEmpty()) {
+                val auxDistractors = auxDistractorPool.shuffled().take(NUM_CHOICES - 1)
+                if (auxDistractors.isEmpty()) {
                     showNextQuestion()
                     return
                 }
 
-                val allChoices = (listOf(correctAuxForm) + distractors).shuffled()
+                val allChoices = (listOf(correctAuxForm) + auxDistractors).shuffled()
                 val correctIdx = allChoices.indexOf(correctAuxForm)
 
                 Log.d("Conjuguez", "AUX Q: ${verb.infinitive} person=$personIdx " +
@@ -693,8 +710,8 @@ class ConjugationViewModel @Inject constructor(
                         ipa = verbIpa,
                         tenseName = TENSE_DISPLAY[tense] ?: tense,
                         personLabel = PERSON_LABELS[personIdx],
-                        pcQuestionType = pcQuestionType,
-                        participleShown = participleShown,
+                        pcQuestionType = "auxiliary",
+                        participleShown = correctForm,
                         auxiliaryHint = null,
                         sentenceFr = null,
                         sentenceDe = null,
@@ -709,10 +726,7 @@ class ConjugationViewModel @Inject constructor(
                     )
                 }
                 return
-
             } else {
-                // VERB FORM QUESTION: player picks the correct PC form vs forms from other tenses
-                // Distractors come from the same verb's OTHER tenses (same person)
                 val distractorPool = mutableSetOf<String>()
                 for ((otherTense, otherForms) in verb.tenses) {
                     if (otherTense == "passe_compose") continue
@@ -723,7 +737,6 @@ class ConjugationViewModel @Inject constructor(
                         }
                     }
                 }
-                // If same-person distractors are insufficient, add other persons' forms from other tenses
                 if (distractorPool.size < NUM_CHOICES - 1) {
                     for ((otherTense, otherForms) in verb.tenses) {
                         if (otherTense == "passe_compose") continue
@@ -737,14 +750,10 @@ class ConjugationViewModel @Inject constructor(
                 distractors = distractorPool.shuffled().take(NUM_CHOICES - 1)
                 pcQuestionType = "verb_form"
                 participleShown = null
-
-                // For verb_form, show auxiliary in the prompt so player knows context
                 val aux = verb.auxiliary ?: "avoir"
                 auxiliaryHint = buildAuxiliaryHint(personIdx, aux)
             }
         } else {
-            // Other tenses: prefer same-person, different-tense distractors (excludes passé composé)
-            // This forces the player to distinguish tense endings rather than just recognizing person patterns
             val distractorPool = mutableSetOf<String>()
 
             // Phase 1: same person, different tenses (not passé composé)
@@ -758,7 +767,7 @@ class ConjugationViewModel @Inject constructor(
                 }
             }
 
-            // Phase 2 fallback: if not enough same-person distractors, add different persons from other tenses
+            // Phase 2 fallback
             if (distractorPool.size < NUM_CHOICES - 1) {
                 for ((otherTense, otherForms) in verb.tenses) {
                     if (otherTense == "passe_compose") continue
@@ -776,7 +785,6 @@ class ConjugationViewModel @Inject constructor(
             participleShown = null
         }
 
-        // If not enough distractors, skip this question
         if (distractors.isEmpty()) {
             showNextQuestion()
             return
@@ -785,7 +793,6 @@ class ConjugationViewModel @Inject constructor(
         val allChoices = (listOf(correctForm) + distractors).shuffled()
         val correctIdx = allChoices.indexOf(correctForm)
 
-        // Check for matching sentence
         val sentenceMatch = verb.sentences
             ?.get(tense)
             ?.get(personIdx.toString())
@@ -798,7 +805,6 @@ class ConjugationViewModel @Inject constructor(
             "label=${PERSON_LABELS[personIdx]} correct=$correctForm " +
             "choices=${allChoices.joinToString()} correctIdx=$correctIdx")
 
-        // Pick question mode: 20% chance of TYPE
         val mode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
         if (mode == QuestionMode.TYPE) frenchTts.speak(verb.infinitive)
 
@@ -930,6 +936,17 @@ class ConjugationViewModel @Inject constructor(
             if (currentTenseKey != null) {
                 tenseErrorCounts[currentTenseKey] =
                     (tenseErrorCounts[currentTenseKey] ?: 0) + 1
+            }
+
+            // Add to replay pool so this question reappears in the current round
+            if (!state.isMoodQuestion) {
+                val v = currentVerb
+                val tk = this.currentTenseKey
+                val pi = currentPersonIdx
+                if (v != null && tk != null && pi >= 0 &&
+                    replayPool.none { it.verb.infinitive == v.infinitive && it.tense == tk && it.personIdx == pi }) {
+                    replayPool.addLast(ConjugationReplay(v, tk, pi))
+                }
             }
 
             timerDeadline -= WRONG_PENALTY_MS
@@ -1102,6 +1119,18 @@ class ConjugationViewModel @Inject constructor(
             if (currentTenseKey != null) {
                 tenseErrorCounts[currentTenseKey] = (tenseErrorCounts[currentTenseKey] ?: 0) + 1
             }
+
+            // Add to replay pool so this question reappears in the current round
+            if (!state.isMoodQuestion) {
+                val v = currentVerb
+                val tk = this.currentTenseKey
+                val pi = currentPersonIdx
+                if (v != null && tk != null && pi >= 0 &&
+                    replayPool.none { it.verb.infinitive == v.infinitive && it.tense == tk && it.personIdx == pi }) {
+                    replayPool.addLast(ConjugationReplay(v, tk, pi))
+                }
+            }
+
             timerDeadline -= WRONG_PENALTY_MS
             _uiState.update {
                 it.copy(
@@ -1229,7 +1258,12 @@ class ConjugationViewModel @Inject constructor(
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
-        _uiState.value = ConjugationState()
+        replayPool.clear()
+        currentVerb = null
+        currentTenseKey = null
+        currentPersonIdx = -1
+        currentReplayItem = null
+        _uiState.value = ConjuguezState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
             _uiState.update { it.copy(highScore = hs) }

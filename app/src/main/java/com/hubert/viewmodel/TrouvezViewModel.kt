@@ -24,7 +24,7 @@ import javax.inject.Inject
  * replaced with a new word (rolling replacement — always fresh words coming in).
  * Wrong match = -5 seconds penalty. Timer runs out = game over.
  */
-data class GameUiState(
+data class TrouvezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
@@ -66,20 +66,21 @@ data class GameUiState(
 data class WordItem(
     val text: String,
     val pairId: Int,  // links French to German (same pairId = correct match)
+    val rank: Int = -1,  // vocab word rank, used for replay pool
     val ipa: String? = null,  // IPA pronunciation (French cards only)
     val matched: Boolean = false  // greyed out after a correct match
 )
 
 @HiltViewModel
-class GameViewModel @Inject constructor(
+class TrouvezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(GameUiState())
-    val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(TrouvezState())
+    val uiState: StateFlow<TrouvezState> = _uiState.asStateFlow()
 
     val topScores: StateFlow<List<HighScore>> = highScoreRepository.getTopScores()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -108,6 +109,9 @@ class GameViewModel @Inject constructor(
 
     // Queue of greyed-out matched pairs: Pair(frenchIndex, germanIndex), oldest first
     private val matchedQueue = mutableListOf<Pair<Int, Int>>()
+    // Words that had at least one wrong attempt — added to replayPool once correctly matched
+    private val wrongAttemptedRanks: MutableSet<Int> = mutableSetOf()
+    private val replayPool: ArrayDeque<VocabWord> = ArrayDeque()
 
     init {
         viewModelScope.launch {
@@ -122,9 +126,11 @@ class GameViewModel @Inject constructor(
         nextPairId = 0
         answerLog.clear()
         matchedQueue.clear()
+        wrongAttemptedRanks.clear()
+        replayPool.clear()
 
         _uiState.update {
-            GameUiState(
+            TrouvezState(
                 isPlaying = false,
                 countdown = 3,
                 highScore = it.highScore
@@ -150,10 +156,10 @@ class GameViewModel @Inject constructor(
         val words = vocabRepository.getRandomWords(SLOTS)
 
         val frenchItems = words.mapIndexed { index, word ->
-            WordItem(text = word.french, pairId = nextPairId + index, ipa = word.ipa)
+            WordItem(text = word.french, pairId = nextPairId + index, rank = word.rank, ipa = word.ipa)
         }
         val germanItems = words.mapIndexed { index, word ->
-            WordItem(text = word.german, pairId = nextPairId + index)
+            WordItem(text = word.german, pairId = nextPairId + index, rank = word.rank)
         }.shuffled()
 
         nextPairId += SLOTS
@@ -262,6 +268,14 @@ class GameViewModel @Inject constructor(
             val streakBonus = (newStreak - 1) * STREAK_BONUS
             val matchScore = POINTS_PER_MATCH + streakBonus
 
+            // If this word had wrong attempts before, queue it for replay in a future slot
+            if (frenchItem.rank >= 0 && wrongAttemptedRanks.remove(frenchItem.rank)) {
+                val word = vocabRepository.getWordByRank(frenchItem.rank)
+                if (word != null && replayPool.none { it.rank == frenchItem.rank }) {
+                    replayPool.addLast(word)
+                }
+            }
+
             // Speak the French word aloud
             frenchTts.speak(frenchItem.text)
 
@@ -320,7 +334,9 @@ class GameViewModel @Inject constructor(
                 }
             }
         } else {
-            // Wrong match: -5 second penalty
+            // Wrong match: remember this word was hard — will be replayed after it's correctly matched
+            if (frenchItem.rank >= 0) wrongAttemptedRanks.add(frenchItem.rank)
+
             timerDeadline -= WRONG_PENALTY_MS
 
             _uiState.update {
@@ -362,10 +378,10 @@ class GameViewModel @Inject constructor(
         val words = vocabRepository.getRandomWords(SLOTS)
 
         val frenchItems = words.mapIndexed { index, word ->
-            WordItem(text = word.french, pairId = nextPairId + index, ipa = word.ipa)
+            WordItem(text = word.french, pairId = nextPairId + index, rank = word.rank, ipa = word.ipa)
         }
         val germanItems = words.mapIndexed { index, word ->
-            WordItem(text = word.german, pairId = nextPairId + index)
+            WordItem(text = word.german, pairId = nextPairId + index, rank = word.rank)
         }.shuffled()
 
         nextPairId += SLOTS
@@ -389,11 +405,15 @@ class GameViewModel @Inject constructor(
         if (matchedQueue.isEmpty()) return
         val (oldFrenchIdx, oldGermanIdx) = matchedQueue.removeFirst()
 
-        val newWord = vocabRepository.getRandomWords(1).first()
+        val newWord = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            replayPool.removeFirst()
+        } else {
+            vocabRepository.getRandomWords(1).first()
+        }
         val newPairId = nextPairId++
 
-        val newFrench = WordItem(text = newWord.french, pairId = newPairId, ipa = newWord.ipa)
-        val newGerman = WordItem(text = newWord.german, pairId = newPairId)
+        val newFrench = WordItem(text = newWord.french, pairId = newPairId, rank = newWord.rank, ipa = newWord.ipa)
+        val newGerman = WordItem(text = newWord.german, pairId = newPairId, rank = newWord.rank)
 
         _uiState.update {
             val updatedFrench = it.frenchWords.toMutableList()
@@ -454,7 +474,10 @@ class GameViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
-        _uiState.value = GameUiState()
+        replayPool.clear()
+        wrongAttemptedRanks.clear()
+        matchedQueue.clear()
+        _uiState.value = TrouvezState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
             _uiState.update { it.copy(highScore = hs) }

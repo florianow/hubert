@@ -22,11 +22,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.GapFillState
+import com.hubert.viewmodel.CompletezState
 
 @Composable
-fun GapFillScreen(
-    state: GapFillState,
+fun CompletezScreen(
+    state: CompletezState,
     onAnswer: (Int) -> Unit,
     onQuit: () -> Unit
 ) {
@@ -216,7 +216,7 @@ fun GapFillScreen(
 }
 
 @Composable
-private fun GapFillTopBar(state: GapFillState, onQuit: () -> Unit) {
+private fun GapFillTopBar(state: CompletezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

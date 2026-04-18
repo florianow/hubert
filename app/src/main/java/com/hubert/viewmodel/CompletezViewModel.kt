@@ -2,7 +2,7 @@ package com.hubert.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hubert.data.model.HighScore
+import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
 import com.hubert.data.repository.StatisticsRepository
@@ -16,20 +16,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * Gender Snap: "le ou la?"
- * A French noun appears, player taps masculine (le) or feminine (la).
- * Speed-based: correct = +2s, wrong = -5s, streak bonus points.
+ * Gap Fill: a French sentence with a blanked-out word.
+ * German translation shown as hint. Pick from 4 choices (same category).
+ * Correct = +2s, wrong = -5s.
  */
-data class GenderSnapState(
+data class CompletezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
 
-    val currentWord: VocabWord? = null,
-    val germanHint: String = "",
+    // Current question
+    val sentenceWithGap: String = "",   // French sentence with "___" replacing the blank
+    val germanTranslation: String = "", // Full German sentence
+    val choices: List<String> = emptyList(), // 4 answer choices
+    val correctIndex: Int = -1,         // index of correct answer in choices
 
-    // Feedback flash
-    val feedback: Boolean? = null,  // true=correct, false=wrong, null=none
+    // Feedback
+    val selectedIndex: Int? = null,     // which the player tapped
+    val feedback: Boolean? = null,      // true=correct, false=wrong
 
     // Scoring
     val score: Int = 0,
@@ -52,34 +56,40 @@ data class GenderSnapState(
 )
 
 @HiltViewModel
-class GenderSnapViewModel @Inject constructor(
+class CompletezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(GenderSnapState())
-    val uiState: StateFlow<GenderSnapState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(CompletezState())
+    val uiState: StateFlow<CompletezState> = _uiState.asStateFlow()
 
     private var timerJob: Job? = null
     private var countdownJob: Job? = null
     private var timerDeadline = 0L
-    private var nounPool: MutableList<VocabWord> = mutableListOf()
     private var gameStartTime = 0L
     private val answerLog = mutableListOf<AnswerRecord>()
 
+    // Pool of available questions (rank -> word)
+    private var questionPool: MutableList<Int> = mutableListOf()
+    private val replayPool: ArrayDeque<Int> = ArrayDeque()
+    private var currentRank: Int = -1
+    private var currentRankFromReplay = false
+
     companion object {
         const val GAME_TIME_MS = 60_000L
-        const val POINTS_PER_CORRECT = 100
-        const val STREAK_BONUS = 25
+        const val POINTS_PER_CORRECT = 150
+        const val STREAK_BONUS = 30
         const val WRONG_PENALTY_MS = 5_000L
-        const val CORRECT_BONUS_MS = 2_000L
+        const val CORRECT_BONUS_MS = 5_000L
+        const val NUM_CHOICES = 4
     }
 
     init {
         viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore(gameType = "gender_snap")
+            val hs = highScoreRepository.getHighestScore(gameType = "gap_fill")
             _uiState.update { it.copy(highScore = hs) }
         }
     }
@@ -89,11 +99,12 @@ class GenderSnapViewModel @Inject constructor(
         timerJob?.cancel()
         answerLog.clear()
 
-        // Build shuffled pool of nouns with known gender
-        nounPool = vocabRepository.getNouns().shuffled().toMutableList()
+        // Build pool of words that have sentences
+        val wordsWithSentences = vocabRepository.getWordsWithSentences()
+        questionPool = wordsWithSentences.map { it.rank }.shuffled().toMutableList()
 
         _uiState.update {
-            GenderSnapState(
+            CompletezState(
                 isPlaying = false,
                 countdown = 3,
                 highScore = it.highScore
@@ -109,47 +120,61 @@ class GenderSnapViewModel @Inject constructor(
             gameStartTime = System.currentTimeMillis()
             timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
             _uiState.update {
-                it.copy(
-                    timeRemainingMs = GAME_TIME_MS,
-                    timerFraction = 1f
-                )
+                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
             }
-            showNextWord()
+            showNextQuestion()
             startTimer()
         }
     }
 
-    private fun showNextWord() {
-        if (nounPool.isEmpty()) {
-            // Reshuffle all nouns if we've gone through them all
-            nounPool = vocabRepository.getNouns().shuffled().toMutableList()
+    private fun showNextQuestion() {
+        val targetRank = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            currentRankFromReplay = true
+            replayPool.removeFirst()
+        } else {
+            currentRankFromReplay = false
+            if (questionPool.isEmpty()) {
+                questionPool = vocabRepository.getWordsWithSentences().map { it.rank }.shuffled().toMutableList()
+            }
+            questionPool.removeFirst()
         }
-        val word = nounPool.removeFirst()
+        currentRank = targetRank
+        val targetWord = vocabRepository.getWordByRank(targetRank) ?: return
+        val sentence = vocabRepository.getRandomSentence(targetRank) ?: return
+
+        // Create the gap: replace the blank word with "___"
+        val gapSentence = sentence.fr.replace(sentence.blank, "___")
+
+        // Build choices: correct + 3 distractors from same category
+        val distractors = vocabRepository.getCategoryDistractors(targetRank, NUM_CHOICES - 1)
+        val distractorTexts = distractors.map { it.french }
+
+        val allChoices = (listOf(sentence.blank) + distractorTexts).shuffled()
+        val correctIdx = allChoices.indexOf(sentence.blank)
+
         _uiState.update {
             it.copy(
-                currentWord = word,
-                germanHint = word.german,
+                sentenceWithGap = gapSentence,
+                germanTranslation = sentence.de,
+                choices = allChoices,
+                correctIndex = correctIdx,
+                selectedIndex = null,
                 feedback = null
             )
         }
     }
 
-    fun answer(isMasculine: Boolean) {
+    fun answer(choiceIndex: Int) {
         val state = _uiState.value
         if (!state.isPlaying || state.feedback != null) return
-        val word = state.currentWord ?: return
 
-        val correctGender = word.gender
-        val isCorrect = (isMasculine && correctGender == "m") ||
-                (!isMasculine && correctGender == "f")
+        val isCorrect = choiceIndex == state.correctIndex
 
-        val correctArticle = if (correctGender == "m") "le" else "la"
-        val yourArticle = if (isMasculine) "le" else "la"
         answerLog.add(
             AnswerRecord(
-                question = word.french,
-                yourAnswer = "$yourArticle ${word.french}",
-                correctAnswer = "$correctArticle ${word.french}",
+                question = state.sentenceWithGap,
+                yourAnswer = state.choices[choiceIndex],
+                correctAnswer = state.choices[state.correctIndex],
                 isCorrect = isCorrect
             )
         )
@@ -159,11 +184,13 @@ class GenderSnapViewModel @Inject constructor(
             val streakBonus = (newStreak - 1) * STREAK_BONUS
             val matchScore = POINTS_PER_CORRECT + streakBonus
 
-            frenchTts.speak(word.french)
+            // Speak the correct word
+            frenchTts.speak(state.choices[choiceIndex])
             timerDeadline += CORRECT_BONUS_MS
 
             _uiState.update {
                 it.copy(
+                    selectedIndex = choiceIndex,
                     feedback = true,
                     score = it.score + matchScore,
                     totalCorrect = it.totalCorrect + 1,
@@ -174,15 +201,21 @@ class GenderSnapViewModel @Inject constructor(
         } else {
             timerDeadline -= WRONG_PENALTY_MS
 
+            if (currentRankFromReplay) {
+                replayPool.addLast(currentRank)
+            } else if (currentRank >= 0 && replayPool.none { it == currentRank }) {
+                replayPool.addLast(currentRank)
+            }
+
             _uiState.update {
                 it.copy(
+                    selectedIndex = choiceIndex,
                     feedback = false,
                     totalWrong = it.totalWrong + 1,
                     streak = 0
                 )
             }
 
-            // Check if penalty killed the timer
             if (timerDeadline <= System.currentTimeMillis()) {
                 _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
                 endGame()
@@ -190,11 +223,10 @@ class GenderSnapViewModel @Inject constructor(
             }
         }
 
-        // Brief feedback flash, then next word
         viewModelScope.launch {
-            delay(400)
+            delay(if (isCorrect) 600 else 1000)
             if (_uiState.value.isPlaying) {
-                showNextWord()
+                showNextQuestion()
             }
         }
     }
@@ -226,18 +258,18 @@ class GenderSnapViewModel @Inject constructor(
         val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
-            val previousHigh = highScoreRepository.getHighestScore(gameType = "gender_snap")
+            val previousHigh = highScoreRepository.getHighestScore(gameType = "gap_fill")
             val isNewHigh = state.score > previousHigh
 
             highScoreRepository.saveScore(
                 score = state.score,
                 matchesCompleted = state.totalCorrect,
                 roundsCompleted = state.bestStreak,
-                gameType = "gender_snap"
+                gameType = "gap_fill"
             )
 
             statisticsRepository.saveSession(
-                gameType = "gender_snap",
+                gameType = "gap_fill",
                 score = state.score,
                 totalCorrect = state.totalCorrect,
                 totalWrong = state.totalWrong,
@@ -245,7 +277,7 @@ class GenderSnapViewModel @Inject constructor(
                 durationMs = durationMs
             )
 
-            statisticsRepository.saveWordAttempts("gender_snap", answerLog)
+            statisticsRepository.saveWordAttempts("gap_fill", answerLog)
 
             _uiState.update {
                 it.copy(
@@ -264,9 +296,10 @@ class GenderSnapViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
-        _uiState.value = GenderSnapState()
+        replayPool.clear()
+        _uiState.value = CompletezState()
         viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore(gameType = "gender_snap")
+            val hs = highScoreRepository.getHighestScore(gameType = "gap_fill")
             _uiState.update { it.copy(highScore = hs) }
         }
     }

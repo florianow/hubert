@@ -21,11 +21,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.PrepositionState
+import com.hubert.viewmodel.PreposezState
 
 @Composable
-fun PrepositionScreen(
-    state: PrepositionState,
+fun PreposezScreen(
+    state: PreposezState,
     onAnswer: (Int) -> Unit,
     onQuit: () -> Unit
 ) {
@@ -211,7 +211,7 @@ fun PrepositionScreen(
 }
 
 @Composable
-private fun PrepositionTopBar(state: PrepositionState, onQuit: () -> Unit) {
+private fun PrepositionTopBar(state: PreposezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
