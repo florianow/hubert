@@ -293,13 +293,13 @@ app/src/main/java/com/hubert/
 ├── ui/
 │   ├── screens/
 │   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 7 game mode cards
-│   │   ├── GameScreen.kt           # Trouvez! game UI (with IPA on French cards)
-│   │   ├── GenderSnapScreen.kt     # Classez! game UI (with IPA)
-│   │   ├── GapFillScreen.kt        # Complétez! game UI
-│   │   ├── SpellingBeeScreen.kt    # Écrivez! game UI
-│   │   ├── ConjugationScreen.kt    # Conjuguez! game UI (with IPA, timer, info limits)
-│   │   ├── PronunciationScreen.kt  # Prononcez! game UI (recording, word-level feedback, retry)
-│   │   ├── PrepositionScreen.kt    # Préposez! game UI
+│   │   ├── TrouvezScreen.kt        # Trouvez! game UI (with IPA on French cards)
+│   │   ├── ClassezScreen.kt        # Classez! game UI (with IPA)
+│   │   ├── CompletezScreen.kt      # Complétez! game UI
+│   │   ├── EcrivezScreen.kt        # Écrivez! game UI
+│   │   ├── ConjuguezScreen.kt      # Conjuguez! game UI (with IPA, timer, info limits)
+│   │   ├── PrononcezScreen.kt      # Prononcez! game UI (recording, word-level feedback, retry)
+│   │   ├── PreposezScreen.kt       # Préposez! game UI
 │   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
 │   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
@@ -311,13 +311,13 @@ app/src/main/java/com/hubert/
 │   ├── AzurePronunciationApi.kt    # Azure Speech Services REST client
 │   └── AudioRecorder.kt            # PCM audio capture → WAV byte array
 ├── viewmodel/
-│   ├── GameViewModel.kt            # Trouvez! game logic
-│   ├── GenderSnapViewModel.kt      # Classez! game logic
-│   ├── GapFillViewModel.kt         # Complétez! game logic
-│   ├── SpellingBeeViewModel.kt     # Écrivez! game logic
-│   ├── ConjugationViewModel.kt     # Conjuguez! game logic (8 tenses, timer, IPA, info limits)
-│   ├── PronunciationViewModel.kt   # Prononcez! game logic (Azure, adaptive difficulty, second chance)
-│   ├── PrepositionViewModel.kt     # Préposez! game logic
+│   ├── TrouvezViewModel.kt         # Trouvez! game logic
+│   ├── ClassezViewModel.kt         # Classez! game logic
+│   ├── CompletezViewModel.kt       # Complétez! game logic
+│   ├── EcrivezViewModel.kt         # Écrivez! game logic
+│   ├── ConjuguezViewModel.kt       # Conjuguez! game logic (8 tenses, timer, IPA, info limits)
+│   ├── PrononcezViewModel.kt       # Prononcez! game logic (Azure, adaptive difficulty, second chance)
+│   ├── PreposezViewModel.kt        # Préposez! game logic
 │   ├── StatisticsViewModel.kt      # Statistics and achievements
 │   └── AnswerRecord.kt             # Per-question answer log for detail views
 ├── HubertApplication.kt            # Hilt application class
@@ -340,8 +340,8 @@ app/src/main/assets/
 
 ```mermaid
 graph TD
-    UI["<b>UI Layer</b><br/>MenuScreen · GameScreen · GenderSnapScreen<br/>GapFillScreen · SpellingBeeScreen<br/>ConjugationScreen · PronunciationScreen<br/>GameOverScreen · StatisticsScreen"]
-    VM["<b>ViewModel Layer</b><br/>GameViewModel · GenderSnapViewModel<br/>GapFillViewModel · SpellingBeeViewModel<br/>ConjugationViewModel · PronunciationViewModel<br/>PrepositionViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
+    UI["<b>UI Layer</b><br/>MenuScreen · TrouvezScreen · ClassezScreen<br/>CompletezScreen · EcrivezScreen<br/>ConjuguezScreen · PrononcezScreen · PreposezScreen<br/>GameOverScreen · StatisticsScreen"]
+    VM["<b>ViewModel Layer</b><br/>TrouvezViewModel · ClassezViewModel<br/>CompletezViewModel · EcrivezViewModel<br/>ConjuguezViewModel · PrononcezViewModel<br/>PreposezViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
     REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · AudioRecorder"]
     DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API"]
 
