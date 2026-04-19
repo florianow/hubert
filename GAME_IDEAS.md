@@ -25,11 +25,12 @@ ideas below would require re-blanking or entirely new datasets.
 | 3 | Possédez! | Needs new dataset | High |
 | 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
 | 5 | Partagez! | Partially sufficient (needs disambiguation) | Medium |
-| 6 | **Subjonctiez!** | **Sufficient (1,182 verbs + conjugation tables)** | **Low** |
+| 6 | ~~Subjonctiez!~~ → ✅ Conjuguez! enhancement | Partially implemented — fallback active, data generation pending (see scripts/MOOD_TASK_INSTRUCTIONS.md) | — |
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
 | 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
 | 10 | Déjouez! | Needs new dataset | High |
+| 11 | **Nombrez!** | **Needs new dataset (fully generatable, no corpus needed)** | **Low** |
 
 ---
 
@@ -169,33 +170,51 @@ Needs either NLP-based filtering or manual curation to separate partitives from 
 
 ---
 
-## 6. Subjonctiez! — Subjonctif ou indicatif?
+## 6. ~~Subjonctiez!~~ → ✅ Conjuguez! enhancement (partially implemented)
 
-Decide whether the subordinate clause requires the **subjunctive** or **indicative** mood, then choose the correct verb form.
+~~A standalone game~~ — integrated as mood-recognition questions inside **Conjuguez!**
+when the player has both **Subjonctif** and **Présent** enabled.
 
-**Example questions:**
-- Je veux que tu ___ (venir). → **viennes** (subjonctif)
-- Je sais que tu ___ (venir). → **viens** (indicatif)
-- Il faut que nous ___ (faire). → **fassions** (subjonctif)
-- Je pense qu'il ___ (avoir) raison. → **a** (indicatif)
-- Bien qu'il ___ (pleuvoir), je sors. → **pleuve** (subjonctif)
+### What is implemented
 
-**Key triggers:** Subjunctive after: vouloir que, il faut que, bien que, pour que, avant que, à moins que, douter que. Indicative after: savoir que, penser que (affirmative), espérer que, après que.
+- **Mood question type** fires ~25% of the time when both Subjonctif + Présent are active
+- Badge shows **"Subjonctif ou Indicatif?"** with a working info button (3 uses per round)
+- Info page explains trigger words: il faut que, bien que, je veux que → subjonctif /
+  je sais que, il est certain que → indicatif, including the negation/inversion rule
+- When a real sentence exists it is shown with the trigger phrase visible in context
+- **Fallback** for missing sentences (mainly `nous`/`vous`): generates a trigger sentence
+  on the fly — *"Il faut que nous ___."* (subjonctif) / *"Je sais que nous ___."* (indicatif)
 
-### Data Feasibility: SUFFICIENT ✓
+### Known limitation — data gap
 
+Sentence coverage in `conjugations.json` is skewed:
+
+| Person | Subjonctif sentences |
+|--------|--------------------:|
+| je / il/elle | 857 each |
+| ils/elles | 760 |
+| tu | 109 |
+| **nous** | **10** |
+| **vous** | **5** |
+
+The fallback covers the gap but always uses the same two trigger templates, which gets
+repetitive. Proper varied sentences for all 3,074 missing combos need to be generated.
+
+### Continuing the data generation
+
+Prompt files and a merge script are ready — see **`scripts/MOOD_TASK_INSTRUCTIONS.md`**
+for the full instructions. Run each of the 16 prompt files through any capable LLM,
+save the JSON responses as `mood_result_01.json` … `mood_result_16.json`, then run
+`scripts/merge_mood_results.py` to merge them into `conjugations.json`.
+
+### Data available
 | Metric | Count |
 |--------|------:|
 | Verbs with subjonctif conjugation data | 1,182 (100%) |
-| Subjonctif-tagged sentences in conjugations.json | 2,598 |
-| Verbs with distinct subjonctif vs present forms | 244 (e.g. est→soit, a→ait, peut→puisse) |
-| Sentences containing subjunctive triggers | 107 |
-
-**Questions are generatable from conjugation tables:** pair a trigger phrase with a verb and
-ask the player to choose subjonctif or indicatif. The 244 verbs with distinct forms provide
-the most interesting questions. The 2,598 pre-made subjonctif sentences already have the
-conjugated verb as the blank — ready to use. The 107 naturally occurring trigger sentences
-add realistic context.
+| Subjonctif sentences in conjugations.json | 2,598 |
+| Eligible mood-question combos (forms differ) | 3,108 |
+| Combos with existing sentences | 34 |
+| **Combos still needing sentences** | **3,074** |
 
 ---
 
@@ -329,3 +348,86 @@ Only ~10 genuine French-German false friend pairs found in vocab.json:
 A proper faux amis game needs a curated list of 50-100+ pairs with the French word, its true
 meaning, the German lookalike, and the German word's actual meaning. The vocabulary data
 provides the French side but contains no false-friend metadata. Entirely separate dataset needed.
+
+---
+
+## 11. Nombrez! — Nombres, dates et calendrier
+
+A dedicated number and date training mode. Unlike all other games in Hubert, **Nombrez! does not
+use sentences** — it uses purpose-built interactions tuned to how numbers and dates are actually
+learned. All data is fully generatable (no corpus needed).
+
+### Topic areas
+
+| Topic | Examples |
+|-------|---------|
+| Cardinal numbers | 0–10, 0–100, 0–1000, large numbers |
+| Ordinal numbers | premier, deuxième, vingtième... |
+| Days of the week | lundi → dimanche |
+| Months | janvier → décembre |
+| Clock times | 14h37, "il est trois heures moins vingt" |
+| Full dates | "le quinze août", "le 3 janvier 2024" |
+
+### Game modes / interaction types
+
+**1. Hear it → tap the digit** (easy)
+TTS reads a French number (e.g. "quatre-vingt-dix-sept"). Player taps the correct numeral from
+4 options (e.g. 87 / 97 / 79 / 77). Great entry point; especially targets the notoriously hard
+70–99 range.
+
+**2. Hear it → type it as digits** (medium)
+TTS reads a number; player types the numeral on the Android numpad (e.g. hears "deux cent
+quarante-trois", types "243"). A replay button re-reads the number. A streak counter resets on
+wrong answers. Number range is selectable (0–100, 0–1000, etc.).
+Inspired by [langpractice.com/french/numbers/listening](https://langpractice.com/french/numbers/listening) — the most effective mechanic for
+French numbers and a gap no major app fills well.
+
+**3. Tap-the-pairs — days & months** (easy)
+8 tiles shown: 4 French words + 4 German translations, scrambled. Player taps matching pairs.
+Works for days of the week and month names. Familiar Duolingo-style interaction.
+
+**4. What comes next?** (easy)
+Show "jeudi" — tap the correct next day from 4 choices. Same for months ("octobre" → ?).
+Trains sequence memory, not just isolated recall.
+
+**5. Clock → expression** (medium)
+Show a digital time (e.g. "14:37"). Player picks the correct French written form from 4 options
+("deux heures trente-sept" / "trois heures moins vingt-trois" / ...). Or reverse: show the
+expression, pick the matching clock. Teaches 24h vs 12h conventions and quarter/half expressions.
+
+**6. Calendar tap — date recognition** (medium)
+TTS reads a date expression (e.g. "le quinze août"). Player taps the correct cell on a mini
+month-calendar grid. Combines ordinal recognition with month names in a spatial, visual way.
+
+**7. Number Bingo** (fun / group-style)
+Player gets a 3×3 grid of random numbers. TTS calls numbers in French. Player taps to mark.
+Complete a row to win. Teaches rapid audio recognition in a low-stakes format.
+
+### Data Feasibility: FULLY GENERATABLE ✓
+
+No corpus needed. All data can be programmatically generated:
+- Cardinal/ordinal numbers: algorithmic French number-to-word conversion (well-established rules)
+- Days and months: static lists of 7 + 12 entries
+- Clock times: generate all HH:MM combinations with French spoken forms
+- Dates: generate day+month combinations with ordinal forms
+
+A small `numbers.json` with pre-rendered French forms for number ranges (1–1000),
+days, months, time templates, and date templates is sufficient. Generation script is ~100 lines.
+
+### Data Feasibility: SUFFICIENT ✓
+
+| Data needed | Source |
+|-------------|--------|
+| Cardinals 0–1000 | Algorithmic generation |
+| Ordinals 1–31 | Static list (needed for dates) |
+| Days of the week | Static list (7 entries) |
+| Months | Static list (12 entries) |
+| Clock expressions | Template generation |
+| Date expressions | Template generation (ordinal + month) |
+
+### Effort: Low
+
+No existing data transformation needed. The only implementation work is:
+1. Generate `numbers.json` with a script
+2. Build the new interaction UIs (numpad input, calendar grid, pairs matching)
+3. Wire up TTS (Android's built-in French TTS is sufficient)

@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.compose.ui.platform.LocalContext
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.PronunciationState
+import com.hubert.viewmodel.PrononcezState
 import com.hubert.viewmodel.RunStats
 import com.hubert.viewmodel.WordScore
 import kotlinx.coroutines.delay
@@ -126,8 +126,8 @@ fun AzureSettingsDialog(
 // ─── Main Game Screen ────────────────────────────────────────────────────────
 
 @Composable
-fun PronunciationScreen(
-    state: PronunciationState,
+fun PrononcezScreen(
+    state: PrononcezState,
     onToggleRecording: () -> Unit,
     onNext: () -> Unit,
     onRetry: () -> Unit,
@@ -474,7 +474,7 @@ fun PronunciationScreen(
 // ─── Top Bar ─────────────────────────────────────────────────────────────────
 
 @Composable
-private fun PronunciationTopBar(state: PronunciationState, onQuit: () -> Unit) {
+private fun PronunciationTopBar(state: PrononcezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -810,7 +810,7 @@ private fun ResultsOverlay(
 // ─── Pronunciation Game Over Screen ──────────────────────────────────────────
 
 @Composable
-fun PronunciationGameOverScreen(
+fun PrononcezGameOverScreen(
     score: Int,
     isNewHighScore: Boolean,
     runStats: RunStats,

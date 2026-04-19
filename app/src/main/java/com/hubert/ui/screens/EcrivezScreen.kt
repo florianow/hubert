@@ -24,11 +24,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.SpellingBeeState
+import com.hubert.viewmodel.EcrivezState
 
 @Composable
-fun SpellingBeeScreen(
-    state: SpellingBeeState,
+fun EcrivezScreen(
+    state: EcrivezState,
     onTypedTextChanged: (String) -> Unit,
     onSubmit: () -> Unit,
     onReplay: () -> Unit,
@@ -301,7 +301,7 @@ fun SpellingBeeScreen(
 }
 
 @Composable
-private fun SpellingBeeTopBar(state: SpellingBeeState, onQuit: () -> Unit) {
+private fun SpellingBeeTopBar(state: EcrivezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

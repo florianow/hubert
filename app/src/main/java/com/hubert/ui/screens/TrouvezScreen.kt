@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.GameUiState
+import com.hubert.viewmodel.TrouvezState
 
 @Composable
-fun GameScreen(
-    state: GameUiState,
+fun TrouvezScreen(
+    state: TrouvezState,
     onSelectFrench: (Int) -> Unit,
     onSelectGerman: (Int) -> Unit,
     onQuit: () -> Unit
@@ -165,7 +165,7 @@ fun GameScreen(
 }
 
 @Composable
-private fun GameTopBar(state: GameUiState, onQuit: () -> Unit) {
+private fun GameTopBar(state: TrouvezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

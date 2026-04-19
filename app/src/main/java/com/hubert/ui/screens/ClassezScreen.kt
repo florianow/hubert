@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.GenderSnapState
+import com.hubert.viewmodel.ClassezState
 
 @Composable
-fun GenderSnapScreen(
-    state: GenderSnapState,
+fun ClassezScreen(
+    state: ClassezState,
     onAnswer: (Boolean) -> Unit,  // true = masculine (le), false = feminine (la)
     onQuit: () -> Unit
 ) {
@@ -207,7 +207,7 @@ fun GenderSnapScreen(
 }
 
 @Composable
-private fun GenderSnapTopBar(state: GenderSnapState, onQuit: () -> Unit) {
+private fun GenderSnapTopBar(state: ClassezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,

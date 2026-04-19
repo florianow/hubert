@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -32,29 +35,33 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.platform.LocalContext
 import com.hubert.ui.theme.*
-import com.hubert.viewmodel.ConjugationState
-import com.hubert.viewmodel.ConjugationViewModel
+import com.hubert.viewmodel.ConjuguezState
+import com.hubert.viewmodel.ConjuguezViewModel
+import com.hubert.viewmodel.QuestionMode
 import com.hubert.viewmodel.TenseInfo
 
 @Composable
-fun ConjugationScreen(
-    state: ConjugationState,
+fun ConjuguezScreen(
+    state: ConjuguezState,
     onAnswer: (Int) -> Unit,
     onNext: () -> Unit,
     onSpeak: (String) -> Unit,
     onQuit: () -> Unit,
     onPauseTimer: () -> Unit = {},
     onResumeTimer: () -> Unit = {},
-    onUseInfoView: (String) -> Boolean = { true }
+    onUseInfoView: (String) -> Boolean = { true },
+    onTypedTextChanged: (String) -> Unit = {},
+    onSubmitTyped: () -> Unit = {},
 ) {
     // Tense info dialog state
     var showTenseInfo by remember { mutableStateOf(false) }
 
     // Show tense info dialog when tense badge is tapped
     if (showTenseInfo) {
-        val tenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
-            .firstOrNull { it.value == state.tenseName }?.key
-        val tenseInfo = tenseKey?.let { ConjugationViewModel.TENSE_INFO[it] }
+        val tenseKey = if (state.isMoodQuestion) "mood_question"
+            else ConjuguezViewModel.TENSE_DISPLAY.entries
+                .firstOrNull { it.value == state.tenseName }?.key
+        val tenseInfo = tenseKey?.let { ConjuguezViewModel.TENSE_INFO[it] }
 
         if (tenseInfo != null) {
             TenseInfoDialog(
@@ -144,8 +151,9 @@ fun ConjugationScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Tense badge — tap to see tense explanation (limited uses)
-            val currentTenseKey = ConjugationViewModel.TENSE_DISPLAY.entries
-                .firstOrNull { it.value == state.tenseName }?.key
+            val currentTenseKey = if (state.isMoodQuestion) "mood_question"
+                else ConjuguezViewModel.TENSE_DISPLAY.entries
+                    .firstOrNull { it.value == state.tenseName }?.key
             val infoRemaining = currentTenseKey?.let { state.infoUsesRemaining[it] } ?: 0
             val infoEnabled = infoRemaining > 0
             val context = LocalContext.current
@@ -210,33 +218,46 @@ fun ConjugationScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // 4 answer choices in 2x2 grid
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                for (row in 0..1) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        for (col in 0..1) {
-                            val idx = row * 2 + col
-                            if (idx < state.choices.size) {
-                                ConjugationChoiceCard(
-                                    text = state.choices[idx],
-                                    isCorrectAnswer = idx == state.correctIndex,
-                                    isSelected = idx == state.selectedIndex,
-                                    feedback = state.feedback,
-                                    enabled = state.isPlaying && state.feedback == null,
-                                    onClick = { onAnswer(idx) },
-                                    onSpeak = { onSpeak(state.choices[idx]) },
-                                    modifier = Modifier.weight(1f)
-                                )
+            // Answer area: pick or type depending on question mode
+            if (state.questionMode == QuestionMode.TYPE) {
+                TypeAnswerSection(
+                    typedText = state.typedText,
+                    feedback = state.feedback,
+                    correctForm = state.choices.getOrNull(state.correctIndex) ?: "",
+                    enabled = state.isPlaying && state.feedback == null,
+                    onTextChanged = onTypedTextChanged,
+                    onSubmit = onSubmitTyped,
+                    modifier = Modifier.fillMaxWidth().weight(1f)
+                )
+            } else {
+                // 4 answer choices in 2x2 grid
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    for (row in 0..1) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            for (col in 0..1) {
+                                val idx = row * 2 + col
+                                if (idx < state.choices.size) {
+                                    ConjugationChoiceCard(
+                                        text = state.choices[idx],
+                                        isCorrectAnswer = idx == state.correctIndex,
+                                        isSelected = idx == state.selectedIndex,
+                                        feedback = state.feedback,
+                                        enabled = state.isPlaying && state.feedback == null,
+                                        onClick = { onAnswer(idx) },
+                                        onSpeak = { onSpeak(state.choices[idx]) },
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
                             }
                         }
                     }
@@ -283,7 +304,7 @@ fun ConjugationScreen(
 }
 
 @Composable
-private fun ConjugationTopBar(state: ConjugationState, onQuit: () -> Unit) {
+private fun ConjugationTopBar(state: ConjuguezState, onQuit: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -643,7 +664,7 @@ private fun ConjugationChoiceCard(
 
 @Composable
 fun TenseSelectionScreen(
-    state: ConjugationState,
+    state: ConjuguezState,
     onToggleTense: (String) -> Unit,
     onStart: () -> Unit,
     onBack: () -> Unit
@@ -660,7 +681,7 @@ fun TenseSelectionScreen(
     // Info dialog
     if (showInfoForTense != null) {
         val tenseName = state.availableTenses[showInfoForTense] ?: showInfoForTense!!
-        val tenseInfo = ConjugationViewModel.TENSE_INFO[showInfoForTense]
+        val tenseInfo = ConjuguezViewModel.TENSE_INFO[showInfoForTense]
 
         if (tenseInfo != null) {
             TenseInfoDialog(
@@ -1007,6 +1028,90 @@ private fun TenseInfoDialog(
                 ) {
                     TextButton(onClick = onDismiss) {
                         Text("OK", color = AccentPurple, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TypeAnswerSection(
+    typedText: String,
+    feedback: Boolean?,
+    correctForm: String,
+    enabled: Boolean,
+    onTextChanged: (String) -> Unit,
+    onSubmit: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (feedback == null) {
+            OutlinedTextField(
+                value = typedText,
+                onValueChange = onTextChanged,
+                placeholder = { Text("Écrivez la forme conjuguée…") },
+                enabled = enabled,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { onSubmit() }),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp)
+            )
+            Button(
+                onClick = onSubmit,
+                enabled = enabled && typedText.isNotBlank(),
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(14.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = AccentPurple)
+            ) {
+                Text(
+                    text = "VÉRIFIER",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
+            }
+        } else {
+            // Show feedback
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (feedback) CorrectGreen.copy(alpha = 0.15f)
+                                     else WrongRed.copy(alpha = 0.15f)
+                )
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (feedback) {
+                        Text(
+                            text = typedText.trim(),
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CorrectGreen
+                        )
+                    } else {
+                        Text(
+                            text = typedText.trim(),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = WrongRed,
+                            textDecoration = androidx.compose.ui.text.style.TextDecoration.LineThrough
+                        )
+                        Text(
+                            text = correctForm,
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = CorrectGreen
+                        )
                     }
                 }
             }

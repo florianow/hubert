@@ -1,42 +1,37 @@
 package com.hubert.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
 import com.hubert.data.repository.StatisticsRepository
+import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class PrepositionQuestion(
-    val fr: String,
-    val de: String,
-    val answer: String,
-    val distractors: List<String>
-)
-
-data class PrepositionState(
+/**
+ * Spelling Bee: hear a French word via TTS, type it.
+ * The German translation is shown as a hint.
+ * Correct = +2s, wrong = -5s, streak bonus points.
+ * Accents are ignored for comparison (e.g. "cafe" matches "café").
+ */
+data class EcrivezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
 
-    // Current question
-    val sentenceWithGap: String = "",
-    val germanTranslation: String = "",
-    val choices: List<String> = emptyList(),
-    val correctIndex: Int = -1,
+    val currentWord: VocabWord? = null,
+    val germanHint: String = "",
+    val typedText: String = "",
 
     // Feedback
-    val selectedIndex: Int? = null,
-    val feedback: Boolean? = null,
+    val feedback: Boolean? = null,  // true=correct, false=wrong, null=none
+    val correctAnswer: String = "", // shown on wrong answer
 
     // Scoring
     val score: Int = 0,
@@ -59,46 +54,38 @@ data class PrepositionState(
 )
 
 @HiltViewModel
-class PrepositionViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+class EcrivezViewModel @Inject constructor(
+    private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(PrepositionState())
-    val uiState: StateFlow<PrepositionState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(EcrivezState())
+    val uiState: StateFlow<EcrivezState> = _uiState.asStateFlow()
 
     private var timerJob: Job? = null
     private var countdownJob: Job? = null
     private var timerDeadline = 0L
+    private var wordPool: MutableList<VocabWord> = mutableListOf()
     private var gameStartTime = 0L
     private val answerLog = mutableListOf<AnswerRecord>()
-
-    private var allQuestions: List<PrepositionQuestion> = emptyList()
-    private var questionPool: MutableList<PrepositionQuestion> = mutableListOf()
+    private val replayPool: ArrayDeque<VocabWord> = ArrayDeque()
+    private var currentWordFromReplay = false
 
     companion object {
         const val GAME_TIME_MS = 60_000L
-        const val POINTS_PER_CORRECT = 150
-        const val STREAK_BONUS = 30
+        const val POINTS_PER_CORRECT = 200
+        const val STREAK_BONUS = 50
         const val WRONG_PENALTY_MS = 5_000L
-        const val CORRECT_BONUS_MS = 5_000L
-        const val GAME_TYPE = "preposition"
+        const val CORRECT_BONUS_MS = 2_000L
     }
 
     init {
-        loadQuestions()
         viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            val hs = highScoreRepository.getHighestScore(gameType = "spelling_bee")
             _uiState.update { it.copy(highScore = hs) }
         }
-    }
-
-    private fun loadQuestions() {
-        val json = context.assets.open("prepositions.json").bufferedReader().use { it.readText() }
-        val type = object : TypeToken<List<PrepositionQuestion>>() {}.type
-        allQuestions = Gson().fromJson(json, type)
     }
 
     fun startGame() {
@@ -106,10 +93,11 @@ class PrepositionViewModel @Inject constructor(
         timerJob?.cancel()
         answerLog.clear()
 
-        questionPool = allQuestions.shuffled().toMutableList()
+        // Use all words, shuffled
+        wordPool = vocabRepository.getAllWords().shuffled().toMutableList()
 
         _uiState.update {
-            PrepositionState(
+            EcrivezState(
                 isPlaying = false,
                 countdown = 3,
                 highScore = it.highScore
@@ -124,44 +112,61 @@ class PrepositionViewModel @Inject constructor(
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
             timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
-            _uiState.update { it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f) }
-            showNextQuestion()
+            _uiState.update {
+                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+            }
+            showNextWord()
             startTimer()
         }
     }
 
-    private fun showNextQuestion() {
-        if (questionPool.isEmpty()) {
-            questionPool = allQuestions.shuffled().toMutableList()
+    private fun showNextWord() {
+        val word = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            currentWordFromReplay = true
+            replayPool.removeFirst()
+        } else {
+            currentWordFromReplay = false
+            if (wordPool.isEmpty()) wordPool = vocabRepository.getAllWords().shuffled().toMutableList()
+            wordPool.removeFirst()
         }
-
-        val question = questionPool.removeFirst()
-        val allChoices = (listOf(question.answer) + question.distractors).shuffled()
-        val correctIdx = allChoices.indexOf(question.answer)
-
         _uiState.update {
             it.copy(
-                sentenceWithGap = question.fr,
-                germanTranslation = question.de,
-                choices = allChoices,
-                correctIndex = correctIdx,
-                selectedIndex = null,
-                feedback = null
+                currentWord = word,
+                germanHint = word.german,
+                typedText = "",
+                feedback = null,
+                correctAnswer = ""
             )
         }
+        // Speak the word so the player can hear it
+        frenchTts.speak(word.french)
     }
 
-    fun answer(choiceIndex: Int) {
+    /** Called when user types / edits the text field. */
+    fun onTypedTextChanged(text: String) {
+        if (!_uiState.value.isPlaying || _uiState.value.feedback != null) return
+        _uiState.update { it.copy(typedText = text) }
+    }
+
+    /** Replay the current word via TTS. */
+    fun replayAudio() {
+        val word = _uiState.value.currentWord ?: return
+        frenchTts.speak(word.french)
+    }
+
+    /** Submit the typed answer. */
+    fun submit() {
         val state = _uiState.value
         if (!state.isPlaying || state.feedback != null) return
+        val word = state.currentWord ?: return
 
-        val isCorrect = choiceIndex == state.correctIndex
+        val isCorrect = normalize(state.typedText) == normalize(word.french)
 
         answerLog.add(
             AnswerRecord(
-                question = state.sentenceWithGap,
-                yourAnswer = state.choices[choiceIndex],
-                correctAnswer = state.choices[state.correctIndex],
+                question = "${word.german} →",
+                yourAnswer = state.typedText.trim(),
+                correctAnswer = word.french,
                 isCorrect = isCorrect
             )
         )
@@ -171,12 +176,11 @@ class PrepositionViewModel @Inject constructor(
             val streakBonus = (newStreak - 1) * STREAK_BONUS
             val matchScore = POINTS_PER_CORRECT + streakBonus
 
-            frenchTts.speak(state.choices[choiceIndex])
+            frenchTts.speak(word.french)
             timerDeadline += CORRECT_BONUS_MS
 
             _uiState.update {
                 it.copy(
-                    selectedIndex = choiceIndex,
                     feedback = true,
                     score = it.score + matchScore,
                     totalCorrect = it.totalCorrect + 1,
@@ -187,10 +191,16 @@ class PrepositionViewModel @Inject constructor(
         } else {
             timerDeadline -= WRONG_PENALTY_MS
 
+            if (currentWordFromReplay) {
+                replayPool.addLast(word)
+            } else if (replayPool.none { it.rank == word.rank }) {
+                replayPool.addLast(word)
+            }
+
             _uiState.update {
                 it.copy(
-                    selectedIndex = choiceIndex,
                     feedback = false,
+                    correctAnswer = word.french,
                     totalWrong = it.totalWrong + 1,
                     streak = 0
                 )
@@ -204,11 +214,22 @@ class PrepositionViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            delay(if (isCorrect) 600 else 1000)
+            delay(if (isCorrect) 600 else 1500)
             if (_uiState.value.isPlaying) {
-                showNextQuestion()
+                showNextWord()
             }
         }
+    }
+
+    /**
+     * Normalize text for comparison: trim, lowercase, strip accents.
+     * This makes the game more forgiving — "cafe" matches "café".
+     */
+    private fun normalize(text: String): String {
+        val trimmed = text.trim().lowercase()
+        // Decompose unicode then strip combining marks (accents)
+        val decomposed = java.text.Normalizer.normalize(trimmed, java.text.Normalizer.Form.NFD)
+        return decomposed.replace(Regex("[\\p{InCombiningDiacriticalMarks}]"), "")
     }
 
     private fun startTimer() {
@@ -238,18 +259,18 @@ class PrepositionViewModel @Inject constructor(
         val durationMs = System.currentTimeMillis() - gameStartTime
 
         viewModelScope.launch {
-            val previousHigh = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            val previousHigh = highScoreRepository.getHighestScore(gameType = "spelling_bee")
             val isNewHigh = state.score > previousHigh
 
             highScoreRepository.saveScore(
                 score = state.score,
                 matchesCompleted = state.totalCorrect,
                 roundsCompleted = state.bestStreak,
-                gameType = GAME_TYPE
+                gameType = "spelling_bee"
             )
 
             statisticsRepository.saveSession(
-                gameType = GAME_TYPE,
+                gameType = "spelling_bee",
                 score = state.score,
                 totalCorrect = state.totalCorrect,
                 totalWrong = state.totalWrong,
@@ -257,7 +278,7 @@ class PrepositionViewModel @Inject constructor(
                 durationMs = durationMs
             )
 
-            statisticsRepository.saveWordAttempts(GAME_TYPE, answerLog)
+            statisticsRepository.saveWordAttempts("spelling_bee", answerLog)
 
             _uiState.update {
                 it.copy(
@@ -276,9 +297,10 @@ class PrepositionViewModel @Inject constructor(
         timerJob?.cancel()
         countdownJob?.cancel()
         answerLog.clear()
-        _uiState.value = PrepositionState()
+        replayPool.clear()
+        _uiState.value = EcrivezState()
         viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            val hs = highScoreRepository.getHighestScore(gameType = "spelling_bee")
             _uiState.update { it.copy(highScore = hs) }
         }
     }
