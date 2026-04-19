@@ -7638,5 +7638,1075 @@
       "dans",
       "à"
     ]
+  },
+  {
+    "fr": "Nous partirons cet été ___ Paris.",
+    "de": "Wir werden diesen Sommer nach Paris fahren.",
+    "answer": "à",
+    "distractors": [
+      "en",
+      "de",
+      "dans"
+    ]
+  },
+  {
+    "fr": "La réunion se déroulera ___ midi.",
+    "de": "Das Treffen wird um Mittag stattfinden.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Il marche ___ pas de loup dans la chambre.",
+    "de": "Er schleicht auf leisen Sohlen durch das Zimmer.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il pêche ___ la ligne.",
+    "de": "Er angelt mit der Angel.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Il court ___ perdre haleine.",
+    "de": "Er läuft, bis er außer Atem ist.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "pour"
+    ]
+  },
+  {
+    "fr": "J'ai contribué ___ votre réussite.",
+    "de": "Ich habe zu Ihrem Erfolg beigetragen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Il part ___ Montréal de bon matin.",
+    "de": "Er bricht früh morgens von Montreal auf.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "en",
+      "depuis"
+    ]
+  },
+  {
+    "fr": "Il rend service ___ bon cœur.",
+    "de": "Er hilft von ganzem Herzen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "avec",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le blessé hurlait ___ douleur.",
+    "de": "Der Verletzte schrie vor Schmerz.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "avec",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il fait signe ___ la main à son ami.",
+    "de": "Er winkt seinem Freund mit der Hand zu.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "avec",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous sommes passés ___ Trois-Rivières avant de rentrer à Montréal.",
+    "de": "Wir fuhren über Trois-Rivières, bevor wir nach Montreal zurückkehrten.",
+    "answer": "par",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il sort se promener ___ un froid glacial.",
+    "de": "Er geht bei eisiger Kälte spazieren.",
+    "answer": "par",
+    "distractors": [
+      "dans",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "L'éducatrice calme cet enfant agressif ___ la douceur.",
+    "de": "Die Erzieherin beruhigt dieses aggressive Kind durch Sanftheit.",
+    "answer": "par",
+    "distractors": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Cet élève a été renvoyé de l'école ___ erreur.",
+    "de": "Dieser Schüler wurde aus Versehen von der Schule verwiesen.",
+    "answer": "par",
+    "distractors": [
+      "de",
+      "en",
+      "à"
+    ]
+  },
+  {
+    "fr": "Mon frère part à Toronto ___ train.",
+    "de": "Mein Bruder fährt mit dem Zug nach Toronto.",
+    "answer": "par",
+    "distractors": [
+      "en",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a choisi de faire ce voyage ___ mer.",
+    "de": "Er hat sich entschieden, diese Reise auf dem Seeweg zu machen.",
+    "answer": "par",
+    "distractors": [
+      "en",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Dans quelques jours, il part ___ l'Europe.",
+    "de": "In ein paar Tagen bricht er nach Europa auf.",
+    "answer": "pour",
+    "distractors": [
+      "en",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Mon amie part en voyage ___ six mois.",
+    "de": "Meine Freundin verreist für sechs Monate.",
+    "answer": "pour",
+    "distractors": [
+      "de",
+      "en",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Cet athlète lutte ___ le succès.",
+    "de": "Dieser Athlet kämpft um den Erfolg.",
+    "answer": "pour",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cette fermière se lève très tôt ___ le jour.",
+    "de": "Diese Bäuerin steht mit dem Tagesanbruch sehr früh auf.",
+    "answer": "avec",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cet élève travaille ___ acharnement pour réussir.",
+    "de": "Dieser Schüler arbeitet mit Eifer, um erfolgreich zu sein.",
+    "answer": "avec",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cet agent ouvre le coffre ___ une clé spéciale.",
+    "de": "Dieser Agent öffnet den Safe mit einem speziellen Schlüssel.",
+    "answer": "avec",
+    "distractors": [
+      "de",
+      "à",
+      "par"
+    ]
+  },
+  {
+    "fr": "Il sort ___ ses amis tous les soirs.",
+    "de": "Er geht jeden Abend mit seinen Freunden aus.",
+    "answer": "avec",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cet enfant a peur de nager ___ la piscine.",
+    "de": "Dieses Kind hat Angst, im Schwimmbad zu schwimmen.",
+    "answer": "dans",
+    "distractors": [
+      "à",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Après cette déclaration, ce politicien se retrouve ___ l'embarras.",
+    "de": "Nach dieser Aussage befindet sich dieser Politiker in Verlegenheit.",
+    "answer": "dans",
+    "distractors": [
+      "à",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Ce directeur se retire ___ l'intérêt de la compagnie.",
+    "de": "Dieser Direktor tritt im Interesse des Unternehmens zurück.",
+    "answer": "dans",
+    "distractors": [
+      "à",
+      "en",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Il cache ses clés ___ le pot à fleurs.",
+    "de": "Er versteckt seine Schlüssel im Blumentopf.",
+    "answer": "dans",
+    "distractors": [
+      "à",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "J'obtiendrai mon diplôme ___ un an.",
+    "de": "Ich werde mein Diplom in einem Jahr erhalten.",
+    "answer": "dans",
+    "distractors": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Je séjourne ___ montagne pendant tout l'été.",
+    "de": "Ich verbringe den ganzen Sommer in den Bergen.",
+    "answer": "en",
+    "distractors": [
+      "à",
+      "dans",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il range ___ ordre ses jouets.",
+    "de": "Er räumt sein Spielzeug ordentlich auf.",
+    "answer": "en",
+    "distractors": [
+      "à",
+      "dans",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il a acheté une montre ___ or.",
+    "de": "Er hat eine goldene Uhr gekauft.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Cette nourriture est riche ___ vitamines.",
+    "de": "Diese Nahrung ist reich an Vitaminen.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Neil Armstrong a marché sur la Lune ___ 1969.",
+    "de": "Neil Armstrong ging 1969 auf dem Mond.",
+    "answer": "en",
+    "distractors": [
+      "à",
+      "dans",
+      "de"
+    ]
+  },
+  {
+    "fr": "Un instrument ___ écrire.",
+    "de": "Ein Gerät zum Schreiben.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un maillot ___ bain.",
+    "de": "Ein Badeanzug.",
+    "answer": "de",
+    "distractors": [
+      "pour",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un pantalon ___ coton.",
+    "de": "Eine Hose aus Baumwolle.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Un jeu ___ patience.",
+    "de": "Ein Geduldsspiel.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "en",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Un coffre destiné ___ garder de l'argent en sécurité.",
+    "de": "Eine Schatulle, die dazu bestimmt ist, Geld sicher aufzubewahren.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Une pomme ___ terre.",
+    "de": "Eine Kartoffel.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Un cordon que l'on passe ___ des œillets pour attacher une chaussure.",
+    "de": "Eine Schnur, die man durch Ösen zieht, um einen Schuh zu schnüren.",
+    "answer": "dans",
+    "distractors": [
+      "à",
+      "sur",
+      "par"
+    ]
+  },
+  {
+    "fr": "Une pâte ___ nettoyer les dents.",
+    "de": "Eine Paste zum Reinigen der Zähne.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un poisson ___ chair rose.",
+    "de": "Ein Fisch mit rosafarbenem Fleisch.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Un poulet coupé ___ deux.",
+    "de": "Ein in zwei Hälften geschnittenes Hähnchen.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "par"
+    ]
+  },
+  {
+    "fr": "Un instrument ___ vent.",
+    "de": "Ein Blasinstrument.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Un abri ___ chien.",
+    "de": "Eine Hundehütte.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Une fête qui a lieu une fois ___ année.",
+    "de": "Ein Fest, das einmal im Jahr stattfindet.",
+    "answer": "par",
+    "distractors": [
+      "de",
+      "en",
+      "à"
+    ]
+  },
+  {
+    "fr": "Un outil ___ référence linguistique.",
+    "de": "Ein sprachwissenschaftliches Nachschlagewerk.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un appareil destiné ___ se protéger de la pluie.",
+    "de": "Ein Gerät zum Schutz vor dem Regen.",
+    "answer": "à",
+    "distractors": [
+      "pour",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un problème difficile ___ résoudre.",
+    "de": "Ein schwieriges Problem zum Lösen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Un édifice en hauteur, ___ plusieurs étages.",
+    "de": "Ein hochragendes Gebäude mit mehreren Stockwerken.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Eau qui tombe en gouttes ___ la terre.",
+    "de": "Wasser, das in Tropfen auf die Erde fällt.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Un espace clos avec des barreaux ___ enfermer des animaux.",
+    "de": "Ein geschlossener Raum mit Gittern zum Einsperren von Tieren.",
+    "answer": "pour",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le peu d'étendue ___ l'île avait forcé quelques constructions à se jucher sur des pilotis.",
+    "de": "Die geringe Ausdehnung der Insel hatte einige Bauten dazu gezwungen, auf Pfählen zu stehen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Scholastique et Aubert s'agenouillèrent ___ les dalles de la chambre.",
+    "de": "Scholastique und Aubert knieten auf den Steinfliesen des Zimmers nieder.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Le vieillard jeta les yeux ___ son établi.",
+    "de": "Der alte Mann warf einen Blick auf seine Werkbank.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Il porta vivement la main ___ son cœur.",
+    "de": "Er führte rasch die Hand an sein Herz.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il tomba défaillant ___ son vieux fauteuil de cuir.",
+    "de": "Er sank ohnmächtig auf seinen alten Ledersessel.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il allait de l'une ___ l'autre de ces horloges.",
+    "de": "Er ging von einer dieser Uhren zur anderen.",
+    "answer": "à",
+    "distractors": [
+      "sur",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il résolut de dominer, à force ___ génie, l'influence maudite.",
+    "de": "Er beschloss, durch die Kraft seines Genies den verfluchten Einfluss zu bezwingen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il visita les différentes horloges de la ville, confiées ___ ses soins.",
+    "de": "Er besuchte die verschiedenen Uhren der Stadt, die seiner Obhut anvertraut waren.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le vieillard échappa ___ l'étreinte de sa fille.",
+    "de": "Der alte Mann entwand sich der Umarmung seiner Tochter.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "La neige s'entassait ___ gros flocons sur le seuil.",
+    "de": "Der Schnee türmte sich in großen Flocken auf der Schwelle.",
+    "answer": "à",
+    "distractors": [
+      "en",
+      "de",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le repas s'accompagne ___ quelques légumes verts.",
+    "de": "Das Essen wird von einigen grünen Gemüsen begleitet.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "avec",
+      "en"
+    ]
+  },
+  {
+    "fr": "La chanteuse se fait accompagner ___ la guitare.",
+    "de": "Die Sängerin lässt sich auf der Gitarre begleiten.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "par",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Les infirmiers ont arraché le malade ___ son lit.",
+    "de": "Die Krankenpfleger haben den Patienten aus seinem Bett gerissen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Mon voisin est blessé ___ vos commentaires injurieux.",
+    "de": "Mein Nachbar ist von Ihren beleidigenden Kommentaren verletzt.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le soldat s'est blessé ___ la poitrine.",
+    "de": "Der Soldat hat sich an der Brust verletzt.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le maire s'efforce ___ trouver des solutions pour satisfaire ses employés.",
+    "de": "Der Bürgermeister bemüht sich, Lösungen zu finden, um seine Mitarbeiter zufriedenzustellen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce candidat provincial s'attend ___ une lutte féroce de la part de son adversaire.",
+    "de": "Dieser Provinzkandidat erwartet einen erbitterten Kampf von seinem Gegner.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il s'occupe ___ répondre à toutes les demandes.",
+    "de": "Er kümmert sich darum, alle Anfragen zu beantworten.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous procèderons ___ l'embauche d'étudiants sous peu.",
+    "de": "Wir werden bald mit der Einstellung von Studenten beginnen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "L'enseignante rappelle ___ ses élèves de bien étudier.",
+    "de": "Die Lehrerin erinnert ihre Schüler daran, gut zu lernen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le touriste est descendu ___ l'autobus à l'arrêt Sherbrooke-Peel.",
+    "de": "Der Tourist stieg an der Haltestelle Sherbrooke-Peel aus dem Bus.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Pendant qu'une jeune famille échappait ___ l'inondation, un récidiviste s'est échappé de prison.",
+    "de": "Während eine junge Familie der Überschwemmung entkam, entfloh ein Rückfalltäter aus dem Gefängnis.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous devons des remerciements ___ cette bénévole.",
+    "de": "Wir schulden dieser Freiwilligen Dank.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Après avoir appris ___ ses enfants à cuisiner, la mère les a mis à la porte.",
+    "de": "Nachdem die Mutter ihren Kindern das Kochen beigebracht hatte, warf sie sie hinaus.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ils vont finir ___ s'entendre avec leurs nouveaux collègues.",
+    "de": "Sie werden sich letztendlich mit ihren neuen Kollegen einigen.",
+    "answer": "par",
+    "distractors": [
+      "à",
+      "avec",
+      "de"
+    ]
+  },
+  {
+    "fr": "Elle s'est écroulée par terre ___ la vue d'une ombre qui n'était pas la sienne.",
+    "de": "Sie brach beim Anblick eines fremden Schattens zu Boden.",
+    "answer": "à",
+    "distractors": [
+      "par",
+      "avec",
+      "de"
+    ]
+  },
+  {
+    "fr": "Pour enlever ces taches tenaces, lavez le vêtement ___ l'eau chaude.",
+    "de": "Um diese hartnäckigen Flecken zu entfernen, waschen Sie das Kleidungsstück mit heißem Wasser.",
+    "answer": "à",
+    "distractors": [
+      "par",
+      "avec",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous irons à cette exposition ___ train.",
+    "de": "Wir werden mit dem Zug zu dieser Ausstellung fahren.",
+    "answer": "par",
+    "distractors": [
+      "à",
+      "avec",
+      "en"
+    ]
+  },
+  {
+    "fr": "La fiche d'authenticité est collée au dos de ce tableau ___ du ruban adhésif.",
+    "de": "Der Echtheitsnachweis ist mit Klebeband auf der Rückseite dieses Gemäldes befestigt.",
+    "answer": "avec",
+    "distractors": [
+      "par",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Nous coopérons à ce projet éducatif ___ la collaboration du CLSC de la région.",
+    "de": "Wir arbeiten mit Unterstützung des regionalen CLSC an diesem Bildungsprojekt.",
+    "answer": "avec",
+    "distractors": [
+      "par",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Le chien joue à la balle ___ son jeune maitre.",
+    "de": "Der Hund spielt mit seinem jungen Herrchen Ball.",
+    "answer": "avec",
+    "distractors": [
+      "par",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "La voisine crie ___ la fenêtre chaque fois que ses enfants se chamaillent.",
+    "de": "Die Nachbarin ruft durchs Fenster, jedes Mal wenn ihre Kinder sich streiten.",
+    "answer": "par",
+    "distractors": [
+      "à",
+      "avec",
+      "de"
+    ]
+  },
+  {
+    "fr": "Il faut se rabattre ___ les nouvelles technologies pour assurer la réussite du projet.",
+    "de": "Man muss auf neue Technologien zurückgreifen, um den Projekterfolg zu sichern.",
+    "answer": "sur",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Cet auteur renommé écrit un essai ___ les guerres de religion.",
+    "de": "Dieser renommierte Autor schreibt einen Essay über die Religionskriege.",
+    "answer": "sur",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Pour se prévaloir ___ son droit de vote, chaque citoyen doit être inscrit sur la liste électorale.",
+    "de": "Um sein Wahlrecht geltend zu machen, muss jeder Bürger in der Wählerliste eingetragen sein.",
+    "answer": "de",
+    "distractors": [
+      "sur",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Pour tirer ___ la cible, le chasseur doit appuyer délicatement sur la gâchette.",
+    "de": "Um auf das Ziel zu schießen, muss der Jäger sanft den Abzug drücken.",
+    "answer": "sur",
+    "distractors": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce manteau en coton est assorti ___ boutons de métal luisant.",
+    "de": "Dieser Baumwollmantel ist mit glänzenden Metallknöpfen besetzt.",
+    "answer": "de",
+    "distractors": [
+      "en",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Il est toujours préférable ___ partir en bons termes.",
+    "de": "Es ist immer vorzuziehen, sich im guten Einvernehmen zu verabschieden.",
+    "answer": "de",
+    "distractors": [
+      "en",
+      "à",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Cet enfant est né ___ bonne santé.",
+    "de": "Dieses Kind wurde bei guter Gesundheit geboren.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Pour un crémage onctueux, montez les œufs ___ neige.",
+    "de": "Für eine cremige Glasur schlagen Sie die Eier zu Schnee.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "dans"
+    ]
+  },
+  {
+    "fr": "Le chasseur s'approvisionne suffisamment ___ eau potable avant de partir.",
+    "de": "Der Jäger versorgt sich ausreichend mit Trinkwasser, bevor er aufbricht.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "L'athlète s'alimente de petits repas riches ___ protéines.",
+    "de": "Der Athlet ernährt sich von kleinen Mahlzeiten, die reich an Proteinen sind.",
+    "answer": "en",
+    "distractors": [
+      "de",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Les ministres ont communiqué ___ la population leur intention de fixer leur choix.",
+    "de": "Die Minister teilten der Bevölkerung ihre Absicht mit, ihre Wahl festzulegen.",
+    "answer": "à",
+    "distractors": [
+      "sur",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "S'ouvrir ___ le monde est essentiel pour les jeunes d'aujourd'hui.",
+    "de": "Sich der Welt zu öffnen ist für die Jugend von heute unerlässlich.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Bien qu'il soit peu attaché ___ ses élèves, l'enseignant suppléant veille sur eux.",
+    "de": "Obwohl er wenig an seinen Schülern hängt, wacht der Vertretungslehrer über sie.",
+    "answer": "à",
+    "distractors": [
+      "sur",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce cadre supérieur a dû revenir ___ ses pratiques pour ne pas perdre son emploi.",
+    "de": "Diese Führungskraft musste ihre Praktiken überdenken, um ihren Arbeitsplatz nicht zu verlieren.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Les candidats devront s'appuyer ___ des chiffres véridiques pour promettre un changement réalisable.",
+    "de": "Die Kandidaten müssen sich auf wahre Zahlen stützen, um eine realisierbare Veränderung zu versprechen.",
+    "answer": "sur",
+    "distractors": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "La charrette s'engouffrait ___ la grange et s'arrêtait.",
+    "de": "Der Karren fuhr in die Scheune und blieb stehen.",
+    "answer": "dans",
+    "distractors": [
+      "sur",
+      "avec",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Les fourches s'enfonçaient ___ les foins qu'elles enlevaient en galettes épaisses.",
+    "de": "Die Gabeln stachen ins Heu, das sie in dicken Schichten hoben.",
+    "answer": "dans",
+    "distractors": [
+      "sur",
+      "avec",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je ressortis ___ regarder la cour.",
+    "de": "Ich ging wieder hinaus, um den Hof anzuschauen.",
+    "answer": "pour",
+    "distractors": [
+      "dans",
+      "avec",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le parfum des pommes était aussi violent que celui des orangers fleuris ___ les rivages du Midi.",
+    "de": "Der Duft der Äpfel war ebenso intensiv wie der der blühenden Orangenbäume an den südlichen Küsten.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "avec",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Elle l'avait posé ___ l'herbe pour le rafraîchir.",
+    "de": "Sie hatte ihn ins Gras gelegt, um ihn abzukühlen.",
+    "answer": "sur",
+    "distractors": [
+      "dans",
+      "avec",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je me débarbouillais tous les matins à la même heure et ___ la même vitesse.",
+    "de": "Ich wusch mich jeden Morgen zur gleichen Zeit und mit der gleichen Geschwindigkeit.",
+    "answer": "avec",
+    "distractors": [
+      "dans",
+      "sur",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Une fillette accroupie devant le foyer attisait le feu ___ un bâton.",
+    "de": "Ein kleines Mädchen, das vor dem Herd hockte, schürte das Feuer mit einem Stock.",
+    "answer": "avec",
+    "distractors": [
+      "dans",
+      "sur",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Qui étaient les gens assez misérables ___ habiter dans cette cabane de branches?",
+    "de": "Wer waren die Menschen, die arm genug waren, um in dieser Laubhütte zu wohnen?",
+    "answer": "pour",
+    "distractors": [
+      "avec",
+      "dans",
+      "sur"
+    ]
   }
 ]
