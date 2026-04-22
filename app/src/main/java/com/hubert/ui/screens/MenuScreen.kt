@@ -39,6 +39,7 @@ fun MenuScreen(
     conjugationHighScore: Int,
     pronunciationHighScore: Int,
     prepositionHighScore: Int,
+    parlezHighScore: Int,
     onHubertChoisit: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
@@ -48,6 +49,8 @@ fun MenuScreen(
     onStartPronunciation: () -> Unit,
     onPronunciationSettings: () -> Unit,
     onStartPreposition: () -> Unit,
+    onStartParlez: () -> Unit,
+    onParlezSettings: () -> Unit,
     onShowStatistics: () -> Unit
 ) {
     Column(
@@ -207,6 +210,17 @@ fun MenuScreen(
             accentColor = FrenchBlue,
             highScore = prepositionHighScore,
             onClick = onStartPreposition
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        GameModeCard(
+            title = "Parlez!",
+            description = "Freie Konversation auf Französisch mit KI-Bewertung",
+            accentColor = ParlezTeal,
+            highScore = parlezHighScore,
+            onClick = onStartParlez,
+            onSettingsClick = onParlezSettings
         )
 
         Spacer(modifier = Modifier.height(24.dp))

@@ -24,3 +24,5 @@ val LightCard = Color(0xFFFFFFFF)
 
 val AccentPurple = Color(0xFF7C4DFF)
 val AccentPurpleDark = Color(0xFF651FFF)
+
+val ParlezTeal = Color(0xFF00BCD4)  // Parlez! conversation mode

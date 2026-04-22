@@ -436,6 +436,7 @@ private fun gameTypeColor(gameType: GameType): Color {
         GameType.CONJUGATION -> FrenchBlue
         GameType.PRONUNCIATION -> WrongRed
         GameType.PREPOSITION -> FrenchBlue
+        GameType.PARLEZ -> ParlezTeal
     }
 }
 
