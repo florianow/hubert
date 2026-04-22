@@ -151,113 +151,117 @@ object AzurePronunciationApi {
     ): FreeAssessResult = withContext(Dispatchers.IO) {
         // Use Azure Speech SDK with continuous recognition to capture ALL utterances,
         // not just the first phrase (which was the REST API limitation).
+        try {
+            val speechConfig = SpeechConfig.fromSubscription(apiKey, region)
+            speechConfig.speechRecognitionLanguage = "fr-FR"
 
-        val speechConfig = SpeechConfig.fromSubscription(apiKey, region)
-        speechConfig.speechRecognitionLanguage = "fr-FR"
+            // Set up pronunciation assessment (no reference text = assess what is recognized)
+            val pronConfig = PronunciationAssessmentConfig(
+                "", // no reference text
+                PronunciationAssessmentGradingSystem.HundredMark,
+                PronunciationAssessmentGranularity.Word,
+                false // no miscue without reference text
+            )
 
-        // Set up pronunciation assessment (no reference text = assess what is recognized)
-        val pronConfig = PronunciationAssessmentConfig(
-            "", // no reference text
-            PronunciationAssessmentGradingSystem.HundredMark,
-            PronunciationAssessmentGranularity.Word,
-            true // enable miscue
-        )
-        pronConfig.enableProsodyAssessment()
+            // Feed the recorded WAV into the SDK via PushAudioInputStream
+            val audioFormat = AudioStreamFormat.getWaveFormatPCM(16000, 16.toShort(), 1.toShort())
+            val pushStream = AudioInputStream.createPushStream(audioFormat)
 
-        // Feed the recorded WAV into the SDK via PushAudioInputStream
-        val audioFormat = AudioStreamFormat.getWaveFormatPCM(16000, 16.toShort(), 1.toShort())
-        val pushStream = AudioInputStream.createPushStream(audioFormat)
+            // Create audio config BEFORE writing/closing the stream
+            val audioConfig = AudioConfig.fromStreamInput(pushStream)
 
-        // Write PCM data (skip 44-byte WAV header)
-        if (audioWav.size > 44) {
-            pushStream.write(audioWav.copyOfRange(44, audioWav.size))
-        }
-        pushStream.close() // Signal end of audio
+            // Now write PCM data (skip 44-byte WAV header) and signal end
+            if (audioWav.size > 44) {
+                pushStream.write(audioWav.copyOfRange(44, audioWav.size))
+            }
+            pushStream.close() // Signal end of audio
 
-        val audioConfig = AudioConfig.fromStreamInput(pushStream)
-        val recognizer = SpeechRecognizer(speechConfig, audioConfig)
-        pronConfig.applyTo(recognizer)
+            val recognizer = SpeechRecognizer(speechConfig, audioConfig)
+            pronConfig.applyTo(recognizer)
 
-        // Collect results from all recognized segments
-        val allTexts = mutableListOf<String>()
-        val allWords = mutableListOf<WordResult>()
-        val allPronScores = mutableListOf<Double>()
-        val done = CountDownLatch(1)
-        var errorMsg: String? = null
+            // Collect results from all recognized segments
+            val allTexts = mutableListOf<String>()
+            val allWords = mutableListOf<WordResult>()
+            val allPronScores = mutableListOf<Double>()
+            val done = CountDownLatch(1)
+            var errorMsg: String? = null
 
-        recognizer.recognized.addEventListener { _, e ->
-            if (e.result.reason == ResultReason.RecognizedSpeech) {
-                val text = e.result.text
-                if (text.isNotBlank()) {
-                    allTexts.add(text)
-                }
+            recognizer.recognized.addEventListener { _, e ->
+                if (e.result.reason == ResultReason.RecognizedSpeech) {
+                    val text = e.result.text
+                    if (text.isNotBlank()) {
+                        allTexts.add(text)
+                    }
 
-                // Extract pronunciation assessment from result JSON
-                val pronJson = e.result.properties.getProperty(
-                    PropertyId.SpeechServiceResponse_JsonResult
-                )
-                try {
-                    val root = JSONObject(pronJson)
-                    val nBest = root.optJSONArray("NBest")
-                    if (nBest != null && nBest.length() > 0) {
-                        val best = nBest.getJSONObject(0)
-                        val scoreSource = best.optJSONObject("PronunciationAssessment") ?: best
-                        val score = scoreSource.optDouble("PronScore", -1.0)
-                        if (score >= 0) allPronScores.add(score)
+                    // Extract pronunciation assessment from result JSON
+                    try {
+                        val pronJson = e.result.properties.getProperty(
+                            PropertyId.SpeechServiceResponse_JsonResult
+                        )
+                        val root = JSONObject(pronJson)
+                        val nBest = root.optJSONArray("NBest")
+                        if (nBest != null && nBest.length() > 0) {
+                            val best = nBest.getJSONObject(0)
+                            val scoreSource = best.optJSONObject("PronunciationAssessment") ?: best
+                            val score = scoreSource.optDouble("PronScore", -1.0)
+                            if (score >= 0) allPronScores.add(score)
 
-                        val wordsArray = best.optJSONArray("Words")
-                        if (wordsArray != null) {
-                            for (i in 0 until wordsArray.length()) {
-                                val w = wordsArray.getJSONObject(i)
-                                val wSource = w.optJSONObject("PronunciationAssessment") ?: w
-                                allWords.add(WordResult(
-                                    word = w.optString("Word", ""),
-                                    accuracyScore = wSource.optDouble("AccuracyScore", 0.0),
-                                    errorType = wSource.optString("ErrorType", "None")
-                                ))
+                            val wordsArray = best.optJSONArray("Words")
+                            if (wordsArray != null) {
+                                for (i in 0 until wordsArray.length()) {
+                                    val w = wordsArray.getJSONObject(i)
+                                    val wSource = w.optJSONObject("PronunciationAssessment") ?: w
+                                    allWords.add(WordResult(
+                                        word = w.optString("Word", ""),
+                                        accuracyScore = wSource.optDouble("AccuracyScore", 0.0),
+                                        errorType = wSource.optString("ErrorType", "None")
+                                    ))
+                                }
                             }
                         }
+                    } catch (ex: Exception) {
+                        Log.w(TAG, "Could not parse pronunciation JSON: ${ex.message}")
                     }
-                } catch (ex: Exception) {
-                    Log.w(TAG, "Could not parse pronunciation JSON: ${ex.message}")
                 }
             }
-        }
 
-        recognizer.canceled.addEventListener { _, e ->
-            if (e.reason == CancellationReason.Error) {
-                errorMsg = "Azure SDK error: ${e.errorCode} - ${e.errorDetails}"
-                Log.e(TAG, errorMsg!!)
+            recognizer.canceled.addEventListener { _, e ->
+                if (e.reason == CancellationReason.Error) {
+                    errorMsg = "Azure SDK error: ${e.errorCode} - ${e.errorDetails}"
+                    Log.e(TAG, errorMsg!!)
+                }
+                done.countDown()
             }
-            done.countDown()
+
+            recognizer.sessionStopped.addEventListener { _, _ ->
+                done.countDown()
+            }
+
+            // Start continuous recognition and wait for completion
+            recognizer.startContinuousRecognitionAsync().get()
+            done.await(30, TimeUnit.SECONDS)
+
+            try { recognizer.stopContinuousRecognitionAsync().get() } catch (_: Exception) {}
+            try { recognizer.close() } catch (_: Exception) {}
+            try { audioConfig.close() } catch (_: Exception) {}
+            try { speechConfig.close() } catch (_: Exception) {}
+
+            if (errorMsg != null) {
+                Log.e(TAG, "Continuous recognition failed: $errorMsg")
+                return@withContext FreeAssessResult("", 0.0, emptyList())
+            }
+
+            val fullText = allTexts.joinToString(" ")
+            val avgScore = if (allPronScores.isNotEmpty()) allPronScores.average() else 0.0
+
+            Log.d(TAG, "Continuous recognition result: ${allTexts.size} segments, " +
+                "${allWords.size} words, text='$fullText'")
+
+            FreeAssessResult(fullText, avgScore, allWords)
+        } catch (e: Exception) {
+            Log.e(TAG, "Speech SDK error: ${e.message}", e)
+            FreeAssessResult("", 0.0, emptyList())
         }
-
-        recognizer.sessionStopped.addEventListener { _, _ ->
-            done.countDown()
-        }
-
-        // Start continuous recognition and wait for completion
-        recognizer.startContinuousRecognitionAsync().get()
-        done.await(30, TimeUnit.SECONDS)
-        recognizer.stopContinuousRecognitionAsync().get()
-
-        // Clean up
-        recognizer.close()
-        audioConfig.close()
-        speechConfig.close()
-
-        if (errorMsg != null) {
-            Log.e(TAG, "Continuous recognition failed: $errorMsg")
-            return@withContext FreeAssessResult("", 0.0, emptyList())
-        }
-
-        val fullText = allTexts.joinToString(" ")
-        val avgScore = if (allPronScores.isNotEmpty()) allPronScores.average() else 0.0
-
-        Log.d(TAG, "Continuous recognition result: ${allTexts.size} segments, " +
-            "${allWords.size} words, text='$fullText'")
-
-        FreeAssessResult(fullText, avgScore, allWords)
     }
 
     /**
