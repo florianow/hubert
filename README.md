@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 7 game modes + smart practice picker</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 8 game modes + smart practice picker</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -25,15 +25,16 @@
 
 Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables across 8 tenses.
 
-Two scoring systems keep things interesting:
+Three scoring systems keep things interesting:
 - **Timer-based** (Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
-- **Points-based** (Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake \u2014 game over when you hit 0.
+- **Points-based** (Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
+- **Evaluation-based** (Parlez!): After a 60-second free conversation, Gemini evaluates your performance across 5 categories (vocabulary, grammar, fluency, task completion, pronunciation) with a 0–100 overall score.
 
-French words and sentences are spoken aloud via Android's built-in Text-to-Speech engine, and Prononcez! uses Azure Speech Services to assess your pronunciation in real time.
+French words and sentences are spoken aloud via Android's built-in Text-to-Speech engine. Prononcez! uses Azure Speech Services to assess your pronunciation in real time, and Parlez! combines Azure STT with Google Gemini to enable free-form French conversations.
 
 ## Features
 
-- **7 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!
+- **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
 - **Hubert choisit!** — Smart practice picker that launches the game mode you've played the least, encouraging balanced practice
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
@@ -46,10 +47,10 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 - **3076 Nouns with Gender** — masculine/feminine data for Classez!
 - **~2000 Example Sentences** — real French sentences with German translations for Complétez!
 - **1182 Verbs with Conjugations** — full conjugation tables across 8 tenses for Conjuguez!
-- **Adaptive Difficulty** — Prononcez! adjusts sentence length based on your streak; Conjuguez! error-weights tenses you struggle with
+- **Adaptive Difficulty** — Prononcez! adjusts sentence length based on your streak; Conjuguez! error-weights tenses you struggle with; Parlez! topics span CEFR levels A1–B2
 - **Tense Info with Limits** — Conjuguez! shows grammar info dialogs with conjugation tables; limited to 3 views per tense per round with timer pause
 - **Manual Advance** — Conjuguez! and Prononcez! wait for you to tap "Next" instead of auto-advancing
-- **Offline-first** — all data bundled as JSON assets, no network required (except Prononcez! which uses Azure Speech Services)
+- **Offline-first** — all data bundled as JSON assets, no network required (except Prononcez! which uses Azure Speech Services, and Parlez! which uses both Azure and Gemini)
 - **Material Design 3** — clean, modern UI with themed game colors
 
 ## Game Modes
@@ -106,6 +107,27 @@ A French sentence is shown with the preposition blanked out. The German translat
 - **Timer**: 60s, +5s correct, -5s wrong
 - **Pool**: 764 sentences extracted from [anki_french](https://github.com/jacbz/anki_french) preposition cards
 
+### 8. Parlez!
+
+A free-form French conversation mode. Choose a topic from ~80 everyday scenarios (ordering at a café, asking for directions, visiting the doctor, etc.) spanning CEFR levels A1–B2. Each topic shows a German scenario description and Hubert's role (waiter, pharmacist, receptionist, etc.). Hubert opens with a French starter sentence, then you have 60 seconds to converse back and forth — speak into the microphone, Azure transcribes and scores your pronunciation per word, Gemini generates Hubert's contextual reply, and the conversation continues until time runs out.
+
+After the timer expires, Gemini evaluates your entire conversation across 5 categories:
+
+| Category | What it measures |
+|----------|-----------------|
+| **Wortschatz** | Vocabulary range and appropriateness |
+| **Grammatik** | Grammatical accuracy |
+| **Flüssigkeit** | Conversational fluency and natural flow |
+| **Aufgabe** | How well you completed the scenario task |
+| **Aussprache** | Pronunciation (based on Azure word-level scores) |
+
+Each category receives a score from 0–100 with a short German explanation, plus an overall weighted score. Words you mispronounced (accuracy < 80%) are listed separately.
+
+- **Scoring**: Evaluation-based — 5 categories scored 0–100, weighted overall score
+- **Timer**: 60s conversation window
+- **Topics**: ~80 scenarios across CEFR A1–B2
+- **Requires**: Azure Speech Services API key + Google Gemini API key (both configured in-app via settings)
+
 ### 6. Prononcez!
 
 Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results. After each attempt, you can compare your pronunciation to the correct one — tap "Correct" to hear the sentence via TTS, or "Yours" to play back your own recording. Tap "Next" to advance manually.
@@ -131,6 +153,7 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 - **JSON Parsing**: Gson
 - **Text-to-Speech**: Android TTS (French locale)
 - **Pronunciation Assessment**: Azure Speech Services REST API
+- **Conversational AI**: Google Gemini 2.5 Flash (conversation partner + evaluation in Parlez!)
 - **Audio Recording**: Android AudioRecord (16 kHz, 16-bit, mono PCM → WAV)
 - **Asynchronous**: Kotlin Coroutines & Flow
 - **Build**: Gradle (Kotlin DSL)
@@ -281,6 +304,7 @@ app/src/main/java/com/hubert/
 │   │   └── WordAttemptDao.kt       # Per-word attempt tracking queries
 │   ├── model/
 │   │   ├── VocabWord.kt            # VocabWord, SentenceEntry, ConjugationVerb data classes
+│   │   ├── ParlezTopic.kt          # ParlezTopic data class (topic, scenario, role, CEFR level)
 │   │   ├── HighScore.kt            # Room entity with gameType field
 │   │   ├── GameSession.kt          # Room entity for game session history
 │   │   └── WordAttempt.kt          # Room entity for per-word attempt tracking
@@ -292,7 +316,7 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 7 game mode cards
+│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 8 game mode cards
 │   │   ├── TrouvezScreen.kt        # Trouvez! game UI (with IPA on French cards)
 │   │   ├── ClassezScreen.kt        # Classez! game UI (with IPA)
 │   │   ├── CompletezScreen.kt      # Complétez! game UI
@@ -300,6 +324,7 @@ app/src/main/java/com/hubert/
 │   │   ├── ConjuguezScreen.kt      # Conjuguez! game UI (with IPA, timer, info limits)
 │   │   ├── PrononcezScreen.kt      # Prononcez! game UI (recording, word-level feedback, retry)
 │   │   ├── PreposezScreen.kt       # Préposez! game UI
+│   │   ├── ParlezScreen.kt         # Parlez! game UI (topic selection, conversation, evaluation)
 │   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
 │   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
 │   │   └── HighScoresScreen.kt     # Top 10 high scores list
@@ -309,6 +334,7 @@ app/src/main/java/com/hubert/
 ├── utils/
 │   ├── FrenchTts.kt                # Text-to-Speech wrapper (French locale)
 │   ├── AzurePronunciationApi.kt    # Azure Speech Services REST client
+│   ├── GeminiApi.kt                # Google Gemini REST client (chat + evaluation)
 │   └── AudioRecorder.kt            # PCM audio capture → WAV byte array
 ├── viewmodel/
 │   ├── TrouvezViewModel.kt         # Trouvez! game logic
@@ -318,6 +344,7 @@ app/src/main/java/com/hubert/
 │   ├── ConjuguezViewModel.kt       # Conjuguez! game logic (8 tenses, timer, IPA, info limits)
 │   ├── PrononcezViewModel.kt       # Prononcez! game logic (Azure, adaptive difficulty, second chance)
 │   ├── PreposezViewModel.kt        # Préposez! game logic
+│   ├── ParlezViewModel.kt          # Parlez! game logic (Gemini conversation, Azure STT, evaluation)
 │   ├── StatisticsViewModel.kt      # Statistics and achievements
 │   └── AnswerRecord.kt             # Per-question answer log for detail views
 ├── HubertApplication.kt            # Hilt application class
@@ -334,16 +361,17 @@ app/src/main/assets/
 ├── sentences.json                  # ~2000 words with example sentences
 ├── conjugations.json               # 1182 verbs with conjugation tables + sentence matches
 └── prepositions.json               # 764 preposition fill-in-the-blank sentences (16 prepositions)
+├── parlez_topics.json              # ~80 conversation topics with scenarios, roles, CEFR levels
 ```
 
 ## Architecture
 
 ```mermaid
 graph TD
-    UI["<b>UI Layer</b><br/>MenuScreen · TrouvezScreen · ClassezScreen<br/>CompletezScreen · EcrivezScreen<br/>ConjuguezScreen · PrononcezScreen · PreposezScreen<br/>GameOverScreen · StatisticsScreen"]
-    VM["<b>ViewModel Layer</b><br/>TrouvezViewModel · ClassezViewModel<br/>CompletezViewModel · EcrivezViewModel<br/>ConjuguezViewModel · PrononcezViewModel<br/>PreposezViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
-    REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · AudioRecorder"]
-    DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API"]
+    UI["<b>UI Layer</b><br/>MenuScreen · TrouvezScreen · ClassezScreen<br/>CompletezScreen · EcrivezScreen<br/>ConjuguezScreen · PrononcezScreen · PreposezScreen<br/>ParlezScreen · GameOverScreen · StatisticsScreen"]
+    VM["<b>ViewModel Layer</b><br/>TrouvezViewModel · ClassezViewModel<br/>CompletezViewModel · EcrivezViewModel<br/>ConjuguezViewModel · PrononcezViewModel<br/>PreposezViewModel · ParlezViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
+    REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · GeminiApi · AudioRecorder"]
+    DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>parlez_topics.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API · Google Gemini REST API"]
 
     UI -- "observes StateFlow" --> VM
     VM -- "calls" --> REPO
@@ -388,6 +416,13 @@ The app uses `fallbackToDestructiveMigration()` — if the database schema chang
 
 - Grant the microphone permission when prompted (Settings → Apps → Hubert → Permissions → Microphone)
 - Make sure no other app is using the microphone
+
+### Parlez! — conversation not working
+
+- Parlez! requires both an **Azure Speech Services API key** (for speech-to-text + pronunciation) and a **Google Gemini API key** (for conversation + evaluation). Configure both in the app settings.
+- Get a free Gemini API key at [Google AI Studio](https://aistudio.google.com/apikey)
+- If Hubert's replies seem truncated, check your Gemini API quota — Parlez! uses Gemini 2.5 Flash
+- If words are getting cut off during recording, make sure you wait a moment after finishing your sentence before the recording stops
 
 ## Contributing
 
