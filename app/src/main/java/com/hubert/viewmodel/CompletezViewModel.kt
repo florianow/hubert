@@ -139,7 +139,7 @@ class CompletezViewModel @Inject constructor(
             questionPool.removeFirst()
         }
         currentRank = targetRank
-        val targetWord = vocabRepository.getWordByRank(targetRank) ?: return
+        vocabRepository.getWordByRank(targetRank) ?: return
         val sentence = vocabRepository.getRandomSentence(targetRank) ?: return
 
         // Create the gap: replace the blank word with "___"
