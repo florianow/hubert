@@ -27,7 +27,8 @@ enum class GameType(val key: String, val displayName: String) {
     SPELLING_BEE("spelling_bee", "\u00C9crivez!"),
     CONJUGATION("conjugation", "Conjuguez!"),
     PRONUNCIATION("pronunciation", "Prononcez!"),
-    PREPOSITION("preposition", "Pr\u00E9posez!");
+    PREPOSITION("preposition", "Pr\u00E9posez!"),
+    PARLEZ("parlez", "Parlez!");
 
     companion object {
         fun fromKey(key: String): GameType? = entries.find { it.key == key }

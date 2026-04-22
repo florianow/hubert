@@ -1,0 +1,893 @@
+[
+  {
+    "id": "boulangerie",
+    "themeFr": "À la boulangerie",
+    "themeDe": "In der Bäckerei",
+    "niveau": "A1",
+    "descriptionDe": "Brot und Gebäck kaufen",
+    "starterFr": "Bonjour ! Je voudrais une baguette tradition, s'il vous plaît. Et avec ceci ?",
+    "vocabHints": ["un croissant", "pain au chocolat", "combien ça coûte", "c'est tout", "merci"]
+  },
+  {
+    "id": "rencontre",
+    "themeFr": "Faire connaissance",
+    "themeDe": "Kennenlernen",
+    "niveau": "A1",
+    "descriptionDe": "Dich vorstellen und Fragen stellen",
+    "starterFr": "Salut ! Je m'appelle Thomas. Comment tu t'appelles ?",
+    "vocabHints": ["enchanté", "habiter", "étudiant", "quel âge", "d'où"]
+  },
+  {
+    "id": "vetements",
+    "themeFr": "Faire du shopping",
+    "themeDe": "Kleidung kaufen",
+    "niveau": "A2",
+    "descriptionDe": "Im Modegeschäft nach Größen und Farben suchen",
+    "starterFr": "Bonjour, je peux vous aider ? Vous cherchez une taille particulière ?",
+    "vocabHints": ["essayer", "cabine d'essayage", "taille", "couleur", "trop petit"]
+  },
+  {
+    "id": "gare",
+    "themeFr": "À la gare",
+    "themeDe": "Am Bahnhof",
+    "niveau": "A2",
+    "descriptionDe": "Fahrkarten kaufen und nach Gleisen fragen",
+    "starterFr": "Bonjour, je voudrais un billet pour Lyon pour le prochain train, s'il vous plaît.",
+    "vocabHints": ["le quai", "aller simple", "aller-retour", "en retard", "composter"]
+  },
+  {
+    "id": "appartement",
+    "themeFr": "Chercher un appartement",
+    "themeDe": "Wohnungssuche",
+    "niveau": "B1",
+    "descriptionDe": "Eine Besichtigung vereinbaren und Details klären",
+    "starterFr": "Bonjour, j'appelle pour l'annonce de l'appartement. Est-il toujours disponible ?",
+    "vocabHints": ["le loyer", "les charges", "meublé", "caution", "le quartier"]
+  },
+  {
+    "id": "cuisine",
+    "themeFr": "Cuisiner ensemble",
+    "themeDe": "Zusammen kochen",
+    "niveau": "A2",
+    "descriptionDe": "Ein Rezept besprechen und Anweisungen geben",
+    "starterFr": "Qu'est-ce qu'on prépare pour le dîner ? Tu peux couper les légumes ?",
+    "vocabHints": ["mélanger", "couper", "la poêle", "le four", "délicieux"]
+  },
+  {
+    "id": "pharmacie",
+    "themeFr": "À la pharmacie",
+    "themeDe": "In der Apotheke",
+    "niveau": "A2",
+    "descriptionDe": "Nach Medikamenten oder Beratung fragen",
+    "starterFr": "Bonjour, j'ai pris un coup de soleil. Qu'est-ce que vous me conseillez ?",
+    "vocabHints": ["crème", "pansement", "douleur", "ordonnance", "tousser"]
+  },
+  {
+    "id": "banque",
+    "themeFr": "À la banque",
+    "themeDe": "In der Bank",
+    "niveau": "B1",
+    "descriptionDe": "Ein Konto eröffnen oder ein Problem klären",
+    "starterFr": "Bonjour, je voudrais ouvrir un compte courant dans votre banque.",
+    "vocabHints": ["carte bancaire", "virement", "frais", "code secret", "retirer"]
+  },
+  {
+    "id": "sport",
+    "themeFr": "Le sport",
+    "themeDe": "Sport",
+    "niveau": "A2",
+    "descriptionDe": "Über Hobbys und sportliche Aktivitäten reden",
+    "starterFr": "Est-ce que tu fais du sport régulièrement ? Quel est ton sport préféré ?",
+    "vocabHints": ["s'entraîner", "match", "équipe", "courir", "gagner"]
+  },
+  {
+    "id": "cinéma",
+    "themeFr": "Au cinéma",
+    "themeDe": "Im Kino",
+    "niveau": "A2",
+    "descriptionDe": "Einen Film wählen und Tickets reservieren",
+    "starterFr": "On regarde quel film ? Il y a une séance à vingt heures.",
+    "vocabHints": ["sous-titres", "place", "film d'action", "comédie", "bande-annonce"]
+  },
+  {
+    "id": "hotel",
+    "themeFr": "À l'hôtel",
+    "themeDe": "Im Hotel",
+    "niveau": "A2",
+    "descriptionDe": "Einchecken und nach Services fragen",
+    "starterFr": "Bonjour, j'ai une réservation au nom de Martin. Voici ma carte d'identité.",
+    "vocabHints": ["petit-déjeuner", "climatisation", "le Wi-Fi", "clé", "bagages"]
+  },
+  {
+    "id": "musee",
+    "themeFr": "Au musée",
+    "themeDe": "Im Museum",
+    "niveau": "B1",
+    "descriptionDe": "Informationen über Ausstellungen einholen",
+    "starterFr": "Bonjour, à quelle heure ferme le musée aujourd'hui ?",
+    "vocabHints": ["exposition", "peinture", "sculpture", "audio-guide", "tarif réduit"]
+  },
+  {
+    "id": "coiffeur",
+    "themeFr": "Chez le coiffeur",
+    "themeDe": "Beim Friseur",
+    "niveau": "A2",
+    "descriptionDe": "Erklären, welchen Haarschnitt man möchte",
+    "starterFr": "Bonjour, je voudrais couper mes cheveux. Un peu plus court sur les côtés, s'il vous plaît.",
+    "vocabHints": ["couper", "shampooing", "frange", "couleur", "pointes"]
+  },
+  {
+    "id": "voiture",
+    "themeFr": "Louer une voiture",
+    "themeDe": "Auto mieten",
+    "niveau": "B1",
+    "descriptionDe": "Mietbedingungen und Versicherung besprechen",
+    "starterFr": "Bonjour, je voudrais louer une petite voiture pour trois jours.",
+    "vocabHints": ["permis de conduire", "assurance", "essence", "automatique", "restitution"]
+  },
+  {
+    "id": "meteo",
+    "themeFr": "La météo",
+    "themeDe": "Das Wetter",
+    "niveau": "A1",
+    "descriptionDe": "Über das Wetter und Pläne sprechen",
+    "starterFr": "Quel temps fait-il aujourd'hui ? On dirait qu'il va pleuvoir.",
+    "vocabHints": ["soleil", "pluie", "nuageux", "température", "il fait froid"]
+  },
+  {
+    "id": "invitation",
+    "themeFr": "Inviter un ami",
+    "themeDe": "Einen Freund einladen",
+    "niveau": "A2",
+    "descriptionDe": "Jemanden zu einer Party oder zum Essen einladen",
+    "starterFr": "Salut ! J'organise une fête samedi soir. Tu veux venir ?",
+    "vocabHints": ["apporter", "boisson", "disponible", "avec plaisir", "dommage"]
+  },
+  {
+    "id": "reclamation",
+    "themeFr": "Faire une réclamation",
+    "themeDe": "Sich beschweren",
+    "niveau": "B2",
+    "descriptionDe": "Ein kaputtes Produkt reklamieren",
+    "starterFr": "Bonjour, j'ai acheté cet article hier mais il ne fonctionne pas.",
+    "vocabHints": ["remboursement", "défectueux", "ticket de caisse", "échanger", "responsable"]
+  },
+  {
+    "id": "poste",
+    "themeFr": "À la poste",
+    "themeDe": "In der Post",
+    "niveau": "A2",
+    "descriptionDe": "Pakete oder Briefe verschicken",
+    "starterFr": "Bonjour, je voudrais envoyer ce colis en Allemagne, s'il vous plaît.",
+    "vocabHints": ["timbre", "colis", "adresse", "recommandé", "peser"]
+  },
+  {
+    "id": "orientation",
+    "themeFr": "Demander le chemin",
+    "themeDe": "Nach dem Weg fragen",
+    "niveau": "A1",
+    "descriptionDe": "Sich in einer Stadt zurechtfinden",
+    "starterFr": "Excusez-moi, je cherche la place de la République. C'est loin ?",
+    "vocabHints": ["tourner", "tout droit", "à gauche", "à droite", "traverser"]
+  },
+  {
+    "id": "ecole",
+    "themeFr": "À l'école",
+    "themeDe": "In der Schule",
+    "niveau": "A2",
+    "descriptionDe": "Über Fächer und Prüfungen sprechen",
+    "starterFr": "Tu as quel cours maintenant ? Moi, j'ai un examen d'histoire.",
+    "vocabHints": ["matière", "professeur", "réussir", "apprendre", "devoirs"]
+  },
+  {
+    "id": "bureau_tourisme",
+    "themeFr": "À l'office de tourisme",
+    "themeDe": "In der Touristeninfo",
+    "niveau": "B1",
+    "descriptionDe": "Nach Sehenswürdigkeiten und Plänen fragen",
+    "starterFr": "Bonjour, vous avez un plan de la ville et des conseils de visites ?",
+    "vocabHints": ["plan", "monument", "gratuit", "horaires", "circuit"]
+  },
+  {
+    "id": "aeroport",
+    "themeFr": "À l'aéroport",
+    "themeDe": "Am Flughafen",
+    "niveau": "A2",
+    "descriptionDe": "Einchecken und Sicherheitskontrolle",
+    "starterFr": "Votre passeport et votre carte d'embarquement, s'il vous plaît.",
+    "vocabHints": ["valise", "porte d'embarquement", "décoller", "vol", "siège"]
+  },
+  {
+    "id": "bibliotheque",
+    "themeFr": "À la bibliothèque",
+    "themeDe": "In der Bibliothek",
+    "niveau": "B1",
+    "descriptionDe": "Bücher ausleihen oder recherchieren",
+    "starterFr": "Bonjour, je cherche un livre sur l'histoire de France. Vous pouvez m'aider ?",
+    "vocabHints": ["emprunter", "rendre", "carte de membre", "rayon", "silence"]
+  },
+  {
+    "id": "voisins",
+    "themeFr": "Parler aux voisins",
+    "themeDe": "Mit Nachbarn sprechen",
+    "niveau": "B1",
+    "descriptionDe": "Ein Paket annehmen oder um Hilfe bitten",
+    "starterFr": "Bonjour ! Est-ce que vous pourriez réceptionner un colis pour moi demain ?",
+    "vocabHints": ["bruit", "immeuble", "ascenseur", "entraide", "clé"]
+  },
+  {
+    "id": "cinema_avis",
+    "themeFr": "Donner son avis sur un film",
+    "themeDe": "Meinung zu einem Film",
+    "niveau": "B1",
+    "descriptionDe": "Diskutieren, ob ein Film gut war",
+    "starterFr": "Alors, qu'est-ce que tu as pensé du film ? Moi, j'ai trouvé l'acteur génial.",
+    "vocabHints": ["ennuyeux", "émouvant", "scénario", "chef-d'œuvre", "déçu"]
+  },
+  {
+    "id": "travaux",
+    "themeFr": "Bricolage et travaux",
+    "themeDe": "Heimwerken",
+    "niveau": "B1",
+    "descriptionDe": "Über Renovierungen im Haus sprechen",
+    "starterFr": "Je vais repeindre le salon ce week-end. Tu peux m'aider ?",
+    "vocabHints": ["peinture", "outils", "réparer", "mur", "installer"]
+  },
+  {
+    "id": "panne",
+    "themeFr": "En panne de voiture",
+    "themeDe": "Autopanne",
+    "niveau": "B1",
+    "descriptionDe": "Den Pannendienst rufen",
+    "starterFr": "Ma voiture ne démarre plus. Je crois qu'il y a un problème de batterie.",
+    "vocabHints": ["dépannage", "garagiste", "pneu", "moteur", "remorquer"]
+  },
+  {
+    "id": "fete_nationale",
+    "themeFr": "Le 14 juillet",
+    "themeDe": "Nationalfeiertag",
+    "niveau": "B1",
+    "descriptionDe": "Über Feiertage und Traditionen sprechen",
+    "starterFr": "Tu vas voir le feu d'artifice ce soir pour la fête nationale ?",
+    "vocabHints": ["défilé", "bal populaire", "célébrer", "drapeau", "ambiance"]
+  },
+  {
+    "id": "vetements_hiver",
+    "themeFr": "S'habiller pour l'hiver",
+    "themeDe": "Winterkleidung",
+    "niveau": "A1",
+    "descriptionDe": "Über Kleidung bei Kälte sprechen",
+    "starterFr": "Mets ton manteau, il fait très froid dehors !",
+    "vocabHints": ["écharpe", "gants", "bonnet", "chaud", "porter"]
+  },
+  {
+    "id": "routine",
+    "themeFr": "Ma routine quotidienne",
+    "themeDe": "Mein Tagesablauf",
+    "niveau": "A1",
+    "descriptionDe": "Erzählen, was man jeden Tag macht",
+    "starterFr": "À quelle heure tu te lèves le matin ?",
+    "vocabHints": ["se réveiller", "prendre une douche", "petit-déjeuner", "partir", "se coucher"]
+  },
+  {
+    "id": "concert",
+    "themeFr": "Aller à un concert",
+    "themeDe": "Auf ein Konzert gehen",
+    "niveau": "B1",
+    "descriptionDe": "Über Musikgeschmack und Tickets sprechen",
+    "starterFr": "J'ai deux places pour le concert de Stromae. Tu veux venir ?",
+    "vocabHints": ["scène", "chanter", "groupe", "billetterie", "ambiance"]
+  },
+  {
+    "id": "animaux_sauvages",
+    "themeFr": "Au zoo",
+    "themeDe": "Im Zoo",
+    "niveau": "A2",
+    "descriptionDe": "Über wilde Tiere sprechen",
+    "starterFr": "Regarde le lion, il est énorme ! Quel est ton animal sauvage préféré ?",
+    "vocabHints": ["singe", "éléphant", "girafe", "nourrir", "cage"]
+  },
+  {
+    "id": "perdu",
+    "themeFr": "Objets perdus",
+    "themeDe": "Verlorene Gegenstände",
+    "niveau": "B1",
+    "descriptionDe": "Etwas im Bus oder Zug verloren haben",
+    "starterFr": "Bonjour, j'ai oublié mon sac dans le bus de la ligne 12.",
+    "vocabHints": ["perdre", "retrouver", "couleur", "contenu", "formulaire"]
+  },
+  {
+    "id": "jardinage",
+    "themeFr": "Le jardinage",
+    "themeDe": "Gartenarbeit",
+    "niveau": "B1",
+    "descriptionDe": "Über Pflanzen und Gartenpflege sprechen",
+    "starterFr": "Tu as de très belles fleurs. Tu t'en occupes souvent ?",
+    "vocabHints": ["arroser", "planter", "arbres", "potager", "fleurs"]
+  },
+  {
+    "id": "sport_regarder",
+    "themeFr": "Regarder un match",
+    "themeDe": "Ein Spiel anschauen",
+    "niveau": "A2",
+    "descriptionDe": "Über Fußball oder Tennis im Fernsehen reden",
+    "starterFr": "Tu regardes le match de foot ce soir ? Qui va gagner selon toi ?",
+    "vocabHints": ["le score", "le joueur", "marquer un but", "arbitre", "supporter"]
+  },
+  {
+    "id": "fitness",
+    "themeFr": "À la salle de sport",
+    "themeDe": "Im Fitnessstudio",
+    "niveau": "B1",
+    "descriptionDe": "Über Training und Gesundheit sprechen",
+    "starterFr": "C'est ta première fois ici ? Tu veux que je te montre les machines ?",
+    "vocabHints": ["musculation", "cardio", "abonnement", "coach", "transpirer"]
+  },
+  {
+    "id": "internet",
+    "themeFr": "Problèmes d'Internet",
+    "themeDe": "Internetprobleme",
+    "niveau": "B1",
+    "descriptionDe": "Einen Techniker rufen oder Support kontaktieren",
+    "starterFr": "Bonjour, ma connexion internet est très lente aujourd'hui.",
+    "vocabHints": ["le routeur", "redémarrer", "mot de passe", "ligne", "téléchargement"]
+  },
+  {
+    "id": "demenagement",
+    "themeFr": "Un déménagement",
+    "themeDe": "Ein Umzug",
+    "niveau": "B2",
+    "descriptionDe": "Logistik und Hilfe beim Umzug besprechen",
+    "starterFr": "On déménage samedi prochain. Tu es libre pour porter des cartons ?",
+    "vocabHints": ["camion", "carton", "étage", "meubles", "fatiguant"]
+  },
+  {
+    "id": "mariage",
+    "themeFr": "Un mariage",
+    "themeDe": "Eine Hochzeit",
+    "niveau": "B2",
+    "descriptionDe": "Über eine Zeremonie und Feier sprechen",
+    "starterFr": "C'était un mariage magnifique, n'est-ce pas ? La mariée était superbe.",
+    "vocabHints": ["cérémonie", "invités", "fêter", "cadeau", "discours"]
+  },
+  {
+    "id": "restaurant_critique",
+    "themeFr": "Critiquer un repas",
+    "themeDe": "Essen kritisieren",
+    "niveau": "B2",
+    "descriptionDe": "Sich höflich über das Essen beschweren",
+    "starterFr": "Excusez-moi, mais ma viande est beaucoup trop cuite.",
+    "vocabHints": ["froid", "renvoyer en cuisine", "goût", "salé", "geste commercial"]
+  },
+  {
+    "id": "musee_art",
+    "themeFr": "Parler d'art",
+    "themeDe": "Über Kunst sprechen",
+    "niveau": "B2",
+    "descriptionDe": "Abstrakte Kunst interpretieren",
+    "starterFr": "Que penses-tu de ce tableau ? Je trouve les couleurs très agressives.",
+    "vocabHints": ["abstrait", "artiste", "mouvement", "interprétation", "signification"]
+  },
+  {
+    "id": "police",
+    "themeFr": "Au commissariat",
+    "themeDe": "Bei der Polizei",
+    "niveau": "B1",
+    "descriptionDe": "Einen Diebstahl melden",
+    "starterFr": "Bonjour, on m'a volé mon sac dans le métro tout à l'heure.",
+    "vocabHints": ["voler", "déposer plainte", "portefeuille", "témoin", "signalement"]
+  },
+  {
+    "id": "orientation_campus",
+    "themeFr": "Sur le campus",
+    "themeDe": "Auf dem Campus",
+    "niveau": "A2",
+    "descriptionDe": "Nach Räumen und Gebäuden fragen",
+    "starterFr": "Excuse-moi, tu sais où se trouve l'amphi B ?",
+    "vocabHints": ["faculté", "bibliothèque", "resto U", "cours", "inscription"]
+  },
+  {
+    "id": "bricolage_magasin",
+    "themeFr": "Au magasin de bricolage",
+    "themeDe": "Im Baumarkt",
+    "niveau": "B1",
+    "descriptionDe": "Werkzeug und Material kaufen",
+    "starterFr": "Bonjour, je cherche des vis et un tournevis électrique.",
+    "vocabHints": ["marteau", "peindre", "étagère", "planche", "réparer"]
+  },
+  {
+    "id": "marche",
+    "themeFr": "Au marché",
+    "themeDe": "Auf dem Markt",
+    "niveau": "A2",
+    "descriptionDe": "Frische Produkte beim Händler kaufen",
+    "starterFr": "Bonjour ! Ils sont frais, mes légumes ! Vous en voulez combien ?",
+    "vocabHints": ["goûter", "produit local", "fraise", "mûr", "sac"]
+  },
+  {
+    "id": "camping",
+    "themeFr": "Au camping",
+    "themeDe": "Auf dem Campingplatz",
+    "niveau": "B1",
+    "descriptionDe": "Einen Platz reservieren und Regeln klären",
+    "starterFr": "Bonjour, avez-vous un emplacement libre pour une tente et une voiture ?",
+    "vocabHints": ["tente", "douche", "électricité", "nature", "sac de couchage"]
+  },
+  {
+    "id": "entretien_embauche",
+    "themeFr": "Un entretien d'embauche",
+    "themeDe": "Vorstellungsgespräch",
+    "niveau": "B2",
+    "descriptionDe": "Über Erfahrungen und Motivation sprechen",
+    "starterFr": "Bonjour, parlez-moi de votre parcours professionnel.",
+    "vocabHints": ["expérience", "compétences", "points forts", "postuler", "équipe"]
+  },
+  {
+    "id": "climat",
+    "themeFr": "Le changement climatique",
+    "themeDe": "Klimawandel",
+    "niveau": "B2",
+    "descriptionDe": "Ursachen und Lösungen diskutieren",
+    "starterFr": "Quels sont les plus grands défis pour la planète selon toi ?",
+    "vocabHints": ["pollution", "écologie", "réduire", "consommer", "avenir"]
+  },
+  {
+    "id": "media",
+    "themeFr": "Les médias et l'information",
+    "themeDe": "Medien und Nachrichten",
+    "niveau": "B2",
+    "descriptionDe": "Über Zeitungen und Fake News sprechen",
+    "starterFr": "Comment est-ce que tu t'informes ? Tu lis la presse en ligne ?",
+    "vocabHints": ["journal", "actualité", "source", "vérifier", "réseaux sociaux"]
+  },
+  {
+    "id": "voisinage_probleme",
+    "themeFr": "Problème de voisinage",
+    "themeDe": "Nachbarschaftskonflikt",
+    "niveau": "B2",
+    "descriptionDe": "Über Lärm oder Müll diskutieren",
+    "starterFr": "Bonjour, je suis désolé de vous déranger, mais la musique était très forte hier soir.",
+    "vocabHints": ["bruit", "calme", "respecter", "prévenir", "discuter"]
+  },
+  {
+    "id": "recherche_emploi",
+    "themeFr": "Chercher un emploi",
+    "themeDe": "Jobsuche",
+    "niveau": "B1",
+    "descriptionDe": "Über Anzeigen und Lebensläufe sprechen",
+    "starterFr": "J'ai envoyé mon CV à trois entreprises ce matin. Et toi ?",
+    "vocabHints": ["lettre de motivation", "annonce", "chômage", "entretien", "embaucher"]
+  },
+  {
+    "id": "politique",
+    "themeFr": "La politique",
+    "themeDe": "Politik",
+    "niveau": "B2",
+    "descriptionDe": "Über Wahlen und Gesetze sprechen",
+    "starterFr": "Tu vas voter pour les prochaines élections ?",
+    "vocabHints": ["voter", "gouvernement", "parti", "démocratie", "manifestation"]
+  },
+  {
+    "id": "nouvelles_technologies",
+    "themeFr": "Le futur",
+    "themeDe": "Die Zukunft",
+    "niveau": "B2",
+    "descriptionDe": "Spekulieren über Roboter und Fortschritt",
+    "starterFr": "À quoi ressemblera le monde dans cinquante ans ?",
+    "vocabHints": ["progrès", "robot", "espace", "changer", "imaginer"]
+  },
+  {
+    "id": "souvenirs",
+    "themeFr": "Les souvenirs d'enfance",
+    "themeDe": "Kindheitserinnerungen",
+    "niveau": "B1",
+    "descriptionDe": "Über die Vergangenheit erzählen (Imparfait)",
+    "starterFr": "Où est-ce que tu habitais quand tu étais petit ?",
+    "vocabHints": ["jouer", "école primaire", "vacances", "souvenir", "époque"]
+  },
+  {
+    "id": "cinema_festival",
+    "themeFr": "Un festival de cinéma",
+    "themeDe": "Ein Filmfestival",
+    "niveau": "B2",
+    "descriptionDe": "Über Preise und Regisseure sprechen",
+    "starterFr": "Tu as vu quels films ont gagné un prix cette année ?",
+    "vocabHints": ["réalisateur", "palmarès", "critique", "tapis rouge", "vedette"]
+  },
+  {
+    "id": "astronomie",
+    "themeFr": "L'espace et l'univers",
+    "themeDe": "Weltraum",
+    "niveau": "B2",
+    "descriptionDe": "Über Planeten und Sterne sprechen",
+    "starterFr": "Est-ce que tu penses qu'il y a de la vie sur d'autres planètes ?",
+    "vocabHints": ["étoile", "galaxie", "astronaute", "télescope", "découverte"]
+  },
+  {
+    "id": "modes_transport",
+    "themeFr": "Les transports en commun",
+    "themeDe": "Öffentliche Verkehrsmittel",
+    "niveau": "A1",
+    "descriptionDe": "Bus, Metro oder Tram nutzen",
+    "starterFr": "Pardon, est-ce que ce bus va jusqu'au centre-ville ?",
+    "vocabHints": ["ticket", "arrêt", "ligne", "prochain", "descendre"]
+  },
+  {
+    "id": "fetes_annee",
+    "themeFr": "Noël et le Nouvel An",
+    "themeDe": "Weihnachten und Neujahr",
+    "niveau": "A2",
+    "descriptionDe": "Über Pläne für die Feiertage sprechen",
+    "starterFr": "Qu'est-ce que tu fais pour Noël cette année ?",
+    "vocabHints": ["cadeau", "sapin", "repas", "famille", "minuit"]
+  },
+  {
+    "id": "littérature",
+    "themeFr": "La lecture",
+    "themeDe": "Lesen/Literatur",
+    "niveau": "B1",
+    "descriptionDe": "Über Lieblingsbücher sprechen",
+    "starterFr": "Quel est le dernier livre que tu as lu ? C'était bien ?",
+    "vocabHints": ["roman", "auteur", "histoire", "page", "recommander"]
+  },
+  {
+    "id": "photographie",
+    "themeFr": "La photographie",
+    "themeDe": "Fotografie",
+    "niveau": "B1",
+    "descriptionDe": "Über Fotos und Kameras sprechen",
+    "starterFr": "Tu prends beaucoup de photos avec ton téléphone ?",
+    "vocabHints": ["image", "appareil photo", "souvenir", "filtre", "partager"]
+  },
+  {
+    "id": "argent",
+    "themeFr": "L'argent et le budget",
+    "themeDe": "Geld und Budget",
+    "niveau": "B1",
+    "descriptionDe": "Über Ausgaben und Sparen sprechen",
+    "starterFr": "Est-ce que tu fais attention à tes dépenses ou tu es plutôt dépensier ?",
+    "vocabHints": ["économiser", "cher", "prix", "budget", "acheter"]
+  },
+  {
+    "id": "stress",
+    "themeFr": "Le stress et la relaxation",
+    "themeDe": "Stress und Entspannung",
+    "niveau": "B1",
+    "descriptionDe": "Über Druck im Alltag sprechen",
+    "starterFr": "Je suis très stressé en ce moment à cause du travail. Et toi ?",
+    "vocabHints": ["se détendre", "pression", "yoga", "calme", "dormir"]
+  },
+  {
+    "id": "langues",
+    "themeFr": "Apprendre des langues",
+    "themeDe": "Sprachen lernen",
+    "niveau": "A2",
+    "descriptionDe": "Über Schwierigkeiten beim Lernen sprechen",
+    "starterFr": "Pourquoi est-ce que tu apprends le français ?",
+    "vocabHints": ["difficile", "prononciation", "pratiquer", "vocabulaire", "comprendre"]
+  },
+  {
+    "id": "animaux_discussions",
+    "themeFr": "Les droits des animaux",
+    "themeDe": "Tierrechte",
+    "niveau": "B2",
+    "descriptionDe": "Über Veganismus und Tierschutz diskutieren",
+    "starterFr": "Penses-tu qu'il faille interdire les animaux dans les cirques ?",
+    "vocabHints": ["protection", "souffrance", "éthique", "corrida", "nature"]
+  },
+  {
+    "id": "internet_achat",
+    "themeFr": "Acheter sur Internet",
+    "themeDe": "Online einkaufen",
+    "niveau": "B1",
+    "descriptionDe": "Über Online-Shopping-Gewohnheiten sprechen",
+    "starterFr": "Est-ce que tu achètes souvent tes vêtements en ligne ?",
+    "vocabHints": ["livraison", "panier", "retourner", "avis client", "site web"]
+  },
+  {
+    "id": "education",
+    "themeFr": "Le système éducatif",
+    "themeDe": "Das Bildungssystem",
+    "niveau": "B2",
+    "descriptionDe": "Über Schulen und Universitäten diskutieren",
+    "starterFr": "Que penses-tu du système scolaire dans ton pays ?",
+    "vocabHints": ["diplôme", "université", "réforme", "apprendre", "études"]
+  },
+  {
+    "id": "vetements_occasion",
+    "themeFr": "Les vêtements d'occasion",
+    "themeDe": "Second-Hand Kleidung",
+    "niveau": "B1",
+    "descriptionDe": "Über Flohmärkte und Nachhaltigkeit sprechen",
+    "starterFr": "J'ai trouvé cette veste dans une friperie. Tu aimes ?",
+    "vocabHints": ["marché aux puces", "pas cher", "écologique", "style", "vintage"]
+  },
+  {
+    "id": "ville_vs_campagne",
+    "themeFr": "Ville ou campagne",
+    "themeDe": "Stadt oder Land",
+    "niveau": "B1",
+    "descriptionDe": "Vor- und Nachteile der Wohnorte",
+    "starterFr": "Préfères-tu vivre dans une grande ville ou à la campagne ?",
+    "vocabHints": ["calme", "pollution", "bruit", "activités", "nature"]
+  },
+  {
+    "id": "cuisine_etrangere",
+    "themeFr": "La cuisine du monde",
+    "themeDe": "Internationale Küche",
+    "niveau": "A2",
+    "descriptionDe": "Über Essen aus anderen Ländern sprechen",
+    "starterFr": "Est-ce que tu aimes la cuisine épicée, comme la cuisine indienne ?",
+    "vocabHints": ["goût", "épices", "plat typique", "italien", "découvrir"]
+  },
+  {
+    "id": "mode_vie",
+    "themeFr": "Un mode de vie sain",
+    "themeDe": "Gesunder Lebensstil",
+    "niveau": "B1",
+    "descriptionDe": "Über Ernährung und Fitness sprechen",
+    "starterFr": "Est-ce que tu fais attention à ce que tu manges ?",
+    "vocabHints": ["légumes", "sucre", "équilibré", "vitamines", "santé"]
+  },
+  {
+    "id": "bénévolat",
+    "themeFr": "Le bénévolat",
+    "themeDe": "Ehrenamt",
+    "niveau": "B2",
+    "descriptionDe": "Über Freiwilligenarbeit sprechen",
+    "starterFr": "Est-ce que tu as déjà travaillé pour une association ?",
+    "vocabHints": ["aider", "solidarité", "association", "donner du temps", "social"]
+  },
+  {
+    "id": "histoire",
+    "themeFr": "L'histoire",
+    "themeDe": "Geschichte",
+    "niveau": "B2",
+    "descriptionDe": "Über historische Ereignisse sprechen",
+    "starterFr": "Quelle est la période de l'histoire qui t'intéresse le plus ?",
+    "vocabHints": ["siècle", "guerre", "révolution", "roi", "passé"]
+  },
+  {
+    "id": "humour",
+    "themeFr": "L'humour",
+    "themeDe": "Humor",
+    "niveau": "B1",
+    "descriptionDe": "Über Witze und Komödien sprechen",
+    "starterFr": "Qu'est-ce qui te fait rire en général ?",
+    "vocabHints": ["blague", "drôle", "rire", "ironie", "comédien"]
+  },
+  {
+    "id": "sentiments",
+    "themeFr": "Exprimer ses sentiments",
+    "themeDe": "Gefühle ausdrücken",
+    "niveau": "B1",
+    "descriptionDe": "Über Emotionen sprechen",
+    "starterFr": "Tu as l'air triste aujourd'hui. Qu'est-ce qui ne va pas ?",
+    "vocabHints": ["heureux", "colère", "peur", "surpris", "ressentir"]
+  },
+  {
+    "id": "reve",
+    "themeFr": "Les rêves",
+    "themeDe": "Träume",
+    "niveau": "B1",
+    "descriptionDe": "Über Träume und Ziele sprechen",
+    "starterFr": "Quel est ton plus grand rêve dans la vie ?",
+    "vocabHints": ["réaliser", "ambition", "imaginer", "espoir", "futur"]
+  },
+  {
+    "id": "culture_choc",
+    "themeFr": "Le choc culturel",
+    "themeDe": "Kulturschock",
+    "niveau": "B2",
+    "descriptionDe": "Über Erfahrungen im Ausland sprechen",
+    "starterFr": "As-tu déjà ressenti un choc culturel en voyageant ?",
+    "vocabHints": ["habitude", "différence", "s'adapter", "étrange", "tradition"]
+  },
+  {
+    "id": "architecture",
+    "themeFr": "L'architecture",
+    "themeDe": "Architektur",
+    "niveau": "B2",
+    "descriptionDe": "Über Gebäude und Design sprechen",
+    "starterFr": "Aimes-tu l'architecture moderne ou préfères-tu les vieux bâtiments ?",
+    "vocabHints": ["style", "construction", "façade", "urbanisme", "monument"]
+  },
+  {
+    "id": "sommeil",
+    "themeFr": "Le sommeil",
+    "themeDe": "Schlaf",
+    "niveau": "A2",
+    "descriptionDe": "Über Schlafgewohnheiten sprechen",
+    "starterFr": "Tu dors bien en ce moment ? Combien d'heures par nuit ?",
+    "vocabHints": ["fatigué", "faire une sieste", "rêver", "insomnie", "tôt"]
+  },
+  {
+    "id": "fetes_foraines",
+    "themeFr": "À la fête foraine",
+    "themeDe": "Auf dem Jahrmarkt",
+    "niveau": "A2",
+    "descriptionDe": "Über Fahrgeschäfte und Attraktionen sprechen",
+    "starterFr": "On fait un tour de grande roue ? J'adore la vue !",
+    "vocabHints": ["manège", "barbe à papa", "peur", "s'amuser", "ticket"]
+  },
+  {
+    "id": "publicite",
+    "themeFr": "La publicité",
+    "themeDe": "Werbung",
+    "niveau": "B2",
+    "descriptionDe": "Über den Einfluss von Werbung sprechen",
+    "starterFr": "Est-ce que tu penses que la publicité nous influence trop ?",
+    "vocabHints": ["consommateur", "marque", "produit", "inciter", "omniprésent"]
+  },
+  {
+    "id": "tele-travail",
+    "themeFr": "Le télétravail",
+    "themeDe": "Homeoffice",
+    "niveau": "B1",
+    "descriptionDe": "Vor- und Nachteile von zu Hause arbeiten",
+    "starterFr": "Est-ce que tu préfères travailler au bureau ou chez toi ?",
+    "vocabHints": ["concentration", "liberté", "visio-conférence", "productivité", "isoler"]
+  },
+  {
+    "id": "rencontres_internet",
+    "themeFr": "Les rencontres en ligne",
+    "themeDe": "Online-Dating",
+    "niveau": "B2",
+    "descriptionDe": "Über Dating-Apps diskutieren",
+    "starterFr": "Que penses-tu des applications de rencontre pour trouver l'amour ?",
+    "vocabHints": ["profil", "match", "rencontrer", "relation", "virtuel"]
+  },
+  {
+    "id": "gastronomie_francaise",
+    "themeFr": "La gastronomie française",
+    "themeDe": "Französische Gastronomie",
+    "niveau": "B1",
+    "descriptionDe": "Über Käse, Wein und Spezialitäten sprechen",
+    "starterFr": "Quel est ton plat français préféré ? Tu as déjà goûté les escargots ?",
+    "vocabHints": ["fromage", "vin", "spécialité", "terroir", "dégustation"]
+  },
+  {
+    "id": "espace_vert",
+    "themeFr": "Dans le parc",
+    "themeDe": "Im Park",
+    "niveau": "A1",
+    "descriptionDe": "Über Aktivitäten im Freien sprechen",
+    "starterFr": "Il fait beau ! On va faire une promenade au parc ?",
+    "vocabHints": ["marcher", "fleurs", "banc", "jouer au ballon", "pique-nique"]
+  },
+  {
+    "id": "energies",
+    "themeFr": "Les énergies",
+    "themeDe": "Energien",
+    "niveau": "B2",
+    "descriptionDe": "Über Atomkraft und Solar sprechen",
+    "starterFr": "Penses-tu que les énergies renouvelables suffiront à l'avenir ?",
+    "vocabHints": ["solaire", "éolien", "nucléaire", "consommation", "électricité"]
+  },
+  {
+    "id": "intelligence_artificielle_ethique",
+    "themeFr": "L'éthique de l'IA",
+    "themeDe": "Ethik der KI",
+    "niveau": "B2",
+    "descriptionDe": "Über Gefahren und Nutzen von KI diskutieren",
+    "starterFr": "L'IA va-t-elle remplacer les humains dans beaucoup de métiers ?",
+    "vocabHints": ["remplacer", "danger", "créativité", "algorithme", "contrôler"]
+  },
+  {
+    "id": "voyage_sac_a_dos",
+    "themeFr": "Voyager en sac à dos",
+    "themeDe": "Backpacking",
+    "niveau": "B1",
+    "descriptionDe": "Über Abenteuerreisen sprechen",
+    "starterFr": "J'aimerais traverser l'Asie avec juste un sac à dos. Qu'en penses-tu ?",
+    "vocabHints": ["aventure", "auberge de jeunesse", "liberté", "budget", "itinéraire"]
+  },
+  {
+    "id": "langue_argot",
+    "themeFr": "L'argot français",
+    "themeDe": "Französischer Slang",
+    "niveau": "B2",
+    "descriptionDe": "Über Umgangssprache sprechen",
+    "starterFr": "Tu connais des mots familiers en français, comme 'bouffer' ou 'bosser' ?",
+    "vocabHints": ["familier", "courant", "expression", "jeunes", "comprendre"]
+  },
+  {
+    "id": "famille_recomposee",
+    "themeFr": "La famille recomposée",
+    "themeDe": "Patchwork-Familie",
+    "niveau": "B2",
+    "descriptionDe": "Über moderne Familienstrukturen sprechen",
+    "starterFr": "C'est de plus en plus courant d'avoir des demi-frères et sœurs, non ?",
+    "vocabHints": ["beau-père", "belle-mère", "relation", "divorce", "ensemble"]
+  },
+  {
+    "id": "celebrites",
+    "themeFr": "Les célébrités",
+    "themeDe": "Promis",
+    "niveau": "A2",
+    "descriptionDe": "Über Stars und Idole sprechen",
+    "starterFr": "Quelle est ta star préférée ? Pourquoi est-ce que tu l'aimes ?",
+    "vocabHints": ["connu", "acteur", "chanteur", "admirer", "talent"]
+  },
+  {
+    "id": "vetements_style",
+    "themeFr": "Le style vestimentaire",
+    "themeDe": "Kleidungsstil",
+    "niveau": "B1",
+    "descriptionDe": "Über Mode und persönlichen Geschmack sprechen",
+    "starterFr": "Comment décrirais-tu ton style ? Tu es plutôt classique ou original ?",
+    "vocabHints": ["élégant", "confortable", "tendance", "look", "s'habiller"]
+  },
+  {
+    "id": "cirque",
+    "themeFr": "Au cirque",
+    "themeDe": "Im Zirkus",
+    "niveau": "A2",
+    "descriptionDe": "Über Akrobaten und Shows sprechen",
+    "starterFr": "Tu aimes le cirque ? J'adore les acrobates, ils sont impressionnants.",
+    "vocabHints": ["spectacle", "clown", "magie", "chapiteau", "incroyable"]
+  },
+  {
+    "id": "fete_anniversaire",
+    "themeFr": "Fêter un anniversaire",
+    "themeDe": "Geburtstag feiern",
+    "niveau": "A2",
+    "descriptionDe": "Glückwünsche und Geschenke",
+    "starterFr": "Joyeux anniversaire ! Voici un petit cadeau pour toi.",
+    "vocabHints": ["bougies", "gâteau", "inviter", "fêter", "surprise"]
+  },
+  {
+    "id": "musique_instruments",
+    "themeFr": "Jouer d'un instrument",
+    "themeDe": "Ein Instrument spielen",
+    "niveau": "B1",
+    "descriptionDe": "Über Musikpraxis sprechen",
+    "starterFr": "Est-ce que tu joues d'un instrument de musique ? Moi, je fais du piano.",
+    "vocabHints": ["guitare", "pratiquer", "cours", "mélodie", "oreille musicale"]
+  },
+  {
+    "id": "peinture",
+    "themeFr": "La peinture",
+    "themeDe": "Malerei",
+    "niveau": "B1",
+    "descriptionDe": "Über Hobbys wie Zeichnen oder Malen sprechen",
+    "starterFr": "Tu aimes dessiner ? J'essaie d'apprendre la peinture à l'huile.",
+    "vocabHints": ["pinceau", "couleurs", "dessin", "toile", "créatif"]
+  },
+  {
+    "id": "volontariat_international",
+    "themeFr": "Partir à l'étranger",
+    "themeDe": "Ins Ausland gehen",
+    "niveau": "B2",
+    "descriptionDe": "Über Austauschprogramme sprechen",
+    "starterFr": "Tu aimerais faire un stage ou un échange Erasmus en France ?",
+    "vocabHints": ["étudier", "expérience", "culture", "immersion", "langue"]
+  },
+  {
+    "id": "bruit_ville",
+    "themeFr": "Le bruit en ville",
+    "themeDe": "Stadtlärm",
+    "niveau": "B2",
+    "descriptionDe": "Über Lebensqualität in Städten sprechen",
+    "starterFr": "Est-ce que tu trouves que ta ville est trop bruyante ?",
+    "vocabHints": ["circulation", "klaxon", "insupportable", "calme", "travaux"]
+  },
+  {
+    "id": "shopping_centre",
+    "themeFr": "Au centre commercial",
+    "themeDe": "Im Einkaufszentrum",
+    "niveau": "A2",
+    "descriptionDe": "Sich in einer Mall orientieren",
+    "starterFr": "Bonjour, où se trouve le magasin de sport, s'il vous plaît ?",
+    "vocabHints": ["étage", "escalator", "boutique", "entrée", "plan"]
+  },
+  {
+    "id": "permis_conduire",
+    "themeFr": "Passer le permis",
+    "themeDe": "Führerschein machen",
+    "niveau": "B1",
+    "descriptionDe": "Über Fahrstunden und Prüfungen sprechen",
+    "starterFr": "Tu as déjà ton permis de conduire ou tu es en train de le passer ?",
+    "vocabHints": ["auto-école", "examen", "conduire", "code de la route", "difficile"]
+  }
+]

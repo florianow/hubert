@@ -2,6 +2,33 @@
 
 Future game mode ideas for the French-German vocabulary learning app.
 
+---
+
+## Adaptive Niveau-Erkennung (alle Spielmodi)
+
+**Idee:** Hubert erkennt automatisch das Niveau des Spielers aus seinen Statistiken und schlägt
+das passende Niveau vor — in Parlez! beim Thema wählen, generell als Spieler-Profil.
+
+**Datenbasis (bereits vorhanden):**
+- Score-Historie pro Spieltyp (Room DB)
+- Accuracy pro Spieltyp (`StatisticsRepository`)
+- Streak-Daten
+
+**Logik-Vorschlag:**
+```
+Trouvez!/Écrivez! Accuracy > 85% + High Score > 80  →  B1 vorschlagen
+Accuracy 60–85%                                      →  A2
+Accuracy < 60% oder < 10 Sessions                    →  A1
+Conjuguez! High Score > 70                           →  B1/B2 freischalten
+```
+
+**Umsetzung:**
+- `StatisticsRepository.suggestNiveau(): String` — gibt "A1"/"A2"/"B1"/"B2" zurück
+- In `ParlezViewModel.onGameSelected()` als Default-Niveau setzen
+- Optional: in anderen Spielmodi als Hinweis anzeigen ("Du spielst auf A2-Niveau")
+
+---
+
 ## Data Sources
 
 The app currently has 4 data files in `app/src/main/assets/`:
