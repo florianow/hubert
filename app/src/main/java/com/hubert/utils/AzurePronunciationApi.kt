@@ -130,6 +130,55 @@ object AzurePronunciationApi {
      *   }]
      * }
      */
+    /**
+     * Plain speech-to-text transcription (no pronunciation scoring).
+     * Returns the recognized French text, or blank on failure.
+     */
+    suspend fun transcribe(
+        region: String,
+        apiKey: String,
+        audioWav: ByteArray
+    ): String = withContext(Dispatchers.IO) {
+        val urlString = "https://$region.stt.speech.microsoft.com/" +
+            "speech/recognition/conversation/cognitiveservices/v1" +
+            "?language=fr-FR"
+
+        val url = URL(urlString)
+        val conn = url.openConnection() as HttpURLConnection
+        try {
+            conn.requestMethod = "POST"
+            conn.doOutput = true
+            conn.connectTimeout = 15_000
+            conn.readTimeout = 30_000
+            conn.setRequestProperty("Accept", "application/json")
+            conn.setRequestProperty(
+                "Content-Type", "audio/wav; codecs=audio/pcm; samplerate=16000"
+            )
+            conn.setRequestProperty("Ocp-Apim-Subscription-Key", apiKey)
+
+            DataOutputStream(conn.outputStream).use { out ->
+                out.write(audioWav)
+                out.flush()
+            }
+
+            val responseCode = conn.responseCode
+            if (responseCode != 200) {
+                val errBody = try {
+                    conn.errorStream?.bufferedReader()?.readText() ?: ""
+                } catch (_: Exception) { "" }
+                Log.e(TAG, "Azure STT error $responseCode: $errBody")
+                return@withContext ""
+            }
+
+            val body = conn.inputStream.bufferedReader().readText()
+            val json = org.json.JSONObject(body)
+            if (json.optString("RecognitionStatus") != "Success") return@withContext ""
+            json.optString("DisplayText", "")
+        } finally {
+            conn.disconnect()
+        }
+    }
+
     private fun parseResponse(json: String): PronunciationResult {
         val root = JSONObject(json)
         val nBest = root.optJSONArray("NBest")

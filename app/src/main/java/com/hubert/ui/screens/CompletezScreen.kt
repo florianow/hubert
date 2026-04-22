@@ -277,7 +277,7 @@ private fun GapFillTopBar(state: CompletezState, onQuit: () -> Unit) {
 @Composable
 private fun ChoiceCard(
     text: String,
-    index: Int,
+    @Suppress("UNUSED_PARAMETER") index: Int,
     isCorrectAnswer: Boolean,
     isSelected: Boolean,
     feedback: Boolean?,
