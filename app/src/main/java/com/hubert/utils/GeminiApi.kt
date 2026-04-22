@@ -37,7 +37,7 @@ object GeminiApi {
         userMessage: String
     ): String = withContext(Dispatchers.IO) {
         val contents = buildContents(history, userMessage)
-        call(apiKey, CHAT_MODEL, systemPrompt, contents, maxTokens = 250, temperature = 0.8)
+        call(apiKey, CHAT_MODEL, systemPrompt, contents, maxTokens = 500, temperature = 0.8)
     }
 
     /**
@@ -97,6 +97,14 @@ object GeminiApi {
             put("generationConfig", JSONObject().apply {
                 put("maxOutputTokens", maxTokens)
                 put("temperature", temperature)
+                // For gemini-2.5-flash (thinking model): disable internal reasoning for
+                // chat calls to avoid eating into the output token budget.
+                // Evaluation calls have enough budget (3000) so this is mainly for chat (500).
+                if (maxTokens < 1000) {
+                    put("thinkingConfig", JSONObject().apply {
+                        put("thinkingBudget", 0)
+                    })
+                }
             })
         }
 

@@ -5,7 +5,9 @@
     "themeDe": "In der Bäckerei",
     "niveau": "A1",
     "descriptionDe": "Brot und Gebäck kaufen",
-    "starterFr": "Bonjour ! Je voudrais une baguette tradition, s'il vous plaît. Et avec ceci ?",
+    "scenarioDe": "Du bist Kunde in einer Bäckerei. Bestelle Brot, Croissants oder Gebäck. Frag nach Preisen und bezahle.",
+    "hubertRoleFr": "Tu es le boulanger / la boulangère dans ta boutique.",
+    "starterFr": "Bonjour ! Bienvenue dans ma boulangerie. Qu'est-ce que je vous sers ?",
     "vocabHints": ["un croissant", "pain au chocolat", "combien ça coûte", "c'est tout", "merci"]
   },
   {
@@ -14,7 +16,9 @@
     "themeDe": "Kennenlernen",
     "niveau": "A1",
     "descriptionDe": "Dich vorstellen und Fragen stellen",
-    "starterFr": "Salut ! Je m'appelle Thomas. Comment tu t'appelles ?",
+    "scenarioDe": "Du triffst jemanden zum ersten Mal auf einer Party. Stell dich vor, erzähle über dich und stell Fragen.",
+    "hubertRoleFr": "Tu es une personne que le joueur rencontre pour la première fois à une fête.",
+    "starterFr": "Salut ! Je m'appelle Hubert. Comment tu t'appelles ?",
     "vocabHints": ["enchanté", "habiter", "étudiant", "quel âge", "d'où"]
   },
   {
@@ -23,7 +27,9 @@
     "themeDe": "Kleidung kaufen",
     "niveau": "A2",
     "descriptionDe": "Im Modegeschäft nach Größen und Farben suchen",
-    "starterFr": "Bonjour, je peux vous aider ? Vous cherchez une taille particulière ?",
+    "scenarioDe": "Du bist in einem Modegeschäft und suchst Kleidung. Frag nach Größen, Farben, und ob du anprobieren kannst.",
+    "hubertRoleFr": "Tu es un vendeur / une vendeuse dans un magasin de vêtements.",
+    "starterFr": "Bonjour, je peux vous aider ? Vous cherchez quelque chose en particulier ?",
     "vocabHints": ["essayer", "cabine d'essayage", "taille", "couleur", "trop petit"]
   },
   {
@@ -32,7 +38,9 @@
     "themeDe": "Am Bahnhof",
     "niveau": "A2",
     "descriptionDe": "Fahrkarten kaufen und nach Gleisen fragen",
-    "starterFr": "Bonjour, je voudrais un billet pour Lyon pour le prochain train, s'il vous plaît.",
+    "scenarioDe": "Du bist am Schalter im Bahnhof. Kaufe eine Fahrkarte, frag nach dem Gleis und der Abfahrtszeit.",
+    "hubertRoleFr": "Tu es l'employé(e) au guichet de la gare.",
+    "starterFr": "Bonjour, comment puis-je vous aider ?",
     "vocabHints": ["le quai", "aller simple", "aller-retour", "en retard", "composter"]
   },
   {
@@ -41,7 +49,9 @@
     "themeDe": "Wohnungssuche",
     "niveau": "B1",
     "descriptionDe": "Eine Besichtigung vereinbaren und Details klären",
-    "starterFr": "Bonjour, j'appelle pour l'annonce de l'appartement. Est-il toujours disponible ?",
+    "scenarioDe": "Du rufst wegen einer Wohnungsanzeige an. Frag nach Miete, Nebenkosten, Lage und vereinbare eine Besichtigung.",
+    "hubertRoleFr": "Tu es le propriétaire de l'appartement qui répond au téléphone.",
+    "starterFr": "Allô, oui bonjour ! C'est au sujet de l'annonce ? L'appartement est toujours disponible.",
     "vocabHints": ["le loyer", "les charges", "meublé", "caution", "le quartier"]
   },
   {
@@ -50,6 +60,8 @@
     "themeDe": "Zusammen kochen",
     "niveau": "A2",
     "descriptionDe": "Ein Rezept besprechen und Anweisungen geben",
+    "scenarioDe": "Du kochst zusammen mit einem Freund. Besprecht was ihr macht, teilt die Aufgaben auf und gebt euch Anweisungen.",
+    "hubertRoleFr": "Tu es un ami qui cuisine avec le joueur dans la cuisine.",
     "starterFr": "Qu'est-ce qu'on prépare pour le dîner ? Tu peux couper les légumes ?",
     "vocabHints": ["mélanger", "couper", "la poêle", "le four", "délicieux"]
   },
@@ -59,7 +71,9 @@
     "themeDe": "In der Apotheke",
     "niveau": "A2",
     "descriptionDe": "Nach Medikamenten oder Beratung fragen",
-    "starterFr": "Bonjour, j'ai pris un coup de soleil. Qu'est-ce que vous me conseillez ?",
+    "scenarioDe": "Du bist in der Apotheke. Beschreibe deine Symptome und frag nach Medikamenten oder Rat.",
+    "hubertRoleFr": "Tu es le pharmacien / la pharmacienne.",
+    "starterFr": "Bonjour ! Qu'est-ce qui ne va pas aujourd'hui ? Je peux vous aider ?",
     "vocabHints": ["crème", "pansement", "douleur", "ordonnance", "tousser"]
   },
   {
@@ -68,7 +82,9 @@
     "themeDe": "In der Bank",
     "niveau": "B1",
     "descriptionDe": "Ein Konto eröffnen oder ein Problem klären",
-    "starterFr": "Bonjour, je voudrais ouvrir un compte courant dans votre banque.",
+    "scenarioDe": "Du bist in der Bank. Eröffne ein Konto, frag nach Konditionen oder kläre ein Problem mit deiner Karte.",
+    "hubertRoleFr": "Tu es le conseiller bancaire.",
+    "starterFr": "Bonjour, bienvenue à la banque. Vous avez rendez-vous ou je peux vous renseigner ?",
     "vocabHints": ["carte bancaire", "virement", "frais", "code secret", "retirer"]
   },
   {
@@ -77,6 +93,8 @@
     "themeDe": "Sport",
     "niveau": "A2",
     "descriptionDe": "Über Hobbys und sportliche Aktivitäten reden",
+    "scenarioDe": "Unterhalte dich mit einem Freund über Sport. Erzähle was du machst, wie oft, und frag ihn nach seinen Sportarten.",
+    "hubertRoleFr": "Tu es un ami sportif qui aime parler de sport.",
     "starterFr": "Est-ce que tu fais du sport régulièrement ? Quel est ton sport préféré ?",
     "vocabHints": ["s'entraîner", "match", "équipe", "courir", "gagner"]
   },
@@ -86,6 +104,8 @@
     "themeDe": "Im Kino",
     "niveau": "A2",
     "descriptionDe": "Einen Film wählen und Tickets reservieren",
+    "scenarioDe": "Du bist mit einem Freund am Kino. Entscheidet zusammen welchen Film ihr schaut, wann und wo ihr sitzt.",
+    "hubertRoleFr": "Tu es un ami avec qui le joueur va au cinéma.",
     "starterFr": "On regarde quel film ? Il y a une séance à vingt heures.",
     "vocabHints": ["sous-titres", "place", "film d'action", "comédie", "bande-annonce"]
   },
@@ -95,7 +115,9 @@
     "themeDe": "Im Hotel",
     "niveau": "A2",
     "descriptionDe": "Einchecken und nach Services fragen",
-    "starterFr": "Bonjour, j'ai une réservation au nom de Martin. Voici ma carte d'identité.",
+    "scenarioDe": "Du checkst in einem Hotel ein. Zeig deine Reservierung, frag nach WLAN, Frühstück und anderen Services.",
+    "hubertRoleFr": "Tu es le/la réceptionniste de l'hôtel.",
+    "starterFr": "Bonsoir, bienvenue à l'hôtel. Vous avez une réservation ?",
     "vocabHints": ["petit-déjeuner", "climatisation", "le Wi-Fi", "clé", "bagages"]
   },
   {
@@ -104,7 +126,9 @@
     "themeDe": "Im Museum",
     "niveau": "B1",
     "descriptionDe": "Informationen über Ausstellungen einholen",
-    "starterFr": "Bonjour, à quelle heure ferme le musée aujourd'hui ?",
+    "scenarioDe": "Du bist am Eingang eines Museums. Frag nach Öffnungszeiten, Tickets, Ausstellungen und Audioguide.",
+    "hubertRoleFr": "Tu es l'employé(e) à l'accueil du musée.",
+    "starterFr": "Bonjour ! Bienvenue au musée. Vous souhaitez visiter l'exposition permanente ou temporaire ?",
     "vocabHints": ["exposition", "peinture", "sculpture", "audio-guide", "tarif réduit"]
   },
   {
@@ -113,7 +137,9 @@
     "themeDe": "Beim Friseur",
     "niveau": "A2",
     "descriptionDe": "Erklären, welchen Haarschnitt man möchte",
-    "starterFr": "Bonjour, je voudrais couper mes cheveux. Un peu plus court sur les côtés, s'il vous plaît.",
+    "scenarioDe": "Du bist beim Friseur. Erkläre was du möchtest: kürzer, Farbe, Pony, Spitzen schneiden etc.",
+    "hubertRoleFr": "Tu es le coiffeur / la coiffeuse.",
+    "starterFr": "Bonjour ! Installez-vous. Qu'est-ce qu'on fait aujourd'hui ?",
     "vocabHints": ["couper", "shampooing", "frange", "couleur", "pointes"]
   },
   {
@@ -122,7 +148,9 @@
     "themeDe": "Auto mieten",
     "niveau": "B1",
     "descriptionDe": "Mietbedingungen und Versicherung besprechen",
-    "starterFr": "Bonjour, je voudrais louer une petite voiture pour trois jours.",
+    "scenarioDe": "Du bist bei einer Autovermietung. Sag welches Auto du willst, für wie lange, und kläre Versicherung und Rückgabe.",
+    "hubertRoleFr": "Tu es l'employé(e) de l'agence de location de voitures.",
+    "starterFr": "Bonjour ! Bienvenue chez AutoLoc. Quel type de véhicule recherchez-vous ?",
     "vocabHints": ["permis de conduire", "assurance", "essence", "automatique", "restitution"]
   },
   {
@@ -131,6 +159,8 @@
     "themeDe": "Das Wetter",
     "niveau": "A1",
     "descriptionDe": "Über das Wetter und Pläne sprechen",
+    "scenarioDe": "Unterhalte dich über das Wetter. Beschreibe wie es ist, was du bei diesem Wetter machen willst.",
+    "hubertRoleFr": "Tu es un ami avec qui le joueur discute du temps qu'il fait.",
     "starterFr": "Quel temps fait-il aujourd'hui ? On dirait qu'il va pleuvoir.",
     "vocabHints": ["soleil", "pluie", "nuageux", "température", "il fait froid"]
   },
@@ -140,6 +170,8 @@
     "themeDe": "Einen Freund einladen",
     "niveau": "A2",
     "descriptionDe": "Jemanden zu einer Party oder zum Essen einladen",
+    "scenarioDe": "Ein Freund lädt dich ein. Reagiere: sag zu oder ab, frag nach Details (wann, wo, was mitbringen).",
+    "hubertRoleFr": "Tu es un ami qui invite le joueur à une fête.",
     "starterFr": "Salut ! J'organise une fête samedi soir. Tu veux venir ?",
     "vocabHints": ["apporter", "boisson", "disponible", "avec plaisir", "dommage"]
   },
@@ -149,7 +181,9 @@
     "themeDe": "Sich beschweren",
     "niveau": "B2",
     "descriptionDe": "Ein kaputtes Produkt reklamieren",
-    "starterFr": "Bonjour, j'ai acheté cet article hier mais il ne fonctionne pas.",
+    "scenarioDe": "Du hast ein defektes Produkt gekauft. Beschwere dich höflich, erkläre das Problem und fordere Ersatz oder Erstattung.",
+    "hubertRoleFr": "Tu es le responsable du service client dans un magasin.",
+    "starterFr": "Bonjour, le service client, je vous écoute. Quel est le problème ?",
     "vocabHints": ["remboursement", "défectueux", "ticket de caisse", "échanger", "responsable"]
   },
   {
@@ -158,7 +192,9 @@
     "themeDe": "In der Post",
     "niveau": "A2",
     "descriptionDe": "Pakete oder Briefe verschicken",
-    "starterFr": "Bonjour, je voudrais envoyer ce colis en Allemagne, s'il vous plaît.",
+    "scenarioDe": "Du bist auf der Post. Verschicke ein Paket oder einen Brief, frag nach Preisen und Laufzeiten.",
+    "hubertRoleFr": "Tu es l'employé(e) au guichet de la poste.",
+    "starterFr": "Bonjour ! C'est pour un envoi ? Lettre ou colis ?",
     "vocabHints": ["timbre", "colis", "adresse", "recommandé", "peser"]
   },
   {
@@ -167,7 +203,9 @@
     "themeDe": "Nach dem Weg fragen",
     "niveau": "A1",
     "descriptionDe": "Sich in einer Stadt zurechtfinden",
-    "starterFr": "Excusez-moi, je cherche la place de la République. C'est loin ?",
+    "scenarioDe": "Du hast dich verlaufen. Frag Passanten nach dem Weg zu einem bestimmten Ort.",
+    "hubertRoleFr": "Tu es un passant sympathique qui aide le joueur à trouver son chemin.",
+    "starterFr": "Vous avez l'air perdu ! Je peux vous aider ? Vous cherchez quelque chose ?",
     "vocabHints": ["tourner", "tout droit", "à gauche", "à droite", "traverser"]
   },
   {
@@ -176,6 +214,8 @@
     "themeDe": "In der Schule",
     "niveau": "A2",
     "descriptionDe": "Über Fächer und Prüfungen sprechen",
+    "scenarioDe": "Unterhalte dich mit einem Mitschüler über den Schulalltag, Fächer und Prüfungen.",
+    "hubertRoleFr": "Tu es un camarade de classe du joueur.",
     "starterFr": "Tu as quel cours maintenant ? Moi, j'ai un examen d'histoire.",
     "vocabHints": ["matière", "professeur", "réussir", "apprendre", "devoirs"]
   },
@@ -185,7 +225,9 @@
     "themeDe": "In der Touristeninfo",
     "niveau": "B1",
     "descriptionDe": "Nach Sehenswürdigkeiten und Plänen fragen",
-    "starterFr": "Bonjour, vous avez un plan de la ville et des conseils de visites ?",
+    "scenarioDe": "Du bist Tourist in einer Stadt. Frag nach Sehenswürdigkeiten, Stadtplan, Führungen und Tipps.",
+    "hubertRoleFr": "Tu es l'employé(e) de l'office de tourisme.",
+    "starterFr": "Bonjour ! Bienvenue à l'office de tourisme. C'est votre première visite dans notre ville ?",
     "vocabHints": ["plan", "monument", "gratuit", "horaires", "circuit"]
   },
   {
@@ -194,7 +236,9 @@
     "themeDe": "Am Flughafen",
     "niveau": "A2",
     "descriptionDe": "Einchecken und Sicherheitskontrolle",
-    "starterFr": "Votre passeport et votre carte d'embarquement, s'il vous plaît.",
+    "scenarioDe": "Du bist am Check-in-Schalter. Zeige dein Ticket, frag nach dem Gate und kläre Gepäckfragen.",
+    "hubertRoleFr": "Tu es l'agent(e) au comptoir d'enregistrement de l'aéroport.",
+    "starterFr": "Bonjour ! Votre passeport et votre confirmation de vol, s'il vous plaît.",
     "vocabHints": ["valise", "porte d'embarquement", "décoller", "vol", "siège"]
   },
   {
@@ -203,7 +247,9 @@
     "themeDe": "In der Bibliothek",
     "niveau": "B1",
     "descriptionDe": "Bücher ausleihen oder recherchieren",
-    "starterFr": "Bonjour, je cherche un livre sur l'histoire de France. Vous pouvez m'aider ?",
+    "scenarioDe": "Du bist in der Bibliothek. Frag nach einem bestimmten Buch, melde dich an oder frag nach Hilfe bei der Recherche.",
+    "hubertRoleFr": "Tu es le/la bibliothécaire.",
+    "starterFr": "Bonjour ! Vous cherchez un livre en particulier ou vous voulez juste consulter ?",
     "vocabHints": ["emprunter", "rendre", "carte de membre", "rayon", "silence"]
   },
   {
@@ -212,6 +258,8 @@
     "themeDe": "Mit Nachbarn sprechen",
     "niveau": "B1",
     "descriptionDe": "Ein Paket annehmen oder um Hilfe bitten",
+    "scenarioDe": "Dein Nachbar klingelt an deiner Tür. Hilf ihm, oder bitte ihn um einen Gefallen.",
+    "hubertRoleFr": "Tu es le voisin / la voisine du joueur dans l'immeuble.",
     "starterFr": "Bonjour ! Est-ce que vous pourriez réceptionner un colis pour moi demain ?",
     "vocabHints": ["bruit", "immeuble", "ascenseur", "entraide", "clé"]
   },
@@ -221,6 +269,8 @@
     "themeDe": "Meinung zu einem Film",
     "niveau": "B1",
     "descriptionDe": "Diskutieren, ob ein Film gut war",
+    "scenarioDe": "Ihr kommt gerade aus dem Kino. Diskutiert über den Film — was hat gefallen, was nicht, Schauspieler, Story.",
+    "hubertRoleFr": "Tu es un ami avec qui le joueur vient de voir un film au cinéma.",
     "starterFr": "Alors, qu'est-ce que tu as pensé du film ? Moi, j'ai trouvé l'acteur génial.",
     "vocabHints": ["ennuyeux", "émouvant", "scénario", "chef-d'œuvre", "déçu"]
   },
@@ -230,6 +280,8 @@
     "themeDe": "Heimwerken",
     "niveau": "B1",
     "descriptionDe": "Über Renovierungen im Haus sprechen",
+    "scenarioDe": "Ein Freund renoviert sein Wohnzimmer und braucht Hilfe. Besprecht was zu tun ist und plant zusammen.",
+    "hubertRoleFr": "Tu es un ami qui rénove son salon et demande de l'aide.",
     "starterFr": "Je vais repeindre le salon ce week-end. Tu peux m'aider ?",
     "vocabHints": ["peinture", "outils", "réparer", "mur", "installer"]
   },
@@ -239,7 +291,9 @@
     "themeDe": "Autopanne",
     "niveau": "B1",
     "descriptionDe": "Den Pannendienst rufen",
-    "starterFr": "Ma voiture ne démarre plus. Je crois qu'il y a un problème de batterie.",
+    "scenarioDe": "Dein Auto ist liegengeblieben. Ruf den Pannendienst an, beschreibe das Problem und deinen Standort.",
+    "hubertRoleFr": "Tu es l'opérateur / l'opératrice du service de dépannage automobile.",
+    "starterFr": "Service dépannage, bonjour ! Où êtes-vous et quel est le problème ?",
     "vocabHints": ["dépannage", "garagiste", "pneu", "moteur", "remorquer"]
   },
   {
@@ -248,6 +302,8 @@
     "themeDe": "Nationalfeiertag",
     "niveau": "B1",
     "descriptionDe": "Über Feiertage und Traditionen sprechen",
+    "scenarioDe": "Unterhalte dich über den 14. Juli. Was macht man, was sind die Traditionen, was hast du vor?",
+    "hubertRoleFr": "Tu es un ami français qui adore les fêtes nationales.",
     "starterFr": "Tu vas voir le feu d'artifice ce soir pour la fête nationale ?",
     "vocabHints": ["défilé", "bal populaire", "célébrer", "drapeau", "ambiance"]
   },
@@ -257,6 +313,8 @@
     "themeDe": "Winterkleidung",
     "niveau": "A1",
     "descriptionDe": "Über Kleidung bei Kälte sprechen",
+    "scenarioDe": "Es ist kalt draußen. Besprich mit einem Freund was ihr anziehen sollt und warum.",
+    "hubertRoleFr": "Tu es un ami qui se prépare à sortir par temps froid avec le joueur.",
     "starterFr": "Mets ton manteau, il fait très froid dehors !",
     "vocabHints": ["écharpe", "gants", "bonnet", "chaud", "porter"]
   },
@@ -266,6 +324,8 @@
     "themeDe": "Mein Tagesablauf",
     "niveau": "A1",
     "descriptionDe": "Erzählen, was man jeden Tag macht",
+    "scenarioDe": "Erzähle von deinem typischen Tag: Aufstehen, Essen, Arbeit/Schule, Freizeit, Schlafen.",
+    "hubertRoleFr": "Tu es un ami curieux qui veut connaître la routine du joueur.",
     "starterFr": "À quelle heure tu te lèves le matin ?",
     "vocabHints": ["se réveiller", "prendre une douche", "petit-déjeuner", "partir", "se coucher"]
   },
@@ -275,6 +335,8 @@
     "themeDe": "Auf ein Konzert gehen",
     "niveau": "B1",
     "descriptionDe": "Über Musikgeschmack und Tickets sprechen",
+    "scenarioDe": "Ein Freund hat Konzerttickets. Besprecht ob ihr hingeht, welche Musik, wie ihr dort hinkommt.",
+    "hubertRoleFr": "Tu es un ami qui a des billets pour un concert.",
     "starterFr": "J'ai deux places pour le concert de Stromae. Tu veux venir ?",
     "vocabHints": ["scène", "chanter", "groupe", "billetterie", "ambiance"]
   },
@@ -284,6 +346,8 @@
     "themeDe": "Im Zoo",
     "niveau": "A2",
     "descriptionDe": "Über wilde Tiere sprechen",
+    "scenarioDe": "Du bist mit einem Freund im Zoo. Besprecht die Tiere die ihr seht, welche euch gefallen und warum.",
+    "hubertRoleFr": "Tu es un ami qui visite le zoo avec le joueur.",
     "starterFr": "Regarde le lion, il est énorme ! Quel est ton animal sauvage préféré ?",
     "vocabHints": ["singe", "éléphant", "girafe", "nourrir", "cage"]
   },
@@ -293,7 +357,9 @@
     "themeDe": "Verlorene Gegenstände",
     "niveau": "B1",
     "descriptionDe": "Etwas im Bus oder Zug verloren haben",
-    "starterFr": "Bonjour, j'ai oublié mon sac dans le bus de la ligne 12.",
+    "scenarioDe": "Du hast etwas im Bus verloren. Melde dich beim Fundbüro, beschreibe den Gegenstand genau.",
+    "hubertRoleFr": "Tu es l'employé(e) du bureau des objets trouvés.",
+    "starterFr": "Bureau des objets trouvés, bonjour ! Vous avez perdu quelque chose ?",
     "vocabHints": ["perdre", "retrouver", "couleur", "contenu", "formulaire"]
   },
   {
@@ -302,6 +368,8 @@
     "themeDe": "Gartenarbeit",
     "niveau": "B1",
     "descriptionDe": "Über Pflanzen und Gartenpflege sprechen",
+    "scenarioDe": "Unterhalte dich mit einem Nachbarn über Gartenarbeit, Pflanzen und Tipps.",
+    "hubertRoleFr": "Tu es un voisin passionné de jardinage.",
     "starterFr": "Tu as de très belles fleurs. Tu t'en occupes souvent ?",
     "vocabHints": ["arroser", "planter", "arbres", "potager", "fleurs"]
   },
@@ -311,6 +379,8 @@
     "themeDe": "Ein Spiel anschauen",
     "niveau": "A2",
     "descriptionDe": "Über Fußball oder Tennis im Fernsehen reden",
+    "scenarioDe": "Ihr schaut zusammen ein Spiel im Fernsehen. Kommentiert, diskutiert wer gewinnt, fiebert mit.",
+    "hubertRoleFr": "Tu es un ami qui regarde un match de foot avec le joueur.",
     "starterFr": "Tu regardes le match de foot ce soir ? Qui va gagner selon toi ?",
     "vocabHints": ["le score", "le joueur", "marquer un but", "arbitre", "supporter"]
   },
@@ -320,6 +390,8 @@
     "themeDe": "Im Fitnessstudio",
     "niveau": "B1",
     "descriptionDe": "Über Training und Gesundheit sprechen",
+    "scenarioDe": "Du bist zum ersten Mal im Fitnessstudio. Lass dir die Geräte erklären, frag nach Abo und Kursen.",
+    "hubertRoleFr": "Tu es un coach sportif dans la salle de sport.",
     "starterFr": "C'est ta première fois ici ? Tu veux que je te montre les machines ?",
     "vocabHints": ["musculation", "cardio", "abonnement", "coach", "transpirer"]
   },
@@ -329,7 +401,9 @@
     "themeDe": "Internetprobleme",
     "niveau": "B1",
     "descriptionDe": "Einen Techniker rufen oder Support kontaktieren",
-    "starterFr": "Bonjour, ma connexion internet est très lente aujourd'hui.",
+    "scenarioDe": "Dein Internet funktioniert nicht. Ruf den Support an, beschreibe das Problem und folge den Anweisungen.",
+    "hubertRoleFr": "Tu es l'agent(e) du support technique de l'opérateur Internet.",
+    "starterFr": "Support technique, bonjour ! Quel est votre problème de connexion ?",
     "vocabHints": ["le routeur", "redémarrer", "mot de passe", "ligne", "téléchargement"]
   },
   {
@@ -338,6 +412,8 @@
     "themeDe": "Ein Umzug",
     "niveau": "B2",
     "descriptionDe": "Logistik und Hilfe beim Umzug besprechen",
+    "scenarioDe": "Ein Freund zieht um und braucht Hilfe. Besprecht die Planung: Was muss transportiert werden, wann, wie.",
+    "hubertRoleFr": "Tu es un ami qui déménage et demande de l'aide.",
     "starterFr": "On déménage samedi prochain. Tu es libre pour porter des cartons ?",
     "vocabHints": ["camion", "carton", "étage", "meubles", "fatiguant"]
   },
@@ -347,6 +423,8 @@
     "themeDe": "Eine Hochzeit",
     "niveau": "B2",
     "descriptionDe": "Über eine Zeremonie und Feier sprechen",
+    "scenarioDe": "Ihr wart auf einer Hochzeit. Besprecht wie es war: Zeremonie, Essen, Musik, Stimmung.",
+    "hubertRoleFr": "Tu es un ami avec qui le joueur discute après avoir assisté à un mariage.",
     "starterFr": "C'était un mariage magnifique, n'est-ce pas ? La mariée était superbe.",
     "vocabHints": ["cérémonie", "invités", "fêter", "cadeau", "discours"]
   },
@@ -356,7 +434,9 @@
     "themeDe": "Essen kritisieren",
     "niveau": "B2",
     "descriptionDe": "Sich höflich über das Essen beschweren",
-    "starterFr": "Excusez-moi, mais ma viande est beaucoup trop cuite.",
+    "scenarioDe": "Im Restaurant stimmt etwas mit deinem Essen nicht. Beschwere dich höflich beim Kellner und finde eine Lösung.",
+    "hubertRoleFr": "Tu es le serveur / la serveuse dans un restaurant.",
+    "starterFr": "Voici votre plat. Bon appétit ! Tout va bien ?",
     "vocabHints": ["froid", "renvoyer en cuisine", "goût", "salé", "geste commercial"]
   },
   {
@@ -365,6 +445,8 @@
     "themeDe": "Über Kunst sprechen",
     "niveau": "B2",
     "descriptionDe": "Abstrakte Kunst interpretieren",
+    "scenarioDe": "Ihr steht vor einem Gemälde im Museum. Diskutiert was ihr seht, was es bedeuten könnte und ob es euch gefällt.",
+    "hubertRoleFr": "Tu es un ami cultivé qui visite un musée d'art avec le joueur.",
     "starterFr": "Que penses-tu de ce tableau ? Je trouve les couleurs très agressives.",
     "vocabHints": ["abstrait", "artiste", "mouvement", "interprétation", "signification"]
   },
@@ -374,7 +456,9 @@
     "themeDe": "Bei der Polizei",
     "niveau": "B1",
     "descriptionDe": "Einen Diebstahl melden",
-    "starterFr": "Bonjour, on m'a volé mon sac dans le métro tout à l'heure.",
+    "scenarioDe": "Dir wurde etwas gestohlen. Geh zur Polizei, beschreibe was passiert ist, wann, wo und was fehlt.",
+    "hubertRoleFr": "Tu es l'agent(e) de police au commissariat qui prend la déposition.",
+    "starterFr": "Bonjour. Vous venez déposer une plainte ? Racontez-moi ce qui s'est passé.",
     "vocabHints": ["voler", "déposer plainte", "portefeuille", "témoin", "signalement"]
   },
   {
@@ -383,7 +467,9 @@
     "themeDe": "Auf dem Campus",
     "niveau": "A2",
     "descriptionDe": "Nach Räumen und Gebäuden fragen",
-    "starterFr": "Excuse-moi, tu sais où se trouve l'amphi B ?",
+    "scenarioDe": "Du bist neu auf dem Campus. Frag Studenten nach Gebäuden, der Mensa und der Einschreibung.",
+    "hubertRoleFr": "Tu es un étudiant qui connaît bien le campus.",
+    "starterFr": "Salut ! Tu es nouveau ici ? Tu cherches quelque chose ?",
     "vocabHints": ["faculté", "bibliothèque", "resto U", "cours", "inscription"]
   },
   {
@@ -392,7 +478,9 @@
     "themeDe": "Im Baumarkt",
     "niveau": "B1",
     "descriptionDe": "Werkzeug und Material kaufen",
-    "starterFr": "Bonjour, je cherche des vis et un tournevis électrique.",
+    "scenarioDe": "Du bist im Baumarkt. Frag nach Werkzeug oder Material für ein Projekt, lass dich beraten.",
+    "hubertRoleFr": "Tu es un vendeur / une vendeuse dans un magasin de bricolage.",
+    "starterFr": "Bonjour ! Vous avez un projet en tête ? Je peux vous conseiller.",
     "vocabHints": ["marteau", "peindre", "étagère", "planche", "réparer"]
   },
   {
@@ -401,6 +489,8 @@
     "themeDe": "Auf dem Markt",
     "niveau": "A2",
     "descriptionDe": "Frische Produkte beim Händler kaufen",
+    "scenarioDe": "Du bist auf einem Wochenmarkt. Kaufe Obst und Gemüse, frag nach Preisen und Mengen.",
+    "hubertRoleFr": "Tu es un marchand de fruits et légumes au marché.",
     "starterFr": "Bonjour ! Ils sont frais, mes légumes ! Vous en voulez combien ?",
     "vocabHints": ["goûter", "produit local", "fraise", "mûr", "sac"]
   },
@@ -410,7 +500,9 @@
     "themeDe": "Auf dem Campingplatz",
     "niveau": "B1",
     "descriptionDe": "Einen Platz reservieren und Regeln klären",
-    "starterFr": "Bonjour, avez-vous un emplacement libre pour une tente et une voiture ?",
+    "scenarioDe": "Du kommst auf einem Campingplatz an. Frag nach freien Plätzen, Preisen, Duschen und Regeln.",
+    "hubertRoleFr": "Tu es le/la gérant(e) du camping.",
+    "starterFr": "Bienvenue au camping ! Vous avez réservé ou vous cherchez un emplacement ?",
     "vocabHints": ["tente", "douche", "électricité", "nature", "sac de couchage"]
   },
   {
@@ -419,7 +511,9 @@
     "themeDe": "Vorstellungsgespräch",
     "niveau": "B2",
     "descriptionDe": "Über Erfahrungen und Motivation sprechen",
-    "starterFr": "Bonjour, parlez-moi de votre parcours professionnel.",
+    "scenarioDe": "Du bist in einem Vorstellungsgespräch. Stelle dich professionell vor, erzähle von deiner Erfahrung und Motivation.",
+    "hubertRoleFr": "Tu es le recruteur / la recruteuse qui mène l'entretien d'embauche.",
+    "starterFr": "Bonjour, merci d'être venu. Parlez-moi de votre parcours professionnel.",
     "vocabHints": ["expérience", "compétences", "points forts", "postuler", "équipe"]
   },
   {
@@ -428,6 +522,8 @@
     "themeDe": "Klimawandel",
     "niveau": "B2",
     "descriptionDe": "Ursachen und Lösungen diskutieren",
+    "scenarioDe": "Diskutiere über den Klimawandel: Ursachen, Folgen und was man persönlich tun kann.",
+    "hubertRoleFr": "Tu es un ami engagé pour l'écologie qui discute du climat.",
     "starterFr": "Quels sont les plus grands défis pour la planète selon toi ?",
     "vocabHints": ["pollution", "écologie", "réduire", "consommer", "avenir"]
   },
@@ -437,6 +533,8 @@
     "themeDe": "Medien und Nachrichten",
     "niveau": "B2",
     "descriptionDe": "Über Zeitungen und Fake News sprechen",
+    "scenarioDe": "Diskutiert über Medienkonsum: Wie informiert ihr euch, Fake News, soziale Medien vs. traditionelle Presse.",
+    "hubertRoleFr": "Tu es un ami qui s'intéresse aux médias et à l'information.",
     "starterFr": "Comment est-ce que tu t'informes ? Tu lis la presse en ligne ?",
     "vocabHints": ["journal", "actualité", "source", "vérifier", "réseaux sociaux"]
   },
@@ -446,6 +544,8 @@
     "themeDe": "Nachbarschaftskonflikt",
     "niveau": "B2",
     "descriptionDe": "Über Lärm oder Müll diskutieren",
+    "scenarioDe": "Dein Nachbar beschwert sich bei dir. Reagiere, entschuldige dich oder erkläre deine Sicht. Findet eine Lösung.",
+    "hubertRoleFr": "Tu es le voisin / la voisine mécontent(e) qui vient se plaindre.",
     "starterFr": "Bonjour, je suis désolé de vous déranger, mais la musique était très forte hier soir.",
     "vocabHints": ["bruit", "calme", "respecter", "prévenir", "discuter"]
   },
@@ -455,6 +555,8 @@
     "themeDe": "Jobsuche",
     "niveau": "B1",
     "descriptionDe": "Über Anzeigen und Lebensläufe sprechen",
+    "scenarioDe": "Unterhalte dich mit einem Freund über die Jobsuche: Bewerbungen, Lebenslauf, Erfahrungen.",
+    "hubertRoleFr": "Tu es un ami qui cherche aussi un emploi.",
     "starterFr": "J'ai envoyé mon CV à trois entreprises ce matin. Et toi ?",
     "vocabHints": ["lettre de motivation", "annonce", "chômage", "entretien", "embaucher"]
   },
@@ -464,6 +566,8 @@
     "themeDe": "Politik",
     "niveau": "B2",
     "descriptionDe": "Über Wahlen und Gesetze sprechen",
+    "scenarioDe": "Diskutiert über Politik: Wahlen, Parteien, was euch wichtig ist. Begründe deine Meinung.",
+    "hubertRoleFr": "Tu es un ami avec qui le joueur discute de politique.",
     "starterFr": "Tu vas voter pour les prochaines élections ?",
     "vocabHints": ["voter", "gouvernement", "parti", "démocratie", "manifestation"]
   },
@@ -473,6 +577,8 @@
     "themeDe": "Die Zukunft",
     "niveau": "B2",
     "descriptionDe": "Spekulieren über Roboter und Fortschritt",
+    "scenarioDe": "Spekuliert über die Zukunft: Wie wird die Welt aussehen? Roboter, Technologie, Reisen.",
+    "hubertRoleFr": "Tu es un ami qui aime imaginer le futur.",
     "starterFr": "À quoi ressemblera le monde dans cinquante ans ?",
     "vocabHints": ["progrès", "robot", "espace", "changer", "imaginer"]
   },
@@ -482,6 +588,8 @@
     "themeDe": "Kindheitserinnerungen",
     "niveau": "B1",
     "descriptionDe": "Über die Vergangenheit erzählen (Imparfait)",
+    "scenarioDe": "Erzähle von deiner Kindheit: Wo hast du gewohnt, was hast du gespielt, Lieblingsmomente. Benutze das Imparfait!",
+    "hubertRoleFr": "Tu es un ami nostalgique qui aime parler du passé.",
     "starterFr": "Où est-ce que tu habitais quand tu étais petit ?",
     "vocabHints": ["jouer", "école primaire", "vacances", "souvenir", "époque"]
   },
@@ -491,6 +599,8 @@
     "themeDe": "Ein Filmfestival",
     "niveau": "B2",
     "descriptionDe": "Über Preise und Regisseure sprechen",
+    "scenarioDe": "Diskutiert über ein Filmfestival: Wer hat gewonnen, welche Filme waren gut, Regisseure, Kritiken.",
+    "hubertRoleFr": "Tu es un cinéphile passionné qui suit les festivals de cinéma.",
     "starterFr": "Tu as vu quels films ont gagné un prix cette année ?",
     "vocabHints": ["réalisateur", "palmarès", "critique", "tapis rouge", "vedette"]
   },
@@ -500,6 +610,8 @@
     "themeDe": "Weltraum",
     "niveau": "B2",
     "descriptionDe": "Über Planeten und Sterne sprechen",
+    "scenarioDe": "Diskutiert über das Universum: Gibt es außerirdisches Leben? Raumfahrt, Planeten, Sterne.",
+    "hubertRoleFr": "Tu es un ami passionné d'astronomie.",
     "starterFr": "Est-ce que tu penses qu'il y a de la vie sur d'autres planètes ?",
     "vocabHints": ["étoile", "galaxie", "astronaute", "télescope", "découverte"]
   },
@@ -509,7 +621,9 @@
     "themeDe": "Öffentliche Verkehrsmittel",
     "niveau": "A1",
     "descriptionDe": "Bus, Metro oder Tram nutzen",
-    "starterFr": "Pardon, est-ce que ce bus va jusqu'au centre-ville ?",
+    "scenarioDe": "Du bist an einer Bushaltestelle. Frag nach der richtigen Linie, wohin der Bus fährt und wo du aussteigen musst.",
+    "hubertRoleFr": "Tu es un passant / une passante à l'arrêt de bus.",
+    "starterFr": "Vous attendez le bus aussi ? La ligne 5 est souvent en retard.",
     "vocabHints": ["ticket", "arrêt", "ligne", "prochain", "descendre"]
   },
   {
@@ -518,6 +632,8 @@
     "themeDe": "Weihnachten und Neujahr",
     "niveau": "A2",
     "descriptionDe": "Über Pläne für die Feiertage sprechen",
+    "scenarioDe": "Besprecht eure Pläne für Weihnachten und Silvester: Familie, Essen, Geschenke, Traditionen.",
+    "hubertRoleFr": "Tu es un ami qui prépare les fêtes de fin d'année.",
     "starterFr": "Qu'est-ce que tu fais pour Noël cette année ?",
     "vocabHints": ["cadeau", "sapin", "repas", "famille", "minuit"]
   },
@@ -527,6 +643,8 @@
     "themeDe": "Lesen/Literatur",
     "niveau": "B1",
     "descriptionDe": "Über Lieblingsbücher sprechen",
+    "scenarioDe": "Unterhalte dich über Bücher: Was liest du gerne, Lieblingsautoren, Empfehlungen.",
+    "hubertRoleFr": "Tu es un ami qui adore lire.",
     "starterFr": "Quel est le dernier livre que tu as lu ? C'était bien ?",
     "vocabHints": ["roman", "auteur", "histoire", "page", "recommander"]
   },
@@ -536,6 +654,8 @@
     "themeDe": "Fotografie",
     "niveau": "B1",
     "descriptionDe": "Über Fotos und Kameras sprechen",
+    "scenarioDe": "Sprecht über Fotografie: Handy vs. Kamera, Lieblingsmotive, Social Media, Tipps.",
+    "hubertRoleFr": "Tu es un ami photographe amateur.",
     "starterFr": "Tu prends beaucoup de photos avec ton téléphone ?",
     "vocabHints": ["image", "appareil photo", "souvenir", "filtre", "partager"]
   },
@@ -545,6 +665,8 @@
     "themeDe": "Geld und Budget",
     "niveau": "B1",
     "descriptionDe": "Über Ausgaben und Sparen sprechen",
+    "scenarioDe": "Unterhalte dich über Geld: Sparst du, wofür gibst du Geld aus, Budget-Tipps.",
+    "hubertRoleFr": "Tu es un ami qui aime discuter de finances personnelles.",
     "starterFr": "Est-ce que tu fais attention à tes dépenses ou tu es plutôt dépensier ?",
     "vocabHints": ["économiser", "cher", "prix", "budget", "acheter"]
   },
@@ -554,6 +676,8 @@
     "themeDe": "Stress und Entspannung",
     "niveau": "B1",
     "descriptionDe": "Über Druck im Alltag sprechen",
+    "scenarioDe": "Unterhalte dich über Stress: Was stresst dich, wie entspannst du dich, Tipps gegen Stress.",
+    "hubertRoleFr": "Tu es un ami un peu stressé qui cherche des conseils.",
     "starterFr": "Je suis très stressé en ce moment à cause du travail. Et toi ?",
     "vocabHints": ["se détendre", "pression", "yoga", "calme", "dormir"]
   },
@@ -563,6 +687,8 @@
     "themeDe": "Sprachen lernen",
     "niveau": "A2",
     "descriptionDe": "Über Schwierigkeiten beim Lernen sprechen",
+    "scenarioDe": "Erzähle warum du Französisch lernst, was schwierig ist, welche Methoden du nutzt.",
+    "hubertRoleFr": "Tu es un ami français curieux de savoir pourquoi le joueur apprend le français.",
     "starterFr": "Pourquoi est-ce que tu apprends le français ?",
     "vocabHints": ["difficile", "prononciation", "pratiquer", "vocabulaire", "comprendre"]
   },
@@ -572,6 +698,8 @@
     "themeDe": "Tierrechte",
     "niveau": "B2",
     "descriptionDe": "Über Veganismus und Tierschutz diskutieren",
+    "scenarioDe": "Diskutiert über Tierrechte: Zirkus, Massentierhaltung, Veganismus. Verteidige deine Position.",
+    "hubertRoleFr": "Tu es un ami engagé pour la cause animale.",
     "starterFr": "Penses-tu qu'il faille interdire les animaux dans les cirques ?",
     "vocabHints": ["protection", "souffrance", "éthique", "corrida", "nature"]
   },
@@ -581,6 +709,8 @@
     "themeDe": "Online einkaufen",
     "niveau": "B1",
     "descriptionDe": "Über Online-Shopping-Gewohnheiten sprechen",
+    "scenarioDe": "Besprecht Online-Shopping: Vorteile, Nachteile, Rücksendungen, Erfahrungen.",
+    "hubertRoleFr": "Tu es un ami qui adore le shopping en ligne.",
     "starterFr": "Est-ce que tu achètes souvent tes vêtements en ligne ?",
     "vocabHints": ["livraison", "panier", "retourner", "avis client", "site web"]
   },
@@ -590,6 +720,8 @@
     "themeDe": "Das Bildungssystem",
     "niveau": "B2",
     "descriptionDe": "Über Schulen und Universitäten diskutieren",
+    "scenarioDe": "Vergleicht das Bildungssystem: Was ist gut, was schlecht? Frankreich vs. Deutschland.",
+    "hubertRoleFr": "Tu es un ami français qui compare les systèmes éducatifs.",
     "starterFr": "Que penses-tu du système scolaire dans ton pays ?",
     "vocabHints": ["diplôme", "université", "réforme", "apprendre", "études"]
   },
@@ -599,6 +731,8 @@
     "themeDe": "Second-Hand Kleidung",
     "niveau": "B1",
     "descriptionDe": "Über Flohmärkte und Nachhaltigkeit sprechen",
+    "scenarioDe": "Unterhalte dich über Second-Hand: Trägst du gebrauchte Kleidung? Flohmärkte, Nachhaltigkeit.",
+    "hubertRoleFr": "Tu es un ami fan de friperies et de mode durable.",
     "starterFr": "J'ai trouvé cette veste dans une friperie. Tu aimes ?",
     "vocabHints": ["marché aux puces", "pas cher", "écologique", "style", "vintage"]
   },
@@ -608,6 +742,8 @@
     "themeDe": "Stadt oder Land",
     "niveau": "B1",
     "descriptionDe": "Vor- und Nachteile der Wohnorte",
+    "scenarioDe": "Diskutiert: Stadt oder Land? Nenne Vor- und Nachteile, wo würdest du lieber wohnen und warum.",
+    "hubertRoleFr": "Tu es un ami qui hésite entre vivre en ville ou à la campagne.",
     "starterFr": "Préfères-tu vivre dans une grande ville ou à la campagne ?",
     "vocabHints": ["calme", "pollution", "bruit", "activités", "nature"]
   },
@@ -617,6 +753,8 @@
     "themeDe": "Internationale Küche",
     "niveau": "A2",
     "descriptionDe": "Über Essen aus anderen Ländern sprechen",
+    "scenarioDe": "Unterhalte dich über internationales Essen: Was magst du, was hast du probiert, Lieblingsrestaurant.",
+    "hubertRoleFr": "Tu es un ami qui adore découvrir de nouvelles cuisines.",
     "starterFr": "Est-ce que tu aimes la cuisine épicée, comme la cuisine indienne ?",
     "vocabHints": ["goût", "épices", "plat typique", "italien", "découvrir"]
   },
@@ -626,6 +764,8 @@
     "themeDe": "Gesunder Lebensstil",
     "niveau": "B1",
     "descriptionDe": "Über Ernährung und Fitness sprechen",
+    "scenarioDe": "Sprecht über gesunden Lebensstil: Ernährung, Sport, Gewohnheiten, was du ändern möchtest.",
+    "hubertRoleFr": "Tu es un ami qui essaie de vivre plus sainement.",
     "starterFr": "Est-ce que tu fais attention à ce que tu manges ?",
     "vocabHints": ["légumes", "sucre", "équilibré", "vitamines", "santé"]
   },
@@ -635,6 +775,8 @@
     "themeDe": "Ehrenamt",
     "niveau": "B2",
     "descriptionDe": "Über Freiwilligenarbeit sprechen",
+    "scenarioDe": "Unterhalte dich über Ehrenamt: Hast du schon mal ehrenamtlich gearbeitet? Was würdest du tun?",
+    "hubertRoleFr": "Tu es un ami bénévole dans une association.",
     "starterFr": "Est-ce que tu as déjà travaillé pour une association ?",
     "vocabHints": ["aider", "solidarité", "association", "donner du temps", "social"]
   },
@@ -644,6 +786,8 @@
     "themeDe": "Geschichte",
     "niveau": "B2",
     "descriptionDe": "Über historische Ereignisse sprechen",
+    "scenarioDe": "Sprecht über Geschichte: Welche Epoche interessiert dich, warum, was fasziniert dich daran.",
+    "hubertRoleFr": "Tu es un ami passionné d'histoire.",
     "starterFr": "Quelle est la période de l'histoire qui t'intéresse le plus ?",
     "vocabHints": ["siècle", "guerre", "révolution", "roi", "passé"]
   },
@@ -653,6 +797,8 @@
     "themeDe": "Humor",
     "niveau": "B1",
     "descriptionDe": "Über Witze und Komödien sprechen",
+    "scenarioDe": "Unterhalte dich über Humor: Was findest du lustig, Lieblingskomiker, kulturelle Unterschiede bei Humor.",
+    "hubertRoleFr": "Tu es un ami qui adore les blagues et la comédie.",
     "starterFr": "Qu'est-ce qui te fait rire en général ?",
     "vocabHints": ["blague", "drôle", "rire", "ironie", "comédien"]
   },
@@ -662,6 +808,8 @@
     "themeDe": "Gefühle ausdrücken",
     "niveau": "B1",
     "descriptionDe": "Über Emotionen sprechen",
+    "scenarioDe": "Drücke verschiedene Gefühle aus: Was macht dich glücklich, traurig, wütend? Wie gehst du damit um?",
+    "hubertRoleFr": "Tu es un ami attentif qui veut savoir comment le joueur se sent.",
     "starterFr": "Tu as l'air triste aujourd'hui. Qu'est-ce qui ne va pas ?",
     "vocabHints": ["heureux", "colère", "peur", "surpris", "ressentir"]
   },
@@ -671,6 +819,8 @@
     "themeDe": "Träume",
     "niveau": "B1",
     "descriptionDe": "Über Träume und Ziele sprechen",
+    "scenarioDe": "Erzähle von deinen Träumen und Zielen: Was möchtest du erreichen, wo willst du hin im Leben.",
+    "hubertRoleFr": "Tu es un ami rêveur qui aime parler de l'avenir.",
     "starterFr": "Quel est ton plus grand rêve dans la vie ?",
     "vocabHints": ["réaliser", "ambition", "imaginer", "espoir", "futur"]
   },
@@ -680,6 +830,8 @@
     "themeDe": "Kulturschock",
     "niveau": "B2",
     "descriptionDe": "Über Erfahrungen im Ausland sprechen",
+    "scenarioDe": "Erzähle von kulturellen Unterschieden die dich überrascht haben. Was war anders, wie hast du dich angepasst?",
+    "hubertRoleFr": "Tu es un ami qui a vécu à l'étranger et partage ses expériences.",
     "starterFr": "As-tu déjà ressenti un choc culturel en voyageant ?",
     "vocabHints": ["habitude", "différence", "s'adapter", "étrange", "tradition"]
   },
@@ -689,6 +841,8 @@
     "themeDe": "Architektur",
     "niveau": "B2",
     "descriptionDe": "Über Gebäude und Design sprechen",
+    "scenarioDe": "Diskutiert über Architektur: Modern vs. alt, Lieblingsgebäude, Städtebau.",
+    "hubertRoleFr": "Tu es un ami qui s'intéresse à l'architecture et au design urbain.",
     "starterFr": "Aimes-tu l'architecture moderne ou préfères-tu les vieux bâtiments ?",
     "vocabHints": ["style", "construction", "façade", "urbanisme", "monument"]
   },
@@ -698,6 +852,8 @@
     "themeDe": "Schlaf",
     "niveau": "A2",
     "descriptionDe": "Über Schlafgewohnheiten sprechen",
+    "scenarioDe": "Unterhalte dich über Schlaf: Wie viel schläfst du, Probleme beim Einschlafen, Tipps.",
+    "hubertRoleFr": "Tu es un ami fatigué qui parle de ses habitudes de sommeil.",
     "starterFr": "Tu dors bien en ce moment ? Combien d'heures par nuit ?",
     "vocabHints": ["fatigué", "faire une sieste", "rêver", "insomnie", "tôt"]
   },
@@ -707,6 +863,8 @@
     "themeDe": "Auf dem Jahrmarkt",
     "niveau": "A2",
     "descriptionDe": "Über Fahrgeschäfte und Attraktionen sprechen",
+    "scenarioDe": "Du bist mit einem Freund auf dem Jahrmarkt. Besprecht was ihr machen wollt, was euch gefällt.",
+    "hubertRoleFr": "Tu es un ami qui est à la fête foraine avec le joueur.",
     "starterFr": "On fait un tour de grande roue ? J'adore la vue !",
     "vocabHints": ["manège", "barbe à papa", "peur", "s'amuser", "ticket"]
   },
@@ -716,6 +874,8 @@
     "themeDe": "Werbung",
     "niveau": "B2",
     "descriptionDe": "Über den Einfluss von Werbung sprechen",
+    "scenarioDe": "Diskutiert über Werbung: Beeinflusst sie dich, nervt sie, gibt es gute Werbung?",
+    "hubertRoleFr": "Tu es un ami critique qui réfléchit à l'impact de la publicité.",
     "starterFr": "Est-ce que tu penses que la publicité nous influence trop ?",
     "vocabHints": ["consommateur", "marque", "produit", "inciter", "omniprésent"]
   },
@@ -725,6 +885,8 @@
     "themeDe": "Homeoffice",
     "niveau": "B1",
     "descriptionDe": "Vor- und Nachteile von zu Hause arbeiten",
+    "scenarioDe": "Diskutiert Homeoffice: Vorteile, Nachteile, deine Erfahrung, Produktivität.",
+    "hubertRoleFr": "Tu es un collègue qui travaille parfois de chez lui.",
     "starterFr": "Est-ce que tu préfères travailler au bureau ou chez toi ?",
     "vocabHints": ["concentration", "liberté", "visio-conférence", "productivité", "isoler"]
   },
@@ -734,6 +896,8 @@
     "themeDe": "Online-Dating",
     "niveau": "B2",
     "descriptionDe": "Über Dating-Apps diskutieren",
+    "scenarioDe": "Diskutiert über Online-Dating: Erfahrungen, Vorteile, Risiken, Meinungen.",
+    "hubertRoleFr": "Tu es un ami qui a essayé les applications de rencontre.",
     "starterFr": "Que penses-tu des applications de rencontre pour trouver l'amour ?",
     "vocabHints": ["profil", "match", "rencontrer", "relation", "virtuel"]
   },
@@ -743,6 +907,8 @@
     "themeDe": "Französische Gastronomie",
     "niveau": "B1",
     "descriptionDe": "Über Käse, Wein und Spezialitäten sprechen",
+    "scenarioDe": "Unterhalte dich über französisches Essen: Spezialitäten, Käse, Wein, was du probiert hast.",
+    "hubertRoleFr": "Tu es un ami français fier de la gastronomie de son pays.",
     "starterFr": "Quel est ton plat français préféré ? Tu as déjà goûté les escargots ?",
     "vocabHints": ["fromage", "vin", "spécialité", "terroir", "dégustation"]
   },
@@ -752,6 +918,8 @@
     "themeDe": "Im Park",
     "niveau": "A1",
     "descriptionDe": "Über Aktivitäten im Freien sprechen",
+    "scenarioDe": "Du bist mit einem Freund im Park. Besprecht was ihr machen wollt: spazieren, spielen, picknicken.",
+    "hubertRoleFr": "Tu es un ami au parc avec le joueur par une belle journée.",
     "starterFr": "Il fait beau ! On va faire une promenade au parc ?",
     "vocabHints": ["marcher", "fleurs", "banc", "jouer au ballon", "pique-nique"]
   },
@@ -761,6 +929,8 @@
     "themeDe": "Energien",
     "niveau": "B2",
     "descriptionDe": "Über Atomkraft und Solar sprechen",
+    "scenarioDe": "Diskutiert über Energiequellen: Atomkraft, Solar, Wind. Welche Lösung ist die beste?",
+    "hubertRoleFr": "Tu es un ami qui s'intéresse aux questions d'énergie.",
     "starterFr": "Penses-tu que les énergies renouvelables suffiront à l'avenir ?",
     "vocabHints": ["solaire", "éolien", "nucléaire", "consommation", "électricité"]
   },
@@ -770,6 +940,8 @@
     "themeDe": "Ethik der KI",
     "niveau": "B2",
     "descriptionDe": "Über Gefahren und Nutzen von KI diskutieren",
+    "scenarioDe": "Diskutiert über KI: Ersetzt sie Menschen? Gefahren, Nutzen, Ethik. Verteidige deine Meinung.",
+    "hubertRoleFr": "Tu es un ami technophile qui réfléchit aux implications de l'IA.",
     "starterFr": "L'IA va-t-elle remplacer les humains dans beaucoup de métiers ?",
     "vocabHints": ["remplacer", "danger", "créativité", "algorithme", "contrôler"]
   },
@@ -779,6 +951,8 @@
     "themeDe": "Backpacking",
     "niveau": "B1",
     "descriptionDe": "Über Abenteuerreisen sprechen",
+    "scenarioDe": "Besprecht eine Backpacking-Reise: Wohin, Budget, Unterkünfte, Erfahrungen.",
+    "hubertRoleFr": "Tu es un ami aventurier qui rêve de voyager en sac à dos.",
     "starterFr": "J'aimerais traverser l'Asie avec juste un sac à dos. Qu'en penses-tu ?",
     "vocabHints": ["aventure", "auberge de jeunesse", "liberté", "budget", "itinéraire"]
   },
@@ -788,6 +962,8 @@
     "themeDe": "Französischer Slang",
     "niveau": "B2",
     "descriptionDe": "Über Umgangssprache sprechen",
+    "scenarioDe": "Lerne und diskutiere französischen Slang: Welche Ausdrücke kennst du, Bedeutung, Kontext.",
+    "hubertRoleFr": "Tu es un ami français qui utilise beaucoup d'argot et d'expressions familières.",
     "starterFr": "Tu connais des mots familiers en français, comme 'bouffer' ou 'bosser' ?",
     "vocabHints": ["familier", "courant", "expression", "jeunes", "comprendre"]
   },
@@ -797,6 +973,8 @@
     "themeDe": "Patchwork-Familie",
     "niveau": "B2",
     "descriptionDe": "Über moderne Familienstrukturen sprechen",
+    "scenarioDe": "Diskutiert über Familienmodelle: Patchwork, Scheidung, Erziehung, gesellschaftlicher Wandel.",
+    "hubertRoleFr": "Tu es un ami qui vit dans une famille recomposée.",
     "starterFr": "C'est de plus en plus courant d'avoir des demi-frères et sœurs, non ?",
     "vocabHints": ["beau-père", "belle-mère", "relation", "divorce", "ensemble"]
   },
@@ -806,6 +984,8 @@
     "themeDe": "Promis",
     "niveau": "A2",
     "descriptionDe": "Über Stars und Idole sprechen",
+    "scenarioDe": "Unterhalte dich über Stars: Wen findest du toll, warum, was machen sie.",
+    "hubertRoleFr": "Tu es un ami curieux des goûts du joueur en matière de célébrités.",
     "starterFr": "Quelle est ta star préférée ? Pourquoi est-ce que tu l'aimes ?",
     "vocabHints": ["connu", "acteur", "chanteur", "admirer", "talent"]
   },
@@ -815,6 +995,8 @@
     "themeDe": "Kleidungsstil",
     "niveau": "B1",
     "descriptionDe": "Über Mode und persönlichen Geschmack sprechen",
+    "scenarioDe": "Besprecht euren Kleidungsstil: Was trägst du gerne, Trends, Mode.",
+    "hubertRoleFr": "Tu es un ami qui s'intéresse à la mode.",
     "starterFr": "Comment décrirais-tu ton style ? Tu es plutôt classique ou original ?",
     "vocabHints": ["élégant", "confortable", "tendance", "look", "s'habiller"]
   },
@@ -824,6 +1006,8 @@
     "themeDe": "Im Zirkus",
     "niveau": "A2",
     "descriptionDe": "Über Akrobaten und Shows sprechen",
+    "scenarioDe": "Du warst im Zirkus oder sprichst darüber. Was hat dir gefallen, was ist beeindruckend.",
+    "hubertRoleFr": "Tu es un ami qui adore le cirque.",
     "starterFr": "Tu aimes le cirque ? J'adore les acrobates, ils sont impressionnants.",
     "vocabHints": ["spectacle", "clown", "magie", "chapiteau", "incroyable"]
   },
@@ -833,7 +1017,9 @@
     "themeDe": "Geburtstag feiern",
     "niveau": "A2",
     "descriptionDe": "Glückwünsche und Geschenke",
-    "starterFr": "Joyeux anniversaire ! Voici un petit cadeau pour toi.",
+    "scenarioDe": "Ein Freund hat Geburtstag! Gratuliere, überreiche ein Geschenk, besprecht die Feier.",
+    "hubertRoleFr": "Tu es un ami qui fête son anniversaire.",
+    "starterFr": "Merci d'être venu ! Voici du gâteau. Tu veux une part ?",
     "vocabHints": ["bougies", "gâteau", "inviter", "fêter", "surprise"]
   },
   {
@@ -842,6 +1028,8 @@
     "themeDe": "Ein Instrument spielen",
     "niveau": "B1",
     "descriptionDe": "Über Musikpraxis sprechen",
+    "scenarioDe": "Unterhalte dich über Instrumente: Spielst du etwas, wie lange, Übung, Schwierigkeiten.",
+    "hubertRoleFr": "Tu es un ami musicien qui joue du piano.",
     "starterFr": "Est-ce que tu joues d'un instrument de musique ? Moi, je fais du piano.",
     "vocabHints": ["guitare", "pratiquer", "cours", "mélodie", "oreille musicale"]
   },
@@ -851,6 +1039,8 @@
     "themeDe": "Malerei",
     "niveau": "B1",
     "descriptionDe": "Über Hobbys wie Zeichnen oder Malen sprechen",
+    "scenarioDe": "Sprecht über Malen und Zeichnen: Machst du das, welche Techniken, Lieblingsmaler.",
+    "hubertRoleFr": "Tu es un ami qui apprend la peinture à l'huile.",
     "starterFr": "Tu aimes dessiner ? J'essaie d'apprendre la peinture à l'huile.",
     "vocabHints": ["pinceau", "couleurs", "dessin", "toile", "créatif"]
   },
@@ -860,6 +1050,8 @@
     "themeDe": "Ins Ausland gehen",
     "niveau": "B2",
     "descriptionDe": "Über Austauschprogramme sprechen",
+    "scenarioDe": "Diskutiert über Auslandsaufenthalte: Erasmus, Praktikum, Sprachreisen. Würdest du nach Frankreich gehen?",
+    "hubertRoleFr": "Tu es un ami qui a fait un Erasmus et partage son expérience.",
     "starterFr": "Tu aimerais faire un stage ou un échange Erasmus en France ?",
     "vocabHints": ["étudier", "expérience", "culture", "immersion", "langue"]
   },
@@ -869,6 +1061,8 @@
     "themeDe": "Stadtlärm",
     "niveau": "B2",
     "descriptionDe": "Über Lebensqualität in Städten sprechen",
+    "scenarioDe": "Diskutiert über Lärm in der Stadt: Was stört, Lösungen, Lebensqualität.",
+    "hubertRoleFr": "Tu es un ami qui habite en centre-ville et se plaint du bruit.",
     "starterFr": "Est-ce que tu trouves que ta ville est trop bruyante ?",
     "vocabHints": ["circulation", "klaxon", "insupportable", "calme", "travaux"]
   },
@@ -878,7 +1072,9 @@
     "themeDe": "Im Einkaufszentrum",
     "niveau": "A2",
     "descriptionDe": "Sich in einer Mall orientieren",
-    "starterFr": "Bonjour, où se trouve le magasin de sport, s'il vous plaît ?",
+    "scenarioDe": "Du bist in einem Einkaufszentrum. Frag nach Geschäften, Stockwerken und orientiere dich.",
+    "hubertRoleFr": "Tu es un(e) employé(e) à l'accueil du centre commercial.",
+    "starterFr": "Bonjour ! Bienvenue au centre commercial. Vous cherchez un magasin en particulier ?",
     "vocabHints": ["étage", "escalator", "boutique", "entrée", "plan"]
   },
   {
@@ -887,6 +1083,8 @@
     "themeDe": "Führerschein machen",
     "niveau": "B1",
     "descriptionDe": "Über Fahrstunden und Prüfungen sprechen",
+    "scenarioDe": "Unterhalte dich über den Führerschein: Fahrstunden, Prüfung, Erfahrungen, Tipps.",
+    "hubertRoleFr": "Tu es un ami qui est en train de passer son permis de conduire.",
     "starterFr": "Tu as déjà ton permis de conduire ou tu es en train de le passer ?",
     "vocabHints": ["auto-école", "examen", "conduire", "code de la route", "difficile"]
   }

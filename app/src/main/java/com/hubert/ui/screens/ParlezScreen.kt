@@ -249,6 +249,14 @@ fun ParlezTopicSelectionScreen(
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                             )
+                            if (topic.scenarioDe.isNotBlank()) {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = topic.scenarioDe,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = ParlezTeal.copy(alpha = 0.7f)
+                                )
+                            }
                             if (topicBest != null) {
                                 Spacer(modifier = Modifier.height(6.dp))
                                 val scoreColor = when {
@@ -372,6 +380,16 @@ fun ParlezConversationScreen(
         // Timer bar — same as other game modes
         Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
             TimerBar(fraction = state.timerFraction, timeMs = state.timeRemainingMs)
+        }
+
+        // Scenario hint
+        if (state.selectedTopic?.scenarioDe?.isNotBlank() == true) {
+            Text(
+                text = state.selectedTopic.scenarioDe,
+                style = MaterialTheme.typography.labelSmall,
+                color = ParlezTeal.copy(alpha = 0.6f),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp)
+            )
         }
 
         Divider()

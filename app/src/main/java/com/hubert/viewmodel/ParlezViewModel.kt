@@ -65,8 +65,8 @@ data class ParlezEvaluation(
     val erreurs:         List<ParlezError>,
     val motsAppris:      List<String>,
     val conseil:         String,
-    val ausspracheScore: Int = 0,                                           // 0-100 average
-    val ausspracheWords: List<AzurePronunciationApi.WordResult> = emptyList() // words with issues
+    val ausspracheScore: Int = 0,  // 0-100, averaged from Azure per-turn scores
+    val ausspracheWords: List<AzurePronunciationApi.WordResult> = emptyList()  // problematic words across all turns
 )
 
 data class ParlezState(
@@ -93,8 +93,8 @@ data class ParlezState(
     val messages:         List<ParlezChatMessage> = emptyList(),
     val timeRemainingMs:  Long  = CONVERSATION_MS,
     val timerFraction:    Float = 1f,
-    val pronScores:       List<Double>                            = emptyList(),
-    val pronAllWords:     List<AzurePronunciationApi.WordResult>  = emptyList(), // all words across all turns
+    val pronScores:       List<Double> = emptyList(),  // Azure pronScore per player turn
+    val pronWords:        List<AzurePronunciationApi.WordResult> = emptyList(),  // all word results across turns
 
     // Input state
     val isRecording:   Boolean = false,
@@ -317,12 +317,12 @@ class ParlezViewModel @Inject constructor(
                     return@launch
                 }
 
-                // 2. Add player message + store pronunciation data
+                // 2. Add player message + store pronunciation score + word results
                 _uiState.update {
                     it.copy(
-                        messages      = it.messages + ParlezChatMessage(false, assessed.text),
-                        pronScores    = it.pronScores + assessed.pronScore,
-                        pronAllWords  = it.pronAllWords + assessed.words
+                        messages    = it.messages + ParlezChatMessage(false, assessed.text),
+                        pronScores  = it.pronScores + assessed.pronScore,
+                        pronWords   = it.pronWords + assessed.words
                     )
                 }
 
@@ -422,11 +422,12 @@ class ParlezViewModel @Inject constructor(
             android.util.Log.d("ParlezVM", "Evaluation raw: $rawJson")
             val ausspracheScore = if (state.pronScores.isNotEmpty())
                 state.pronScores.average().toInt() else 0
-            // Words with mispronunciation or accuracy < 75, sorted worst first, max 8
-            val problematicWords = state.pronAllWords
-                .filter { it.errorType != "None" || it.accuracyScore < 75.0 }
+            // Collect problematic words (accuracy < 80 or error type != None), deduplicate by word
+            val problematicWords = state.pronWords
+                .filter { it.accuracyScore < 80 || it.errorType != "None" }
+                .distinctBy { it.word.lowercase() }
                 .sortedBy { it.accuracyScore }
-                .take(8)
+                .take(10)
             val evaluation = parseEvaluation(rawJson).copy(
                 ausspracheScore = ausspracheScore,
                 ausspracheWords = problematicWords
@@ -542,15 +543,18 @@ class ParlezViewModel @Inject constructor(
 
     // ── Prompts ────────────────────────────────────────────────────────────────
 
-    private fun buildSystemPrompt(topic: ParlezTopic, niveau: String) = """
+    private fun buildSystemPrompt(topic: ParlezTopic, niveau: String): String {
+        val roleInstruction = if (topic.hubertRoleFr.isNotBlank())
+            "\nTON RÔLE: ${topic.hubertRoleFr}" else ""
+        return """
 Tu es Hubert, un assistant de conversation français amical et patient.
-
-RÔLE: Tu aides un germanophone à pratiquer le français oral dans une conversation de 2 minutes sur le thème: "${topic.themeFr}".
+$roleInstruction
+CONTEXTE: Tu aides un germanophone à pratiquer le français oral dans une conversation de 2 minutes sur le thème: "${topic.themeFr}".
 
 RÈGLES DE CONVERSATION:
 1. Parle UNIQUEMENT en français, niveau $niveau
 2. Pose des questions ouvertes pour faire parler le joueur
-3. Reste STRICTEMENT dans le thème
+3. Reste STRICTEMENT dans le thème et dans ton rôle
    → Si le joueur sort du thème, ramène-le avec une question
 4. Reformule les erreurs importantes correctement, sans explication
 5. Réponses TRÈS COURTES (max 2 phrases, 10-15 mots)
@@ -568,7 +572,8 @@ PERSONNALITÉ:
 
 FORMAT DE RÉPONSE:
 Réponds uniquement avec ton texte de conversation. Pas de métadonnées, pas d'annotations, pas de corrections explicites entre crochets.
-    """.trimIndent()
+        """.trimIndent()
+    }
 
     private fun buildEvaluationPrompt(
         topic: ParlezTopic,

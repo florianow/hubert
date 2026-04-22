@@ -147,14 +147,18 @@ object AzurePronunciationApi {
             put("GradingSystem", "HundredMark")
             put("Granularity", "Word")
             put("Dimension", "Comprehensive")
+            // Enable prosody assessment for better feedback
+            put("EnableProsodyAssessment", true)
         }
         val pronHeaderValue = Base64.encodeToString(
             pronParams.toString().toByteArray(Charsets.UTF_8),
             Base64.NO_WRAP
         )
 
+        // Use dictation mode instead of conversation — dictation handles pauses
+        // and longer utterances without cutting off at the first silence
         val urlString = "https://$region.stt.speech.microsoft.com/" +
-            "speech/recognition/conversation/cognitiveservices/v1?language=fr-FR"
+            "speech/recognition/dictation/cognitiveservices/v1?language=fr-FR"
         val url = URL(urlString)
         val conn = url.openConnection() as HttpURLConnection
         try {
