@@ -65,7 +65,8 @@ data class ParlezEvaluation(
     val erreurs:         List<ParlezError>,
     val motsAppris:      List<String>,
     val conseil:         String,
-    val ausspracheScore: Int = 0  // 0-100, averaged from Azure per-turn scores
+    val ausspracheScore: Int = 0,                                           // 0-100 average
+    val ausspracheWords: List<AzurePronunciationApi.WordResult> = emptyList() // words with issues
 )
 
 data class ParlezState(
@@ -92,7 +93,8 @@ data class ParlezState(
     val messages:         List<ParlezChatMessage> = emptyList(),
     val timeRemainingMs:  Long  = CONVERSATION_MS,
     val timerFraction:    Float = 1f,
-    val pronScores:       List<Double> = emptyList(),  // Azure pronScore per player turn
+    val pronScores:       List<Double>                            = emptyList(),
+    val pronAllWords:     List<AzurePronunciationApi.WordResult>  = emptyList(), // all words across all turns
 
     // Input state
     val isRecording:   Boolean = false,
@@ -315,11 +317,12 @@ class ParlezViewModel @Inject constructor(
                     return@launch
                 }
 
-                // 2. Add player message + store pronunciation score
+                // 2. Add player message + store pronunciation data
                 _uiState.update {
                     it.copy(
-                        messages    = it.messages + ParlezChatMessage(false, assessed.text),
-                        pronScores  = it.pronScores + assessed.pronScore
+                        messages      = it.messages + ParlezChatMessage(false, assessed.text),
+                        pronScores    = it.pronScores + assessed.pronScore,
+                        pronAllWords  = it.pronAllWords + assessed.words
                     )
                 }
 
@@ -419,7 +422,15 @@ class ParlezViewModel @Inject constructor(
             android.util.Log.d("ParlezVM", "Evaluation raw: $rawJson")
             val ausspracheScore = if (state.pronScores.isNotEmpty())
                 state.pronScores.average().toInt() else 0
-            val evaluation = parseEvaluation(rawJson).copy(ausspracheScore = ausspracheScore)
+            // Words with mispronunciation or accuracy < 75, sorted worst first, max 8
+            val problematicWords = state.pronAllWords
+                .filter { it.errorType != "None" || it.accuracyScore < 75.0 }
+                .sortedBy { it.accuracyScore }
+                .take(8)
+            val evaluation = parseEvaluation(rawJson).copy(
+                ausspracheScore = ausspracheScore,
+                ausspracheWords = problematicWords
+            )
 
             statisticsRepository.saveSession(
                 gameType     = "parlez",

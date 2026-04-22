@@ -624,7 +624,7 @@ fun ParlezResultScreen(
                     ScoreRow("Effort",      evaluation.scores.effort.score,      evaluation.scores.effort.commentaire)
                     if (evaluation.ausspracheScore > 0) {
                         Divider(modifier = Modifier.padding(vertical = 4.dp))
-                        AusspracheRow(evaluation.ausspracheScore)
+                        AusspracheRow(evaluation.ausspracheScore, evaluation.ausspracheWords)
                     }
                 }
             }
@@ -770,13 +770,16 @@ private fun ScoreRow(label: String, score: Int, commentaire: String) {
 }
 
 @Composable
-private fun AusspracheRow(score: Int) {
+private fun AusspracheRow(
+    score: Int,
+    words: List<com.hubert.utils.AzurePronunciationApi.WordResult>
+) {
     val color = when {
         score >= 80 -> CorrectGreen
         score >= 50 -> GermanGold
         else        -> WrongRed
     }
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -784,8 +787,11 @@ private fun AusspracheRow(score: Int) {
         ) {
             Column {
                 Text("Aussprache", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-                Text("via Azure Speech", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                Text(
+                    "Ø über alle Wörter · Azure Speech",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                )
             }
             Text(
                 text = "$score / 100",
@@ -800,6 +806,58 @@ private fun AusspracheRow(score: Int) {
             color = color,
             trackColor = color.copy(alpha = 0.15f)
         )
+        // Problematic words breakdown
+        if (words.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "Verbesserungswürdig:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+            words.forEach { w ->
+                val wordColor = when {
+                    w.accuracyScore >= 75 -> GermanGold
+                    else                  -> WrongRed
+                }
+                val label = when (w.errorType) {
+                    "Mispronunciation" -> "falsch ausgesprochen"
+                    "Omission"        -> "ausgelassen"
+                    "Insertion"       -> "eingefügt"
+                    else              -> "ungenau"
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = w.word,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            color = wordColor
+                        )
+                        Text(
+                            text = "· $label",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
+                        )
+                    }
+                    Text(
+                        text = "${w.accuracyScore.toInt()}%",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = wordColor
+                    )
+                }
+            }
+        } else if (score > 0) {
+            Text(
+                text = "Keine auffälligen Wörter — gut gemacht!",
+                style = MaterialTheme.typography.labelSmall,
+                color = CorrectGreen.copy(alpha = 0.7f)
+            )
+        }
     }
 }
 
