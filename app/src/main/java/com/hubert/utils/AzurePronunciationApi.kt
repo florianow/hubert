@@ -130,6 +130,144 @@ object AzurePronunciationApi {
      *   }]
      * }
      */
+    /**
+     * Free-form transcription WITH per-word pronunciation scoring.
+     * No reference text needed — Azure assesses what it recognized.
+     * Returns the recognized text + an overall pronScore (0-100), or blank text on failure.
+     */
+    data class FreeAssessResult(val text: String, val pronScore: Double, val words: List<WordResult>)
+
+    suspend fun transcribeAndAssess(
+        region: String,
+        apiKey: String,
+        audioWav: ByteArray
+    ): FreeAssessResult = withContext(Dispatchers.IO) {
+        // Pronunciation-Assessment without ReferenceText = assess what was recognized
+        val pronParams = JSONObject().apply {
+            put("GradingSystem", "HundredMark")
+            put("Granularity", "Word")
+            put("Dimension", "Comprehensive")
+            // Enable prosody assessment for better feedback
+            put("EnableProsodyAssessment", true)
+        }
+        val pronHeaderValue = Base64.encodeToString(
+            pronParams.toString().toByteArray(Charsets.UTF_8),
+            Base64.NO_WRAP
+        )
+
+        // Use dictation mode instead of conversation — dictation handles pauses
+        // and longer utterances without cutting off at the first silence
+        val urlString = "https://$region.stt.speech.microsoft.com/" +
+            "speech/recognition/dictation/cognitiveservices/v1?language=fr-FR"
+        val url = URL(urlString)
+        val conn = url.openConnection() as HttpURLConnection
+        try {
+            conn.requestMethod = "POST"
+            conn.doOutput = true
+            conn.connectTimeout = 15_000
+            conn.readTimeout = 30_000
+            conn.setRequestProperty("Accept", "application/json")
+            conn.setRequestProperty("Content-Type", "audio/wav; codecs=audio/pcm; samplerate=16000")
+            conn.setRequestProperty("Ocp-Apim-Subscription-Key", apiKey)
+            conn.setRequestProperty("Pronunciation-Assessment", pronHeaderValue)
+
+            DataOutputStream(conn.outputStream).use { out ->
+                out.write(audioWav)
+                out.flush()
+            }
+
+            val responseCode = conn.responseCode
+            if (responseCode != 200) {
+                val errBody = try { conn.errorStream?.bufferedReader()?.readText() ?: "" }
+                              catch (_: Exception) { "" }
+                Log.e(TAG, "Azure assess error $responseCode: $errBody")
+                return@withContext FreeAssessResult("", 0.0, emptyList())
+            }
+
+            val body = conn.inputStream.bufferedReader().readText()
+            val root = JSONObject(body)
+            if (root.optString("RecognitionStatus") != "Success") {
+                return@withContext FreeAssessResult("", 0.0, emptyList())
+            }
+
+            val text = root.optString("DisplayText", "")
+            val nBest = root.optJSONArray("NBest")
+            if (nBest == null || nBest.length() == 0) {
+                return@withContext FreeAssessResult(text, 0.0, emptyList())
+            }
+
+            val best = nBest.getJSONObject(0)
+            val scoreSource = best.optJSONObject("PronunciationAssessment") ?: best
+            val pronScore = scoreSource.optDouble("PronScore", 0.0)
+
+            val words = mutableListOf<WordResult>()
+            val wordsArray = best.optJSONArray("Words")
+            if (wordsArray != null) {
+                for (i in 0 until wordsArray.length()) {
+                    val w = wordsArray.getJSONObject(i)
+                    val wSource = w.optJSONObject("PronunciationAssessment") ?: w
+                    words.add(WordResult(
+                        word = w.optString("Word", ""),
+                        accuracyScore = wSource.optDouble("AccuracyScore", 0.0),
+                        errorType = wSource.optString("ErrorType", "None")
+                    ))
+                }
+            }
+            FreeAssessResult(text, pronScore, words)
+        } finally {
+            conn.disconnect()
+        }
+    }
+
+    /**
+     * Plain speech-to-text transcription (no pronunciation scoring).
+     * Returns the recognized French text, or blank on failure.
+     */
+    suspend fun transcribe(
+        region: String,
+        apiKey: String,
+        audioWav: ByteArray
+    ): String = withContext(Dispatchers.IO) {
+        val urlString = "https://$region.stt.speech.microsoft.com/" +
+            "speech/recognition/conversation/cognitiveservices/v1" +
+            "?language=fr-FR"
+
+        val url = URL(urlString)
+        val conn = url.openConnection() as HttpURLConnection
+        try {
+            conn.requestMethod = "POST"
+            conn.doOutput = true
+            conn.connectTimeout = 15_000
+            conn.readTimeout = 30_000
+            conn.setRequestProperty("Accept", "application/json")
+            conn.setRequestProperty(
+                "Content-Type", "audio/wav; codecs=audio/pcm; samplerate=16000"
+            )
+            conn.setRequestProperty("Ocp-Apim-Subscription-Key", apiKey)
+
+            DataOutputStream(conn.outputStream).use { out ->
+                out.write(audioWav)
+                out.flush()
+            }
+
+            val responseCode = conn.responseCode
+            if (responseCode != 200) {
+                val errBody = try {
+                    conn.errorStream?.bufferedReader()?.readText() ?: ""
+                } catch (_: Exception) { "" }
+                Log.e(TAG, "Azure STT error $responseCode: $errBody")
+                return@withContext ""
+            }
+
+            val body = conn.inputStream.bufferedReader().readText()
+            val json = org.json.JSONObject(body)
+            if (json.optString("RecognitionStatus") != "Success") return@withContext ""
+            json.optString("DisplayText", "")
+        } finally {
+            conn.disconnect()
+        }
+    }
+
     private fun parseResponse(json: String): PronunciationResult {
         val root = JSONObject(json)
         val nBest = root.optJSONArray("NBest")

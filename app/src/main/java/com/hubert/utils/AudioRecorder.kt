@@ -7,6 +7,8 @@ import android.media.MediaRecorder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 /**
  * Records audio from the microphone as PCM 16-bit mono at 16 kHz,
@@ -23,9 +25,10 @@ class AudioRecorder {
     }
 
     private var recorder: AudioRecord? = null
-    private var isRecording = false
+    @Volatile private var isRecording = false
 
     private val pcmBuffer = ByteArrayOutputStream()
+    private val recordingDone = CountDownLatch(1)
 
     /**
      * Start recording. Call from a coroutine context.
@@ -58,11 +61,15 @@ class AudioRecorder {
         rec.startRecording()
 
         val buffer = ByteArray(bufferSize)
-        while (isRecording) {
-            val read = recorder?.read(buffer, 0, buffer.size) ?: -1
-            if (read > 0) {
-                pcmBuffer.write(buffer, 0, read)
+        try {
+            while (isRecording) {
+                val read = recorder?.read(buffer, 0, buffer.size) ?: -1
+                if (read > 0) {
+                    pcmBuffer.write(buffer, 0, read)
+                }
             }
+        } finally {
+            recordingDone.countDown()
         }
     }
 
@@ -71,6 +78,8 @@ class AudioRecorder {
      */
     fun stop(): ByteArray {
         isRecording = false
+        // Wait for the recording loop to finish writing the last buffer
+        recordingDone.await(500, TimeUnit.MILLISECONDS)
         recorder?.stop()
         recorder?.release()
         recorder = null
