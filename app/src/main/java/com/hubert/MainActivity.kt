@@ -23,6 +23,7 @@ import com.hubert.viewmodel.PreposezViewModel
 import com.hubert.viewmodel.PrononcezViewModel
 import com.hubert.viewmodel.EcrivezViewModel
 import com.hubert.viewmodel.ParlezViewModel
+import com.hubert.viewmodel.SettingsViewModel
 import com.hubert.viewmodel.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -52,7 +53,8 @@ enum class Screen {
     PRONONCEZ,
     PREPOSEZ,
     PARLEZ,
-    STATISTICS
+    STATISTICS,
+    SETTINGS
 }
 
 @Composable
@@ -66,6 +68,7 @@ fun HubertApp() {
     val prepositionVm: PreposezViewModel = hiltViewModel()
     val parlezVm: ParlezViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
+    val settingsVm: SettingsViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
@@ -76,6 +79,7 @@ fun HubertApp() {
     val prepositionState by prepositionVm.uiState.collectAsState()
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
+    val settingsState by settingsVm.settings.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
     val context = LocalContext.current
@@ -131,8 +135,8 @@ fun HubertApp() {
         }
     }
 
-    LaunchedEffect(pronunciationState.showSettings, pronunciationState.isPlaying, pronunciationState.isGameOver, pronunciationState.countdown) {
-        if (pronunciationState.showSettings || pronunciationState.countdown != null || pronunciationState.isPlaying || pronunciationState.isGameOver) {
+    LaunchedEffect(pronunciationState.isPlaying, pronunciationState.isGameOver, pronunciationState.countdown) {
+        if (pronunciationState.countdown != null || pronunciationState.isPlaying || pronunciationState.isGameOver) {
             currentScreen = Screen.PRONONCEZ
         }
     }
@@ -145,18 +149,30 @@ fun HubertApp() {
 
     LaunchedEffect(
         parlezState.isTopicSelection,
-        parlezState.showSettings,
         parlezState.isPlaying,
         parlezState.isEvaluating,
         parlezState.isGameOver
     ) {
-        if (parlezState.isTopicSelection || parlezState.showSettings ||
-            parlezState.isPlaying || parlezState.isEvaluating || parlezState.isGameOver) {
+        if (parlezState.isTopicSelection || parlezState.isPlaying ||
+            parlezState.isEvaluating || parlezState.isGameOver) {
             currentScreen = Screen.PARLEZ
         }
     }
 
     when (currentScreen) {
+        Screen.SETTINGS -> {
+            SettingsScreen(
+                settings = settingsState,
+                onSave = { gemini, azure, region ->
+                    settingsVm.save(gemini, azure, region)
+                    pronunciationVm.onSettingsSaved()
+                    parlezVm.onSettingsSaved()
+                    currentScreen = Screen.MENU
+                },
+                onBack = { currentScreen = Screen.MENU }
+            )
+        }
+
         Screen.STATISTICS -> {
             StatisticsScreen(
                 state = statisticsState,
@@ -399,25 +415,10 @@ fun HubertApp() {
         }
 
         Screen.PRONONCEZ -> {
-            // Settings dialog (shown as overlay when needed)
+            // Redirect to global settings when API key is missing
             if (pronunciationState.showSettings) {
-                AzureSettingsDialog(
-                    currentKey = pronunciationState.azureKey,
-                    currentRegion = pronunciationState.azureRegion,
-                    onSave = { key, region ->
-                        pronunciationVm.saveSettings(key, region)
-                        // If no game is active, go back to menu (settings opened from gear icon)
-                        if (!pronunciationState.needsApiKey) {
-                            currentScreen = Screen.MENU
-                        }
-                    },
-                    onDismiss = {
-                        pronunciationVm.dismissSettings()
-                        if (!pronunciationState.isPlaying && !pronunciationState.isGameOver && pronunciationState.countdown == null) {
-                            currentScreen = Screen.MENU
-                        }
-                    }
-                )
+                currentScreen = Screen.SETTINGS
+                pronunciationVm.dismissSettings()
             }
 
             when {
@@ -503,15 +504,10 @@ fun HubertApp() {
         }
 
         Screen.PARLEZ -> {
-            // Settings dialog
+            // Redirect to global settings when API key is missing
             if (parlezState.showSettings) {
-                ParlezSettingsDialog(
-                    currentGeminiKey = parlezState.geminiApiKey,
-                    currentAzureKey = parlezState.azureKey,
-                    currentAzureRegion = parlezState.azureRegion,
-                    onSave = { gemini, azure, region -> parlezVm.saveSettings(gemini, azure, region) },
-                    onDismiss = { parlezVm.dismissSettings() }
-                )
+                currentScreen = Screen.SETTINGS
+                parlezVm.dismissSettings()
             }
 
             when {
@@ -532,6 +528,9 @@ fun HubertApp() {
                     ParlezConversationScreen(
                         state = parlezState,
                         onToggleRecording = { parlezVm.toggleRecording() },
+                        onToggleHints = { parlezVm.toggleHints() },
+                        onRequestContextHints = { parlezVm.requestContextHints() },
+                        onSpeakHint = { parlezVm.speakHint(it) },
                         onQuit = {
                             parlezVm.resetToMenu()
                             currentScreen = Screen.MENU
@@ -544,10 +543,8 @@ fun HubertApp() {
                 parlezState.isGameOver -> {
                     ParlezResultScreen(
                         state = parlezState,
-                        onPlayAgain = {
-                            parlezVm.resetToMenu()
-                            parlezVm.onGameSelected()
-                        },
+                        onPlayAgain = { parlezVm.replaySameTopic() },
+                        onSelectOtherSituation = { parlezVm.goToTopicSelection() },
                         onBackToMenu = {
                             parlezVm.resetToMenu()
                             currentScreen = Screen.MENU
@@ -558,6 +555,28 @@ fun HubertApp() {
         }
 
         Screen.MENU -> {
+            // Show info dialog when a game requires API keys that aren't set yet
+            when {
+                pronunciationState.needsApiKey -> NeedsApiKeyDialog(
+                    gameName = "Prononcez!",
+                    neededKeys = listOf("Azure Speech Services"),
+                    onGoToSettings = {
+                        pronunciationVm.dismissNeedsApiKey()
+                        currentScreen = Screen.SETTINGS
+                    },
+                    onDismiss = { pronunciationVm.dismissNeedsApiKey() }
+                )
+                parlezState.needsApiKey -> NeedsApiKeyDialog(
+                    gameName = "Parlez!",
+                    neededKeys = listOf("Google Gemini", "Azure Speech Services"),
+                    onGoToSettings = {
+                        parlezVm.dismissNeedsApiKey()
+                        currentScreen = Screen.SETTINGS
+                    },
+                    onDismiss = { parlezVm.dismissNeedsApiKey() }
+                )
+            }
+
             MenuScreen(
                 matchingHighScore = matchingState.highScore,
                 genderSnapHighScore = genderSnapState.highScore,
@@ -574,14 +593,9 @@ fun HubertApp() {
                 onStartSpellingBee = { spellingBeeVm.startGame() },
                 onStartConjugation = { conjugationVm.showTenseSelection() },
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
-                onPronunciationSettings = { pronunciationVm.showSettings() },
                 onStartPreposition = { prepositionVm.startGame() },
                 onStartParlez = { parlezVm.onGameSelected() },
-                onParlezSettings = { parlezVm.showSettings() },
-                onShowStatistics = {
-                    statisticsVm.loadStatistics()
-                    currentScreen = Screen.STATISTICS
-                }
+                onShowSettings = { currentScreen = Screen.SETTINGS }
             )
         }
     }

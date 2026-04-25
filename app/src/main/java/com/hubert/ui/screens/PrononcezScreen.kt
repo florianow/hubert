@@ -20,8 +20,6 @@ import androidx.compose.material.icons.filled.Headphones
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,8 +31,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -46,82 +42,6 @@ import com.hubert.viewmodel.PrononcezState
 import com.hubert.viewmodel.RunStats
 import com.hubert.viewmodel.WordScore
 import kotlinx.coroutines.delay
-
-// ─── Settings Dialog ─────────────────────────────────────────────────────────
-
-@Composable
-fun AzureSettingsDialog(
-    currentKey: String,
-    currentRegion: String,
-    onSave: (key: String, region: String) -> Unit,
-    onDismiss: () -> Unit
-) {
-    var key by remember { mutableStateOf(currentKey) }
-    var region by remember { mutableStateOf(currentRegion) }
-    var keyVisible by remember { mutableStateOf(false) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = "Azure Speech Settings",
-                fontWeight = FontWeight.Bold,
-                color = AccentPurple
-            )
-        },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(
-                    text = "Prononcez! uses Azure Speech Services to assess your pronunciation. " +
-                        "Enter your API key and region below.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-
-                OutlinedTextField(
-                    value = key,
-                    onValueChange = { key = it },
-                    label = { Text("API Key") },
-                    singleLine = true,
-                    visualTransformation = if (keyVisible) VisualTransformation.None
-                        else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        IconButton(onClick = { keyVisible = !keyVisible }) {
-                            Icon(
-                                imageVector = if (keyVisible) Icons.Default.VisibilityOff
-                                    else Icons.Default.Visibility,
-                                contentDescription = if (keyVisible) "Hide key" else "Show key"
-                            )
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                OutlinedTextField(
-                    value = region,
-                    onValueChange = { region = it },
-                    label = { Text("Region") },
-                    placeholder = { Text("e.g. westeurope") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onSave(key.trim(), region.trim()) },
-                enabled = key.isNotBlank() && region.isNotBlank()
-            ) {
-                Text("SAVE", color = AccentPurple, fontWeight = FontWeight.Bold)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("CANCEL")
-            }
-        }
-    )
-}
 
 // ─── Main Game Screen ────────────────────────────────────────────────────────
 

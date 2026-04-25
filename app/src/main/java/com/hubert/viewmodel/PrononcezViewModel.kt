@@ -1,26 +1,20 @@
 package com.hubert.viewmodel
 
-import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.AudioRecorder
 import com.hubert.utils.AzurePronunciationApi
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -28,9 +22,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
-// DataStore for Azure settings
-private val Context.azureDataStore: DataStore<Preferences> by preferencesDataStore(name = "azure_settings")
 
 /**
  * Word-level pronunciation result for UI display.
@@ -139,7 +130,7 @@ data class PrononcezState(
 
 @HiltViewModel
 class PrononcezViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val settingsRepository: SettingsRepository,
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
@@ -177,8 +168,6 @@ class PrononcezViewModel @Inject constructor(
         const val POINTS_PER_CORRECT = 150
         const val STREAK_BONUS = 30
 
-        private val KEY_AZURE_KEY = stringPreferencesKey("azure_speech_key")
-        private val KEY_AZURE_REGION = stringPreferencesKey("azure_speech_region")
     }
 
     init {
@@ -186,12 +175,10 @@ class PrononcezViewModel @Inject constructor(
             val hs = highScoreRepository.getHighestScore(gameType = "pronunciation")
             _uiState.update { it.copy(highScore = hs) }
         }
-        // Load saved Azure settings
+        // Observe shared settings — update state whenever keys change
         viewModelScope.launch {
-            context.azureDataStore.data.first().let { prefs ->
-                val key = prefs[KEY_AZURE_KEY] ?: ""
-                val region = prefs[KEY_AZURE_REGION] ?: ""
-                _uiState.update { it.copy(azureKey = key, azureRegion = region) }
+            settingsRepository.settings.collect { s ->
+                _uiState.update { it.copy(azureKey = s.azureKey, azureRegion = s.azureRegion) }
             }
         }
     }
@@ -210,37 +197,25 @@ class PrononcezViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Save Azure settings and optionally proceed to game.
-     */
-    fun saveSettings(key: String, region: String) {
-        val wasWaitingForKey = _uiState.value.needsApiKey
-        viewModelScope.launch {
-            context.azureDataStore.edit { prefs ->
-                prefs[KEY_AZURE_KEY] = key
-                prefs[KEY_AZURE_REGION] = region
-            }
-            _uiState.update {
-                it.copy(
-                    azureKey = key,
-                    azureRegion = region,
-                    showSettings = false,
-                    needsApiKey = false
-                )
-            }
-            // If we were waiting for key to start, start now
-            if (wasWaitingForKey && key.isNotBlank() && region.isNotBlank()) {
-                startGame()
-            }
-        }
-    }
-
     fun showSettings() {
         _uiState.update { it.copy(showSettings = true) }
     }
 
     fun dismissSettings() {
         _uiState.update { it.copy(showSettings = false) }
+    }
+
+    fun dismissNeedsApiKey() {
+        _uiState.update { it.copy(needsApiKey = false, showSettings = false) }
+    }
+
+    /** Called by MainActivity after settings were saved, to proceed to game if we were waiting. */
+    fun onSettingsSaved() {
+        val s = _uiState.value
+        _uiState.update { it.copy(showSettings = false, needsApiKey = false) }
+        if (s.needsApiKey && s.azureKey.isNotBlank() && s.azureRegion.isNotBlank()) {
+            startGame()
+        }
     }
 
     fun startGame() {
@@ -794,7 +769,8 @@ class PrononcezViewModel @Inject constructor(
         currentSentenceEntry = null
         val currentKey = _uiState.value.azureKey
         val currentRegion = _uiState.value.azureRegion
-        _uiState.value = PrononcezState(azureKey = currentKey, azureRegion = currentRegion)
+        val currentHighScore = _uiState.value.highScore
+        _uiState.value = PrononcezState(azureKey = currentKey, azureRegion = currentRegion, highScore = currentHighScore)
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "pronunciation")
             _uiState.update { it.copy(highScore = hs) }

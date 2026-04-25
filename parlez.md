@@ -446,7 +446,7 @@ Parlez! braucht zusätzlich einen LLM-API-Key.
 Settings
 ├── Azure Speech Services
 │   ├── API Key: ••••••••
-│   └── Region: westeurope
+│   └── Region: northeurope
 └── LLM Service (NEU)
     ├── Provider: [Groq ▾]  (Groq / OpenAI / Gemini)
     ├── API Key: ••••••••
