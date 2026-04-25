@@ -7,10 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Psychology
@@ -24,7 +22,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.R
@@ -49,44 +46,43 @@ fun MenuScreen(
     onStartPronunciation: () -> Unit,
     onStartPreposition: () -> Unit,
     onStartParlez: () -> Unit,
-    onShowSettings: () -> Unit,
-    onShowStatistics: () -> Unit
+    onShowSettings: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 32.dp, vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(horizontal = 16.dp)
+            .padding(top = 12.dp, bottom = 12.dp)
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Mascot
-        Image(
-            painter = painterResource(id = R.drawable.hubert_mascot),
-            contentDescription = "Hubert the French Axolotl",
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // App title row with settings icon
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = "HUBERT",
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.Black,
-                color = AccentPurple,
-                letterSpacing = 8.sp,
-                modifier = Modifier.align(Alignment.Center)
+        // Compact header
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.hubert_mascot),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
             )
-            IconButton(
-                onClick = onShowSettings,
-                modifier = Modifier.align(Alignment.CenterEnd)
-            ) {
+            Spacer(Modifier.width(10.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "HUBERT",
+                    fontWeight = FontWeight.Black,
+                    fontSize = 20.sp,
+                    color = AccentPurple,
+                    letterSpacing = 3.sp
+                )
+                Text(
+                    text = "Français — Deutsch",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                )
+            }
+            IconButton(onClick = onShowSettings) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Einstellungen",
@@ -95,249 +91,191 @@ fun MenuScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(2.dp))
+        Spacer(Modifier.height(10.dp))
 
-        Text(
-            text = "Francais-Deutsch",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // "Hubert choisit!" — smart pick: plays the least-practiced game
-        Card(
+        // "Hubert choisit!" — solid full-width button
+        Button(
+            onClick = onHubertChoisit,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp))
-                .border(
-                    width = 2.dp,
-                    color = AccentPurple.copy(alpha = 0.5f),
-                    shape = RoundedCornerShape(16.dp)
-                )
-                .clickable { onHubertChoisit() },
+                .height(58.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = AccentPurple.copy(alpha = 0.12f)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6B5CE7))
+        ) {
+            Icon(
+                imageVector = Icons.Default.Psychology,
+                contentDescription = null,
+                modifier = Modifier.size(22.dp)
             )
+            Spacer(Modifier.width(10.dp))
+            Column {
+                Text(
+                    text = "Hubert choisit!",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+                Text(
+                    text = "Hubert wählt was du üben solltest",
+                    fontSize = 10.sp,
+                    color = Color.White.copy(alpha = 0.75f)
+                )
+            }
+        }
+
+        Spacer(Modifier.height(10.dp))
+
+        // 2×4 game grid — fills all remaining space
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Psychology,
-                    contentDescription = null,
-                    tint = AccentPurple,
-                    modifier = Modifier.size(28.dp)
+                GridGameCard(
+                    title = "Trouvez!",
+                    description = "Französisch-Deutsch zuordnen",
+                    accentColor = FrenchBlue,
+                    highScore = matchingHighScore,
+                    onClick = onStartMatching,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
-                    Text(
-                        text = "Hubert choisit!",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = AccentPurple
-                    )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = "Hubert picks what you need to practice",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
-                }
+                GridGameCard(
+                    title = "Classez!",
+                    description = "Genus der Nomen erraten",
+                    accentColor = AccentPurple,
+                    highScore = genderSnapHighScore,
+                    onClick = onStartGenderSnap,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GridGameCard(
+                    title = "Complétez!",
+                    description = "Lückensätze vervollständigen",
+                    accentColor = CorrectGreen,
+                    highScore = gapFillHighScore,
+                    onClick = onStartGapFill,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                GridGameCard(
+                    title = "Écrivez!",
+                    description = "Gehörte Wörter aufschreiben",
+                    accentColor = GermanGold,
+                    highScore = spellingBeeHighScore,
+                    onClick = onStartSpellingBee,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GridGameCard(
+                    title = "Conjuguez!",
+                    description = "Richtige Verbform wählen",
+                    accentColor = FrenchBlue,
+                    highScore = conjugationHighScore,
+                    onClick = onStartConjugation,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                GridGameCard(
+                    title = "Préposez!",
+                    description = "Richtige Präposition wählen",
+                    accentColor = Color(0xFF9C27B0),
+                    highScore = prepositionHighScore,
+                    onClick = onStartPreposition,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GridGameCard(
+                    title = "Prononcez!",
+                    description = "Aussprache bewerten lassen",
+                    accentColor = WrongRed,
+                    highScore = pronunciationHighScore,
+                    onClick = onStartPronunciation,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                GridGameCard(
+                    title = "Parlez!",
+                    description = "KI-Gespräch auf Französisch",
+                    accentColor = ParlezTeal,
+                    highScore = parlezHighScore,
+                    onClick = onStartParlez,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Game mode cards
-        GameModeCard(
-            title = "Trouvez!",
-            description = "Match French words with German translations",
-            accentColor = FrenchBlue,
-            highScore = matchingHighScore,
-            onClick = onStartMatching
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Classez!",
-            description = "Guess the gender of French nouns",
-            accentColor = AccentPurple,
-            highScore = genderSnapHighScore,
-            onClick = onStartGenderSnap
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Compl\u00E9tez!",
-            description = "Complete French sentences with the missing word",
-            accentColor = CorrectGreen,
-            highScore = gapFillHighScore,
-            onClick = onStartGapFill
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "\u00C9crivez!",
-            description = "Hear a French word, type it correctly",
-            accentColor = GermanGold,
-            highScore = spellingBeeHighScore,
-            onClick = onStartSpellingBee
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Conjuguez!",
-            description = "Pick the correct verb conjugation",
-            accentColor = FrenchBlue,
-            highScore = conjugationHighScore,
-            onClick = onStartConjugation
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Prononcez!",
-            description = "Read French aloud and get pronunciation feedback",
-            accentColor = WrongRed,
-            highScore = pronunciationHighScore,
-            onClick = onStartPronunciation
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Préposez!",
-            description = "Pick the right preposition",
-            accentColor = FrenchBlue,
-            highScore = prepositionHighScore,
-            onClick = onStartPreposition
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        GameModeCard(
-            title = "Parlez!",
-            description = "Freie Konversation auf Französisch mit KI-Bewertung",
-            accentColor = ParlezTeal,
-            highScore = parlezHighScore,
-            onClick = onStartParlez
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Statistics button
-        OutlinedButton(
-            onClick = onShowStatistics,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = "STATISTICS",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
 @Composable
-private fun GameModeCard(
+private fun GridGameCard(
     title: String,
     description: String,
     accentColor: Color,
     highScore: Int,
     onClick: () -> Unit,
-    onSettingsClick: (() -> Unit)? = null
+    modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .border(
-                width = 2.dp,
-                color = accentColor.copy(alpha = 0.4f),
-                shape = RoundedCornerShape(16.dp)
-            )
+        modifier = modifier
+            .clip(RoundedCornerShape(14.dp))
+            .border(1.dp, accentColor.copy(alpha = 0.30f), RoundedCornerShape(14.dp))
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = accentColor.copy(alpha = 0.08f)
-        )
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = accentColor.copy(alpha = 0.10f))
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .fillMaxSize()
+                .padding(12.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = accentColor
-                    )
-                    if (onSettingsClick != null) {
-                        IconButton(
-                            onClick = onSettingsClick,
-                            modifier = Modifier.size(32.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = "Settings",
-                                tint = accentColor.copy(alpha = 0.6f),
-                                modifier = Modifier.size(18.dp)
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(4.dp))
+            Column {
+                Text(
+                    text = title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                    color = accentColor
+                )
+                Spacer(Modifier.height(3.dp))
                 Text(
                     text = description,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 11.sp,
+                    lineHeight = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
             if (highScore > 0) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "$highScore",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = GermanGold
-                    )
-                    Text(
-                        text = "best",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = GermanGold.copy(alpha = 0.7f)
-                    )
-                }
+                Text(
+                    text = "$highScore",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight(500),
+                    color = accentColor
+                )
             } else {
                 Text(
-                    text = "PLAY",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = accentColor,
-                    letterSpacing = 2.sp
+                    text = "Noch nicht\ngespielt",
+                    fontSize = 10.sp,
+                    lineHeight = 13.sp,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
                 )
             }
         }
@@ -358,7 +296,6 @@ fun CountdownScreen(count: Int, onBack: (() -> Unit)? = null) {
             .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
-        // Back button in top-left corner
         if (onBack != null) {
             IconButton(
                 onClick = onBack,

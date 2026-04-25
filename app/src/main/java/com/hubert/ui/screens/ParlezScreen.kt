@@ -653,6 +653,7 @@ fun ParlezEvaluatingScreen() {
 fun ParlezResultScreen(
     state: ParlezState,
     onPlayAgain: () -> Unit,
+    onSelectOtherSituation: () -> Unit,
     onBackToMenu: () -> Unit
 ) {
     val evaluation = state.evaluation
@@ -810,18 +811,26 @@ fun ParlezResultScreen(
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(
+                    onClick = onPlayAgain,
+                    modifier = Modifier.weight(1f).height(44.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ParlezTeal)
+                ) { Text("Nochmal", fontWeight = FontWeight.Bold) }
+                OutlinedButton(
+                    onClick = onSelectOtherSituation,
+                    modifier = Modifier.weight(1f).height(44.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ParlezTeal)
+                ) { Text("Andere Situation") }
+            }
             OutlinedButton(
                 onClick = onBackToMenu,
-                modifier = Modifier.weight(1f).height(48.dp),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(14.dp)
-            ) { Text("Menü") }
-            Button(
-                onClick = onPlayAgain,
-                modifier = Modifier.weight(1f).height(48.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = ParlezTeal)
-            ) { Text("Nochmal") }
+            ) { Text("Verlassen") }
         }
 
         Spacer(modifier = Modifier.height(16.dp))

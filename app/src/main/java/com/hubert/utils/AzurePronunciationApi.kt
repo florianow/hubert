@@ -47,7 +47,7 @@ object AzurePronunciationApi {
     /**
      * Assess pronunciation of [audioWav] against [referenceText].
      *
-     * @param region Azure region (e.g. "westeurope")
+     * @param region Azure region (e.g. "northeurope")
      * @param apiKey Azure Speech API key
      * @param referenceText The French sentence the user should have read
      * @param audioWav WAV audio bytes (16 kHz, 16-bit, mono)

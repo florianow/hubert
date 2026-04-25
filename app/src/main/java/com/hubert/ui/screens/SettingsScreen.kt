@@ -28,7 +28,7 @@ fun SettingsScreen(
 ) {
     var geminiKey   by remember(settings.geminiKey)   { mutableStateOf(settings.geminiKey) }
     var azureKey    by remember(settings.azureKey)    { mutableStateOf(settings.azureKey) }
-    var azureRegion by remember(settings.azureRegion) { mutableStateOf(settings.azureRegion.ifBlank { "westeurope" }) }
+    var azureRegion by remember(settings.azureRegion) { mutableStateOf(settings.azureRegion.ifBlank { "northeurope" }) }
 
     var showGemini by remember { mutableStateOf(false) }
     var showAzure  by remember { mutableStateOf(false) }
@@ -128,7 +128,7 @@ fun SettingsScreen(
                     onValueChange = { azureRegion = it },
                     label = { Text("Region") },
                     singleLine = true,
-                    placeholder = { Text("westeurope") },
+                    placeholder = { Text("northeurope") },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

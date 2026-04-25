@@ -301,9 +301,55 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
             availableTopics = s.availableTopics,
             highScore       = s.highScore,
             topicHighScores = s.topicHighScores,
+            selectedNiveau  = s.selectedNiveau
+            // all navigation flags false — caller sets currentScreen = Screen.MENU
+        )
+    }
+
+    fun goToTopicSelection() {
+        val s = _uiState.value
+        _uiState.value = ParlezState(
+            geminiApiKey    = s.geminiApiKey,
+            azureKey        = s.azureKey,
+            azureRegion     = s.azureRegion,
+            availableTopics = s.availableTopics,
+            highScore       = s.highScore,
+            topicHighScores = s.topicHighScores,
             selectedNiveau  = s.selectedNiveau,
             isTopicSelection = true
         )
+    }
+
+    fun replaySameTopic() {
+        timerJob?.cancel()
+        recordingJob?.cancel()
+        audioRecorder?.release()
+        audioRecorder = null
+        _uiState.update {
+            it.copy(
+                isGameOver      = false,
+                isEvaluating    = false,
+                isPlaying       = false,
+                isTopicSelection = false,
+                messages        = emptyList(),
+                timeRemainingMs = ParlezState.CONVERSATION_MS,
+                timerFraction   = 1f,
+                isRecording     = false,
+                isProcessing    = false,
+                timerExpired    = false,
+                errorMessage    = null,
+                evaluation      = null,
+                score           = 0,
+                isNewHighScore  = false,
+                pronScores      = emptyList(),
+                pronWords       = emptyList(),
+                showHints       = false,
+                contextHints    = emptyList(),
+                isLoadingHints  = false,
+                hintsUsed       = 0
+            )
+        }
+        startConversation()
     }
 
     // ── Timer ──────────────────────────────────────────────────────────────────
