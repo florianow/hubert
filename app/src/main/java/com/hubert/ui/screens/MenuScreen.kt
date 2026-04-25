@@ -47,10 +47,9 @@ fun MenuScreen(
     onStartSpellingBee: () -> Unit,
     onStartConjugation: () -> Unit,
     onStartPronunciation: () -> Unit,
-    onPronunciationSettings: () -> Unit,
     onStartPreposition: () -> Unit,
     onStartParlez: () -> Unit,
-    onParlezSettings: () -> Unit,
+    onShowSettings: () -> Unit,
     onShowStatistics: () -> Unit
 ) {
     Column(
@@ -74,14 +73,27 @@ fun MenuScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // App title
-        Text(
-            text = "HUBERT",
-            style = MaterialTheme.typography.displayLarge,
-            fontWeight = FontWeight.Black,
-            color = AccentPurple,
-            letterSpacing = 8.sp
-        )
+        // App title row with settings icon
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = "HUBERT",
+                style = MaterialTheme.typography.displayLarge,
+                fontWeight = FontWeight.Black,
+                color = AccentPurple,
+                letterSpacing = 8.sp,
+                modifier = Modifier.align(Alignment.Center)
+            )
+            IconButton(
+                onClick = onShowSettings,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Einstellungen",
+                    tint = AccentPurple.copy(alpha = 0.6f)
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(2.dp))
 
@@ -198,8 +210,7 @@ fun MenuScreen(
             description = "Read French aloud and get pronunciation feedback",
             accentColor = WrongRed,
             highScore = pronunciationHighScore,
-            onClick = onStartPronunciation,
-            onSettingsClick = onPronunciationSettings
+            onClick = onStartPronunciation
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -219,8 +230,7 @@ fun MenuScreen(
             description = "Freie Konversation auf Französisch mit KI-Bewertung",
             accentColor = ParlezTeal,
             highScore = parlezHighScore,
-            onClick = onStartParlez,
-            onSettingsClick = onParlezSettings
+            onClick = onStartParlez
         )
 
         Spacer(modifier = Modifier.height(24.dp))

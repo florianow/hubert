@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
@@ -27,103 +26,15 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.hubert.data.model.ParlezTopic
+import com.hubert.data.model.VocabHint
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.*
 import kotlin.math.roundToInt
-
-// ── Settings dialog ────────────────────────────────────────────────────────────
-
-@Composable
-fun ParlezSettingsDialog(
-    currentGeminiKey: String,
-    currentAzureKey: String,
-    currentAzureRegion: String,
-    onSave: (geminiKey: String, azureKey: String, azureRegion: String) -> Unit,
-    onDismiss: () -> Unit
-) {
-    var geminiKey by remember { mutableStateOf(currentGeminiKey) }
-    var azureKey by remember { mutableStateOf(currentAzureKey) }
-    var azureRegion by remember { mutableStateOf(currentAzureRegion.ifBlank { "westeurope" }) }
-    var showGeminiKey by remember { mutableStateOf(false) }
-    var showAzureKey by remember { mutableStateOf(false) }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Parlez! Einstellungen", fontWeight = FontWeight.Bold) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(
-                    "Gemini API Key (Google AI Studio)\naistudio.google.com/app/apikey",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-                OutlinedTextField(
-                    value = geminiKey,
-                    onValueChange = { geminiKey = it },
-                    label = { Text("Gemini API Key") },
-                    singleLine = true,
-                    visualTransformation = if (showGeminiKey) VisualTransformation.None
-                                          else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        TextButton(onClick = { showGeminiKey = !showGeminiKey }) {
-                            Text(if (showGeminiKey) "Hide" else "Show", fontSize = 11.sp)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Divider(modifier = Modifier.padding(vertical = 4.dp))
-
-                Text(
-                    "Azure Speech Services (für STT)\n— gleicher Key wie Prononcez!",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-                OutlinedTextField(
-                    value = azureKey,
-                    onValueChange = { azureKey = it },
-                    label = { Text("Azure Speech API Key") },
-                    singleLine = true,
-                    visualTransformation = if (showAzureKey) VisualTransformation.None
-                                          else PasswordVisualTransformation(),
-                    trailingIcon = {
-                        TextButton(onClick = { showAzureKey = !showAzureKey }) {
-                            Text(if (showAzureKey) "Hide" else "Show", fontSize = 11.sp)
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                OutlinedTextField(
-                    value = azureRegion,
-                    onValueChange = { azureRegion = it },
-                    label = { Text("Azure Region") },
-                    singleLine = true,
-                    placeholder = { Text("westeurope") },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onSave(geminiKey.trim(), azureKey.trim(), azureRegion.trim())
-                },
-                enabled = geminiKey.isNotBlank() && azureKey.isNotBlank() && azureRegion.isNotBlank()
-            ) { Text("Speichern") }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Abbrechen") }
-        }
-    )
-}
 
 // ── Topic selection ────────────────────────────────────────────────────────────
 
@@ -319,6 +230,9 @@ fun ParlezTopicSelectionScreen(
 fun ParlezConversationScreen(
     state: ParlezState,
     onToggleRecording: () -> Unit,
+    onToggleHints: () -> Unit,
+    onRequestContextHints: () -> Unit,
+    onSpeakHint: (String) -> Unit,
     onQuit: () -> Unit
 ) {
     val context = LocalContext.current
@@ -423,6 +337,11 @@ fun ParlezConversationScreen(
 
         Divider()
 
+        // ── Hint panel ────────────────────────────────────────────────────────
+        HintPanel(state = state, onToggleHints = onToggleHints, onRequestContextHints = onRequestContextHints, onSpeakHint = onSpeakHint)
+
+        Divider()
+
         // Mic button panel
         Box(
             modifier = Modifier
@@ -438,9 +357,9 @@ fun ParlezConversationScreen(
                         .clip(CircleShape)
                         .background(
                             when {
-                                state.isRecording                      -> WrongRed
+                                state.isRecording                        -> WrongRed
                                 state.isProcessing || state.timerExpired -> ParlezTeal.copy(alpha = 0.4f)
-                                else                                   -> ParlezTeal
+                                else                                     -> ParlezTeal
                             }
                         )
                         .clickable(enabled = !state.isProcessing && !state.timerExpired) { onMicClick() },
@@ -464,6 +383,166 @@ fun ParlezConversationScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun HintPanel(
+    state: ParlezState,
+    onToggleHints: () -> Unit,
+    onRequestContextHints: () -> Unit,
+    onSpeakHint: (String) -> Unit
+) {
+    val topic = state.selectedTopic
+    val vocabHints = topic?.vocabHints ?: emptyList()
+    var expandedHints by remember { mutableStateOf(setOf<Int>()) }
+    val canRequestHints = state.hintsUsed == 0 && !state.isLoadingHints
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // Header row — toggle button
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onToggleHints() }
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "Tipps",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                color = ParlezTeal
+            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // "?" button for dynamic context hints (once per conversation)
+                if (!state.timerExpired) {
+                    Surface(
+                        shape = CircleShape,
+                        color = if (canRequestHints) ParlezTeal else MaterialTheme.colorScheme.surfaceVariant,
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clickable(enabled = canRequestHints) { onRequestContextHints() }
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            if (state.isLoadingHints) {
+                                val pulse by rememberInfiniteTransition(label = "hint_pulse")
+                                    .animateFloat(
+                                        initialValue = 0.4f, targetValue = 1f,
+                                        animationSpec = infiniteRepeatable(tween(500), RepeatMode.Reverse),
+                                        label = "pulse"
+                                    )
+                                Text("?", color = Color.White.copy(alpha = pulse),
+                                    fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                            } else {
+                                Text(
+                                    text = if (state.hintsUsed > 0) "✓" else "?",
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
+                        }
+                    }
+                }
+                Text(
+                    text = if (state.showHints) "▲" else "▼",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = ParlezTeal.copy(alpha = 0.7f)
+                )
+            }
+        }
+
+        // Expanded content
+        if (state.showHints) {
+            Column(modifier = Modifier.padding(horizontal = 16.dp).padding(bottom = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
+                // Dynamic context hints (from Gemini)
+                if (state.contextHints.isNotEmpty()) {
+                    Text(
+                        text = "Was du sagen könntest:",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    )
+                    state.contextHints.forEach { hint ->
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = ParlezTeal.copy(alpha = 0.12f),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "« $hint »",
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = ParlezTeal,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+                } else if (canRequestHints && !state.isLoadingHints) {
+                    Text(
+                        text = "Tippe auf ? für Satzvorschläge passend zur aktuellen Frage.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
+                    )
+                }
+
+                // Vocab hints from topic (always shown, tap to reveal German)
+                if (vocabHints.isNotEmpty()) {
+                    Text(
+                        text = "Vokabeln zum Thema:",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        modifier = Modifier.horizontalScroll(rememberScrollState())
+                    ) {
+                        vocabHints.forEachIndexed { index, hint ->
+                            val isExpanded = index in expandedHints
+                            Surface(
+                                shape = RoundedCornerShape(20.dp),
+                                color = if (isExpanded) ParlezTeal.copy(alpha = 0.15f)
+                                        else MaterialTheme.colorScheme.surfaceVariant,
+                                border = androidx.compose.foundation.BorderStroke(
+                                    1.dp,
+                                    if (isExpanded) ParlezTeal.copy(alpha = 0.5f)
+                                    else ParlezTeal.copy(alpha = 0.25f)
+                                ),
+                                modifier = Modifier.clickable {
+                                    onSpeakHint(hint.fr)
+                                    expandedHints = if (isExpanded) expandedHints - index
+                                                    else expandedHints + index
+                                }
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = hint.fr,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (isExpanded) ParlezTeal
+                                                else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    if (isExpanded) {
+                                        Text(
+                                            text = hint.de,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = ParlezTeal.copy(alpha = 0.7f)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

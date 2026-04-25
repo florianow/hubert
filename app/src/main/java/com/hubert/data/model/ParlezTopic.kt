@@ -1,5 +1,7 @@
 package com.hubert.data.model
 
+data class VocabHint(val fr: String, val de: String)
+
 data class ParlezTopic(
     val id: String,
     val themeFr: String,
@@ -9,5 +11,5 @@ data class ParlezTopic(
     val scenarioDe: String = "",   // Situation + what the player should do (shown in UI)
     val hubertRoleFr: String = "", // Hubert's role in French (fed to system prompt)
     val starterFr: String,         // Hubert's opening line
-    val vocabHints: List<String>
+    val vocabHints: List<VocabHint> = emptyList()
 )

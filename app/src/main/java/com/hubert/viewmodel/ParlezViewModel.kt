@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.hubert.data.model.ParlezTopic
+import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.utils.AudioRecorder
 import com.hubert.utils.AzurePronunciationApi
@@ -29,14 +30,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
-// ── DataStore ──────────────────────────────────────────────────────────────────
+// ── DataStore (topic scores only) ──────────────────────────────────────────────
 
 private val Context.parlezDataStore: DataStore<Preferences>
         by preferencesDataStore(name = "parlez_settings")
 
-private val KEY_GEMINI_KEY    = stringPreferencesKey("gemini_api_key")
-private val KEY_AZURE_KEY     = stringPreferencesKey("parlez_azure_key")
-private val KEY_AZURE_REGION  = stringPreferencesKey("parlez_azure_region")
 private val KEY_TOPIC_SCORES  = stringPreferencesKey("parlez_topic_scores")
 
 // ── Data classes ───────────────────────────────────────────────────────────────
@@ -102,6 +100,12 @@ data class ParlezState(
     val timerExpired:  Boolean = false,  // timer hit 0, waiting for TTS to finish
     val errorMessage:  String? = null,
 
+    // Hint system
+    val showHints:        Boolean      = false,
+    val contextHints:     List<String> = emptyList(), // dynamic Gemini hints
+    val isLoadingHints:   Boolean      = false,
+    val hintsUsed:        Int          = 0,           // max 1 per conversation
+
     // Results
     val evaluation:      ParlezEvaluation? = null,
     val score:           Int     = 0,
@@ -119,6 +123,7 @@ data class ParlezState(
 @HiltViewModel
 class ParlezViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
+    private val settingsRepository: SettingsRepository,
     private val tts: FrenchTts,
     private val statisticsRepository: StatisticsRepository
 ) : ViewModel() {
@@ -134,21 +139,24 @@ class ParlezViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // Load saved settings + topic scores
+            // Load topic scores
             context.parlezDataStore.data.first().let { prefs ->
                 _uiState.update {
-                    it.copy(
-                        geminiApiKey    = prefs[KEY_GEMINI_KEY]   ?: "",
-                        azureKey        = prefs[KEY_AZURE_KEY]    ?: "",
-                        azureRegion     = prefs[KEY_AZURE_REGION] ?: "",
-                        topicHighScores = parseTopicScores(prefs[KEY_TOPIC_SCORES] ?: "")
-                    )
+                    it.copy(topicHighScores = parseTopicScores(prefs[KEY_TOPIC_SCORES] ?: ""))
                 }
             }
             // High score + topics
             val hs = statisticsRepository.getHighestScore("parlez")
             _uiState.update { it.copy(highScore = hs) }
             loadTopics()
+        }
+        // Observe shared settings
+        viewModelScope.launch {
+            settingsRepository.settings.collect { s ->
+                _uiState.update {
+                    it.copy(geminiApiKey = s.geminiKey, azureKey = s.azureKey, azureRegion = s.azureRegion)
+                }
+            }
         }
     }
 
@@ -179,28 +187,21 @@ class ParlezViewModel @Inject constructor(
         _uiState.update { it.copy(showSettings = true, needsApiKey = false) }
     }
 
-    fun saveSettings(geminiKey: String, azureKey: String, azureRegion: String) {
-        viewModelScope.launch {
-            context.parlezDataStore.edit { prefs ->
-                prefs[KEY_GEMINI_KEY]   = geminiKey
-                prefs[KEY_AZURE_KEY]    = azureKey
-                prefs[KEY_AZURE_REGION] = azureRegion
-            }
-            _uiState.update {
-                it.copy(
-                    geminiApiKey  = geminiKey,
-                    azureKey      = azureKey,
-                    azureRegion   = azureRegion,
-                    showSettings  = false,
-                    needsApiKey   = false,
-                    isTopicSelection = true
-                )
-            }
-        }
-    }
-
     fun dismissSettings() {
         _uiState.update { it.copy(showSettings = false) }
+    }
+
+    fun dismissNeedsApiKey() {
+        _uiState.update { it.copy(needsApiKey = false, showSettings = false) }
+    }
+
+    /** Called by MainActivity after global settings were saved. */
+    fun onSettingsSaved() {
+        val s = _uiState.value
+        _uiState.update { it.copy(showSettings = false, needsApiKey = false) }
+        if (s.needsApiKey && s.geminiApiKey.isNotBlank() && s.azureKey.isNotBlank() && s.azureRegion.isNotBlank()) {
+            _uiState.update { it.copy(isTopicSelection = true) }
+        }
     }
 
     fun selectNiveau(niveau: String) {
@@ -230,6 +231,59 @@ class ParlezViewModel @Inject constructor(
         startTimer()
     }
 
+    fun toggleHints() {
+        _uiState.update { it.copy(showHints = !it.showHints) }
+    }
+
+    fun speakHint(word: String) {
+        tts.speak(word)
+    }
+
+    fun requestContextHints() {
+        val s = _uiState.value
+        if (s.hintsUsed >= 1 || s.isLoadingHints) return
+        _uiState.update { it.copy(isLoadingHints = true, showHints = true) }
+        viewModelScope.launch {
+            try {
+                val lastHubertLine = s.messages.lastOrNull { it.isHubert }?.text ?: ""
+                val prompt = """
+Tu aides un apprenant à pratiquer le français de niveau ${s.selectedNiveau}.
+Hubert vient de dire: "$lastHubertLine"
+Thème: ${s.selectedTopic?.themeFr}
+
+Donne exactement 3 phrases courtes que l'apprenant pourrait dire en réponse.
+Niveau ${s.selectedNiveau}, max 8 mots chacune.
+Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
+["phrase 1", "phrase 2", "phrase 3"]
+                """.trimIndent()
+                val raw = GeminiApi.evaluate(s.geminiApiKey, prompt)
+                val hints = parseHintList(raw)
+                _uiState.update {
+                    it.copy(
+                        contextHints   = hints,
+                        isLoadingHints = false,
+                        hintsUsed      = it.hintsUsed + 1
+                    )
+                }
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                _uiState.update { it.copy(isLoadingHints = false) }
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isLoadingHints = false) }
+            }
+        }
+    }
+
+    private fun parseHintList(raw: String): List<String> {
+        return try {
+            val start = raw.indexOf('[')
+            val end   = raw.lastIndexOf(']')
+            if (start == -1 || end <= start) return emptyList()
+            val arr = org.json.JSONArray(raw.substring(start, end + 1))
+            (0 until arr.length()).map { arr.getString(it) }
+        } catch (_: Exception) { emptyList() }
+    }
+
     fun toggleRecording() {
         if (_uiState.value.isRecording) stopRecording() else startRecording()
     }
@@ -247,7 +301,8 @@ class ParlezViewModel @Inject constructor(
             availableTopics = s.availableTopics,
             highScore       = s.highScore,
             topicHighScores = s.topicHighScores,
-            selectedNiveau  = s.selectedNiveau
+            selectedNiveau  = s.selectedNiveau,
+            isTopicSelection = true
         )
     }
 
