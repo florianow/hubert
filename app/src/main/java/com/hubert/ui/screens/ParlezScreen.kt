@@ -233,6 +233,7 @@ fun ParlezConversationScreen(
     onToggleHints: () -> Unit,
     onRequestContextHints: () -> Unit,
     onSpeakHint: (String) -> Unit,
+    onFinish: () -> Unit,
     onQuit: () -> Unit
 ) {
     val context = LocalContext.current
@@ -357,12 +358,12 @@ fun ParlezConversationScreen(
                         .clip(CircleShape)
                         .background(
                             when {
-                                state.isRecording                        -> WrongRed
-                                state.isProcessing || state.timerExpired -> ParlezTeal.copy(alpha = 0.4f)
-                                else                                     -> ParlezTeal
+                                state.isRecording  -> WrongRed
+                                state.isProcessing -> ParlezTeal.copy(alpha = 0.4f)
+                                else               -> ParlezTeal
                             }
                         )
-                        .clickable(enabled = !state.isProcessing && !state.timerExpired) { onMicClick() },
+                        .clickable(enabled = !state.isProcessing) { onMicClick() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
@@ -375,14 +376,30 @@ fun ParlezConversationScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = when {
-                        state.isRecording   -> "Loslassen zum Senden"
-                        state.timerExpired  -> "Zeit ist um..."
-                        state.isProcessing  -> "Hubert denkt..."
-                        else                -> "Halten zum Sprechen"
+                        state.isRecording  -> "Loslassen zum Senden"
+                        state.isProcessing -> "Hubert denkt..."
+                        else               -> "Halten zum Sprechen"
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
+            }
+        }
+
+        // Fixed-height slot so layout never shifts when button appears
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .padding(horizontal = 16.dp, vertical = 6.dp)
+        ) {
+            if (state.timerExpired) {
+                Button(
+                    onClick = onFinish,
+                    modifier = Modifier.fillMaxSize(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = ParlezTeal)
+                ) { Text("Gespräch beenden", fontWeight = FontWeight.Bold) }
             }
         }
     }

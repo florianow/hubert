@@ -370,13 +370,6 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
                 }
                 if (newTime == 0L) {
                     _uiState.update { it.copy(timerExpired = true) }
-                    // Wait for STT / LLM to finish
-                    while (_uiState.value.isProcessing) {
-                        delay(200L)
-                    }
-                    // Give TTS time to finish speaking the last reply (~4 s)
-                    delay(4_000L)
-                    finishConversation()
                     break
                 }
             }
@@ -477,7 +470,7 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
 
     // ── Finish + evaluate ──────────────────────────────────────────────────────
 
-    private fun finishConversation() {
+    fun finishConversation() {
         timerJob?.cancel()
         recordingJob?.cancel()
         audioRecorder?.release()

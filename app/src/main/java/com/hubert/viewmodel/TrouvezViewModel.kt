@@ -312,15 +312,6 @@ class TrouvezViewModel @Inject constructor(
                     matchedQueue.clear()
                     loadNewBoard()
                 }
-            } else if (matchedQueue.size > MAX_GREYED_OUT) {
-                viewModelScope.launch {
-                    delay(700)  // give player time to solve remaining pairs
-                    // Re-check: maybe all matched in the meantime
-                    val stillNeedsReplace = !_uiState.value.frenchWords.all { it.matched }
-                    if (stillNeedsReplace && matchedQueue.isNotEmpty()) {
-                        replaceOldestMatch()
-                    }
-                }
             }
 
             // Clear correct feedback after a short flash
