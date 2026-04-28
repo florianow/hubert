@@ -531,6 +531,7 @@ fun HubertApp() {
                         onToggleHints = { parlezVm.toggleHints() },
                         onRequestContextHints = { parlezVm.requestContextHints() },
                         onSpeakHint = { parlezVm.speakHint(it) },
+                        onFinish = { parlezVm.finishConversation() },
                         onQuit = {
                             parlezVm.resetToMenu()
                             currentScreen = Screen.MENU
