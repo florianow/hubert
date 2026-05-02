@@ -596,7 +596,11 @@ fun HubertApp() {
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
                 onStartPreposition = { prepositionVm.startGame() },
                 onStartParlez = { parlezVm.onGameSelected() },
-                onShowSettings = { currentScreen = Screen.SETTINGS }
+                onShowSettings = { currentScreen = Screen.SETTINGS },
+                onShowStatistics = {
+                    statisticsVm.loadStatistics()
+                    currentScreen = Screen.STATISTICS
+                }
             )
         }
     }

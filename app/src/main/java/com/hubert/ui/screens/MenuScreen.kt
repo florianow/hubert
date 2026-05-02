@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
@@ -46,7 +47,8 @@ fun MenuScreen(
     onStartPronunciation: () -> Unit,
     onStartPreposition: () -> Unit,
     onStartParlez: () -> Unit,
-    onShowSettings: () -> Unit
+    onShowSettings: () -> Unit,
+    onShowStatistics: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -80,6 +82,13 @@ fun MenuScreen(
                     text = "Français — Deutsch",
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                )
+            }
+            IconButton(onClick = onShowStatistics) {
+                Icon(
+                    imageVector = Icons.Default.BarChart,
+                    contentDescription = "Statistik",
+                    tint = AccentPurple.copy(alpha = 0.6f)
                 )
             }
             IconButton(onClick = onShowSettings) {
