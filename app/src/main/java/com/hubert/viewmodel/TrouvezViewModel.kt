@@ -308,7 +308,7 @@ class TrouvezViewModel @Inject constructor(
             if (allMatched) {
                 timerDeadline += CLEAR_BOARD_BONUS_MS
                 viewModelScope.launch {
-                    delay(600)
+                    delay(200)
                     matchedQueue.clear()
                     loadNewBoard()
                 }
