@@ -162,7 +162,7 @@ class PrononcezViewModel @Inject constructor(
 
     companion object {
         const val GAME_TIME_MS = 90_000L
-        const val MAX_TIME_MS = 300_000L
+        const val MAX_TIME_MS = GAME_TIME_MS
         const val CORRECT_BONUS_MS = 10_000L
         const val WRONG_PENALTY_MS = 10_000L
         const val POINTS_PER_CORRECT = 150
