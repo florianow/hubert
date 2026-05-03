@@ -84,7 +84,7 @@ class PreposezViewModel @Inject constructor(
     private var currentQuestionFromReplay = false
 
     companion object {
-        const val GAME_TIME_MS = 60_000L
+        const val GAME_TIME_MS = 120_000L
         const val POINTS_PER_CORRECT = 150
         const val STREAK_BONUS = 30
         const val WRONG_PENALTY_MS = 5_000L
