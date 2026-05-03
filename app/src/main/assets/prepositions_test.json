@@ -1,0 +1,783 @@
+[
+  {
+    "fr": "Il faut peser le pour et le ___ avant de décider.",
+    "de": "Man muss das Für und Wider abwägen, bevor man entscheidet.",
+    "currentAnswer": "contre",
+    "availablePrepositions": [
+      "avant",
+      "de",
+      "pour"
+    ],
+    "alternativePrepositions": [
+      "avant",
+      "de",
+      "pour"
+    ],
+    "explanation": "\"Le pour et le contre\" = das Für und Wider.",
+    "originalDistracts": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Ils rentrent ___ eux, en Espagne, après dix ans à l'étranger.",
+    "de": "Sie kehren nach zehn Jahren im Ausland nach Spanien heim.",
+    "currentAnswer": "chez",
+    "availablePrepositions": [
+      "après",
+      "en",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "après",
+      "en",
+      "à"
+    ],
+    "explanation": "\"Chez\" bedeutet \"bei\" jemandem zu Hause oder in der Praxis.",
+    "originalDistracts": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous sommes passés ___ Trois-Rivières avant de rentrer à Montréal.",
+    "de": "Wir fuhren über Trois-Rivières, bevor wir nach Montreal zurückkehrten.",
+    "currentAnswer": "par",
+    "availablePrepositions": [
+      "avant",
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "avant",
+      "de",
+      "à"
+    ],
+    "explanation": "\"Par\" drückt hier Mittel, Häufigkeit, Ursache oder den Handelnden aus.",
+    "originalDistracts": [
+      "à",
+      "de",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a parlé ___ éloquence lors de la conférence.",
+    "de": "Sie hat mit Beredsamkeit auf der Konferenz gesprochen.",
+    "currentAnswer": "avec",
+    "availablePrepositions": [
+      "de",
+      "lors"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "lors"
+    ],
+    "explanation": "\"Avec\" beschreibt die Art und Weise (mit Geduld).",
+    "originalDistracts": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "___ mai à juin, les jardins sont en fleurs.",
+    "de": "Von Mai bis Juni blühen die Gärten.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "en",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "en",
+      "à"
+    ],
+    "explanation": "\"De\" markiert den Ausgangspunkt bei Zeitspannen oder Strecken.",
+    "originalDistracts": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle s'est assise à l'___ du bus pour éviter le mal des transports.",
+    "de": "Sie setzte sich in den vorderen Teil des Busses, um der Reisekrankheit vorzubeugen.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "pour",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "pour",
+      "à"
+    ],
+    "explanation": "\"L'avant\" als Substantiv = der vordere Teil, der Bug.",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "___ temps en temps, j'aime me promener dans le parc.",
+    "de": "Von Zeit zu Zeit spaziere ich gerne im Park.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "dans",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "en"
+    ],
+    "explanation": "\"De\" in festen Zeitausdrücken.",
+    "originalDistracts": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Je suis d'accord pour partir en vacances, mais pas ___ lui.",
+    "de": "Ich bin einverstanden, in den Urlaub zu fahren, aber nicht mit ihm.",
+    "currentAnswer": "avec",
+    "availablePrepositions": [
+      "en",
+      "pour"
+    ],
+    "alternativePrepositions": [
+      "en",
+      "pour"
+    ],
+    "explanation": "\"Avec\" bedeutet \"mit\" bei Begleitung.",
+    "originalDistracts": [
+      "sans",
+      "de",
+      "pour"
+    ]
+  },
+  {
+    "fr": "Je dois passer ___ le pharmacien avant de rentrer.",
+    "de": "Ich muss noch in die Apotheke, bevor ich heimgehe.",
+    "currentAnswer": "chez",
+    "availablePrepositions": [
+      "avant",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "avant",
+      "de"
+    ],
+    "explanation": "\"Chez\" bedeutet \"bei\" jemandem zu Hause oder in der Praxis.",
+    "originalDistracts": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ loin en loin, on aperçoit des maisons dans la campagne.",
+    "de": "Hier und da sieht man Häuser auf dem Land.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "dans",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "en"
+    ],
+    "explanation": "\"De\" in festen Zeitausdrücken.",
+    "originalDistracts": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a pris une profonde inspiration ___ de plonger dans la piscine.",
+    "de": "Sie nahm einen tiefen Atemzug, bevor sie in den Pool sprang.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "dans",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "de"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le chef a goûté le plat ___ de l'envoyer en salle.",
+    "de": "Der Küchenchef hat das Gericht probiert, bevor er es in den Speisesaal schickte.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il faut toujours vérifier la météo ___ de planifier une sortie en plein air.",
+    "de": "Man sollte immer das Wetter überprüfen, bevor man einen Ausflug im Freien plant.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "C'est une manie ___ lui de toujours arriver en retard.",
+    "de": "Es ist eine Marotte von ihm, immer zu spät zu kommen.",
+    "currentAnswer": "chez",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"Chez\" bedeutet \"bei\" jemandem zu Hause oder in der Praxis.",
+    "originalDistracts": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "___ contre, je ne suis pas d'accord avec cette décision.",
+    "de": "Hingegen bin ich mit dieser Entscheidung nicht einverstanden.",
+    "currentAnswer": "par",
+    "availablePrepositions": [
+      "avec",
+      "contre"
+    ],
+    "alternativePrepositions": [
+      "avec",
+      "contre"
+    ],
+    "explanation": "\"Par\" in festen Wendungen.",
+    "originalDistracts": [
+      "pour",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "J'ai oublié mon mot de passe et je suis ___ accès à mes emails.",
+    "de": "Ich habe mein Passwort vergessen und bin ohne Zugang zu meinen E-Mails.",
+    "currentAnswer": "sans",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Sans\" bedeutet \"ohne\" - Abwesenheit oder Mangel.",
+    "originalDistracts": [
+      "avec",
+      "de",
+      "à"
+    ]
+  },
+  {
+    "fr": "Le train ___ Paris à Lyon part dans une heure.",
+    "de": "Der Zug von Paris nach Lyon fährt in einer Stunde ab.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "dans",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "à"
+    ],
+    "explanation": "\"De\" markiert den Ausgangspunkt bei Zeitspannen oder Strecken.",
+    "originalDistracts": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il faut regarder ___ le rétroviseur avant de changer de voie.",
+    "de": "Man muss in den Rückspiegel schauen, bevor man die Spur wechselt.",
+    "currentAnswer": "dans",
+    "availablePrepositions": [
+      "avant",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "avant",
+      "de"
+    ],
+    "explanation": "\"Dans\" bedeutet \"in\" mit Artikel (räumlich innen).",
+    "originalDistracts": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Elle a regardé à gauche et à droite ___ de traverser la route.",
+    "de": "Sie schaute nach links und rechts, bevor sie die Straße überquerte.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "La famille est ___ deuil après le décès de leur grand-mère.",
+    "de": "Die Familie ist nach dem Tod ihrer Großmutter in Trauer.",
+    "currentAnswer": "en",
+    "availablePrepositions": [
+      "après",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "après",
+      "de"
+    ],
+    "explanation": "\"En\" drückt hier Ort, Zustand, Dauer oder Art und Weise aus.",
+    "originalDistracts": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ l'attente de vos nouvelles, je reste à votre disposition.",
+    "de": "In Erwartung Ihrer Nachricht stehe ich Ihnen zur Verfügung.",
+    "currentAnswer": "dans",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Dans\" bedeutet \"in\" mit Artikel (räumlich innen).",
+    "originalDistracts": [
+      "en",
+      "à",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Vous ___ avez, de la patience avec ces enfants !",
+    "de": "Sie haben ja wirklich Geduld mit diesen Kindern!",
+    "currentAnswer": "en",
+    "availablePrepositions": [
+      "avec",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "avec",
+      "de"
+    ],
+    "explanation": "\"En\" drückt hier Ort, Zustand, Dauer oder Art und Weise aus.",
+    "originalDistracts": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "J'ai commencé à apprendre le français ___ l'âge de dix ans.",
+    "de": "Ich habe mit etwa zehn Jahren angefangen, Französisch zu lernen.",
+    "currentAnswer": "vers",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Vers\" bedeutet \"in Richtung\", \"zu ... hin\" oder \"gegen\" (ungefähre Zeit).",
+    "originalDistracts": [
+      "dans",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "L'équipe a réussi un beau ___ en fin de match.",
+    "de": "Der Mannschaft gelang am Ende des Spiels ein schöner Konter.",
+    "currentAnswer": "contre",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"Contre\" bedeutet \"gegen\" - Opposition, Kontakt oder Austausch.",
+    "originalDistracts": [
+      "pour",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "___ tout, c'est à vous de décider.",
+    "de": "Schließlich müssen Sie entscheiden.",
+    "currentAnswer": "après",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Après\" in festen Wendungen.",
+    "originalDistracts": [
+      "avant",
+      "depuis",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Le magasin est ouvert de 10h ___ 19h sans interruption.",
+    "de": "Das Geschäft ist von 10 bis 19 Uhr durchgehend geöffnet.",
+    "currentAnswer": "à",
+    "availablePrepositions": [
+      "de",
+      "sans"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "sans"
+    ],
+    "explanation": "\"À\" gibt hier Ort, Zeit, Empfänger oder Art und Weise an.",
+    "originalDistracts": [
+      "de",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Elle a vérifié son sac ___ de partir en vacances.",
+    "de": "Sie hat ihre Tasche überprüft, bevor sie in den Urlaub fuhr.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Elle a regardé l'___ de la voiture pour vérifier les dégâts.",
+    "de": "Sie hat die Vorderseite des Autos untersucht, um die Schäden zu überprüfen.",
+    "currentAnswer": "avant",
+    "availablePrepositions": [
+      "de",
+      "pour"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "pour"
+    ],
+    "explanation": "\"Avant\" bedeutet \"vor\" (zeitlich).",
+    "originalDistracts": [
+      "après",
+      "dans",
+      "dès"
+    ]
+  },
+  {
+    "fr": "Il y a une boulangerie à côté de ___ moi.",
+    "de": "Es gibt eine Bäckerei in meiner Nähe.",
+    "currentAnswer": "chez",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Chez\" bedeutet \"bei\" jemandem zu Hause oder in der Praxis.",
+    "originalDistracts": [
+      "à",
+      "dans",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il marche ___ pas de loup dans la chambre.",
+    "de": "Er schleicht auf leisen Sohlen durch das Zimmer.",
+    "currentAnswer": "à",
+    "availablePrepositions": [
+      "dans",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "de"
+    ],
+    "explanation": "\"À\" steht vor Städten und bestimmten Ortsangaben.",
+    "originalDistracts": [
+      "de",
+      "en",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Un coffre destiné ___ garder de l'argent en sécurité.",
+    "de": "Eine Schatulle, die dazu bestimmt ist, Geld sicher aufzubewahren.",
+    "currentAnswer": "à",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "en"
+    ],
+    "explanation": "\"À\" steht vor Städten und bestimmten Ortsangaben.",
+    "originalDistracts": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le peu d'étendue ___ l'île avait forcé quelques constructions à se jucher sur des pilotis.",
+    "de": "Die geringe Ausdehnung der Insel hatte einige Bauten dazu gezwungen, auf Pfählen zu stehen.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "sur",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "sur",
+      "à"
+    ],
+    "explanation": "\"De\" markiert den Ausgangspunkt bei Zeitspannen oder Strecken.",
+    "originalDistracts": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Nous coopérons à ce projet éducatif ___ la collaboration du CLSC de la région.",
+    "de": "Wir arbeiten mit Unterstützung des regionalen CLSC an diesem Bildungsprojekt.",
+    "currentAnswer": "avec",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "de",
+      "à"
+    ],
+    "explanation": "\"Avec\" bedeutet \"mit\" - Begleitung, Art und Weise oder Mittel.",
+    "originalDistracts": [
+      "par",
+      "à",
+      "de"
+    ]
+  },
+  {
+    "fr": "Pour se prévaloir ___ son droit de vote, chaque citoyen doit être inscrit sur la liste électorale.",
+    "de": "Um sein Wahlrecht geltend zu machen, muss jeder Bürger in der Wählerliste eingetragen sein.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "de",
+      "pour",
+      "sur"
+    ],
+    "alternativePrepositions": [
+      "pour",
+      "sur"
+    ],
+    "explanation": "\"De\" drückt hier Zugehörigkeit, Herkunft oder eine partitive Beziehung aus.",
+    "originalDistracts": [
+      "sur",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Le chasseur s'approvisionne suffisamment ___ eau potable avant de partir.",
+    "de": "Der Jäger versorgt sich ausreichend mit Trinkwasser, bevor er aufbricht.",
+    "currentAnswer": "en",
+    "availablePrepositions": [
+      "avant",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "avant",
+      "de"
+    ],
+    "explanation": "\"En\" drückt hier Ort, Zustand, Dauer oder Art und Weise aus.",
+    "originalDistracts": [
+      "de",
+      "à",
+      "avec"
+    ]
+  },
+  {
+    "fr": "Qui étaient les gens assez misérables ___ habiter dans cette cabane de branches?",
+    "de": "Wer waren die Menschen, die arm genug waren, um in dieser Laubhütte zu wohnen?",
+    "currentAnswer": "pour",
+    "availablePrepositions": [
+      "dans",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "dans",
+      "de"
+    ],
+    "explanation": "\"Pour\" drückt hier Zweck, Empfänger, Dauer oder Grund aus.",
+    "originalDistracts": [
+      "avec",
+      "dans",
+      "sur"
+    ]
+  },
+  {
+    "fr": "Le général ___ Gaulle a joué un rôle important dans l'histoire de France.",
+    "de": "General de Gaulle hat eine wichtige Rolle in der französischen Geschichte gespielt.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "dans",
+      "de"
+    ],
+    "alternativePrepositions": [
+      "dans"
+    ],
+    "explanation": "\"De\" ist Teil von Adelstiteln und Eigennamen.",
+    "originalDistracts": [
+      "à",
+      "par",
+      "en"
+    ]
+  },
+  {
+    "fr": "Il résolut de dominer, à force ___ génie, l'influence maudite.",
+    "de": "Er beschloss, durch die Kraft seines Genies den verfluchten Einfluss zu bezwingen.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "de",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "à"
+    ],
+    "explanation": "\"De\" drückt hier Zugehörigkeit, Herkunft oder eine partitive Beziehung aus.",
+    "originalDistracts": [
+      "à",
+      "sur",
+      "en"
+    ]
+  },
+  {
+    "fr": "Après avoir appris ___ ses enfants à cuisiner, la mère les a mis à la porte.",
+    "de": "Nachdem die Mutter ihren Kindern das Kochen beigebracht hatte, warf sie sie hinaus.",
+    "currentAnswer": "à",
+    "availablePrepositions": [
+      "après",
+      "à"
+    ],
+    "alternativePrepositions": [
+      "après"
+    ],
+    "explanation": "\"À\" gibt hier Ort, Zeit, Empfänger oder Art und Weise an.",
+    "originalDistracts": [
+      "de",
+      "pour",
+      "en"
+    ]
+  },
+  {
+    "fr": "Pour tirer ___ la cible, le chasseur doit appuyer délicatement sur la gâchette.",
+    "de": "Um auf das Ziel zu schießen, muss der Jäger sanft den Abzug drücken.",
+    "currentAnswer": "sur",
+    "availablePrepositions": [
+      "pour",
+      "sur"
+    ],
+    "alternativePrepositions": [
+      "pour"
+    ],
+    "explanation": "\"Sur\" drückt hier eine Oberfläche, ein Thema oder ein Verhältnis aus.",
+    "originalDistracts": [
+      "de",
+      "à",
+      "en"
+    ]
+  },
+  {
+    "fr": "Ce manteau en coton est assorti ___ boutons de métal luisant.",
+    "de": "Dieser Baumwollmantel ist mit glänzenden Metallknöpfen besetzt.",
+    "currentAnswer": "de",
+    "availablePrepositions": [
+      "de",
+      "en"
+    ],
+    "alternativePrepositions": [
+      "en"
+    ],
+    "explanation": "\"De\" drückt hier Zugehörigkeit, Herkunft oder eine partitive Beziehung aus.",
+    "originalDistracts": [
+      "en",
+      "à",
+      "avec"
+    ]
+  }
+]

@@ -156,7 +156,7 @@ fun PreposezScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // 4 preposition choices in a 2x2 grid
             Column(
@@ -191,19 +191,32 @@ fun PreposezScreen(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Explanation — fixed height slot, appears after answer
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(28.dp),
-                contentAlignment = Alignment.Center
+                    .height(72.dp)
             ) {
-                if (state.streak >= 2) {
-                    Text(
-                        text = "Streak x${state.streak}",
-                        color = GermanGold,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
+                if (state.feedback != null && state.explanation.isNotBlank()) {
+                    val feedbackColor = if (state.feedback == true) CorrectGreen else WrongRed
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        shape = RoundedCornerShape(12.dp),
+                        color = feedbackColor.copy(alpha = 0.10f)
+                    ) {
+                        Box(
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text(
+                                text = "💡 ${state.explanation}",
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                                lineHeight = 18.sp
+                            )
+                        }
+                    }
                 }
             }
         }

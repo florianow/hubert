@@ -414,6 +414,17 @@ private fun AnswerCard(
                         )
                     }
                 }
+
+                // Explanation (if available)
+                if (answer.explanation.isNotBlank()) {
+                    Text(
+                        text = answer.explanation,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
             }
         }
     }

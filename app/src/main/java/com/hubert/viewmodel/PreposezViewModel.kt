@@ -20,7 +20,8 @@ data class PrepositionQuestion(
     val fr: String,
     val de: String,
     val answer: String,
-    val distractors: List<String>
+    val distractors: List<String>,
+    val explanation: String = ""
 )
 
 data class PreposezState(
@@ -37,6 +38,7 @@ data class PreposezState(
     // Feedback
     val selectedIndex: Int? = null,
     val feedback: Boolean? = null,
+    val explanation: String = "",
 
     // Scoring
     val score: Int = 0,
@@ -153,7 +155,8 @@ class PreposezViewModel @Inject constructor(
                 choices = allChoices,
                 correctIndex = correctIdx,
                 selectedIndex = null,
-                feedback = null
+                feedback = null,
+                explanation = ""
             )
         }
     }
@@ -163,13 +166,15 @@ class PreposezViewModel @Inject constructor(
         if (!state.isPlaying || state.feedback != null) return
 
         val isCorrect = choiceIndex == state.correctIndex
+        val explanation = currentQuestion?.explanation ?: ""
 
         answerLog.add(
             AnswerRecord(
                 question = state.sentenceWithGap,
                 yourAnswer = state.choices[choiceIndex],
                 correctAnswer = state.choices[state.correctIndex],
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                explanation = explanation
             )
         )
 
@@ -185,12 +190,14 @@ class PreposezViewModel @Inject constructor(
                 it.copy(
                     selectedIndex = choiceIndex,
                     feedback = true,
+                    explanation = explanation,
                     score = it.score + matchScore,
                     totalCorrect = it.totalCorrect + 1,
                     streak = newStreak,
                     bestStreak = maxOf(it.bestStreak, newStreak)
                 )
             }
+
         } else {
             timerDeadline -= WRONG_PENALTY_MS
 
@@ -207,6 +214,7 @@ class PreposezViewModel @Inject constructor(
                 it.copy(
                     selectedIndex = choiceIndex,
                     feedback = false,
+                    explanation = explanation,
                     totalWrong = it.totalWrong + 1,
                     streak = 0
                 )
@@ -220,10 +228,8 @@ class PreposezViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            delay(if (isCorrect) 600 else 1000)
-            if (_uiState.value.isPlaying) {
-                showNextQuestion()
-            }
+            delay(if (isCorrect) 1200 else 2500)
+            if (_uiState.value.isPlaying) showNextQuestion()
         }
     }
 
