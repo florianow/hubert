@@ -94,12 +94,12 @@ Hear a French word spoken via TTS, then type it. The German translation is shown
 
 A verb conjugation challenge. Before the game starts, you choose which tenses to practice (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé). During gameplay, tenses are picked randomly from your selection with error-weighted repetition — tenses you get wrong appear more frequently.
 
-When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive (with IPA transcription) and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Passé composé has two question types that alternate: auxiliary selection (avoir/être) and verb form selection. Tap the tense name to see a grammar info dialog with German explanations, examples, and conjugation formation tables (limited to 3 views per tense per round — timer pauses while viewing, lock icon shown when exhausted). After answering, tap "Next" to advance manually.
+When a matching example sentence exists in the dataset, you see a French sentence with the verb blanked out, plus the German translation as context. Otherwise, a plain drill card shows the infinitive (with IPA transcription) and subject pronoun. Pick the correct conjugated form from 4 choices — distractors are other forms of the same verb (different tenses or persons). Passé composé has two question types that alternate: auxiliary selection (avoir/être) and verb form selection. When both **Subjonctif** and **Présent** are selected, a special mood-recognition question fires ~25% of the time: a sentence is shown and you must decide whether it takes the subjonctif or the indicatif based on the trigger phrase (e.g. *il faut que* → subjonctif, *je sais que* → indicatif). Tap the tense name to see a grammar info dialog with German explanations, examples, and conjugation formation tables (limited to 3 views per tense per round — timer pauses while viewing, lock icon shown when exhausted). After answering, tap "Next" to advance manually.
 
 - **Scoring**: Timer-based — 90s countdown, +5s correct, -5s wrong, 300s cap. 150 pts per correct + 30 per streak level
 - **Pool**: 1182 verbs across 8 tenses (Présent, Imparfait, Futur, Conditionnel, Subjonctif, Passé simple, Impératif, Passé composé)
 
-### 7. Préposez!
+### 6. Préposez!
 
 A French sentence is shown with the preposition blanked out. The German translation is shown as a hint. Pick the correct preposition from 4 choices — covering à, de, en, dans, sur, avec, sans, par, pour, avant, après, entre, contre, sous, vers, chez.
 
@@ -128,7 +128,7 @@ Each category receives a score from 0–100 with a short German explanation, plu
 - **Topics**: ~80 scenarios across CEFR A1–B2
 - **Requires**: Azure Speech Services API key + Google Gemini API key (both configured in-app via settings)
 
-### 6. Prononcez!
+### 7. Prononcez!
 
 Read French sentences aloud and get scored on your pronunciation by Azure Speech Services. A reference sentence is displayed (French + German translation), you record yourself reading it, and Azure returns a pronunciation score with per-word accuracy feedback. Words you mispronounced are highlighted in the results. After each attempt, you can compare your pronunciation to the correct one — tap "Correct" to hear the sentence via TTS, or "Yours" to play back your own recording. Tap "Next" to advance manually.
 
@@ -165,7 +165,7 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 <table>
   <tr>
     <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Main Menu</b></td>
-    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 6 Game Modes</b></td>
+    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 8 Game Modes</b></td>
     <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Trouvez!</b></td>
   </tr>
   <tr>
@@ -278,7 +278,7 @@ This reads the local Anki database (requires the "Französisch 5000" deck import
 
 | File | Contents | Size |
 |------|----------|------|
-| `app/src/main/assets/conjugations.json` | 1182 verbs with conjugation forms across 8 tenses + matched example sentences | ~2 MB |
+| `app/src/main/assets/conjugations.json` | 1182 verbs with conjugation forms across 8 tenses + matched example sentences | ~3.2 MB |
 
 ### Data Fields
 
@@ -311,7 +311,8 @@ app/src/main/java/com/hubert/
 │   └── repository/
 │       ├── VocabRepository.kt      # Vocab, categories, sentences, conjugations, IPA lookup
 │       ├── HighScoreRepository.kt  # Save/query scores by game type
-│       └── StatisticsRepository.kt # Game sessions, word attempts, achievements
+│       ├── StatisticsRepository.kt # Game sessions, word attempts, achievements
+│       └── SettingsRepository.kt   # DataStore-backed API key storage (Azure + Gemini)
 ├── di/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
@@ -327,7 +328,8 @@ app/src/main/java/com/hubert/
 │   │   ├── ParlezScreen.kt         # Parlez! game UI (topic selection, conversation, evaluation)
 │   │   ├── GameOverScreen.kt       # Generic game over screen (with answer history detail)
 │   │   ├── StatisticsScreen.kt     # Statistics, achievements, words I struggle with
-│   │   └── HighScoresScreen.kt     # Top 10 high scores list
+│   │   ├── HighScoresScreen.kt     # Top 10 high scores list
+│   │   └── SettingsScreen.kt       # Global API key settings (Azure Speech + Google Gemini)
 │   └── theme/
 │       ├── Color.kt                # FrenchBlue, GermanGold, AccentPurple, etc.
 │       └── Theme.kt                # Material 3 theme configuration
@@ -346,6 +348,7 @@ app/src/main/java/com/hubert/
 │   ├── PreposezViewModel.kt        # Préposez! game logic
 │   ├── ParlezViewModel.kt          # Parlez! game logic (Gemini conversation, Azure STT, evaluation)
 │   ├── StatisticsViewModel.kt      # Statistics and achievements
+│   ├── SettingsViewModel.kt        # Settings logic (read/write API keys via SettingsRepository)
 │   └── AnswerRecord.kt             # Per-question answer log for detail views
 ├── HubertApplication.kt            # Hilt application class
 └── MainActivity.kt                 # Entry point, screen navigation
@@ -370,7 +373,7 @@ app/src/main/assets/
 graph TD
     UI["<b>UI Layer</b><br/>MenuScreen · TrouvezScreen · ClassezScreen<br/>CompletezScreen · EcrivezScreen<br/>ConjuguezScreen · PrononcezScreen · PreposezScreen<br/>ParlezScreen · GameOverScreen · StatisticsScreen"]
     VM["<b>ViewModel Layer</b><br/>TrouvezViewModel · ClassezViewModel<br/>CompletezViewModel · EcrivezViewModel<br/>ConjuguezViewModel · PrononcezViewModel<br/>PreposezViewModel · ParlezViewModel · StatisticsViewModel<br/><i>(timer/points, scoring, streak, game state)</i>"]
-    REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository<br/>AzurePronunciationApi · GeminiApi · AudioRecorder"]
+    REPO["<b>Repository / API Layer</b><br/>VocabRepository · HighScoreRepository<br/>StatisticsRepository · SettingsRepository<br/>AzurePronunciationApi · GeminiApi · AudioRecorder"]
     DATA["<b>Data Layer</b><br/>vocab.json · categories.json · sentences.json · conjugations.json<br/>parlez_topics.json<br/>Room SQLite (high_scores, game_sessions, word_attempts)<br/>Azure Speech Services REST API · Google Gemini REST API"]
 
     UI -- "observes StateFlow" --> VM
@@ -409,7 +412,7 @@ The app uses `fallbackToDestructiveMigration()` — if the database schema chang
 ### Prononcez! — "Assessment failed" error
 
 - Make sure you have a working internet connection — Prononcez! requires network access to Azure Speech Services
-- Check that your Azure Speech API key and region are correctly configured (tap the settings icon on the Prononcez! screen)
+- Check that your Azure Speech API key and region are correctly configured (tap the settings icon in the main menu)
 - You can get a free Azure Speech Services key at [Azure Portal](https://portal.azure.com/) (free tier: 5 hours/month)
 
 ### Prononcez! — recording not working
@@ -419,7 +422,7 @@ The app uses `fallbackToDestructiveMigration()` — if the database schema chang
 
 ### Parlez! — conversation not working
 
-- Parlez! requires both an **Azure Speech Services API key** (for speech-to-text + pronunciation) and a **Google Gemini API key** (for conversation + evaluation). Configure both in the app settings.
+- Parlez! requires both an **Azure Speech Services API key** (for speech-to-text + pronunciation) and a **Google Gemini API key** (for conversation + evaluation). Configure both via the settings icon in the main menu.
 - Get a free Gemini API key at [Google AI Studio](https://aistudio.google.com/apikey)
 - If Hubert's replies seem truncated, check your Gemini API quota — Parlez! uses Gemini 2.5 Flash
 - If words are getting cut off during recording, make sure you wait a moment after finishing your sentence before the recording stops
