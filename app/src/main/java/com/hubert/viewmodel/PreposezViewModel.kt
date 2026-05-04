@@ -25,9 +25,13 @@ data class PrepositionQuestion(
 )
 
 data class PreposezState(
+    val isSelection: Boolean = false,
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
+
+    // Selection
+    val selectedPrepositions: Set<String> = PreposezViewModel.ALL_PREPOSITIONS,
 
     // Current question
     val sentenceWithGap: String = "",
@@ -90,6 +94,17 @@ class PreposezViewModel @Inject constructor(
         const val WRONG_PENALTY_MS = 5_000L
         const val CORRECT_BONUS_MS = 5_000L
         const val GAME_TYPE = "preposition"
+
+        // Grouped prepositions for the selection screen
+        val PREPOSITION_GROUPS = listOf(
+            "Grundpräpositionen" to listOf("à", "de", "en", "dans", "sur", "par"),
+            "Bewegung & Richtung" to listOf("vers", "chez", "hors"),
+            "Zeit" to listOf("avant", "après", "depuis", "pendant", "durant", "dès", "lors"),
+            "Logik & Beziehung" to listOf("avec", "sans", "pour", "contre", "selon", "malgré", "sauf"),
+            "Menge & Gruppe" to listOf("entre", "parmi"),
+        )
+
+        val ALL_PREPOSITIONS: Set<String> = PREPOSITION_GROUPS.flatMap { it.second }.toSet()
     }
 
     init {
@@ -106,16 +121,55 @@ class PreposezViewModel @Inject constructor(
         allQuestions = Gson().fromJson(json, type)
     }
 
+    fun showSelection() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        _uiState.update {
+            PreposezState(
+                isSelection = true,
+                selectedPrepositions = it.selectedPrepositions,
+                highScore = it.highScore
+            )
+        }
+    }
+
+    fun togglePreposition(prep: String) {
+        val current = _uiState.value.selectedPrepositions
+        val new = if (prep in current) {
+            if (current.size <= 1) current else current - prep
+        } else {
+            current + prep
+        }
+        _uiState.update { it.copy(selectedPrepositions = new) }
+    }
+
+    fun toggleGroup(preps: List<String>) {
+        val current = _uiState.value.selectedPrepositions
+        val allSelected = preps.all { it in current }
+        val new = if (allSelected) {
+            val remaining = current - preps.toSet()
+            if (remaining.isEmpty()) current else remaining
+        } else {
+            current + preps
+        }
+        _uiState.update { it.copy(selectedPrepositions = new) }
+    }
+
     fun startGame() {
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
 
-        questionPool = allQuestions.shuffled().toMutableList()
+        val selected = _uiState.value.selectedPrepositions
+        val filtered = allQuestions.filter { it.answer in selected }
+        questionPool = filtered.shuffled().toMutableList()
+
 
         _uiState.update {
             PreposezState(
                 isPlaying = false,
+                isSelection = false,
+                selectedPrepositions = selected,
                 countdown = 3,
                 highScore = it.highScore
             )
@@ -141,7 +195,10 @@ class PreposezViewModel @Inject constructor(
             replayPool.removeFirst()
         } else {
             currentQuestionFromReplay = false
-            if (questionPool.isEmpty()) questionPool = allQuestions.shuffled().toMutableList()
+            if (questionPool.isEmpty()) {
+            val sel = _uiState.value.selectedPrepositions
+            questionPool = allQuestions.filter { it.answer in sel }.shuffled().toMutableList()
+        }
             questionPool.removeFirst()
         }
         currentQuestion = question
@@ -299,7 +356,8 @@ class PreposezViewModel @Inject constructor(
         countdownJob?.cancel()
         answerLog.clear()
         replayPool.clear()
-        _uiState.value = PreposezState()
+        val selected = _uiState.value.selectedPrepositions
+        _uiState.value = PreposezState(selectedPrepositions = selected)
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
             _uiState.update { it.copy(highScore = hs) }

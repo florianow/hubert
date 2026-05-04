@@ -98,7 +98,7 @@ fun HubertApp() {
                 "spelling_bee" -> spellingBeeVm.startGame()
                 "conjugation" -> conjugationVm.showTenseSelection()
                 "pronunciation" -> pronunciationVm.onGameSelected()
-                "preposition" -> prepositionVm.startGame()
+                "preposition" -> prepositionVm.showSelection()
                 "parlez"      -> parlezVm.onGameSelected()
             }
         }
@@ -141,8 +141,8 @@ fun HubertApp() {
         }
     }
 
-    LaunchedEffect(prepositionState.isPlaying, prepositionState.isGameOver, prepositionState.countdown) {
-        if (prepositionState.countdown != null || prepositionState.isPlaying || prepositionState.isGameOver) {
+    LaunchedEffect(prepositionState.isSelection, prepositionState.isPlaying, prepositionState.isGameOver, prepositionState.countdown) {
+        if (prepositionState.isSelection || prepositionState.countdown != null || prepositionState.isPlaying || prepositionState.isGameOver) {
             currentScreen = Screen.PREPOSEZ
         }
     }
@@ -463,6 +463,18 @@ fun HubertApp() {
 
         Screen.PREPOSEZ -> {
             when {
+                prepositionState.isSelection -> {
+                    PreposezSelectionScreen(
+                        state = prepositionState,
+                        onToggle = { prepositionVm.togglePreposition(it) },
+                        onToggleGroup = { prepositionVm.toggleGroup(it) },
+                        onStart = { prepositionVm.startGame() },
+                        onBack = {
+                            prepositionVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
                 prepositionState.countdown != null -> {
                     CountdownScreen(
                         count = prepositionState.countdown!!,
@@ -594,7 +606,7 @@ fun HubertApp() {
                 onStartSpellingBee = { spellingBeeVm.startGame() },
                 onStartConjugation = { conjugationVm.showTenseSelection() },
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
-                onStartPreposition = { prepositionVm.startGame() },
+                onStartPreposition = { prepositionVm.showSelection() },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {

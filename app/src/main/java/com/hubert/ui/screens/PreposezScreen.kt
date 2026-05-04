@@ -1,12 +1,17 @@
 package com.hubert.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Circle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,8 +25,172 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.PreposezState
+import com.hubert.viewmodel.PreposezViewModel
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun PreposezSelectionScreen(
+    state: PreposezState,
+    onToggle: (String) -> Unit,
+    onToggleGroup: (List<String>) -> Unit,
+    onStart: () -> Unit,
+    onBack: () -> Unit
+) {
+    val accentColor = Color(0xFF9C27B0)
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Top bar
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Zurück",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Column {
+                    Text(
+                        text = "Préposez!",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = accentColor
+                    )
+                    Text(
+                        text = "Wähle Präpositionen zum Üben",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                PreposezViewModel.PREPOSITION_GROUPS.forEach { (groupName, preps) ->
+                    val allSelected = preps.all { it in state.selectedPrepositions }
+                    val anySelected = preps.any { it in state.selectedPrepositions }
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (anySelected)
+                                accentColor.copy(alpha = 0.07f)
+                            else
+                                MaterialTheme.colorScheme.surface
+                        ),
+                        border = BorderStroke(
+                            width = if (anySelected) 1.5.dp else 1.dp,
+                            color = if (anySelected) accentColor.copy(alpha = 0.4f)
+                                    else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            // Group header
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onToggleGroup(preps) },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = groupName,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = if (anySelected) accentColor
+                                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                                Icon(
+                                    imageVector = if (allSelected) Icons.Filled.CheckCircle
+                                                  else Icons.Outlined.Circle,
+                                    contentDescription = null,
+                                    tint = if (allSelected) accentColor
+                                           else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+
+                            // Prep chips
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                preps.forEach { prep ->
+                                    val selected = prep in state.selectedPrepositions
+                                    Surface(
+                                        shape = RoundedCornerShape(20.dp),
+                                        color = if (selected) accentColor else Color.Transparent,
+                                        border = BorderStroke(
+                                            1.5.dp,
+                                            if (selected) accentColor else accentColor.copy(alpha = 0.25f)
+                                        ),
+                                        modifier = Modifier
+                                            .padding(bottom = 4.dp)
+                                            .clickable { onToggle(prep) }
+                                    ) {
+                                        Text(
+                                            text = prep,
+                                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
+                                            color = if (selected) Color.White else accentColor.copy(alpha = 0.7f),
+                                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                                            fontSize = 14.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = onStart,
+                enabled = state.selectedPrepositions.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = accentColor)
+            ) {
+                Text(
+                    text = "START · ${state.selectedPrepositions.size} Präpositionen",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    letterSpacing = 1.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
 
 @Composable
 fun PreposezScreen(
