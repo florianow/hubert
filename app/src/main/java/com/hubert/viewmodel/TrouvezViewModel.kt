@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
-import com.hubert.data.local.WordAccuracy
+import com.hubert.data.local.WordStreak
 import com.hubert.data.repository.HighScoreRepository
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
@@ -35,7 +35,7 @@ data class TrouvezState(
     val searchResults: List<VocabWord> = emptyList(),
     val pinnedRanks: Set<Int> = emptySet(),
     val pinnedWords: List<VocabWord> = emptyList(),
-    val wordAccuracy: Map<String, WordAccuracy> = emptyMap(), // french word -> accuracy data
+    val wordStreaks: Map<String, WordStreak> = emptyMap(), // french word -> streak data
 
     // Current 6 word slots (always 6 visible on each side)
     val frenchWords: List<WordItem> = emptyList(),
@@ -153,8 +153,8 @@ class TrouvezViewModel @Inject constructor(
         viewModelScope.launch {
             val pinned = _uiState.value.pinnedWords
             if (pinned.isNotEmpty()) {
-                val accuracy = statisticsRepository.getAccuracyForWords(pinned.map { it.french })
-                _uiState.update { it.copy(wordAccuracy = accuracy) }
+                val accuracy = statisticsRepository.getStreaksForWords(pinned.map { it.french })
+                _uiState.update { it.copy(wordStreaks = accuracy) }
             }
         }
     }
@@ -167,8 +167,8 @@ class TrouvezViewModel @Inject constructor(
         _uiState.update { it.copy(searchQuery = query, searchResults = results) }
         if (results.isNotEmpty()) {
             viewModelScope.launch {
-                val accuracy = statisticsRepository.getAccuracyForWords(results.map { it.french })
-                _uiState.update { it.copy(wordAccuracy = it.wordAccuracy + accuracy) }
+                val accuracy = statisticsRepository.getStreaksForWords(results.map { it.french })
+                _uiState.update { it.copy(wordStreaks = it.wordStreaks + accuracy) }
             }
         }
     }
@@ -177,12 +177,6 @@ class TrouvezViewModel @Inject constructor(
         viewModelScope.launch { pinnedWordsRepository.togglePin(rank) }
     }
 
-    fun resetWordAttempts(french: String) {
-        viewModelScope.launch {
-            statisticsRepository.resetAttemptsForWord(french)
-            _uiState.update { it.copy(wordAccuracy = it.wordAccuracy - french) }
-        }
-    }
 
     fun startGame() {
         countdownJob?.cancel()
@@ -207,7 +201,7 @@ class TrouvezViewModel @Inject constructor(
                 highScore = it.highScore,
                 pinnedRanks = it.pinnedRanks,
                 pinnedWords = it.pinnedWords,
-                wordAccuracy = it.wordAccuracy
+                wordStreaks = it.wordStreaks
             )
         }
 
@@ -426,7 +420,10 @@ class TrouvezViewModel @Inject constructor(
             }
         } else {
             // Wrong match: remember this word was hard — will be replayed after it's correctly matched
-            if (frenchItem.rank >= 0) wrongAttemptedRanks.add(frenchItem.rank)
+            if (frenchItem.rank >= 0) {
+                wrongAttemptedRanks.add(frenchItem.rank)
+                viewModelScope.launch { statisticsRepository.resetAttemptsForWord(frenchItem.text) }
+            }
 
             timerDeadline -= WRONG_PENALTY_MS
 
@@ -550,7 +547,7 @@ class TrouvezViewModel @Inject constructor(
 
             // Load accuracy for all words that appeared in this run (includes updated counts)
             val runWords = answerLog.map { it.question }.distinct()
-            val accuracy = statisticsRepository.getAccuracyForWords(runWords)
+            val accuracy = statisticsRepository.getStreaksForWords(runWords)
 
             _uiState.update {
                 it.copy(
@@ -560,7 +557,7 @@ class TrouvezViewModel @Inject constructor(
                     highScore = maxOf(it.highScore, state.score),
                     durationMs = durationMs,
                     answerHistory = answerLog.toList(),
-                    wordAccuracy = it.wordAccuracy + accuracy
+                    wordStreaks = it.wordStreaks + accuracy
                 )
             }
         }
@@ -574,7 +571,7 @@ class TrouvezViewModel @Inject constructor(
         pinnedPool.clear()
         wrongAttemptedRanks.clear()
         matchedQueue.clear()
-        _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords, wordAccuracy = it.wordAccuracy) }
+        _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords, wordStreaks = it.wordStreaks) }
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
             _uiState.update { it.copy(highScore = hs) }

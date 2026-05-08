@@ -53,19 +53,16 @@ interface WordAttemptDao {
     suspend fun getRecentlyStruggledWords(sinceMs: Long, limit: Int = 15): List<StruggledWord>
 
     /**
-     * Accuracy per word for a given list of French word texts.
-     * Only returns rows with at least [minAttempts] total attempts.
+     * All attempts for given words, ordered oldest first.
+     * Used to compute per-word streaks in Kotlin.
      */
     @Query("""
-        SELECT question,
-               COUNT(*) AS totalAttempts,
-               SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS totalCorrect
+        SELECT question, isCorrect
         FROM word_attempts
         WHERE question IN (:frenchWords)
-        GROUP BY question
-        HAVING COUNT(*) >= :minAttempts
+        ORDER BY id ASC
     """)
-    suspend fun getAccuracyForWords(frenchWords: List<String>, minAttempts: Int = 50): List<WordAccuracy>
+    suspend fun getAttemptsForWords(frenchWords: List<String>): List<WordAttemptRow>
 
     @Query("DELETE FROM word_attempts WHERE question = :french")
     suspend fun deleteAttemptsForWord(french: String)
@@ -74,14 +71,15 @@ interface WordAttemptDao {
     suspend fun clearAll()
 }
 
-data class WordAccuracy(
-    val question: String,   // French word text
-    val totalAttempts: Int,
-    val totalCorrect: Int
-) {
-    /** Score 1–10 based on accuracy, only meaningful when totalAttempts >= 50 */
-    val score: Int get() = ((totalCorrect.toFloat() / totalAttempts) * 10).toInt().coerceIn(1, 10)
-}
+data class WordAttemptRow(
+    val question: String,
+    val isCorrect: Boolean
+)
+
+data class WordStreak(
+    val question: String,
+    val streak: Int  // consecutive correct attempts from most recent, 0 if last was wrong
+)
 
 /** Query result for struggled-word aggregation. */
 data class StruggledWord(

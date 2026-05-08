@@ -26,9 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PushPin
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.PushPin
-import com.hubert.data.local.WordAccuracy
+import com.hubert.data.local.WordStreak
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.TrouvezState
 
@@ -38,8 +37,7 @@ private fun WordRow(
     german: String,
     isPinned: Boolean,
     accentColor: Color,
-    accuracy: WordAccuracy? = null,
-    onReset: (() -> Unit)? = null,
+    accuracy: WordStreak? = null,
     onClick: () -> Unit
 ) {
     Row(
@@ -67,34 +65,13 @@ private fun WordRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if (accuracy != null) {
-                if (accuracy.totalAttempts >= 50) {
-                    val scoreColor = when {
-                        accuracy.score >= 8 -> CorrectGreen
-                        accuracy.score >= 5 -> GermanGold
-                        else -> WrongRed
-                    }
-                    Text(
-                        text = "${accuracy.score}/10",
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = scoreColor
-                    )
-                } else {
-                    Text(
-                        text = "${accuracy.totalAttempts}/50",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
-                    )
-                }
-                if (onReset != null) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "Zurücksetzen",
-                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
-                        modifier = Modifier.size(16.dp).clickable { onReset() }
-                    )
-                }
+            if (accuracy != null && accuracy.streak > 0) {
+                Text(
+                    text = "🔥×${accuracy.streak}",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = GermanGold
+                )
             }
             Icon(
                 imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
@@ -112,7 +89,6 @@ fun TrouvezPinScreen(
     state: TrouvezState,
     onSearch: (String) -> Unit,
     onTogglePin: (Int) -> Unit,
-    onResetWord: (String) -> Unit,
     onStart: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -193,8 +169,7 @@ fun TrouvezPinScreen(
                             german = word.german,
                             isPinned = isPinned,
                             accentColor = accentColor,
-                            accuracy = state.wordAccuracy[word.french],
-                            onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
+                            accuracy = state.wordStreaks[word.french],
                             onClick = { onTogglePin(word.rank) }
                         )
                     }
@@ -216,8 +191,7 @@ fun TrouvezPinScreen(
                                     german = word.german,
                                     isPinned = true,
                                     accentColor = accentColor,
-                                    accuracy = state.wordAccuracy[word.french],
-                                    onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
+                                    accuracy = state.wordStreaks[word.french],
                                     onClick = { onTogglePin(word.rank) }
                                 )
                             }
@@ -240,8 +214,7 @@ fun TrouvezPinScreen(
                                 german = word.german,
                                 isPinned = true,
                                 accentColor = accentColor,
-                                accuracy = state.wordAccuracy[word.french],
-                                onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
+                                accuracy = state.wordStreaks[word.french],
                                 onClick = { onTogglePin(word.rank) }
                             )
                         }
