@@ -4,6 +4,7 @@ import com.hubert.data.local.DayCount
 import com.hubert.data.local.GameSessionDao
 import com.hubert.data.local.GameTypeDuration
 import com.hubert.data.local.StruggledWord
+import com.hubert.data.local.WordAccuracy
 import com.hubert.data.local.WordAttemptDao
 import com.hubert.data.model.GameSession
 import com.hubert.data.model.WordAttempt
@@ -367,6 +368,20 @@ class StatisticsRepository @Inject constructor(
             .atZone(java.time.ZoneId.systemDefault())
             .toInstant().toEpochMilli()
         return wordAttemptDao.getRecentlyStruggledWords(sinceMs = sinceMs, limit = limit)
+    }
+
+    /**
+     * Accuracy scores for a list of French words (used for pin screen scores).
+     * Only returns entries with >= 50 total attempts across all game types.
+     */
+    suspend fun resetAttemptsForWord(french: String) {
+        wordAttemptDao.deleteAttemptsForWord(french)
+    }
+
+    suspend fun getAccuracyForWords(frenchWords: List<String>): Map<String, WordAccuracy> {
+        if (frenchWords.isEmpty()) return emptyMap()
+        return wordAttemptDao.getAccuracyForWords(frenchWords, minAttempts = 1) // we show progress below 50, score at 50+
+            .associateBy { it.question }
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────

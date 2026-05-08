@@ -190,6 +190,7 @@ fun HubertApp() {
                         state = matchingState,
                         onSearch = { matchingVm.searchWords(it) },
                         onTogglePin = { matchingVm.togglePin(it) },
+                        onResetWord = { matchingVm.resetWordAttempts(it) },
                         onStart = { matchingVm.startGame() },
                         onBack = {
                             matchingVm.resetToMenu()
@@ -230,6 +231,7 @@ fun HubertApp() {
                         answerHistory = matchingState.answerHistory,
                         pinnedRanks = matchingState.pinnedRanks,
                         onTogglePin = { matchingVm.togglePin(it) },
+                        wordAccuracy = matchingState.wordAccuracy,
                         onPlayAgain = { matchingVm.startGame() },
                         onBackToMenu = {
                             matchingVm.resetToMenu()

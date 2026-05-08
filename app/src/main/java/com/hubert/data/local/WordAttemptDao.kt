@@ -52,8 +52,35 @@ interface WordAttemptDao {
     """)
     suspend fun getRecentlyStruggledWords(sinceMs: Long, limit: Int = 15): List<StruggledWord>
 
+    /**
+     * Accuracy per word for a given list of French word texts.
+     * Only returns rows with at least [minAttempts] total attempts.
+     */
+    @Query("""
+        SELECT question,
+               COUNT(*) AS totalAttempts,
+               SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS totalCorrect
+        FROM word_attempts
+        WHERE question IN (:frenchWords)
+        GROUP BY question
+        HAVING COUNT(*) >= :minAttempts
+    """)
+    suspend fun getAccuracyForWords(frenchWords: List<String>, minAttempts: Int = 50): List<WordAccuracy>
+
+    @Query("DELETE FROM word_attempts WHERE question = :french")
+    suspend fun deleteAttemptsForWord(french: String)
+
     @Query("DELETE FROM word_attempts")
     suspend fun clearAll()
+}
+
+data class WordAccuracy(
+    val question: String,   // French word text
+    val totalAttempts: Int,
+    val totalCorrect: Int
+) {
+    /** Score 1–10 based on accuracy, only meaningful when totalAttempts >= 50 */
+    val score: Int get() = ((totalCorrect.toFloat() / totalAttempts) * 10).toInt().coerceIn(1, 10)
 }
 
 /** Query result for struggled-word aggregation. */

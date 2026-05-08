@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import com.hubert.data.local.WordAccuracy
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.AnswerRecord
 
@@ -51,6 +52,7 @@ fun GameOverScreen(
     answerHistory: List<AnswerRecord> = emptyList(),
     pinnedRanks: Set<Int> = emptySet(),
     onTogglePin: ((Int) -> Unit)? = null,
+    wordAccuracy: Map<String, WordAccuracy> = emptyMap(),
     onPlayAgain: () -> Unit,
     onBackToMenu: () -> Unit
 ) {
@@ -76,6 +78,7 @@ fun GameOverScreen(
             accentColor = if (isShowingCorrect) CorrectGreen else WrongRed,
             pinnedRanks = pinnedRanks,
             onTogglePin = onTogglePin,
+            wordAccuracy = wordAccuracy,
             onBack = { showDetailFilter = null }
         )
         return
@@ -313,6 +316,7 @@ private fun AnswerDetailScreen(
     accentColor: Color,
     pinnedRanks: Set<Int> = emptySet(),
     onTogglePin: ((Int) -> Unit)? = null,
+    wordAccuracy: Map<String, WordAccuracy> = emptyMap(),
     onBack: () -> Unit
 ) {
     Column(
@@ -344,6 +348,7 @@ private fun AnswerDetailScreen(
                     answer = answer,
                     accentColor = accentColor,
                     isPinned = answer.rank >= 0 && answer.rank in pinnedRanks,
+                    accuracy = wordAccuracy[answer.question],
                     onTogglePin = if (answer.rank >= 0 && onTogglePin != null) {
                         { onTogglePin(answer.rank) }
                     } else null
@@ -358,6 +363,7 @@ private fun AnswerCard(
     answer: AnswerRecord,
     accentColor: Color,
     isPinned: Boolean = false,
+    accuracy: WordAccuracy? = null,
     onTogglePin: (() -> Unit)? = null
 ) {
     Card(
@@ -444,17 +450,33 @@ private fun AnswerCard(
                 }
             }
 
-            // Pin icon (only for Trouvez where rank is available)
+            // Accuracy + pin (only for Trouvez where rank is available)
             if (onTogglePin != null) {
-                Icon(
-                    imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
-                    contentDescription = null,
-                    tint = if (isPinned) FrenchBlue else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
-                    modifier = Modifier
-                        .size(22.dp)
-                        .clickable { onTogglePin() }
-                        .padding(top = 2.dp)
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+                        contentDescription = null,
+                        tint = if (isPinned) FrenchBlue else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
+                        modifier = Modifier
+                            .size(22.dp)
+                            .clickable { onTogglePin() }
+                    )
+                    if (accuracy != null) {
+                        val label = if (accuracy.totalAttempts >= 50) "${accuracy.score}/10"
+                                    else "${accuracy.totalAttempts}/50"
+                        val color = if (accuracy.totalAttempts >= 50) when {
+                            accuracy.score >= 8 -> CorrectGreen
+                            accuracy.score >= 5 -> GermanGold
+                            else -> WrongRed
+                        } else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                        Text(
+                            text = label,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = color
+                        )
+                    }
+                }
             }
         }
     }

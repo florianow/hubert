@@ -26,7 +26,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.PushPin
+import com.hubert.data.local.WordAccuracy
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.TrouvezState
 
@@ -36,6 +38,8 @@ private fun WordRow(
     german: String,
     isPinned: Boolean,
     accentColor: Color,
+    accuracy: WordAccuracy? = null,
+    onReset: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Row(
@@ -59,12 +63,46 @@ private fun WordRow(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
             )
         }
-        Icon(
-            imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
-            contentDescription = null,
-            tint = if (isPinned) accentColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
-            modifier = Modifier.size(22.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (accuracy != null) {
+                if (accuracy.totalAttempts >= 50) {
+                    val scoreColor = when {
+                        accuracy.score >= 8 -> CorrectGreen
+                        accuracy.score >= 5 -> GermanGold
+                        else -> WrongRed
+                    }
+                    Text(
+                        text = "${accuracy.score}/10",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = scoreColor
+                    )
+                } else {
+                    Text(
+                        text = "${accuracy.totalAttempts}/50",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                    )
+                }
+                if (onReset != null) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "Zurücksetzen",
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
+                        modifier = Modifier.size(16.dp).clickable { onReset() }
+                    )
+                }
+            }
+            Icon(
+                imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+                contentDescription = null,
+                tint = if (isPinned) accentColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
+                modifier = Modifier.size(22.dp)
+            )
+        }
     }
     Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f))
 }
@@ -74,6 +112,7 @@ fun TrouvezPinScreen(
     state: TrouvezState,
     onSearch: (String) -> Unit,
     onTogglePin: (Int) -> Unit,
+    onResetWord: (String) -> Unit,
     onStart: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -145,45 +184,67 @@ fun TrouvezPinScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             LazyColumn(modifier = Modifier.weight(1f)) {
-                // Pinned words section (always visible)
-                if (state.pinnedWords.isNotEmpty()) {
-                    item {
-                        Text(
-                            text = "Gepinnte Wörter",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = accentColor.copy(alpha = 0.7f),
-                            modifier = Modifier.padding(top = 4.dp, bottom = 6.dp)
-                        )
-                    }
-                    items(state.pinnedWords) { word ->
-                        WordRow(
-                            french = word.french,
-                            german = word.german,
-                            isPinned = true,
-                            accentColor = accentColor,
-                            onClick = { onTogglePin(word.rank) }
-                        )
-                    }
-                }
-
-                // Search results
+                // When searching: results first (visible above keyboard), pinned below
                 if (state.searchQuery.isNotBlank()) {
-                    item {
-                        Text(
-                            text = "Suchergebnisse",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                            modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
-                        )
-                    }
-                    items(state.searchResults.filter { it.rank !in state.pinnedRanks }) { word ->
+                    items(state.searchResults) { word ->
+                        val isPinned = word.rank in state.pinnedRanks
                         WordRow(
                             french = word.french,
                             german = word.german,
-                            isPinned = false,
+                            isPinned = isPinned,
                             accentColor = accentColor,
+                            accuracy = state.wordAccuracy[word.french],
+                            onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
                             onClick = { onTogglePin(word.rank) }
                         )
+                    }
+                    if (state.pinnedWords.isNotEmpty()) {
+                        val searchRanks = state.searchResults.map { it.rank }.toSet()
+                        val remaining = state.pinnedWords.filter { it.rank !in searchRanks }
+                        if (remaining.isNotEmpty()) {
+                            item {
+                                Text(
+                                    text = "Gepinnte Wörter",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = accentColor.copy(alpha = 0.7f),
+                                    modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
+                                )
+                            }
+                            items(remaining) { word ->
+                                WordRow(
+                                    french = word.french,
+                                    german = word.german,
+                                    isPinned = true,
+                                    accentColor = accentColor,
+                                    accuracy = state.wordAccuracy[word.french],
+                                    onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
+                                    onClick = { onTogglePin(word.rank) }
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    // No search: just show pinned words
+                    if (state.pinnedWords.isNotEmpty()) {
+                        item {
+                            Text(
+                                text = "Gepinnte Wörter",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = accentColor.copy(alpha = 0.7f),
+                                modifier = Modifier.padding(top = 4.dp, bottom = 6.dp)
+                            )
+                        }
+                        items(state.pinnedWords) { word ->
+                            WordRow(
+                                french = word.french,
+                                german = word.german,
+                                isPinned = true,
+                                accentColor = accentColor,
+                                accuracy = state.wordAccuracy[word.french],
+                                onReset = if (state.wordAccuracy[word.french] != null) {{ onResetWord(word.french) }} else null,
+                                onClick = { onTogglePin(word.rank) }
+                            )
+                        }
                     }
                 }
             }
