@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -28,6 +29,11 @@ data class TrouvezState(
     val isPlaying: Boolean = false,
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
+    val isPinSelection: Boolean = false,
+    val searchQuery: String = "",
+    val searchResults: List<VocabWord> = emptyList(),
+    val pinnedRanks: Set<Int> = emptySet(),
+    val pinnedWords: List<VocabWord> = emptyList(),
 
     // Current 6 word slots (always 6 visible on each side)
     val frenchWords: List<WordItem> = emptyList(),
@@ -76,6 +82,7 @@ class TrouvezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
+    private val pinnedWordsRepository: PinnedWordsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -112,12 +119,47 @@ class TrouvezViewModel @Inject constructor(
     // Words that had at least one wrong attempt — added to replayPool once correctly matched
     private val wrongAttemptedRanks: MutableSet<Int> = mutableSetOf()
     private val replayPool: ArrayDeque<VocabWord> = ArrayDeque()
+    // Pinned words queued for this run (filled at game start, higher priority than random)
+    private val pinnedPool: ArrayDeque<VocabWord> = ArrayDeque()
 
     init {
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
             _uiState.update { it.copy(highScore = hs) }
         }
+        viewModelScope.launch {
+            pinnedWordsRepository.pinnedRanks.collect { ranks ->
+                val words = ranks.mapNotNull { vocabRepository.getWordByRank(it) }
+                    .sortedBy { it.french }
+                _uiState.update { it.copy(pinnedRanks = ranks, pinnedWords = words) }
+            }
+        }
+    }
+
+    fun showPinSelection() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        _uiState.update {
+            it.copy(
+                isPinSelection = true,
+                isPlaying = false,
+                isGameOver = false,
+                searchQuery = "",
+                searchResults = emptyList()
+            )
+        }
+    }
+
+    fun searchWords(query: String) {
+        val results = if (query.isBlank()) emptyList()
+        else vocabRepository.getAllWords()
+            .filter { it.french.contains(query, ignoreCase = true) || it.german.contains(query, ignoreCase = true) }
+            .take(30)
+        _uiState.update { it.copy(searchQuery = query, searchResults = results) }
+    }
+
+    fun togglePin(rank: Int) {
+        viewModelScope.launch { pinnedWordsRepository.togglePin(rank) }
     }
 
     fun startGame() {
@@ -129,11 +171,20 @@ class TrouvezViewModel @Inject constructor(
         wrongAttemptedRanks.clear()
         replayPool.clear()
 
+        // Fill pinned pool with shuffled pinned words for this run
+        pinnedPool.clear()
+        val pinned = _uiState.value.pinnedRanks
+            .mapNotNull { vocabRepository.getWordByRank(it) }
+            .shuffled()
+        pinnedPool.addAll(pinned)
+
         _uiState.update {
             TrouvezState(
                 isPlaying = false,
                 countdown = 3,
-                highScore = it.highScore
+                highScore = it.highScore,
+                pinnedRanks = it.pinnedRanks,
+                pinnedWords = it.pinnedWords
             )
         }
 
@@ -149,11 +200,23 @@ class TrouvezViewModel @Inject constructor(
         }
     }
 
+    /** Pick words for a board slot, draining pinnedPool first then falling back to random. */
+    private fun pickWords(count: Int): List<VocabWord> {
+        val result = mutableListOf<VocabWord>()
+        repeat(count) {
+            result.add(
+                if (pinnedPool.isNotEmpty()) pinnedPool.removeFirst()
+                else vocabRepository.getRandomWords(1).first()
+            )
+        }
+        return result
+    }
+
     /**
      * Set up the initial 6x2 board and start the timer.
      */
     private fun initBoard() {
-        val words = vocabRepository.getRandomWords(SLOTS)
+        val words = pickWords(SLOTS)
 
         val frenchItems = words.mapIndexed { index, word ->
             WordItem(text = word.french, pairId = nextPairId + index, rank = word.rank, ipa = word.ipa)
@@ -259,7 +322,8 @@ class TrouvezViewModel @Inject constructor(
                 question = frenchItem.text,
                 yourAnswer = germanItem.text,
                 correctAnswer = correctGerman,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                rank = frenchItem.rank
             )
         )
 
@@ -366,7 +430,7 @@ class TrouvezViewModel @Inject constructor(
      * Score, streak, and timer continue.
      */
     private fun loadNewBoard() {
-        val words = vocabRepository.getRandomWords(SLOTS)
+        val words = pickWords(SLOTS)
 
         val frenchItems = words.mapIndexed { index, word ->
             WordItem(text = word.french, pairId = nextPairId + index, rank = word.rank, ipa = word.ipa)
@@ -466,9 +530,10 @@ class TrouvezViewModel @Inject constructor(
         countdownJob?.cancel()
         answerLog.clear()
         replayPool.clear()
+        pinnedPool.clear()
         wrongAttemptedRanks.clear()
         matchedQueue.clear()
-        _uiState.value = TrouvezState()
+        _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords) }
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore()
             _uiState.update { it.copy(highScore = hs) }

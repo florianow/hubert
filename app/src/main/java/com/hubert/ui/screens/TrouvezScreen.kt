@@ -20,10 +20,194 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.outlined.PushPin
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.TrouvezState
+
+@Composable
+private fun WordRow(
+    french: String,
+    german: String,
+    isPinned: Boolean,
+    accentColor: Color,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 10.dp, horizontal = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = french,
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = german,
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+            )
+        }
+        Icon(
+            imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+            contentDescription = null,
+            tint = if (isPinned) accentColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
+            modifier = Modifier.size(22.dp)
+        )
+    }
+    Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f))
+}
+
+@Composable
+fun TrouvezPinScreen(
+    state: TrouvezState,
+    onSearch: (String) -> Unit,
+    onTogglePin: (Int) -> Unit,
+    onStart: () -> Unit,
+    onBack: () -> Unit
+) {
+    val accentColor = FrenchBlue
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Zurück",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Column {
+                    Text(
+                        text = "Trouvez!",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = accentColor
+                    )
+                    Text(
+                        text = if (state.pinnedRanks.isEmpty()) "Wörter pinnen zum Üben"
+                               else "${state.pinnedRanks.size} Wörter gepinnt",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            OutlinedTextField(
+                value = state.searchQuery,
+                onValueChange = onSearch,
+                placeholder = { Text("Suchen (fr / de)…") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = accentColor,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                ),
+                trailingIcon = {
+                    if (state.searchQuery.isNotBlank()) {
+                        IconButton(onClick = { onSearch("") }) {
+                            Icon(Icons.Default.Close, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f))
+                        }
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn(modifier = Modifier.weight(1f)) {
+                // Pinned words section (always visible)
+                if (state.pinnedWords.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Gepinnte Wörter",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = accentColor.copy(alpha = 0.7f),
+                            modifier = Modifier.padding(top = 4.dp, bottom = 6.dp)
+                        )
+                    }
+                    items(state.pinnedWords) { word ->
+                        WordRow(
+                            french = word.french,
+                            german = word.german,
+                            isPinned = true,
+                            accentColor = accentColor,
+                            onClick = { onTogglePin(word.rank) }
+                        )
+                    }
+                }
+
+                // Search results
+                if (state.searchQuery.isNotBlank()) {
+                    item {
+                        Text(
+                            text = "Suchergebnisse",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                            modifier = Modifier.padding(top = 12.dp, bottom = 6.dp)
+                        )
+                    }
+                    items(state.searchResults.filter { it.rank !in state.pinnedRanks }) { word ->
+                        WordRow(
+                            french = word.french,
+                            german = word.german,
+                            isPinned = false,
+                            accentColor = accentColor,
+                            onClick = { onTogglePin(word.rank) }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = onStart,
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = accentColor)
+            ) {
+                Text(
+                    text = if (state.pinnedRanks.isEmpty()) "START" else "START · ${state.pinnedRanks.size} gepinnt",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    letterSpacing = 1.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
 
 @Composable
 fun TrouvezScreen(

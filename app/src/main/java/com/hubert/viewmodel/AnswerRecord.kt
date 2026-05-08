@@ -9,5 +9,6 @@ data class AnswerRecord(
     val yourAnswer: String,   // What the user picked/typed
     val correctAnswer: String,// The correct answer
     val isCorrect: Boolean,
-    val explanation: String = "" // Optional explanation why the answer is correct (e.g. Préposez!)
+    val explanation: String = "", // Optional explanation why the answer is correct (e.g. Préposez!)
+    val rank: Int = -1            // Vocab word rank, used for pin support in Trouvez
 )

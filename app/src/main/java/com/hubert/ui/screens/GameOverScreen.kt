@@ -12,6 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -47,6 +49,8 @@ fun GameOverScreen(
     highScore: Int,
     durationMs: Long,
     answerHistory: List<AnswerRecord> = emptyList(),
+    pinnedRanks: Set<Int> = emptySet(),
+    onTogglePin: ((Int) -> Unit)? = null,
     onPlayAgain: () -> Unit,
     onBackToMenu: () -> Unit
 ) {
@@ -70,6 +74,8 @@ fun GameOverScreen(
             title = if (isShowingCorrect) "Correct Answers" else "Wrong Answers",
             answers = filtered,
             accentColor = if (isShowingCorrect) CorrectGreen else WrongRed,
+            pinnedRanks = pinnedRanks,
+            onTogglePin = onTogglePin,
             onBack = { showDetailFilter = null }
         )
         return
@@ -305,6 +311,8 @@ private fun AnswerDetailScreen(
     title: String,
     answers: List<AnswerRecord>,
     accentColor: Color,
+    pinnedRanks: Set<Int> = emptySet(),
+    onTogglePin: ((Int) -> Unit)? = null,
     onBack: () -> Unit
 ) {
     Column(
@@ -332,7 +340,14 @@ private fun AnswerDetailScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(answers) { answer ->
-                AnswerCard(answer = answer, accentColor = accentColor)
+                AnswerCard(
+                    answer = answer,
+                    accentColor = accentColor,
+                    isPinned = answer.rank >= 0 && answer.rank in pinnedRanks,
+                    onTogglePin = if (answer.rank >= 0 && onTogglePin != null) {
+                        { onTogglePin(answer.rank) }
+                    } else null
+                )
             }
         }
     }
@@ -341,7 +356,9 @@ private fun AnswerDetailScreen(
 @Composable
 private fun AnswerCard(
     answer: AnswerRecord,
-    accentColor: Color
+    accentColor: Color,
+    isPinned: Boolean = false,
+    onTogglePin: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -425,6 +442,19 @@ private fun AnswerCard(
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
+            }
+
+            // Pin icon (only for Trouvez where rank is available)
+            if (onTogglePin != null) {
+                Icon(
+                    imageVector = if (isPinned) Icons.Filled.PushPin else Icons.Outlined.PushPin,
+                    contentDescription = null,
+                    tint = if (isPinned) FrenchBlue else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f),
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clickable { onTogglePin() }
+                        .padding(top = 2.dp)
+                )
             }
         }
     }

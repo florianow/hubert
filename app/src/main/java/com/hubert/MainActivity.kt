@@ -92,7 +92,7 @@ fun HubertApp() {
             val displayName = GameType.fromKey(gameTypeKey)?.displayName ?: gameTypeKey
             Toast.makeText(context, displayName, Toast.LENGTH_SHORT).show()
             when (gameTypeKey) {
-                "matching" -> matchingVm.startGame()
+                "matching" -> matchingVm.showPinSelection()
                 "gender_snap" -> genderSnapVm.startGame()
                 "gap_fill" -> gapFillVm.startGame()
                 "spelling_bee" -> spellingBeeVm.startGame()
@@ -105,8 +105,8 @@ fun HubertApp() {
     }
 
     // Navigate based on game states
-    LaunchedEffect(matchingState.isPlaying, matchingState.isGameOver, matchingState.countdown) {
-        if (matchingState.countdown != null || matchingState.isPlaying || matchingState.isGameOver) {
+    LaunchedEffect(matchingState.isPinSelection, matchingState.isPlaying, matchingState.isGameOver, matchingState.countdown) {
+        if (matchingState.isPinSelection || matchingState.countdown != null || matchingState.isPlaying || matchingState.isGameOver) {
             currentScreen = Screen.TROUVEZ
         }
     }
@@ -185,6 +185,18 @@ fun HubertApp() {
 
         Screen.TROUVEZ -> {
             when {
+                matchingState.isPinSelection -> {
+                    TrouvezPinScreen(
+                        state = matchingState,
+                        onSearch = { matchingVm.searchWords(it) },
+                        onTogglePin = { matchingVm.togglePin(it) },
+                        onStart = { matchingVm.startGame() },
+                        onBack = {
+                            matchingVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
                 matchingState.countdown != null -> {
                     CountdownScreen(
                         count = matchingState.countdown!!,
@@ -216,6 +228,8 @@ fun HubertApp() {
                         highScore = matchingState.highScore,
                         durationMs = matchingState.durationMs,
                         answerHistory = matchingState.answerHistory,
+                        pinnedRanks = matchingState.pinnedRanks,
+                        onTogglePin = { matchingVm.togglePin(it) },
                         onPlayAgain = { matchingVm.startGame() },
                         onBackToMenu = {
                             matchingVm.resetToMenu()
@@ -600,7 +614,7 @@ fun HubertApp() {
                 prepositionHighScore = prepositionState.highScore,
                 parlezHighScore = parlezState.highScore,
                 onHubertChoisit = onHubertChoisit,
-                onStartMatching = { matchingVm.startGame() },
+                onStartMatching = { matchingVm.showPinSelection() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },
                 onStartSpellingBee = { spellingBeeVm.startGame() },
