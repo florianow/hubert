@@ -283,7 +283,7 @@
       "par",
       "en"
     ],
-    "explanation": "C'est à + Person = es gehört jdm."
+    "explanation": "Adj. + à + Infinitiv = leicht/schwer zu tun. Facile à faire, difficile à dire."
   },
   {
     "fr": "Il faut toujours vérifier l'huile ___ un long voyage en voiture.",
@@ -2230,7 +2230,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À trois = zu dritt. À + Zahl drückt die Anzahl der Beteiligten aus."
   },
   {
     "fr": "Elle a crié ___ son chien qui s'enfuyait.",
@@ -2780,7 +2780,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À + Zeitangabe = Entfernung in Zeit. 'à cinq minutes' = fünf Minuten entfernt."
   },
   {
     "fr": "Il faut examiner cette question ___ tous les angles.",
@@ -4221,7 +4221,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Être à qqn = jemandem gehören. 'C'est à moi' = das gehört mir."
   },
   {
     "fr": "Je préfère le thé ___ du citron.",
@@ -5662,7 +5662,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Participer à = an etwas teilnehmen. Feste Wendung: participer immer + à."
   },
   {
     "fr": "Je n'ai pas d'argent ___ moi.",
@@ -5838,7 +5838,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Se chauffer à = mit etwas heizen. À gibt hier das Heizmittel an."
   },
   {
     "fr": "Cette piscine utilise un système ___ chlore.",
@@ -6080,7 +6080,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Se mettre à l'ombre = sich in den Schatten setzen. À + Ort für die Position."
   },
   {
     "fr": "Je passerai ___ toi demain matin.",
@@ -6102,7 +6102,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Se mettre à + Infinitiv = anfangen zu. Feste Wendung: se mettre immer + à."
   },
   {
     "fr": "___ la demande du public, le concert a été prolongé.",
@@ -6113,7 +6113,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à la demande de = auf Wunsch von."
   },
   {
     "fr": "Elle est aimée ___ tous ses collègues.",
@@ -6124,7 +6124,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Être aimé de = von jdm geliebt werden. De nennt den Urheber bei Gefühlsverben im Passiv."
   },
   {
     "fr": "Il a renvoyé sa fille ___ ses grands-parents.",
@@ -6157,7 +6157,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De l'homme = des Menschen. De drückt hier den Genitiv aus (Zugehörigkeit)."
   },
   {
     "fr": "___ un bon guide, la visite sera plus intéressante.",
@@ -6421,7 +6421,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à la télévision = im Fernsehen. Medien: à la radio, à la télé."
   },
   {
     "fr": "___ voiture, je mets une heure pour aller au travail.",
@@ -6487,7 +6487,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Penser à = an jdn/etwas denken. Feste Wendung: penser immer + à."
   },
   {
     "fr": "Nous avons marché ___ la plage pendant des heures.",
@@ -6542,7 +6542,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De + Maßangabe = um (einen Betrag). 'Augmenter de 5%' = um 5% erhöhen."
   },
   {
     "fr": "Il est resté ___ emploi pendant six mois.",
@@ -6575,7 +6575,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Rêver de = von etwas träumen. Feste Wendung: rêver immer + de."
   },
   {
     "fr": "Ils président l'un ___ l'autre.",
@@ -6729,7 +6729,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Fait de = gemacht aus (Material). De gibt den Werkstoff an."
   },
   {
     "fr": "J'ai commencé à apprendre le français ___ l'âge de dix ans.",
@@ -6839,7 +6839,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Teilungsartikel: de la confiture = (etwas) Marmelade. De + Artikel bei unbestimmter Menge."
   },
   {
     "fr": "Elle est partie peu ___ notre arrivée.",
@@ -6927,7 +6927,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à l'arrivée de = bei der Ankunft von. À markiert den Zeitpunkt."
   },
   {
     "fr": "Elle s'est mise ___ le radiateur pour se réchauffer.",
@@ -6993,7 +6993,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À la page = auf Seite. À + Seitenangabe für die Position in einem Buch/Dokument."
   },
   {
     "fr": "Elle est ___ bonne santé malgré son âge avancé.",
@@ -7268,7 +7268,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "De ... à = von ... bis (Uhrzeit). À markiert das Ende des Zeitraums."
   },
   {
     "fr": "Cet enfant est ___doué en mathématiques.",
@@ -7334,7 +7334,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à mourir de rire = zum Totlachen. À + Infinitiv drückt Zweck/Folge aus."
   },
   {
     "fr": "Je suis d'accord ___ ta proposition.",
@@ -7488,7 +7488,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à mon avis = meiner Meinung nach."
   },
   {
     "fr": "Le chat dort ___ le radiateur.",
@@ -7642,7 +7642,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À louer = zu vermieten. À + Infinitiv drückt den Zweck aus."
   },
   {
     "fr": "\"___ mon honneur, je n'ai rien volé !\"",
@@ -7686,7 +7686,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Habiter à + Stadt = in einer Stadt wohnen. Vor Städten immer à."
   },
   {
     "fr": "La salle peut accueillir jusqu'___ 100 personnes.",
@@ -7697,7 +7697,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Jusqu'à = bis zu. Feste Wendung: jusqu' immer + à."
   },
   {
     "fr": "Nous avons aperçu un cerf ___ la forêt.",
@@ -7785,7 +7785,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Aptitude à = Fähigkeit zu. Feste Wendung: aptitude immer + à."
   },
   {
     "fr": "Elle a regardé l'___ de la voiture pour vérifier les dégâts.",
@@ -7840,7 +7840,7 @@
       "par",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "De ... à = von ... bis (Uhrzeit). À markiert das Ende des Zeitraums."
   },
   {
     "fr": "___ ce, je vous laisse réfléchir à ma proposition.",
@@ -8027,7 +8027,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De + Ortsname = von/aus (Herkunftsbezeichnung). Le comte de Monte-Cristo = der Graf von Monte Christo."
   },
   {
     "fr": "Il joue magnifiquement ___ un clavecin ancien.",
@@ -8159,7 +8159,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De + Altersangabe = Altersbestimmung. 'Un homme de vingt ans' = ein zwanzigjähriger Mann."
   },
   {
     "fr": "Le bateau lutte ___ les vagues.",
@@ -8225,7 +8225,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Il est difficile de + Infinitiv: nach unpersönlichem 'il est + Adjektiv' folgt immer de."
   },
   {
     "fr": "Je n'écoute jamais ___ musique classique.",
@@ -8236,7 +8236,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Verneinung mit ne...jamais: 'pas de' / 'jamais de' = kein(e). Die Verneinung ersetzt den Artikel durch de."
   },
   {
     "fr": "Le chat s'est glissé ___ les barreaux de la fenêtre.",
@@ -8379,7 +8379,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "L'occasion de + Infinitiv: nach Substantiven wie occasion, possibilité folgt de + Infinitiv."
   },
   {
     "fr": "Elle est experte ___ marketing digital.",
@@ -8412,7 +8412,7 @@
       "de",
       "dans"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Partir à + Stadt = nach einer Stadt fahren. Vor Städten immer à."
   },
   {
     "fr": "La réunion se déroulera ___ midi.",
@@ -8423,7 +8423,7 @@
       "en",
       "dans"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À midi = um Mittag. À + Uhrzeit/Tageszeit für den Zeitpunkt."
   },
   {
     "fr": "Il marche ___ pas de loup dans la chambre.",
@@ -8434,7 +8434,7 @@
       "en",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à pas de loup = auf leisen Sohlen (wörtl.: mit Wolfsschritten)."
   },
   {
     "fr": "Il pêche ___ la ligne.",
@@ -8445,7 +8445,7 @@
       "en",
       "avec"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Pêcher à la ligne = mit der Angel fischen. À + Instrument für die Art und Weise."
   },
   {
     "fr": "Il court ___ perdre haleine.",
@@ -8456,7 +8456,7 @@
       "en",
       "pour"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à perdre haleine = bis zur Atemlosigkeit. À + Infinitiv drückt die Folge aus."
   },
   {
     "fr": "J'ai contribué ___ votre réussite.",
@@ -8467,7 +8467,7 @@
       "en",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Contribuer à = zu etwas beitragen. Feste Wendung: contribuer immer + à."
   },
   {
     "fr": "Il part ___ Montréal de bon matin.",
@@ -8478,7 +8478,7 @@
       "en",
       "depuis"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Partir de + Ort = von einem Ort aufbrechen. De gibt den Ausgangsort an."
   },
   {
     "fr": "Il rend service ___ bon cœur.",
@@ -8489,7 +8489,7 @@
       "avec",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Feste Wendung: de bon cœur = von ganzem Herzen, gern."
   },
   {
     "fr": "Le blessé hurlait ___ douleur.",
@@ -8500,7 +8500,7 @@
       "avec",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Hurler de douleur = vor Schmerz schreien. De nennt die Ursache eines Gefühls/Ausrufs."
   },
   {
     "fr": "Il fait signe ___ la main à son ami.",
@@ -8786,7 +8786,7 @@
       "à",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Feste Wendung: un maillot de bain = ein Badeanzug. De verbindet Substantive zu einem Begriff."
   },
   {
     "fr": "Un pantalon ___ coton.",
@@ -8808,7 +8808,7 @@
       "en",
       "pour"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Feste Wendung: un jeu de patience = ein Geduldsspiel. De verbindet Substantive zu einem Begriff."
   },
   {
     "fr": "Un coffre destiné ___ garder de l'argent en sécurité.",
@@ -8819,7 +8819,7 @@
       "pour",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Destiné à + Infinitiv = bestimmt zum. Feste Wendung: destiné immer + à."
   },
   {
     "fr": "Une pomme ___ terre.",
@@ -8830,7 +8830,7 @@
       "en",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Feste Wendung: une pomme de terre = eine Kartoffel (wörtl.: Erdapfel)."
   },
   {
     "fr": "Un cordon que l'on passe ___ des œillets pour attacher une chaussure.",
@@ -8863,7 +8863,7 @@
       "en",
       "avec"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À + Eigenschaft = mit (beschreibendes Merkmal). 'Un poisson à chair rose' = ein Fisch mit rosa Fleisch."
   },
   {
     "fr": "Un poulet coupé ___ deux.",
@@ -8885,7 +8885,7 @@
       "en",
       "pour"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À + Funktionsprinzip: 'un instrument à vent' = ein Instrument, das mit Wind funktioniert."
   },
   {
     "fr": "Un abri ___ chien.",
@@ -8918,7 +8918,7 @@
       "pour",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De + Fachbereich: 'un outil de référence' = ein Nachschlagewerk. De gibt die Zuordnung zum Bereich an."
   },
   {
     "fr": "Un appareil destiné ___ se protéger de la pluie.",
@@ -8929,7 +8929,7 @@
       "de",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Destiné à + Infinitiv = bestimmt zum. Feste Wendung: destiné immer + à."
   },
   {
     "fr": "Un problème difficile ___ résoudre.",
@@ -8951,7 +8951,7 @@
       "en",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À + Merkmal: 'à plusieurs étages' = mit mehreren Stockwerken. À beschreibt ein Merkmal."
   },
   {
     "fr": "Eau qui tombe en gouttes ___ la terre.",
@@ -8984,7 +8984,7 @@
       "sur",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De l'île = der Insel. De drückt hier den Genitiv aus (l'étendue de l'île = die Ausdehnung der Insel)."
   },
   {
     "fr": "Scholastique et Aubert s'agenouillèrent ___ les dalles de la chambre.",
@@ -9039,7 +9039,7 @@
       "de",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "De l'une à l'autre = von der einen zur anderen. À markiert das Ziel in 'de...à'."
   },
   {
     "fr": "Il résolut de dominer, à force ___ génie, l'influence maudite.",
@@ -9050,7 +9050,7 @@
       "sur",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "À force de = kraft, durch. Die Wendung 'à force de' enthält de nach 'force'."
   },
   {
     "fr": "Il visita les différentes horloges de la ville, confiées ___ ses soins.",
@@ -9061,7 +9061,7 @@
       "sur",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Confier à = anvertrauen an. Feste Wendung: confier immer + à (Empfänger)."
   },
   {
     "fr": "Le vieillard échappa ___ l'étreinte de sa fille.",
@@ -9072,7 +9072,7 @@
       "sur",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Échapper à = entkommen (+ Dativ). Feste Wendung: échapper immer + à."
   },
   {
     "fr": "La neige s'entassait ___ gros flocons sur le seuil.",
@@ -9083,7 +9083,7 @@
       "de",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À gros flocons = in großen Flocken. À beschreibt hier die Art und Weise."
   },
   {
     "fr": "Le repas s'accompagne ___ quelques légumes verts.",
@@ -9094,7 +9094,7 @@
       "avec",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "S'accompagner de = begleitet werden von. Feste Wendung: s'accompagner immer + de."
   },
   {
     "fr": "La chanteuse se fait accompagner ___ la guitare.",
@@ -9105,7 +9105,7 @@
       "par",
       "avec"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Accompagner à + Instrument = auf einem Instrument begleiten. À gibt das Instrument an."
   },
   {
     "fr": "Les infirmiers ont arraché le malade ___ son lit.",
@@ -9116,7 +9116,7 @@
       "sur",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Arracher qqn/qqch de = jdn/etwas von/aus etwas reißen. De gibt den Ursprungsort an."
   },
   {
     "fr": "Mon voisin est blessé ___ vos commentaires injurieux.",
@@ -9127,7 +9127,7 @@
       "par",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Blessé de = verletzt durch. De nennt die Ursache der Verletzung (Gefühlsverb)."
   },
   {
     "fr": "Le soldat s'est blessé ___ la poitrine.",
@@ -9138,7 +9138,7 @@
       "sur",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Se blesser à + Körperteil = sich an einem Körperteil verletzen. À + Körperteil."
   },
   {
     "fr": "Le maire s'efforce ___ trouver des solutions pour satisfaire ses employés.",
@@ -9149,7 +9149,7 @@
       "pour",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "S'efforcer de = sich bemühen zu. Feste Wendung: s'efforcer immer + de."
   },
   {
     "fr": "Ce candidat provincial s'attend ___ une lutte féroce de la part de son adversaire.",
@@ -9160,7 +9160,7 @@
       "sur",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "S'attendre à = etwas erwarten. Feste Wendung: s'attendre immer + à."
   },
   {
     "fr": "Il s'occupe ___ répondre à toutes les demandes.",
@@ -9171,7 +9171,7 @@
       "pour",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "S'occuper de = sich kümmern um. Feste Wendung: s'occuper immer + de."
   },
   {
     "fr": "Nous procèderons ___ l'embauche d'étudiants sous peu.",
@@ -9182,7 +9182,7 @@
       "en",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Procéder à = zu etwas übergehen/schreiten. Feste Wendung: procéder immer + à."
   },
   {
     "fr": "L'enseignante rappelle ___ ses élèves de bien étudier.",
@@ -9193,7 +9193,7 @@
       "en",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Rappeler à qqn = jdn erinnern. À markiert die Person (indirektes Objekt)."
   },
   {
     "fr": "Le touriste est descendu ___ l'autobus à l'arrêt Sherbrooke-Peel.",
@@ -9204,7 +9204,7 @@
       "sur",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Descendre de = aussteigen aus. Feste Wendung: descendre de + Verkehrsmittel."
   },
   {
     "fr": "Pendant qu'une jeune famille échappait ___ l'inondation, un récidiviste s'est échappé de prison.",
@@ -9215,7 +9215,7 @@
       "sur",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Échapper à = entkommen (+ Dativ). Achtung: s'échapper de = fliehen aus."
   },
   {
     "fr": "Nous devons des remerciements ___ cette bénévole.",
@@ -9226,7 +9226,7 @@
       "pour",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Devoir qqch à qqn = jdm etwas schulden. À markiert den Empfänger."
   },
   {
     "fr": "Après avoir appris ___ ses enfants à cuisiner, la mère les a mis à la porte.",
@@ -9237,7 +9237,7 @@
       "pour",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Apprendre à qqn = jdm beibringen. À markiert die Person (indirektes Objekt)."
   },
   {
     "fr": "Ils vont finir ___ s'entendre avec leurs nouveaux collègues.",
@@ -9259,7 +9259,7 @@
       "avec",
       "de"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à la vue de = beim Anblick von. À markiert den Auslöser."
   },
   {
     "fr": "Pour enlever ces taches tenaces, lavez le vêtement ___ l'eau chaude.",
@@ -9270,7 +9270,7 @@
       "avec",
       "de"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Laver à l'eau chaude = mit heißem Wasser waschen. À + Mittel für die Art der Reinigung."
   },
   {
     "fr": "Nous irons à cette exposition ___ train.",
@@ -9358,7 +9358,7 @@
       "à",
       "en"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Se prévaloir de = sich auf etwas berufen. Feste Wendung: se prévaloir immer + de."
   },
   {
     "fr": "Pour tirer ___ la cible, le chasseur doit appuyer délicatement sur la gâchette.",
@@ -9380,7 +9380,7 @@
       "à",
       "avec"
     ],
-    "explanation": "Sortir de = aus ... herausgehen/-kommen."
+    "explanation": "Assorti de = ausgestattet mit. Feste Wendung: assorti immer + de."
   },
   {
     "fr": "Il est toujours préférable ___ partir en bons termes.",
@@ -9391,7 +9391,7 @@
       "à",
       "pour"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Il est préférable de + Infinitiv: nach unpersönlichem 'il est + Adjektiv' folgt immer de."
   },
   {
     "fr": "Cet enfant est né ___ bonne santé.",
@@ -9446,7 +9446,7 @@
       "de",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Communiquer à qqn = jdm mitteilen. À markiert den Empfänger der Mitteilung."
   },
   {
     "fr": "S'ouvrir ___ le monde est essentiel pour les jeunes d'aujourd'hui.",
@@ -9468,7 +9468,7 @@
       "de",
       "en"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Attaché à = an jdn/etwas hängen. Feste Wendung: attaché immer + à."
   },
   {
     "fr": "Ce cadre supérieur a dû revenir ___ ses pratiques pour ne pas perdre son emploi.",
@@ -9600,7 +9600,7 @@
       "en",
       "dans"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Il faut peser le ___ et le contre avant de décider.",
@@ -9644,7 +9644,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À l'étranger = im Ausland. Feste Wendung: immer à l'étranger."
   },
   {
     "fr": "Nous sommes passés par Trois-Rivières ___ de rentrer à Montréal.",
@@ -9666,7 +9666,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Nous sommes passés par Trois-Rivières avant de rentrer ___ Montréal.",
@@ -9677,7 +9677,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Rentrer à + Stadt = nach (Stadt) zurückkehren. Vor Städten immer à."
   },
   {
     "fr": "Elle a parlé avec éloquence lors ___ la conférence.",
@@ -9688,7 +9688,7 @@
       "en",
       "dans"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Lors de = bei, anlässlich. Feste Wendung: lors immer + de."
   },
   {
     "fr": "Elle a parlé avec éloquence ___ de la conférence.",
@@ -9721,7 +9721,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "De mai à juin = von Mai bis Juni. À markiert das Ende in 'de...à'."
   },
   {
     "fr": "Elle s'est assise à l'avant du bus ___ éviter le mal des transports.",
@@ -9743,7 +9743,7 @@
       "en",
       "dans"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "À l'avant de = im vorderen Teil von. À + Position für die Ortsangabe."
   },
   {
     "fr": "de temps en temps, j'aime me promener ___ le parc.",
@@ -9809,7 +9809,7 @@
       "en",
       "dans"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "de loin en loin, on aperçoit des maisons ___ la campagne.",
@@ -9853,7 +9853,7 @@
       "en",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Le chef a goûté le plat avant ___ l'envoyer en salle.",
@@ -9864,7 +9864,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Le chef a goûté le plat avant de l'envoyer ___ salle.",
@@ -9886,7 +9886,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "Sortir de = aus ... herausgehen/-kommen."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Il faut toujours vérifier la météo avant de planifier une sortie ___ plein air.",
@@ -9908,7 +9908,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "C'est une manie de + Infinitiv: nach Substantiven wie manie, habitude folgt de + Infinitiv."
   },
   {
     "fr": "C'est une manie chez lui de toujours arriver ___ retard.",
@@ -9952,7 +9952,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Feste Wendung: mot de passe = Passwort. De verbindet die Substantive."
   },
   {
     "fr": "J'ai oublié mon mot de passe et je suis sans accès ___ mes emails.",
@@ -9963,7 +9963,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Accès à = Zugang zu. Feste Wendung: accès immer + à."
   },
   {
     "fr": "Le train de Paris à Lyon part ___ une heure.",
@@ -9985,7 +9985,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "À steht bei Uhrzeiten."
+    "explanation": "De Paris à Lyon = von Paris nach Lyon. À markiert das Reiseziel."
   },
   {
     "fr": "Il faut regarder dans le rétroviseur ___ de changer de voie.",
@@ -10007,7 +10007,7 @@
       "en",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Elle a regardé à gauche et à droite avant ___ traverser la route.",
@@ -10018,7 +10018,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Elle a regardé ___ gauche et à droite avant de traverser la route.",
@@ -10029,7 +10029,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Regarder à gauche = nach links schauen. À + Richtung für die Blickrichtung."
   },
   {
     "fr": "La famille est en deuil ___ le décès de leur grand-mère.",
@@ -10051,7 +10051,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Le décès de = der Tod von. De drückt hier den Genitiv aus (wessen Tod?)."
   },
   {
     "fr": "dans l'attente ___ vos nouvelles, je reste à votre disposition.",
@@ -10062,7 +10062,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Dans l'attente de = in Erwartung von. Feste Wendung: l'attente immer + de."
   },
   {
     "fr": "dans l'attente de vos nouvelles, je reste ___ votre disposition.",
@@ -10073,7 +10073,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "À cette nouvelle = bei dieser Nachricht."
+    "explanation": "À votre disposition = zu Ihrer Verfügung. Feste Wendung: rester à disposition."
   },
   {
     "fr": "Vous en avez, de la patience ___ ces enfants !",
@@ -10095,7 +10095,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "En avoir de la patience = wirklich Geduld haben. De steht hier als Teilungsartikel in der Hervorhebung."
   },
   {
     "fr": "J'ai commencé à apprendre le français vers l'âge ___ dix ans.",
@@ -10106,7 +10106,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "L'âge de dix ans = das Alter von zehn Jahren. De + Zahl bei Altersangaben."
   },
   {
     "fr": "J'ai commencé ___ apprendre le français vers l'âge de dix ans.",
@@ -10117,7 +10117,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "\"À\" zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Commencer à + Infinitiv = anfangen zu. Feste Wendung: commencer immer + à."
   },
   {
     "fr": "L'équipe a réussi un beau contre en fin ___ match.",
@@ -10128,7 +10128,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "En fin de match = am Ende des Spiels. Feste Wendung: en fin de = am Ende von."
   },
   {
     "fr": "L'équipe a réussi un beau contre ___ fin de match.",
@@ -10150,7 +10150,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "C'est à vous de + Infinitiv = es ist an Ihnen zu. Feste Wendung: c'est à qqn de faire."
   },
   {
     "fr": "après tout, c'est ___ vous de décider.",
@@ -10161,7 +10161,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "C'est à + Person = es gehört jdm."
+    "explanation": "C'est à qqn de faire = es ist an jdm. zu entscheiden. Feste Wendung: c'est à toi/vous de."
   },
   {
     "fr": "Le magasin est ouvert ___ 10h à 19h sans interruption.",
@@ -10172,7 +10172,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "De 10h à 19h = von 10 bis 19 Uhr. De markiert den Anfang in 'de...à'."
   },
   {
     "fr": "Le magasin est ouvert de 10h à 19h ___ interruption.",
@@ -10194,7 +10194,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De nach Mengenangaben (partitiv)."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Elle a vérifié son sac avant de partir ___ vacances.",
@@ -10216,7 +10216,7 @@
       "en",
       "dans"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "L'avant de la voiture = die Vorderseite des Autos. De drückt hier den Genitiv aus."
   },
   {
     "fr": "Elle a regardé l'avant de la voiture ___ vérifier les dégâts.",
@@ -10238,7 +10238,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "À côté de = neben, in der Nähe von. Feste Wendung: à côté immer + de."
   },
   {
     "fr": "Il y a une boulangerie ___ côté de chez moi.",
@@ -10249,7 +10249,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à côté de = neben. À gehört fest zu 'à côté de'."
   },
   {
     "fr": "Il marche à pas de loup ___ la chambre.",
@@ -10271,7 +10271,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "À pas de loup: de loup = des Wolfes (Genitiv). Pas de loup = Wolfsschritte."
   },
   {
     "fr": "Un coffre destiné à garder ___ l'argent en sécurité.",
@@ -10282,7 +10282,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Garder de l'argent: Teilungsartikel de l' vor unzählbarem Nomen (Geld)."
   },
   {
     "fr": "Un coffre destiné à garder de l'argent ___ sécurité.",
@@ -10315,7 +10315,7 @@
       "dans",
       "avec"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Forcer qqn à + Infinitiv = jdn zwingen zu. Feste Wendung: forcer immer + à."
   },
   {
     "fr": "Nous coopérons à ce projet éducatif avec la collaboration du CLSC ___ la région.",
@@ -10326,7 +10326,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Du CLSC de la région = des regionalen CLSC. De drückt hier den Genitiv aus."
   },
   {
     "fr": "Nous coopérons ___ ce projet éducatif avec la collaboration du CLSC de la région.",
@@ -10337,7 +10337,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Coopérer à = an etwas mitwirken. Feste Wendung: coopérer immer + à."
   },
   {
     "fr": "___ se prévaloir de son droit de vote, chaque citoyen doit être inscrit sur la liste électorale.",
@@ -10381,7 +10381,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Avant de + Infinitiv: nach 'avant' steht immer de vor dem Infinitiv."
   },
   {
     "fr": "Qui étaient les gens assez misérables pour habiter ___ cette cabane de branches?",
@@ -10403,7 +10403,7 @@
       "en",
       "sur"
     ],
-    "explanation": "De drückt Zugehörigkeit oder Herkunft aus."
+    "explanation": "Une cabane de branches = eine Hütte aus Zweigen. De gibt das Material an."
   },
   {
     "fr": "Le général de Gaulle a joué un rôle important ___ l'histoire de France.",
@@ -10425,7 +10425,7 @@
       "dans",
       "sur"
     ],
-    "explanation": "À zeigt das Ziel oder den Bezug von etwas, egal ob Ort, Zeit, Person oder Handlung."
+    "explanation": "Feste Wendung: à force de = kraft, durch (+ Substantiv/Infinitiv)."
   },
   {
     "fr": "___ avoir appris à ses enfants à cuisiner, la mère les a mis à la porte.",
