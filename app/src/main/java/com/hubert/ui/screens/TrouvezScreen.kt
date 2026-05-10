@@ -304,7 +304,7 @@ fun TrouvezScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
             ) {
                 for (i in 0 until state.frenchWords.size) {
                     val frenchCorrect = state.frenchFeedback[i] == true
@@ -315,7 +315,7 @@ fun TrouvezScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1f),
+                            .height(72.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // French word card
@@ -559,7 +559,7 @@ fun WordCard(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
