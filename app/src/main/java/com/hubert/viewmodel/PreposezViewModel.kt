@@ -97,7 +97,7 @@ class PreposezViewModel @Inject constructor(
 
         // Grouped prepositions for the selection screen
         val PREPOSITION_GROUPS = listOf(
-            "Grundpräpositionen" to listOf("à", "de", "en", "dans", "sur", "par"),
+            "Grundpräpositionen" to listOf("à", "de", "en", "dans", "sur", "par", "au", "aux", "du", "des"),
             "Bewegung & Richtung" to listOf("vers", "chez", "hors"),
             "Zeit" to listOf("avant", "après", "depuis", "pendant", "durant", "dès", "lors"),
             "Logik & Beziehung" to listOf("avec", "sans", "pour", "contre", "selon", "malgré", "sauf"),
