@@ -36,6 +36,7 @@ data class TrouvezState(
     val pinnedRanks: Set<Int> = emptySet(),
     val pinnedWords: List<VocabWord> = emptyList(),
     val wordStreaks: Map<String, WordStreak> = emptyMap(), // french word -> streak data
+    val masteredWords: Set<String> = emptySet(), // words that hit 50+ streak at least once
 
     // Current 6 word slots (always 6 visible on each side)
     val frenchWords: List<WordItem> = emptyList(),
@@ -136,6 +137,11 @@ class TrouvezViewModel @Inject constructor(
                 _uiState.update { it.copy(pinnedRanks = ranks, pinnedWords = words) }
             }
         }
+        viewModelScope.launch {
+            pinnedWordsRepository.masteredWords.collect { mastered ->
+                _uiState.update { it.copy(masteredWords = mastered) }
+            }
+        }
     }
 
     fun showPinSelection() {
@@ -201,7 +207,8 @@ class TrouvezViewModel @Inject constructor(
                 highScore = it.highScore,
                 pinnedRanks = it.pinnedRanks,
                 pinnedWords = it.pinnedWords,
-                wordStreaks = it.wordStreaks
+                wordStreaks = it.wordStreaks,
+                masteredWords = it.masteredWords
             )
         }
 
@@ -369,6 +376,16 @@ class TrouvezViewModel @Inject constructor(
                 val word = vocabRepository.getWordByRank(frenchItem.rank)
                 if (word != null && replayPool.none { it.rank == frenchItem.rank }) {
                     replayPool.addLast(word)
+                }
+            }
+
+            // Check if this word just hit mastery threshold
+            viewModelScope.launch {
+                val streaks = statisticsRepository.getStreaksForWords(listOf(frenchItem.text))
+                val streak = streaks[frenchItem.text]?.streak ?: 0
+                if (streak >= PinnedWordsRepository.MASTERY_THRESHOLD &&
+                    frenchItem.text !in _uiState.value.masteredWords) {
+                    pinnedWordsRepository.markMastered(frenchItem.text)
                 }
             }
 

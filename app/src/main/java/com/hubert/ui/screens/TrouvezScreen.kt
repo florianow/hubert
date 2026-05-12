@@ -38,6 +38,7 @@ private fun WordRow(
     isPinned: Boolean,
     accentColor: Color,
     accuracy: WordStreak? = null,
+    isMastered: Boolean = false,
     onClick: () -> Unit
 ) {
     Row(
@@ -66,11 +67,19 @@ private fun WordRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             if (accuracy != null && accuracy.streak > 0) {
+                val flame = if (isMastered) "🧊" else "🔥"
                 Text(
-                    text = "🔥×${accuracy.streak}",
+                    text = "$flame×${accuracy.streak}",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
-                    color = GermanGold
+                    color = if (isMastered) FrenchBlue else GermanGold
+                )
+            } else if (isMastered) {
+                Text(
+                    text = "🧊",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = FrenchBlue
                 )
             }
             Icon(
@@ -93,6 +102,25 @@ fun TrouvezPinScreen(
     onBack: () -> Unit
 ) {
     val accentColor = FrenchBlue
+    var showMasteryInfo by remember { mutableStateOf(false) }
+
+    if (showMasteryInfo) {
+        AlertDialog(
+            onDismissRequest = { showMasteryInfo = false },
+            title = { Text("🧊 Eiswürfel-Status") },
+            text = {
+                Text(
+                    "Ein Wort bekommt den 🧊 wenn du es 50 Mal korrekt zugeordnet hast.\n\n" +
+                    "Das bedeutet: du kennst dieses Wort sehr gut. Du kannst es entpinnen — " +
+                    "es bleibt trotzdem als gemeistert markiert.\n\n" +
+                    "Der Zähler läuft weiter. Nur ein falsches Zuordnen setzt ihn zurück."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showMasteryInfo = false }) { Text("OK") }
+            }
+        )
+    }
 
     Box(
         modifier = Modifier
@@ -118,7 +146,7 @@ fun TrouvezPinScreen(
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "Trouvez!",
                         style = MaterialTheme.typography.titleLarge,
@@ -131,6 +159,9 @@ fun TrouvezPinScreen(
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                     )
+                }
+                IconButton(onClick = { showMasteryInfo = true }, modifier = Modifier.size(40.dp)) {
+                    Text("🧊", fontSize = 20.sp)
                 }
             }
 
@@ -170,6 +201,7 @@ fun TrouvezPinScreen(
                             isPinned = isPinned,
                             accentColor = accentColor,
                             accuracy = state.wordStreaks[word.french],
+                            isMastered = word.french in state.masteredWords,
                             onClick = { onTogglePin(word.rank) }
                         )
                     }

@@ -21,12 +21,22 @@ class PinnedWordsRepository @Inject constructor(
 ) {
     companion object {
         private val KEY_PINNED_RANKS = stringPreferencesKey("pinned_ranks")
+        private val KEY_MASTERED_WORDS = stringPreferencesKey("mastered_words")
+        const val MASTERY_THRESHOLD = 50
     }
 
     val pinnedRanks: Flow<Set<Int>> = context.pinnedDataStore.data.map { prefs ->
         prefs[KEY_PINNED_RANKS]
             ?.split(",")
             ?.mapNotNull { it.toIntOrNull() }
+            ?.toSet()
+            ?: emptySet()
+    }
+
+    val masteredWords: Flow<Set<String>> = context.pinnedDataStore.data.map { prefs ->
+        prefs[KEY_MASTERED_WORDS]
+            ?.split("||")
+            ?.filter { it.isNotEmpty() }
             ?.toSet()
             ?: emptySet()
     }
@@ -40,6 +50,18 @@ class PinnedWordsRepository @Inject constructor(
                 ?: mutableSetOf()
             if (rank in current) current.remove(rank) else current.add(rank)
             prefs[KEY_PINNED_RANKS] = current.joinToString(",")
+        }
+    }
+
+    suspend fun markMastered(french: String) {
+        context.pinnedDataStore.edit { prefs ->
+            val current = prefs[KEY_MASTERED_WORDS]
+                ?.split("||")
+                ?.filter { it.isNotEmpty() }
+                ?.toMutableSet()
+                ?: mutableSetOf()
+            current.add(french)
+            prefs[KEY_MASTERED_WORDS] = current.joinToString("||")
         }
     }
 }
