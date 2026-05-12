@@ -13546,5 +13546,1567 @@
       "à"
     ],
     "explanation": "Un de + les plus beaux → un des plus beaux. De + les → des."
+  },
+  {
+    "fr": "J'accepte ___ t'aider.",
+    "de": "Ich akzeptiere es, dir zu helfen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Accepter de + Infinitiv = akzeptieren zu. Feste Wendung: accepter immer + de."
+  },
+  {
+    "fr": "On l'accuse ___ voler.",
+    "de": "Man beschuldigt ihn zu stehlen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Accuser de + Infinitiv = beschuldigen. Feste Wendung: accuser immer + de."
+  },
+  {
+    "fr": "Arrête ___ pleurer !",
+    "de": "Hör auf zu weinen!",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Arrêter de + Infinitiv = aufhören zu. Feste Wendung: arrêter immer + de."
+  },
+  {
+    "fr": "J'ai besoin ___ manger.",
+    "de": "Ich muss essen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Avoir besoin de + Infinitiv = brauchen zu. Feste Wendung: avoir besoin immer + de."
+  },
+  {
+    "fr": "J'ai envie ___ sortir.",
+    "de": "Ich habe Lust auszugehen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Avoir envie de + Infinitiv = Lust haben zu. Feste Wendung: avoir envie immer + de."
+  },
+  {
+    "fr": "Il a peur ___ tomber.",
+    "de": "Er hat Angst zu fallen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Avoir peur de + Infinitiv = Angst haben vor. Feste Wendung: avoir peur immer + de."
+  },
+  {
+    "fr": "Elle a choisi ___ rester.",
+    "de": "Sie hat sich entschieden zu bleiben.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Choisir de + Infinitiv = wählen zu. Feste Wendung: choisir immer + de."
+  },
+  {
+    "fr": "Je te conseille ___ lire ce livre.",
+    "de": "Ich rate dir, dieses Buch zu lesen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Conseiller de + Infinitiv = raten zu. Feste Wendung: conseiller immer + de."
+  },
+  {
+    "fr": "Continue ___ travailler.",
+    "de": "Mach weiter zu arbeiten.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Continuer de + Infinitiv = weitermachen zu. Feste Wendung: continuer immer + de."
+  },
+  {
+    "fr": "Nous avons décidé ___ voyager.",
+    "de": "Wir haben beschlossen zu reisen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Décider de + Infinitiv = entscheiden zu. Feste Wendung: décider immer + de."
+  },
+  {
+    "fr": "Je te demande ___ m'écouter.",
+    "de": "Ich bitte dich, mir zuzuhören.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Demander de + Infinitiv = bitten zu. Feste Wendung: demander immer + de."
+  },
+  {
+    "fr": "Dépêche-toi ___ finir !",
+    "de": "Beeil dich fertig zu werden!",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se dépêcher de + Infinitiv = sich beeilen zu. Feste Wendung: se dépêcher immer + de."
+  },
+  {
+    "fr": "Dis-lui ___ venir.",
+    "de": "Sag ihm zu kommen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Dire de + Infinitiv = sagen zu (Aufforderung). Feste Wendung: dire immer + de."
+  },
+  {
+    "fr": "Cela m'empêche ___ dormir.",
+    "de": "Das hindert mich am Schlafen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Empêcher de + Infinitif = hindern an. Feste Wendung: empêcher immer + de."
+  },
+  {
+    "fr": "J'essaie ___ comprendre.",
+    "de": "Ich versuche zu verstehen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Essayer de + Infinitiv = versuchen zu. Feste Wendung: essayer immer + de."
+  },
+  {
+    "fr": "Évite ___ faire du bruit.",
+    "de": "Vermeide Lärm zu machen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Éviter de + Infinitiv = vermeiden zu. Feste Wendung: éviter immer + de."
+  },
+  {
+    "fr": "Je m'excuse ___ déranger.",
+    "de": "Ich entschuldige mich fürs Stören.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'excuser de + Infinitiv = sich entschuldigen für. Feste Wendung: s'excuser immer + de."
+  },
+  {
+    "fr": "Il fait semblant ___ dormir.",
+    "de": "Er tut so als ob er schläft.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Faire semblant de + Infinitiv = so tun als ob. Feste Wendung: faire semblant immer + de."
+  },
+  {
+    "fr": "J'ai fini ___ manger.",
+    "de": "Ich habe aufgehört zu essen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Finir de + Infinitiv = beenden zu. Feste Wendung: finir immer + de."
+  },
+  {
+    "fr": "Il menace ___ partir.",
+    "de": "Er droht zu gehen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Menacer de + Infinitiv = drohen zu. Feste Wendung: menacer immer + de."
+  },
+  {
+    "fr": "N'oublie pas ___ m'appeler.",
+    "de": "Vergiss nicht mich anzurufen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Oublier de + Infinitiv = vergessen zu. Feste Wendung: oublier immer + de."
+  },
+  {
+    "fr": "Il se plaint ___ la chaleur.",
+    "de": "Er beklagt sich über die Hitze.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se plaindre de + nom = sich beklagen über. Feste Wendung: se plaindre immer + de."
+  },
+  {
+    "fr": "Promets-moi ___ revenir.",
+    "de": "Versprich mir zurückzukommen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Promettre de + Infinitiv = versprechen zu. Feste Wendung: promettre immer + de."
+  },
+  {
+    "fr": "Je propose ___ manger une pizza.",
+    "de": "Ich schlage vor eine Pizza zu essen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Proposer de + Infinitiv = vorschlagen zu. Feste Wendung: proposer immer + de."
+  },
+  {
+    "fr": "Il refuse ___ répondre.",
+    "de": "Er weigert sich zu antworten.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Refuser de + Infinitiv = verweigern zu. Feste Wendung: refuser immer + de."
+  },
+  {
+    "fr": "Je regrette ___ ne pas être venu.",
+    "de": "Ich bedauere nicht gekommen zu sein.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Regretter de + Infinitiv = bereuen zu. Feste Wendung: regretter immer + de."
+  },
+  {
+    "fr": "Je rêve ___ faire le tour du monde.",
+    "de": "Ich träume davon, die Welt zu bereisen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Rêver de + Infinitiv = träumen von. Feste Wendung: rêver immer + de."
+  },
+  {
+    "fr": "Tu risques ___ tomber.",
+    "de": "Du riskierst zu fallen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Risquer de + Infinitiv = riskieren zu. Feste Wendung: risquer immer + de."
+  },
+  {
+    "fr": "Je me souviens ___ toi.",
+    "de": "Ich erinnere mich an dich.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se souvenir de + nom = sich erinnern an. Feste Wendung: se souvenir immer + de."
+  },
+  {
+    "fr": "Il tente ___ s'échapper.",
+    "de": "Er versucht zu entkommen.",
+    "answer": "de",
+    "distractors": [
+      "à",
+      "pour",
+      "en"
+    ],
+    "explanation": "Tenter de + Infinitiv = versuchen zu. Feste Wendung: tenter immer + de."
+  },
+  {
+    "fr": "Je t'aide ___ faire les courses.",
+    "de": "Ich helfe dir beim Einkaufen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Aider à + Infinitiv = helfen bei. Feste Wendung: aider immer + à."
+  },
+  {
+    "fr": "Il s'amuse ___ dessiner.",
+    "de": "Er amüsiert sich mit Zeichnen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'amuser à + Infinitiv = sich amüsieren mit. Feste Wendung: s'amuser immer + à."
+  },
+  {
+    "fr": "J'apprends ___ cuisiner.",
+    "de": "Ich lerne zu kochen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Apprendre à + Infinitiv = lernen zu. Feste Wendung: apprendre immer + à."
+  },
+  {
+    "fr": "On s'apprête ___ sortir.",
+    "de": "Wir bereiten uns auf den Ausgang vor.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'apprêter à + Infinitiv = sich vorbereiten auf. Feste Wendung: s'apprêter immer + à."
+  },
+  {
+    "fr": "J'arrive ___ lire le français.",
+    "de": "Es gelingt mir Französisch zu lesen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Arriver à + Infinitiv = schaffen/gelingen. Feste Wendung: arriver immer + à."
+  },
+  {
+    "fr": "Je m'attendais ___ te voir.",
+    "de": "Ich hatte erwartet dich zu sehen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'attendre à + Infinitiv = rechnen mit. Feste Wendung: s'attendre immer + à."
+  },
+  {
+    "fr": "Il cherche ___ nous convaincre.",
+    "de": "Er versucht uns zu überzeugen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Chercher à + Infinitiv = versuchen zu. Feste Wendung: chercher immer + à."
+  },
+  {
+    "fr": "Il commence ___ pleuvoir.",
+    "de": "Es fängt an zu regnen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Commencer à + Infinitiv = anfangen zu. Feste Wendung: commencer immer + à."
+  },
+  {
+    "fr": "Il contribue ___ notre succès.",
+    "de": "Er trägt zu unserem Erfolg bei.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Contribuer à + nom = beitragen zu. Feste Wendung: contribuer immer + à."
+  },
+  {
+    "fr": "Je me décide ___ partir.",
+    "de": "Ich entscheide mich zu gehen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se décider à + Infinitiv = sich durchringen zu. Feste Wendung: se décider immer + à."
+  },
+  {
+    "fr": "Je t'encourage ___ continuer.",
+    "de": "Ich ermutige dich weiterzumachen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Encourager à + Infinitiv = ermutigen zu. Feste Wendung: encourager immer + à."
+  },
+  {
+    "fr": "Il s'engage ___ payer.",
+    "de": "Er verpflichtet sich zu zahlen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'engager à + Infinitiv = sich verpflichten zu. Feste Wendung: s'engager immer + à."
+  },
+  {
+    "fr": "On le force ___ manger.",
+    "de": "Man zwingt ihn zu essen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Forcer à + Infinitiv = zwingen zu. Feste Wendung: forcer immer + à."
+  },
+  {
+    "fr": "Je m'habitue ___ ma ville.",
+    "de": "Ich gewöhne mich an meine Stadt.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'habituer à + nom = sich gewöhnen an. Feste Wendung: s'habituer immer + à."
+  },
+  {
+    "fr": "N'hésite pas ___ poser des questions.",
+    "de": "Zögere nicht Fragen zu stellen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Hésiter à + Infinitiv = zögern zu. Feste Wendung: hésiter immer + à."
+  },
+  {
+    "fr": "Je t'invite ___ dîner.",
+    "de": "Ich lade dich zum Abendessen ein.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Inviter à + Infinitiv = einladen zu. Feste Wendung: inviter immer + à."
+  },
+  {
+    "fr": "Elle se met ___ pleurer.",
+    "de": "Sie fängt an zu weinen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se mettre à + Infinitiv = anfangen mit. Feste Wendung: se mettre immer + à."
+  },
+  {
+    "fr": "J'ai parvenu ___ finir.",
+    "de": "Es gelang mir fertig zu werden.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Parvenir à + Infinitiv = gelangen/schaffen. Feste Wendung: parvenir immer + à."
+  },
+  {
+    "fr": "Je pense ___ toi.",
+    "de": "Ich denke an dich.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Penser à + nom = denken an. Feste Wendung: penser immer + à."
+  },
+  {
+    "fr": "Il persiste ___ nier.",
+    "de": "Er beharrt darauf zu leugnen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Persister à + Infinitiv = beharren auf. Feste Wendung: persister immer + à."
+  },
+  {
+    "fr": "Ce film plaît ___ tout le monde.",
+    "de": "Dieser Film gefällt allen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Plaire à + personne = gefallen. Feste Wendung: plaire immer + à."
+  },
+  {
+    "fr": "Préparez-vous ___ partir.",
+    "de": "Bereitet euch auf den Aufbruch vor.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Se préparer à + Infinitiv = sich vorbereiten auf. Feste Wendung: se préparer immer + à."
+  },
+  {
+    "fr": "Réfléchis bien ___ ta décision.",
+    "de": "Denk gut über deine Entscheidung nach.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Réfléchir à + nom = nachdenken über. Feste Wendung: réfléchir immer + à."
+  },
+  {
+    "fr": "Il renonce ___ son voyage.",
+    "de": "Er verzichtet auf seine Reise.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Renoncer à + nom = verzichten auf. Feste Wendung: renoncer immer + à."
+  },
+  {
+    "fr": "Réponds ___ ma question.",
+    "de": "Antworte auf meine Frage.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Répondre à + nom = antworten auf. Feste Wendung: répondre immer + à."
+  },
+  {
+    "fr": "J'ai réussi ___ tout faire.",
+    "de": "Es gelang mir alles zu erledigen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Réussir à + Infinitiv = Erfolg haben bei. Feste Wendung: réussir immer + à."
+  },
+  {
+    "fr": "Elle s'intéresse ___ l'art.",
+    "de": "Sie interessiert sich für Kunst.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'intéresser à + nom = sich interessieren für. Feste Wendung: s'intéresser immer + à."
+  },
+  {
+    "fr": "Il vise ___ améliorer ses résultats.",
+    "de": "Er zielt darauf ab seine Ergebnisse zu verbessern.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Viser à + Infinitiv = zielen auf. Feste Wendung: viser immer + à."
+  },
+  {
+    "fr": "Elle passe son temps ___ lire.",
+    "de": "Sie verbringt ihre Zeit mit Lesen.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "Passer son temps à + Infinitiv = Zeit verbringen mit. Feste Wendung: passer son temps immer + à."
+  },
+  {
+    "fr": "Il s'oppose ___ ce projet.",
+    "de": "Er widersetzt sich diesem Projekt.",
+    "answer": "à",
+    "distractors": [
+      "de",
+      "pour",
+      "en"
+    ],
+    "explanation": "S'opposer à + nom = sich widersetzen. Feste Wendung: s'opposer immer + à."
+  },
+  {
+    "fr": "Je vais ___ lit.",
+    "de": "Ich gehe ins Bett.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Aller à + le lit → aller au lit. À + le → au."
+  },
+  {
+    "fr": "Il joue ___ poker.",
+    "de": "Er spielt Poker.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Jouer à + le poker → jouer au poker. À + le → au."
+  },
+  {
+    "fr": "Pense ___ pain !",
+    "de": "Denk ans Brot!",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Penser à + le pain → penser au pain. À + le → au."
+  },
+  {
+    "fr": "Réponds ___ téléphone.",
+    "de": "Geh ans Telefon.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Répondre à + le téléphone → répondre au téléphone. À + le → au."
+  },
+  {
+    "fr": "Il s'intéresse ___ foot.",
+    "de": "Er interessiert sich für Fußball.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'intéresser à + le foot → s'intéresser au foot. À + le → au."
+  },
+  {
+    "fr": "Je participe ___ jeu.",
+    "de": "Ich nehme am Spiel teil.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Participer à + le jeu → participer au jeu. À + le → au."
+  },
+  {
+    "fr": "Tu crois ___ destin ?",
+    "de": "Glaubst du ans Schicksal?",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Croire à + le destin → croire au destin. À + le → au."
+  },
+  {
+    "fr": "Je m'habitue ___ bruit.",
+    "de": "Ich gewöhne mich an den Lärm.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'habituer à + le bruit → s'habituer au bruit. À + le → au."
+  },
+  {
+    "fr": "Fais attention ___ chien !",
+    "de": "Pass auf den Hund auf!",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Faire attention à + le chien → faire attention au chien. À + le → au."
+  },
+  {
+    "fr": "Tu ressembles ___ père.",
+    "de": "Du ähnelst dem Vater.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Ressembler à + le père → ressembler au père. À + le → au."
+  },
+  {
+    "fr": "Réfléchis ___ plan.",
+    "de": "Denk über den Plan nach.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Réfléchir à + le plan → réfléchir au plan. À + le → au."
+  },
+  {
+    "fr": "Je m'attendais ___ pire.",
+    "de": "Ich hatte das Schlimmste erwartet.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'attendre à + le pire → s'attendre au pire. À + le → au."
+  },
+  {
+    "fr": "J'assiste ___ concert.",
+    "de": "Ich besuche das Konzert.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Assister à + le concert → assister au concert. À + le → au."
+  },
+  {
+    "fr": "Obéis ___ chef.",
+    "de": "Gehorche dem Chef.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Obéir à + le chef → obéir au chef. À + le → au."
+  },
+  {
+    "fr": "Prépare-toi ___ départ.",
+    "de": "Bereite dich auf den Aufbruch vor.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Se préparer à + le départ → se préparer au départ. À + le → au."
+  },
+  {
+    "fr": "Il survit ___ froid.",
+    "de": "Er überlebt die Kälte.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Survivre à + le froid → survivre au froid. À + le → au."
+  },
+  {
+    "fr": "Je renonce ___ sucre.",
+    "de": "Ich verzichte auf Zucker.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Renoncer à + le sucre → renoncer au sucre. À + le → au."
+  },
+  {
+    "fr": "Je tiens ___ succès.",
+    "de": "Mir liegt der Erfolg am Herzen.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Tenir à + le succès → tenir au succès. À + le → au."
+  },
+  {
+    "fr": "Il s'oppose ___ projet.",
+    "de": "Er widersetzt sich dem Projekt.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'opposer à + le projet → s'opposer au projet. À + le → au."
+  },
+  {
+    "fr": "Il échappe ___ danger.",
+    "de": "Er entkommt der Gefahr.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Échapper à + le danger → échapper au danger. À + le → au."
+  },
+  {
+    "fr": "Joins-toi ___ groupe.",
+    "de": "Schließ dich der Gruppe an.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Se joindre à + le groupe → se joindre au groupe. À + le → au."
+  },
+  {
+    "fr": "Ça plaît ___ public.",
+    "de": "Es gefällt dem Publikum.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Plaire à + le public → plaire au public. À + le → au."
+  },
+  {
+    "fr": "S'attaquer ___ problème.",
+    "de": "Das Problem angehen.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'attaquer à + le problème → s'attaquer au problème. À + le → au."
+  },
+  {
+    "fr": "S'adonner ___ sport.",
+    "de": "Sich dem Sport hingeben.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'adonner à + le sport → s'adonner au sport. À + le → au."
+  },
+  {
+    "fr": "Prête ton vélo ___ voisin.",
+    "de": "Leih dem Nachbarn dein Fahrrad.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Prêter à + le voisin → prêter au voisin. À + le → au."
+  },
+  {
+    "fr": "Demande ___ serveur.",
+    "de": "Frag den Kellner.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Demander à + le serveur → demander au serveur. À + le → au."
+  },
+  {
+    "fr": "Souris ___ bébé.",
+    "de": "Lächle das Baby an.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Sourire à + le bébé → sourire au bébé. À + le → au."
+  },
+  {
+    "fr": "Je suis ___ bureau.",
+    "de": "Ich bin im Büro.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Être à + le bureau → être au bureau. À + le → au."
+  },
+  {
+    "fr": "Accéder ___ sommet.",
+    "de": "Den Gipfel erreichen.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "Accéder à + le sommet → accéder au sommet. À + le → au."
+  },
+  {
+    "fr": "S'adapter ___ rythme.",
+    "de": "Sich dem Rhythmus anpassen.",
+    "answer": "au",
+    "distractors": [
+      "du",
+      "à",
+      "de"
+    ],
+    "explanation": "S'adapter à + le rythme → s'adapter au rythme. À + le → au."
+  },
+  {
+    "fr": "Je vais ___ États-Unis.",
+    "de": "Ich fahre in die USA.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Aller à + les États-Unis → aller aux États-Unis. À + les → aux."
+  },
+  {
+    "fr": "Nous jouons ___ cartes.",
+    "de": "Wir spielen Karten.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Jouer à + les cartes → jouer aux cartes. À + les → aux."
+  },
+  {
+    "fr": "Je pense ___ enfants.",
+    "de": "Ich denke an die Kinder.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Penser à + les enfants → penser aux enfants. À + les → aux."
+  },
+  {
+    "fr": "Réponds ___ questions.",
+    "de": "Antworte auf die Fragen.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Répondre à + les questions → répondre aux questions. À + les → aux."
+  },
+  {
+    "fr": "Elle s'intéresse ___ arts.",
+    "de": "Sie interessiert sich für Künste.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "S'intéresser à + les arts → s'intéresser aux arts. À + les → aux."
+  },
+  {
+    "fr": "Fais attention ___ voitures.",
+    "de": "Pass auf die Autos auf.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Faire attention à + les voitures → faire attention aux voitures. À + les → aux."
+  },
+  {
+    "fr": "Je crois ___ fantômes.",
+    "de": "Ich glaube an Geister.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Croire à + les fantômes → croire aux fantômes. À + les → aux."
+  },
+  {
+    "fr": "Il obéit ___ ordres.",
+    "de": "Er gehorcht den Befehlen.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Obéir à + les ordres → obéir aux ordres. À + les → aux."
+  },
+  {
+    "fr": "Elle renonce ___ privilèges.",
+    "de": "Sie verzichtet auf Privilegien.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Renoncer à + les privilèges → renoncer aux privilèges. À + les → aux."
+  },
+  {
+    "fr": "Il tient ___ traditions.",
+    "de": "Er hängt an den Traditionen.",
+    "answer": "aux",
+    "distractors": [
+      "des",
+      "à",
+      "de"
+    ],
+    "explanation": "Tenir à + les traditions → tenir aux traditions. À + les → aux."
+  },
+  {
+    "fr": "On parle ___ film.",
+    "de": "Man spricht über den Film.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Parler de + le film → parler du film. De + le → du."
+  },
+  {
+    "fr": "Je joue ___ piano.",
+    "de": "Ich spiele Klavier.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Jouer de + le piano → jouer du piano. De + le → du."
+  },
+  {
+    "fr": "J'ai besoin ___ tournevis.",
+    "de": "Ich brauche den Schraubenzieher.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Avoir besoin de + le tournevis → avoir besoin du tournevis. De + le → du."
+  },
+  {
+    "fr": "Je m'occupe ___ repas.",
+    "de": "Ich kümmere mich um das Essen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'occuper de + le repas → s'occuper du repas. De + le → du."
+  },
+  {
+    "fr": "Je me souviens ___ jour.",
+    "de": "Ich erinnere mich an den Tag.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se souvenir de + le jour → se souvenir du jour. De + le → du."
+  },
+  {
+    "fr": "Je viens ___ travail.",
+    "de": "Ich komme von der Arbeit.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Venir de + le travail → venir du travail. De + le → du."
+  },
+  {
+    "fr": "Il se moque ___ prof.",
+    "de": "Er lacht über den Lehrer.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se moquer de + le prof → se moquer du prof. De + le → du."
+  },
+  {
+    "fr": "Profite ___ soleil.",
+    "de": "Genieß die Sonne.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Profiter de + le soleil → profiter du soleil. De + le → du."
+  },
+  {
+    "fr": "Je rêve ___ futur.",
+    "de": "Ich träume von der Zukunft.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Rêver de + le futur → rêver du futur. De + le → du."
+  },
+  {
+    "fr": "Je doute ___ succès.",
+    "de": "Ich zweifle am Erfolg.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Douter de + le succès → douter du succès. De + le → du."
+  },
+  {
+    "fr": "Ça dépend ___ temps.",
+    "de": "Es hängt vom Wetter ab.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Dépendre de + le temps → dépendre du temps. De + le → du."
+  },
+  {
+    "fr": "Sers-toi ___ sel.",
+    "de": "Benutze das Salz.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se servir de + le sel → se servir du sel. De + le → du."
+  },
+  {
+    "fr": "On discute ___ prix.",
+    "de": "Wir diskutieren über den Preis.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Discuter de + le prix → discuter du prix. De + le → du."
+  },
+  {
+    "fr": "Il se plaint ___ froid.",
+    "de": "Er beklagt sich über die Kälte.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se plaindre de + le froid → se plaindre du froid. De + le → du."
+  },
+  {
+    "fr": "Il vit ___ RSA.",
+    "de": "Er lebt von der Sozialhilfe.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Vivre de + le RSA → vivre du RSA. De + le → du."
+  },
+  {
+    "fr": "Il s'agit ___ projet.",
+    "de": "Es geht um das Projekt.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'agir de + le projet → il s'agit du projet. De + le → du."
+  },
+  {
+    "fr": "Hériter ___ père.",
+    "de": "Vom Vater erben.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Hériter de + le père → hériter du père. De + le → du."
+  },
+  {
+    "fr": "Je m'inquiète ___ résultat.",
+    "de": "Ich mache mir Sorgen um das Ergebnis.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'inquiéter de + le résultat → s'inquiéter du résultat. De + le → du."
+  },
+  {
+    "fr": "Se lasser ___ travail.",
+    "de": "Müde werden von der Arbeit.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se lasser de + le travail → se lasser du travail. De + le → du."
+  },
+  {
+    "fr": "Mourir ___ cancer.",
+    "de": "An Krebs sterben.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Mourir de + le cancer → mourir du cancer. De + le → du."
+  },
+  {
+    "fr": "Se contenter ___ peu.",
+    "de": "Sich mit wenig begnügen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se contenter de + le peu → se contenter du peu. De + le → du."
+  },
+  {
+    "fr": "Se passer ___ café.",
+    "de": "Auf Kaffee verzichten.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se passer de + le café → se passer du café. De + le → du."
+  },
+  {
+    "fr": "Se méfier ___ loup.",
+    "de": "Dem Wolf misstrauen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Se méfier de + le loup → se méfier du loup. De + le → du."
+  },
+  {
+    "fr": "S'écarter ___ sujet.",
+    "de": "Vom Thema abweichen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'écarter de + le sujet → s'écarter du sujet. De + le → du."
+  },
+  {
+    "fr": "Revenir ___ parc.",
+    "de": "Vom Park zurückkommen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Revenir de + le parc → revenir du parc. De + le → du."
+  },
+  {
+    "fr": "S'évader ___ zoo.",
+    "de": "Aus dem Zoo ausbrechen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'évader de + le zoo → s'évader du zoo. De + le → du."
+  },
+  {
+    "fr": "S'informer ___ trajet.",
+    "de": "Sich über die Route informieren.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'informer de + le trajet → s'informer du trajet. De + le → du."
+  },
+  {
+    "fr": "Disposer ___ temps.",
+    "de": "Über die Zeit verfügen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Disposer de + le temps → disposer du temps. De + le → du."
+  },
+  {
+    "fr": "S'inspirer ___ livre.",
+    "de": "Sich vom Buch inspirieren lassen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "S'inspirer de + le livre → s'inspirer du livre. De + le → du."
+  },
+  {
+    "fr": "Faire partie ___ club.",
+    "de": "Teil des Klubs sein.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Faire partie de + le club → faire partie du club. De + le → du."
+  },
+  {
+    "fr": "Sortir ___ bureau.",
+    "de": "Das Büro verlassen.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Sortir de + le bureau → sortir du bureau. De + le → du."
+  },
+  {
+    "fr": "Prendre soin ___ bébé.",
+    "de": "Sich um das Baby kümmern.",
+    "answer": "du",
+    "distractors": [
+      "au",
+      "de",
+      "à"
+    ],
+    "explanation": "Prendre soin de + le bébé → prendre soin du bébé. De + le → du."
+  },
+  {
+    "fr": "On parle ___ vacances.",
+    "de": "Man spricht über die Ferien.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Parler de + les vacances → parler des vacances. De + les → des."
+  },
+  {
+    "fr": "Il joue ___ percussions.",
+    "de": "Er spielt Schlagzeug.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Jouer de + les percussions → jouer des percussions. De + les → des."
+  },
+  {
+    "fr": "J'ai besoin ___ clés.",
+    "de": "Ich brauche die Schlüssel.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Avoir besoin de + les clés → avoir besoin des clés. De + les → des."
+  },
+  {
+    "fr": "Elle s'occupe ___ bébés.",
+    "de": "Sie kümmert sich um die Babys.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "S'occuper de + les bébés → s'occuper des bébés. De + les → des."
+  },
+  {
+    "fr": "Je me souviens ___ noms.",
+    "de": "Ich erinnere mich an die Namen.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Se souvenir de + les noms → se souvenir des noms. De + les → des."
+  },
+  {
+    "fr": "Il vient ___ Alpes.",
+    "de": "Er kommt aus den Alpen.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Venir de + les Alpes → venir des Alpes. De + les → des."
+  },
+  {
+    "fr": "Elle se moque ___ modes.",
+    "de": "Sie lacht über die Modetrends.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Se moquer de + les modes → se moquer des modes. De + les → des."
+  },
+  {
+    "fr": "Profite ___ offres.",
+    "de": "Nutze die Angebote.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Profiter de + les offres → profiter des offres. De + les → des."
+  },
+  {
+    "fr": "Je rêve ___ étoiles.",
+    "de": "Ich träume von den Sternen.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Rêver de + les étoiles → rêver des étoiles. De + les → des."
+  },
+  {
+    "fr": "On discute ___ plans.",
+    "de": "Wir diskutieren über die Pläne.",
+    "answer": "des",
+    "distractors": [
+      "aux",
+      "de",
+      "à"
+    ],
+    "explanation": "Discuter de + les plans → discuter des plans. De + les → des."
   }
 ]
