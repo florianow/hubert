@@ -42,13 +42,21 @@ jobs:
           echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
         fi
 
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > app/hubert.keystore
+
     - name: Build Release APK
+      env:
+        KEYSTORE_PATH: hubert.keystore
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: ./gradlew assembleRelease -x lint --stacktrace
 
     - name: Rename APK
       run: |
         cd app/build/outputs/apk/release
-        # unsigned APK when no signing config is present
         APK_FILE=$(ls *.apk | head -1)
         mv "$APK_FILE" hubert-${{ steps.version.outputs.VERSION }}.apk
 

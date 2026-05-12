@@ -220,21 +220,23 @@ class TrouvezViewModel @Inject constructor(
     /** Pick words for a board, draining pinnedPool first then falling back to random. No duplicates. */
     private fun pickWords(count: Int): List<VocabWord> {
         val currentRanks = _uiState.value.frenchWords.map { it.rank }.toMutableSet()
+        val usedGerman = _uiState.value.germanWords.map { it.text }.toMutableSet()
         val result = mutableListOf<VocabWord>()
         // Drain eligible pinned words first
         val pinnedIter = pinnedPool.iterator()
         while (pinnedIter.hasNext() && result.size < count) {
             val w = pinnedIter.next()
-            if (w.rank !in currentRanks) {
+            if (w.rank !in currentRanks && w.german !in usedGerman) {
                 pinnedIter.remove()
                 currentRanks.add(w.rank)
+                usedGerman.add(w.german)
                 result.add(w)
             }
         }
-        // Fill remainder with random words, excluding already used ranks
+        // Fill remainder with random words, excluding already used ranks and german texts
         if (result.size < count) {
             val randoms = vocabRepository.getAllWords()
-                .filter { it.rank !in currentRanks }
+                .filter { it.rank !in currentRanks && it.german !in usedGerman }
                 .shuffled()
                 .take(count - result.size)
             result.addAll(randoms)
@@ -493,10 +495,19 @@ class TrouvezViewModel @Inject constructor(
         if (matchedQueue.isEmpty()) return
         val (oldFrenchIdx, oldGermanIdx) = matchedQueue.removeFirst()
 
-        val newWord = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
-            replayPool.removeFirst()
+        val currentRanks = _uiState.value.frenchWords.map { it.rank }.toMutableSet()
+        val usedGerman = _uiState.value.germanWords.map { it.text }.toMutableSet()
+        val replayCandidate = if (replayPool.isNotEmpty() && Math.random() < 0.30)
+            replayPool.firstOrNull { it.rank !in currentRanks && it.german !in usedGerman }
+        else null
+        val newWord = if (replayCandidate != null) {
+            replayPool.remove(replayCandidate)
+            replayCandidate
         } else {
-            vocabRepository.getRandomWords(1).first()
+            vocabRepository.getAllWords()
+                .filter { it.rank !in currentRanks && it.german !in usedGerman }
+                .shuffled()
+                .first()
         }
         val newPairId = nextPairId++
 
