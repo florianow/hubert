@@ -99,6 +99,9 @@ dependencies {
     // Gson (for JSON vocab loading)
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // Markdown rendering
+    implementation("com.github.jeziellago:compose-markdown:0.5.4")
+
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 

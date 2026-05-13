@@ -520,6 +520,8 @@ fun HubertApp() {
                         highScore = prepositionState.highScore,
                         durationMs = prepositionState.durationMs,
                         answerHistory = prepositionState.answerHistory,
+                        aiAnalysis = prepositionState.aiAnalysis,
+                        isLoadingAnalysis = prepositionState.isLoadingAnalysis,
                         onPlayAgain = { prepositionVm.startGame() },
                         onBackToMenu = {
                             prepositionVm.resetToMenu()

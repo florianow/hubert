@@ -1,5 +1,6 @@
 package com.hubert.ui.screens
 
+import dev.jeziellago.compose.markdowntext.MarkdownText
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -53,6 +54,8 @@ fun GameOverScreen(
     pinnedRanks: Set<Int> = emptySet(),
     onTogglePin: ((Int) -> Unit)? = null,
     wordStreaks: Map<String, WordStreak> = emptyMap(),
+    aiAnalysis: String? = null,
+    isLoadingAnalysis: Boolean = false,
     onPlayAgain: () -> Unit,
     onBackToMenu: () -> Unit
 ) {
@@ -262,6 +265,40 @@ fun GameOverScreen(
                     value = "$highScore",
                     color = GermanGold
                 )
+            }
+        }
+
+        // AI Analysis
+        if (isLoadingAnalysis || aiAnalysis != null) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = FrenchBlue.copy(alpha = 0.08f)
+                ),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = "🤖 Analyse",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = FrenchBlue
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (isLoadingAnalysis) {
+                        Text(
+                            text = "Analysiere...",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = FrenchBlue
+                        )
+                    } else {
+                        MarkdownText(
+                            markdown = aiAnalysis ?: "",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
             }
         }
 

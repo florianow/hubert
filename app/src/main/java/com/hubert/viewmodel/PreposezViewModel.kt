@@ -6,13 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.utils.FrenchTts
+import com.hubert.utils.GeminiApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,6 +62,8 @@ data class PreposezState(
     // Post-game
     val durationMs: Long = 0L,
     val answerHistory: List<AnswerRecord> = emptyList(),
+    val aiAnalysis: String? = null,
+    val isLoadingAnalysis: Boolean = false,
 
     // Countdown
     val countdown: Int? = null
@@ -69,6 +74,7 @@ class PreposezViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
+    private val settingsRepository: SettingsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -88,7 +94,7 @@ class PreposezViewModel @Inject constructor(
     private var currentQuestionFromReplay = false
 
     companion object {
-        const val GAME_TIME_MS = 120_000L
+        const val GAME_TIME_MS = 30_000L
         const val POINTS_PER_CORRECT = 150
         const val STREAK_BONUS = 30
         const val WRONG_PENALTY_MS = 5_000L
@@ -345,10 +351,62 @@ class PreposezViewModel @Inject constructor(
                     isNewHighScore = isNewHigh,
                     highScore = maxOf(it.highScore, state.score),
                     durationMs = durationMs,
-                    answerHistory = answerLog.toList()
+                    answerHistory = answerLog.toList(),
+                    isLoadingAnalysis = true
                 )
             }
+
+            // Ask Gemini to analyse the session (in separate coroutine so crash doesn't affect game over)
+            val snapshotLog = answerLog.toList()
+            viewModelScope.launch {
+                try {
+                    val settings = settingsRepository.settings.first()
+                    if (settings.hasGemini && snapshotLog.isNotEmpty()) {
+                        val prompt = buildAnalysisPrompt(snapshotLog)
+                        val analysis = GeminiApi.evaluate(settings.geminiKey, prompt)
+                        _uiState.update { it.copy(aiAnalysis = analysis, isLoadingAnalysis = false) }
+                    } else {
+                        _uiState.update { it.copy(isLoadingAnalysis = false) }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("PreposezVM", "Gemini analysis failed", e)
+                    _uiState.update { it.copy(isLoadingAnalysis = false) }
+                }
+            }
         }
+    }
+
+    private fun buildAnalysisPrompt(answers: List<AnswerRecord>): String {
+        val correct = answers.filter { it.isCorrect }
+        val wrong = answers.filter { !it.isCorrect }
+        val wrongLines = wrong.joinToString("\n") {
+            "- Satz: \"${it.question}\" | Antwort: \"${it.yourAnswer}\" | Richtig: \"${it.correctAnswer}\" | Erklärung: ${it.explanation}"
+        }
+        val correctSample = correct.take(5).joinToString("\n") {
+            "- Satz: \"${it.question}\" | Präposition: \"${it.correctAnswer}\""
+        }
+        return """
+Du bist ein Französisch-Lernassistent. Ein Lernender hat gerade ein Präpositions-Spiel gespielt.
+
+Richtige Antworten: ${correct.size}
+Falsche Antworten: ${wrong.size}
+
+Falsche Antworten (mit Erklärung):
+$wrongLines
+
+Beispiele richtige Antworten:
+$correctSample
+
+Antworte auf Deutsch. Formatiere deine Antwort exakt so (Markdown-Struktur):
+
+**Fehleranalyse**
+• [Muster oder Fehlertyp, 1-2 Punkte, jeweils 1 Satz]
+
+**Tipp**
+• [Konkrete Übungsempfehlung, 1-2 Punkte]
+
+Sei präzise und ermutigend. Maximal 4 Stichpunkte gesamt.
+        """.trimIndent()
     }
 
     fun resetToMenu() {
