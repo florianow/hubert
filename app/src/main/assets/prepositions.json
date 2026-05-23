@@ -239,7 +239,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Compter sur = zählen auf / sich verlassen auf (feste Wendung)."
   },
   {
     "fr": "Il a obtenu le poste ___ plusieurs tentatives.",
@@ -305,7 +305,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le vase est tombé et s'est brisé ___ mille morceaux.",
@@ -547,7 +547,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Prendre l'avantage sur = die Oberhand gewinnen über (feste Wendung)."
   },
   {
     "fr": "___ avoir tout considéré, nous avons décidé de déménager.",
@@ -701,7 +701,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Sur = über (thematischer Bezug: etwas über jdn/etw. erfahren/wissen)."
   },
   {
     "fr": "Le chat est entré ___ la fenêtre ouverte.",
@@ -899,7 +899,7 @@
       "à",
       "de"
     ],
-    "explanation": "En bei Zustand, Dauer oder Art und Weise."
+    "explanation": "\"De ... en ...\" ist ein fester Ausdruck: von ... zu ... (de jour en jour, de mieux en mieux)."
   },
   {
     "fr": "Les chances sont de cent ___ un.",
@@ -1009,7 +1009,7 @@
       "à",
       "de"
     ],
-    "explanation": "En bei Zustand, Dauer oder Art und Weise."
+    "explanation": "En + Struktur/Aufbau = in (en trois actes = in drei Akten)."
   },
   {
     "fr": "Les enfants se sont battus deux ___ deux.",
@@ -1207,7 +1207,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in/durch (Bewegung innerhalb eines Bereichs, deutsch oft \"durch\")."
   },
   {
     "fr": "Il faut peser le pour et le ___ avant de décider.",
@@ -1339,7 +1339,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in/durch (Bewegung innerhalb eines Bereichs, deutsch oft \"durch\")."
   },
   {
     "fr": "La température varie ___ 20 et 25 degrés.",
@@ -1438,7 +1438,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Elle est la plus douée ___ sa classe en mathématiques.",
@@ -1933,7 +1933,7 @@
       "à",
       "de"
     ],
-    "explanation": "En mer = auf See."
+    "explanation": "En als Pronomen ersetzt de + Substantiv (hier: de ces fleurs)."
   },
   {
     "fr": "Nous allons ___ la piscine tous les samedis.",
@@ -1999,7 +1999,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Sur bei Maßangaben = mal (6 mètres sur 4 = 6 mal 4 Meter)."
   },
   {
     "fr": "___ ces conditions, il est difficile de prendre une décision.",
@@ -2032,7 +2032,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il habite ___ ici, dans le quartier.",
@@ -2846,7 +2846,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Cette machine est conçue ___ simplifier le travail.",
@@ -2923,7 +2923,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Sur = auf (Oberfläche/sichtbare Fläche)."
   },
   {
     "fr": "Il faut être patient ___ les enfants.",
@@ -3286,7 +3286,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "___ sortant du cinéma, nous avons croisé nos voisins.",
@@ -3330,7 +3330,7 @@
       "à",
       "de"
     ],
-    "explanation": "En + Fachgebiet = in (sich spezialisieren auf)."
+    "explanation": "Fort/forte en = stark/gut in (Adjektiv + en + Bereich, wie riche en)."
   },
   {
     "fr": "Elle s'est rebellée ___ l'autorité de ses parents.",
@@ -3385,7 +3385,7 @@
       "à",
       "de"
     ],
-    "explanation": "En + Fachgebiet = in (sich spezialisieren auf)."
+    "explanation": "Exceller en = hervorragend sein in (feste Verbindung)."
   },
   {
     "fr": "Le conférencier a abordé ce sujet ___ son discours d'ouverture.",
@@ -3396,7 +3396,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "La pluie frappe ___ les vitres.",
@@ -3517,7 +3517,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich, innen)."
+    "explanation": "Dans + Artikel = in (räumlich, inhaltlich oder sozialem Kontext)."
   },
   {
     "fr": "Il a réussi à réparer la voiture ___ dix minutes.",
@@ -3528,7 +3528,7 @@
       "à",
       "de"
     ],
-    "explanation": "En + Transportmittel (en voiture = mit dem Auto)."
+    "explanation": "Dauer (wie lange etwas dauert): en dix minutes = in zehn Minuten"
   },
   {
     "fr": "Nous avons passé une semaine ___ mer.",
@@ -3847,7 +3847,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Ne le jugez pas ___ les apparences.",
@@ -4474,7 +4474,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Tomber sur = treffen/einschlagen auf (feste Wendung)."
   },
   {
     "fr": "L'___ du train a été endommagé dans l'accident.",
@@ -4859,7 +4859,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Sur place ist ein fester Ausdruck: auf der Stelle bleiben/fliegen (ohne sich fortzubewegen)."
   },
   {
     "fr": "Cette maison ___ vendre est vraiment charmante.",
@@ -4991,7 +4991,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur + Einkommen = von (Steuer auf)."
+    "explanation": "Sur = von (entnehmen/abziehen von einem Betrag oder Konto)."
   },
   {
     "fr": "Cette eau est ___ goût ni odeur.",
@@ -5673,7 +5673,7 @@
       "à",
       "sous"
     ],
-    "explanation": "Sur = auf, über."
+    "explanation": "Sur soi = bei sich (etwas bei sich haben/tragen)."
   },
   {
     "fr": "Le chat s'est faufilé ___ la clôture.",
@@ -5926,7 +5926,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il faut toujours se renseigner ___ de signer un contrat.",
@@ -6190,7 +6190,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Ce terrain ___ lequel on a bâti est magnifique.",
@@ -6289,7 +6289,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le vent souffle ___ nous.",
@@ -7224,7 +7224,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "La décision a été prise ___ le conseil d'administration.",
@@ -7257,7 +7257,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le magasin est ouvert de 10h ___ 19h sans interruption.",
@@ -7323,7 +7323,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Ce film était ___ mourir de rire !",
@@ -7356,7 +7356,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Je vois, tu es en colère ___ moi.",
@@ -7664,7 +7664,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le bateau a coulé ___ les vagues.",
@@ -7708,7 +7708,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "___ mon avis, ils ont continué le projet.",
@@ -8071,7 +8071,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il a mis le livre ___ les deux dictionnaires.",
@@ -8137,7 +8137,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Les manifestants luttent ___ la corruption.",
@@ -8203,7 +8203,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le directeur est ___ déplacement cette semaine.",
@@ -8665,7 +8665,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Après cette déclaration, ce politicien se retrouve ___ l'embarras.",
@@ -8676,7 +8676,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Ce directeur se retire ___ l'intérêt de la compagnie.",
@@ -8687,7 +8687,7 @@
       "en",
       "pour"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il cache ses clés ___ le pot à fleurs.",
@@ -8698,7 +8698,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "J'obtiendrai mon diplôme ___ un an.",
@@ -8709,7 +8709,7 @@
       "à",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Je séjourne ___ montagne pendant tout l'été.",
@@ -8841,7 +8841,7 @@
       "sur",
       "par"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Une pâte ___ nettoyer les dents.",
@@ -9424,7 +9424,7 @@
       "à",
       "avec"
     ],
-    "explanation": "En bei Zustand, Dauer oder Art und Weise."
+    "explanation": "S'approvisionner en ist eine feste Verbindung: sich mit etwas (Ressourcen, Vorräten) versorgen."
   },
   {
     "fr": "L'athlète s'alimente de petits repas riches ___ protéines.",
@@ -9435,7 +9435,7 @@
       "à",
       "avec"
     ],
-    "explanation": "En bei Zustand, Dauer oder Art und Weise."
+    "explanation": "Riche en ist eine feste Wendung: woran qc etwas reich/arm ist."
   },
   {
     "fr": "Les ministres ont communiqué ___ la population leur intention de fixer leur choix.",
@@ -9501,7 +9501,7 @@
       "avec",
       "pour"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Les fourches s'enfonçaient ___ les foins qu'elles enlevaient en galettes épaisses.",
@@ -9512,7 +9512,7 @@
       "avec",
       "pour"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Je ressortis ___ regarder la cour.",
@@ -9754,7 +9754,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "de temps ___ temps, j'aime me promener dans le parc.",
@@ -9820,7 +9820,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "de loin ___ loin, on aperçoit des maisons dans la campagne.",
@@ -9842,7 +9842,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Elle a pris une profonde inspiration avant ___ plonger dans la piscine.",
@@ -9974,7 +9974,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Le train de Paris ___ Lyon part dans une heure.",
@@ -10260,7 +10260,7 @@
       "sur",
       "avec"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il marche à pas ___ loup dans la chambre.",
@@ -10392,7 +10392,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Qui étaient les gens assez misérables pour habiter dans cette cabane ___ branches?",
@@ -10414,7 +10414,7 @@
       "en",
       "sur"
     ],
-    "explanation": "Dans + Artikel = in (räumlich innen)."
+    "explanation": "Dans + Artikel = in (räumlich oder inhaltlich)."
   },
   {
     "fr": "Il résolut de dominer, ___ force de génie, l'influence maudite.",
