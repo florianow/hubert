@@ -677,6 +677,8 @@ Réponds uniquement avec ton texte de conversation. Pas de métadonnées, pas d'
     ) = """
 Tu es un professeur de français certifié. Évalue la performance d'un germanophone dans une conversation de 1 minutes en français.
 
+IMPORTANT: La transcription provient d'une reconnaissance vocale automatique (Azure STT) qui ne capture pas toujours fidèlement les accents, les nasales et certaines terminaisons. Évalue les erreurs grammaticales en te basant sur le contexte de la phrase, pas uniquement sur les mots transcrits littéralement. Si le contexte indique clairement l'intention du locuteur, ne signale pas l'erreur.
+
 TRANSCRIPTION DU JOUEUR:
 ${playerMessages.joinToString("\n")}
 
