@@ -5,9 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.ConjugationVerb
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
+import com.hubert.utils.GeminiApi
+import kotlinx.coroutines.flow.first
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -98,6 +101,8 @@ data class ConjuguezState(
     // Post-game
     val durationMs: Long = 0L,
     val answerHistory: List<AnswerRecord> = emptyList(),
+    val aiAnalysis: String? = null,
+    val isLoadingAnalysis: Boolean = false,
 
     // Manual advance — true when feedback is shown and player needs to tap "Next"
     val awaitingNext: Boolean = false,
@@ -115,6 +120,7 @@ class ConjuguezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
+    private val settingsRepository: SettingsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -163,6 +169,7 @@ class ConjuguezViewModel @Inject constructor(
             "futur" to "Futur simple",
             "conditionnel" to "Conditionnel",
             "subjonctif" to "Subjonctif",
+            "mood_question" to "Subjonctif ou Indicatif?",
             "passe_simple" to "Passé simple",
             "imperatif" to "Impératif"
         )
@@ -549,8 +556,9 @@ class ConjuguezViewModel @Inject constructor(
         _uiState.update { state ->
             val current = state.selectedTenses
             val updated = if (tenseKey in current) {
-                // Don't allow deselecting the last tense
-                if (current.size > 1) current - tenseKey else current
+                val removed = if (current.size > 1) current - tenseKey else current
+                // Deselecting subjonctif also removes mood_question
+                if (tenseKey == "subjonctif") removed - "mood_question" else removed
             } else {
                 current + tenseKey
             }
@@ -565,15 +573,16 @@ class ConjuguezViewModel @Inject constructor(
         countdownJob?.cancel()
         timerJob?.cancel()
 
-        activeTenses = _uiState.value.selectedTenses
+        val selectedTenses = _uiState.value.selectedTenses
+        activeTenses = selectedTenses - "mood_question"
         tenseErrorCounts = mutableMapOf()
         answerLog.clear()
         allVerbs = vocabRepository.getConjugations()
         verbPool = allVerbs.shuffled().toMutableList()
 
-        // Initialize info uses: 3 per selected tense
+        // Initialize info uses: 3 per selected tense + mood_question if selected
         val infoUses = activeTenses.associateWith { INFO_USES_PER_TENSE }.toMutableMap()
-        if ("subjonctif" in activeTenses && "present" in activeTenses) {
+        if ("mood_question" in selectedTenses) {
             infoUses["mood_question"] = INFO_USES_PER_TENSE
         }
 
@@ -609,8 +618,8 @@ class ConjuguezViewModel @Inject constructor(
             verbPool = allVerbs.shuffled().toMutableList()
         }
 
-        // Mood question: ~25% chance when subjonctif + present both active
-        if ("subjonctif" in activeTenses && "present" in activeTenses && Math.random() < 0.25) {
+        // Mood question: ~33% chance when explicitly selected
+        if ("mood_question" in _uiState.value.selectedTenses && Math.random() < 0.33) {
             if (tryShowMoodQuestion()) return
         }
 
@@ -989,65 +998,46 @@ class ConjuguezViewModel @Inject constructor(
      * Returns true if a suitable question was generated, false if no candidate found.
      */
     private fun tryShowMoodQuestion(): Boolean {
-        val candidate = allVerbs.shuffled().firstOrNull { verb ->
-            val pForms = verb.tenses["present"] ?: return@firstOrNull false
-            val sForms = verb.tenses["subjonctif"] ?: return@firstOrNull false
-            pForms.indices.any { idx ->
-                idx < sForms.size &&
-                pForms[idx].isNotEmpty() && sForms[idx].isNotEmpty() &&
-                pForms[idx].lowercase() != sForms[idx].lowercase()
-            }
-        } ?: return false
+        // Only consider verbs that have different présent/subjonctif forms AND a sentence for at least one
+        data class MoodCandidate(val verb: ConjugationVerb, val personIdx: Int, val tense: String)
 
-        val pForms = candidate.tenses["present"]!!
-        val sForms = candidate.tenses["subjonctif"]!!
-
-        val eligiblePersons = pForms.indices.filter { idx ->
-            idx < sForms.size &&
-            pForms[idx].isNotEmpty() && sForms[idx].isNotEmpty() &&
-            pForms[idx].lowercase() != sForms[idx].lowercase()
-        }
-        if (eligiblePersons.isEmpty()) return false
-        val personIdx = eligiblePersons.random()
-
-        val correctIsSub = Math.random() < 0.5
-        val correctForm = if (correctIsSub) sForms[personIdx] else pForms[personIdx]
-        val otherMoodForm = if (correctIsSub) pForms[personIdx] else sForms[personIdx]
-        val correctTense = if (correctIsSub) "subjonctif" else "present"
-
-        val distractorPool = mutableSetOf(otherMoodForm)
-        for ((otherTense, otherForms) in candidate.tenses) {
-            if (otherTense == "subjonctif" || otherTense == "present" || otherTense == "passe_compose") continue
-            if (personIdx < otherForms.size && otherForms[personIdx].isNotEmpty()) {
-                val f = otherForms[personIdx]
-                if (f.lowercase() != correctForm.lowercase() && f.lowercase() != otherMoodForm.lowercase()) {
-                    distractorPool.add(f)
+        val candidates = allVerbs.shuffled().flatMap { verb ->
+            val pForms = verb.tenses["present"] ?: return@flatMap emptyList()
+            val sForms = verb.tenses["subjonctif"] ?: return@flatMap emptyList()
+            pForms.indices.flatMap { idx ->
+                if (idx >= sForms.size) return@flatMap emptyList()
+                if (pForms[idx].isEmpty() || sForms[idx].isEmpty()) return@flatMap emptyList()
+                if (pForms[idx].lowercase() == sForms[idx].lowercase()) return@flatMap emptyList()
+                val hasSub = verb.sentences?.get("subjonctif")?.get(idx.toString()) != null
+                val hasPres = verb.sentences?.get("present")?.get(idx.toString()) != null
+                buildList {
+                    if (hasSub) add(MoodCandidate(verb, idx, "subjonctif"))
+                    if (hasPres) add(MoodCandidate(verb, idx, "present"))
                 }
             }
         }
-        val distractors = distractorPool.take(NUM_CHOICES - 1).toList()
-        if (distractors.isEmpty()) return false
+        if (candidates.isEmpty()) return false
 
-        val allChoices = (listOf(correctForm) + distractors).shuffled()
+        val pick = candidates.random()
+        val candidate = pick.verb
+        val personIdx = pick.personIdx
+        val correctTense = pick.tense
+
+        val pForms = candidate.tenses["present"]!!
+        val sForms = candidate.tenses["subjonctif"]!!
+        val subForm = sForms[personIdx]
+        val indForm = pForms[personIdx]
+        val correctForm = if (correctTense == "subjonctif") subForm else indForm
+
+        // Only 2 choices: subjonctif form vs indicatif form — no distractors
+        val allChoices = listOf(subForm, indForm).shuffled()
         val correctIdx = allChoices.indexOf(correctForm)
 
-        val sentence = candidate.sentences?.get(correctTense)?.get(personIdx.toString())
+        val sentence = candidate.sentences!![correctTense]!![personIdx.toString()]!!
         val personLabel = PERSON_LABELS[personIdx]
-        val (sentenceFr, sentenceDe) = if (sentence != null) {
-            sentence.fr.replace(sentence.blank, "___") to sentence.de
-        } else {
-            // No real sentence — generate a trigger phrase so the player has mood context
-            val que = if (personLabel.startsWith("il") || personLabel.startsWith("ils")) "qu'" else "que "
-            if (correctTense == "subjonctif") {
-                "Il faut $que$personLabel ___." to "Es ist nötig, dass …"
-            } else {
-                "Je sais $que$personLabel ___." to "Ich weiß, dass …"
-            }
-        }
+        val sentenceFr = sentence.fr.replace(sentence.blank, "___")
+        val sentenceDe = sentence.de
         val verbIpa = vocabRepository.getIpaForFrench(candidate.infinitive)
-
-        val mode = if (Math.random() < 0.2) QuestionMode.TYPE else QuestionMode.PICK
-        if (mode == QuestionMode.TYPE) frenchTts.speak(candidate.infinitive)
 
         _uiState.update {
             it.copy(
@@ -1065,7 +1055,7 @@ class ConjuguezViewModel @Inject constructor(
                 correctIndex = correctIdx,
                 selectedIndex = null,
                 feedback = null,
-                questionMode = mode,
+                questionMode = QuestionMode.PICK,
                 typedText = "",
                 isMoodQuestion = true,
                 awaitingNext = false
@@ -1248,10 +1238,61 @@ class ConjuguezViewModel @Inject constructor(
                     isNewHighScore = isNewHigh,
                     highScore = maxOf(it.highScore, state.score),
                     durationMs = durationMs,
-                    answerHistory = answerLog.toList()
+                    answerHistory = answerLog.toList(),
+                    isLoadingAnalysis = true
                 )
             }
+
+            val snapshotLog = answerLog.toList()
+            viewModelScope.launch {
+                try {
+                    val settings = settingsRepository.settings.first()
+                    if (settings.hasGemini && snapshotLog.isNotEmpty()) {
+                        val prompt = buildAnalysisPrompt(snapshotLog)
+                        val analysis = GeminiApi.evaluate(settings.geminiKey, prompt)
+                        _uiState.update { it.copy(aiAnalysis = analysis, isLoadingAnalysis = false) }
+                    } else {
+                        _uiState.update { it.copy(isLoadingAnalysis = false) }
+                    }
+                } catch (e: Exception) {
+                    Log.e("ConjuguezVM", "Gemini analysis failed", e)
+                    _uiState.update { it.copy(isLoadingAnalysis = false) }
+                }
+            }
         }
+    }
+
+    private fun buildAnalysisPrompt(answers: List<AnswerRecord>): String {
+        val correct = answers.filter { it.isCorrect }
+        val wrong = answers.filter { !it.isCorrect }
+        val wrongLines = wrong.joinToString("\n") {
+            "- Frage: \"${it.question}\" | Antwort: \"${it.yourAnswer}\" | Richtig: \"${it.correctAnswer}\""
+        }
+        val correctSample = correct.take(5).joinToString("\n") {
+            "- Frage: \"${it.question}\" | Form: \"${it.correctAnswer}\""
+        }
+        return """
+Du bist ein Französisch-Lernassistent. Ein Lernender hat gerade ein Konjugations-Spiel gespielt.
+
+Richtige Antworten: ${correct.size}
+Falsche Antworten: ${wrong.size}
+
+Falsche Antworten:
+$wrongLines
+
+Beispiele richtige Antworten:
+$correctSample
+
+Antworte auf Deutsch. Formatiere deine Antwort exakt so (Markdown-Struktur):
+
+**Fehleranalyse**
+• [Muster oder Fehlertyp, 1-2 Punkte, jeweils 1 Satz]
+
+**Tipp**
+• [Konkrete Übungsempfehlung, 1-2 Punkte]
+
+Sei präzise und ermutigend. Maximal 4 Stichpunkte gesamt.
+        """.trimIndent()
     }
 
     fun resetToMenu() {

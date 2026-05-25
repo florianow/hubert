@@ -20,6 +20,7 @@ import com.hubert.viewmodel.TrouvezViewModel
 import com.hubert.viewmodel.CompletezViewModel
 import com.hubert.viewmodel.ClassezViewModel
 import com.hubert.viewmodel.PreposezViewModel
+import com.hubert.viewmodel.RelativisezViewModel
 import com.hubert.viewmodel.PrononcezViewModel
 import com.hubert.viewmodel.EcrivezViewModel
 import com.hubert.viewmodel.ParlezViewModel
@@ -52,6 +53,7 @@ enum class Screen {
     CONJUGUEZ,
     PRONONCEZ,
     PREPOSEZ,
+    RELATIVISEZ,
     PARLEZ,
     STATISTICS,
     SETTINGS
@@ -66,6 +68,7 @@ fun HubertApp() {
     val conjugationVm: ConjuguezViewModel = hiltViewModel()
     val pronunciationVm: PrononcezViewModel = hiltViewModel()
     val prepositionVm: PreposezViewModel = hiltViewModel()
+    val relativisezVm: RelativisezViewModel = hiltViewModel()
     val parlezVm: ParlezViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
@@ -77,6 +80,7 @@ fun HubertApp() {
     val conjugationState by conjugationVm.uiState.collectAsState()
     val pronunciationState by pronunciationVm.uiState.collectAsState()
     val prepositionState by prepositionVm.uiState.collectAsState()
+    val relativisezState by relativisezVm.uiState.collectAsState()
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
     val settingsState by settingsVm.settings.collectAsState()
@@ -99,6 +103,7 @@ fun HubertApp() {
                 "conjugation" -> conjugationVm.showTenseSelection()
                 "pronunciation" -> pronunciationVm.onGameSelected()
                 "preposition" -> prepositionVm.showSelection()
+                "relative_pronoun" -> relativisezVm.showSelection()
                 "parlez"      -> parlezVm.onGameSelected()
             }
         }
@@ -144,6 +149,12 @@ fun HubertApp() {
     LaunchedEffect(prepositionState.isSelection, prepositionState.isPlaying, prepositionState.isGameOver, prepositionState.countdown) {
         if (prepositionState.isSelection || prepositionState.countdown != null || prepositionState.isPlaying || prepositionState.isGameOver) {
             currentScreen = Screen.PREPOSEZ
+        }
+    }
+
+    LaunchedEffect(relativisezState.isSelection, relativisezState.isPlaying, relativisezState.isGameOver, relativisezState.countdown) {
+        if (relativisezState.isSelection || relativisezState.countdown != null || relativisezState.isPlaying || relativisezState.isGameOver) {
+            currentScreen = Screen.RELATIVISEZ
         }
     }
 
@@ -419,6 +430,8 @@ fun HubertApp() {
                         highScore = conjugationState.highScore,
                         durationMs = conjugationState.durationMs,
                         answerHistory = conjugationState.answerHistory,
+                        aiAnalysis = conjugationState.aiAnalysis,
+                        isLoadingAnalysis = conjugationState.isLoadingAnalysis,
                         onPlayAgain = { conjugationVm.startGame() },
                         onBackToMenu = {
                             conjugationVm.resetToMenu()
@@ -532,6 +545,62 @@ fun HubertApp() {
             }
         }
 
+        Screen.RELATIVISEZ -> {
+            when {
+                relativisezState.isSelection -> {
+                    RelativisezSelectionScreen(
+                        state = relativisezState,
+                        onToggle = { relativisezVm.togglePronoun(it) },
+                        onToggleGroup = { relativisezVm.toggleGroup(it) },
+                        onStart = { relativisezVm.startGame() },
+                        onBack = {
+                            relativisezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                relativisezState.countdown != null -> {
+                    CountdownScreen(
+                        count = relativisezState.countdown!!,
+                        onBack = {
+                            relativisezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                relativisezState.isPlaying -> {
+                    RelativisezScreen(
+                        state = relativisezState,
+                        onAnswer = { relativisezVm.answer(it) },
+                        onQuit = {
+                            relativisezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                relativisezState.isGameOver -> {
+                    GameOverScreen(
+                        title = "TIME'S UP!",
+                        score = relativisezState.score,
+                        isNewHighScore = relativisezState.isNewHighScore,
+                        totalCorrect = relativisezState.totalCorrect,
+                        totalWrong = relativisezState.totalWrong,
+                        bestStreak = relativisezState.bestStreak,
+                        highScore = relativisezState.highScore,
+                        durationMs = relativisezState.durationMs,
+                        answerHistory = relativisezState.answerHistory,
+                        aiAnalysis = relativisezState.aiAnalysis,
+                        isLoadingAnalysis = relativisezState.isLoadingAnalysis,
+                        onPlayAgain = { relativisezVm.startGame() },
+                        onBackToMenu = {
+                            relativisezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+            }
+        }
+
         Screen.PARLEZ -> {
             // Redirect to global settings when API key is missing
             if (parlezState.showSettings) {
@@ -615,6 +684,7 @@ fun HubertApp() {
                 conjugationHighScore = conjugationState.highScore,
                 pronunciationHighScore = pronunciationState.highScore,
                 prepositionHighScore = prepositionState.highScore,
+                relativisezHighScore = relativisezState.highScore,
                 parlezHighScore = parlezState.highScore,
                 onHubertChoisit = onHubertChoisit,
                 onStartMatching = { matchingVm.showPinSelection() },
@@ -624,6 +694,7 @@ fun HubertApp() {
                 onStartConjugation = { conjugationVm.showTenseSelection() },
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
                 onStartPreposition = { prepositionVm.showSelection() },
+                onStartRelativisez = { relativisezVm.showSelection() },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {
