@@ -1,0 +1,422 @@
+package com.hubert.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.SettingsRepository
+import com.hubert.data.repository.StatisticsRepository
+import com.hubert.utils.GeminiApi
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+data class RelativePronounQuestion(
+    val fr: String,
+    val de: String,
+    val answer: String,
+    val distractors: List<String>,
+    val explanation: String = ""
+)
+
+data class RelativisezState(
+    val isSelection: Boolean = false,
+    val isPlaying: Boolean = false,
+    val isGameOver: Boolean = false,
+    val isNewHighScore: Boolean = false,
+
+    // Selection
+    val selectedPronouns: Set<String> = RelativisezViewModel.ALL_PRONOUNS,
+
+    // Current question
+    val sentenceWithGap: String = "",
+    val germanTranslation: String = "",
+    val choices: List<String> = emptyList(),
+    val correctIndex: Int = -1,
+
+    // Feedback
+    val selectedIndex: Int? = null,
+    val feedback: Boolean? = null,
+    val explanation: String = "",
+
+    // Scoring
+    val score: Int = 0,
+    val totalCorrect: Int = 0,
+    val totalWrong: Int = 0,
+    val streak: Int = 0,
+    val bestStreak: Int = 0,
+    val highScore: Int = 0,
+
+    // Timer
+    val timeRemainingMs: Long = 0L,
+    val timerFraction: Float = 1f,
+
+    // Post-game
+    val durationMs: Long = 0L,
+    val answerHistory: List<AnswerRecord> = emptyList(),
+    val aiAnalysis: String? = null,
+    val isLoadingAnalysis: Boolean = false,
+
+    // Countdown
+    val countdown: Int? = null
+)
+
+@HiltViewModel
+class RelativisezViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val highScoreRepository: HighScoreRepository,
+    private val statisticsRepository: StatisticsRepository,
+    private val settingsRepository: SettingsRepository,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(RelativisezState())
+    val uiState: StateFlow<RelativisezState> = _uiState.asStateFlow()
+
+    private var timerJob: Job? = null
+    private var countdownJob: Job? = null
+    private var timerDeadline = 0L
+    private var gameStartTime = 0L
+    private val answerLog = mutableListOf<AnswerRecord>()
+
+    private var allQuestions: List<RelativePronounQuestion> = emptyList()
+    private var questionPool: MutableList<RelativePronounQuestion> = mutableListOf()
+    private val replayPool: ArrayDeque<RelativePronounQuestion> = ArrayDeque()
+    private var currentQuestion: RelativePronounQuestion? = null
+    private var currentQuestionFromReplay = false
+
+    companion object {
+        const val GAME_TIME_MS = 120_000L
+        const val POINTS_PER_CORRECT = 150
+        const val STREAK_BONUS = 30
+        const val WRONG_PENALTY_MS = 5_000L
+        const val CORRECT_BONUS_MS = 5_000L
+        const val GAME_TYPE = "relative_pronoun"
+
+        val PRONOUN_GROUPS = listOf(
+            "Grundpronomen" to listOf("qui", "que", "dont", "où"),
+            "lequel-Familie" to listOf("lequel", "laquelle", "lesquels", "lesquelles"),
+            "Kontraktionen" to listOf("auquel", "auxquels", "duquel", "desquels"),
+            "Ce-Formen" to listOf("ce qui", "ce que", "ce dont"),
+        )
+
+        val ALL_PRONOUNS: Set<String> = PRONOUN_GROUPS.flatMap { it.second }.toSet()
+    }
+
+    init {
+        loadQuestions()
+        viewModelScope.launch {
+            val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            _uiState.update { it.copy(highScore = hs) }
+        }
+    }
+
+    private fun loadQuestions() {
+        val json = context.assets.open("relative_pronouns.json").bufferedReader().use { it.readText() }
+        val type = object : TypeToken<List<RelativePronounQuestion>>() {}.type
+        allQuestions = Gson().fromJson(json, type)
+    }
+
+    fun showSelection() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        _uiState.update {
+            RelativisezState(
+                isSelection = true,
+                selectedPronouns = it.selectedPronouns,
+                highScore = it.highScore
+            )
+        }
+    }
+
+    fun togglePronoun(pronoun: String) {
+        val current = _uiState.value.selectedPronouns
+        val new = if (pronoun in current) {
+            if (current.size <= 1) current else current - pronoun
+        } else {
+            current + pronoun
+        }
+        _uiState.update { it.copy(selectedPronouns = new) }
+    }
+
+    fun toggleGroup(pronouns: List<String>) {
+        val current = _uiState.value.selectedPronouns
+        val allSelected = pronouns.all { it in current }
+        val new = if (allSelected) {
+            val remaining = current - pronouns.toSet()
+            if (remaining.isEmpty()) current else remaining
+        } else {
+            current + pronouns
+        }
+        _uiState.update { it.copy(selectedPronouns = new) }
+    }
+
+    fun startGame() {
+        countdownJob?.cancel()
+        timerJob?.cancel()
+        answerLog.clear()
+
+        val selected = _uiState.value.selectedPronouns
+        val filtered = allQuestions.filter { it.answer in selected }
+        questionPool = filtered.shuffled().toMutableList()
+
+        _uiState.update {
+            RelativisezState(
+                isPlaying = false,
+                isSelection = false,
+                selectedPronouns = selected,
+                countdown = 3,
+                highScore = it.highScore
+            )
+        }
+
+        countdownJob = viewModelScope.launch {
+            for (i in 3 downTo 1) {
+                _uiState.update { it.copy(countdown = i) }
+                delay(800)
+            }
+            _uiState.update { it.copy(countdown = null, isPlaying = true) }
+            gameStartTime = System.currentTimeMillis()
+            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            _uiState.update { it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f) }
+            showNextQuestion()
+            startTimer()
+        }
+    }
+
+    private fun showNextQuestion() {
+        val question = if (replayPool.isNotEmpty() && Math.random() < 0.30) {
+            currentQuestionFromReplay = true
+            replayPool.removeFirst()
+        } else {
+            currentQuestionFromReplay = false
+            if (questionPool.isEmpty()) {
+                val sel = _uiState.value.selectedPronouns
+                questionPool = allQuestions.filter { it.answer in sel }.shuffled().toMutableList()
+            }
+            questionPool.removeFirst()
+        }
+        currentQuestion = question
+        val allChoices = (listOf(question.answer) + question.distractors).shuffled()
+        val correctIdx = allChoices.indexOf(question.answer)
+
+        _uiState.update {
+            it.copy(
+                sentenceWithGap = question.fr,
+                germanTranslation = question.de,
+                choices = allChoices,
+                correctIndex = correctIdx,
+                selectedIndex = null,
+                feedback = null,
+                explanation = ""
+            )
+        }
+    }
+
+    fun answer(choiceIndex: Int) {
+        val state = _uiState.value
+        if (!state.isPlaying || state.feedback != null) return
+
+        val isCorrect = choiceIndex == state.correctIndex
+        val explanation = currentQuestion?.explanation ?: ""
+
+        answerLog.add(
+            AnswerRecord(
+                question = state.sentenceWithGap,
+                yourAnswer = state.choices[choiceIndex],
+                correctAnswer = state.choices[state.correctIndex],
+                isCorrect = isCorrect,
+                explanation = explanation
+            )
+        )
+
+        if (isCorrect) {
+            val newStreak = state.streak + 1
+            val streakBonus = (newStreak - 1) * STREAK_BONUS
+            val matchScore = POINTS_PER_CORRECT + streakBonus
+
+            timerDeadline += CORRECT_BONUS_MS
+
+            _uiState.update {
+                it.copy(
+                    selectedIndex = choiceIndex,
+                    feedback = true,
+                    explanation = explanation,
+                    score = it.score + matchScore,
+                    totalCorrect = it.totalCorrect + 1,
+                    streak = newStreak,
+                    bestStreak = maxOf(it.bestStreak, newStreak)
+                )
+            }
+        } else {
+            timerDeadline -= WRONG_PENALTY_MS
+
+            val q = currentQuestion
+            if (q != null) {
+                if (currentQuestionFromReplay) {
+                    replayPool.addLast(q)
+                } else if (replayPool.none { it.fr == q.fr }) {
+                    replayPool.addLast(q)
+                }
+            }
+
+            _uiState.update {
+                it.copy(
+                    selectedIndex = choiceIndex,
+                    feedback = false,
+                    explanation = explanation,
+                    totalWrong = it.totalWrong + 1,
+                    streak = 0
+                )
+            }
+
+            if (timerDeadline <= System.currentTimeMillis()) {
+                _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                endGame()
+                return
+            }
+        }
+
+        viewModelScope.launch {
+            delay(if (isCorrect) 1200 else 2500)
+            if (_uiState.value.isPlaying) showNextQuestion()
+        }
+    }
+
+    private fun startTimer() {
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (true) {
+                val remaining = timerDeadline - System.currentTimeMillis()
+                if (remaining <= 0) {
+                    _uiState.update { it.copy(timeRemainingMs = 0, timerFraction = 0f) }
+                    endGame()
+                    break
+                }
+                _uiState.update {
+                    it.copy(
+                        timeRemainingMs = remaining,
+                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                    )
+                }
+                delay(50)
+            }
+        }
+    }
+
+    private fun endGame() {
+        timerJob?.cancel()
+        val state = _uiState.value
+        val durationMs = System.currentTimeMillis() - gameStartTime
+
+        viewModelScope.launch {
+            val previousHigh = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            val isNewHigh = state.score > previousHigh
+
+            highScoreRepository.saveScore(
+                score = state.score,
+                matchesCompleted = state.totalCorrect,
+                roundsCompleted = state.bestStreak,
+                gameType = GAME_TYPE
+            )
+
+            statisticsRepository.saveSession(
+                gameType = GAME_TYPE,
+                score = state.score,
+                totalCorrect = state.totalCorrect,
+                totalWrong = state.totalWrong,
+                bestStreak = state.bestStreak,
+                durationMs = durationMs
+            )
+
+            statisticsRepository.saveWordAttempts(GAME_TYPE, answerLog)
+
+            _uiState.update {
+                it.copy(
+                    isPlaying = false,
+                    isGameOver = true,
+                    isNewHighScore = isNewHigh,
+                    highScore = maxOf(it.highScore, state.score),
+                    durationMs = durationMs,
+                    answerHistory = answerLog.toList(),
+                    isLoadingAnalysis = true
+                )
+            }
+
+            val snapshotLog = answerLog.toList()
+            viewModelScope.launch {
+                try {
+                    val settings = settingsRepository.settings.first()
+                    if (settings.hasGemini && snapshotLog.isNotEmpty()) {
+                        val prompt = buildAnalysisPrompt(snapshotLog)
+                        val analysis = GeminiApi.evaluate(settings.geminiKey, prompt)
+                        _uiState.update { it.copy(aiAnalysis = analysis, isLoadingAnalysis = false) }
+                    } else {
+                        _uiState.update { it.copy(isLoadingAnalysis = false) }
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("RelativisezVM", "Gemini analysis failed", e)
+                    _uiState.update { it.copy(isLoadingAnalysis = false) }
+                }
+            }
+        }
+    }
+
+    private fun buildAnalysisPrompt(answers: List<AnswerRecord>): String {
+        val correct = answers.filter { it.isCorrect }
+        val wrong = answers.filter { !it.isCorrect }
+        val wrongLines = wrong.joinToString("\n") {
+            "- Satz: \"${it.question}\" | Antwort: \"${it.yourAnswer}\" | Richtig: \"${it.correctAnswer}\" | Erklärung: ${it.explanation}"
+        }
+        val correctSample = correct.take(5).joinToString("\n") {
+            "- Satz: \"${it.question}\" | Pronomen: \"${it.correctAnswer}\""
+        }
+        return """
+Du bist ein Französisch-Lernassistent. Ein Lernender hat gerade ein Relativpronomen-Spiel gespielt.
+
+Richtige Antworten: ${correct.size}
+Falsche Antworten: ${wrong.size}
+
+Falsche Antworten (mit Erklärung):
+$wrongLines
+
+Beispiele richtige Antworten:
+$correctSample
+
+Antworte auf Deutsch. Formatiere deine Antwort exakt so (Markdown-Struktur):
+
+**Fehleranalyse**
+• [Muster oder Fehlertyp, 1-2 Punkte, jeweils 1 Satz]
+
+**Tipp**
+• [Konkrete Übungsempfehlung, 1-2 Punkte]
+
+Sei präzise und ermutigend. Maximal 4 Stichpunkte gesamt.
+        """.trimIndent()
+    }
+
+    fun resetToMenu() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        answerLog.clear()
+        replayPool.clear()
+        val selected = _uiState.value.selectedPronouns
+        _uiState.value = RelativisezState(selectedPronouns = selected)
+        viewModelScope.launch {
+            val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)
+            _uiState.update { it.copy(highScore = hs) }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timerJob?.cancel()
+        countdownJob?.cancel()
+    }
+}

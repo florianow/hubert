@@ -1,0 +1,317 @@
+[
+  {
+    "fr": "J'ai un voisin ___ joue du piano tous les soirs.",
+    "de": "Ich habe einen Nachbarn, der jeden Abend Klavier spielt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes."
+  },
+  {
+    "fr": "J'ai acheté des chaussures ___ sont très confortables.",
+    "de": "Ich habe Schuhe gekauft, die sehr bequem sind.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes (auch für Sachen)."
+  },
+  {
+    "fr": "C'est l'homme ___ habite en face de chez moi.",
+    "de": "Das ist der Mann, der mir gegenüber wohnt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui steht als Subjekt – der Mann 'wohnt'."
+  },
+  {
+    "fr": "Voici le train ___ part à huit heures.",
+    "de": "Hier ist der Zug, der um acht Uhr abfährt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "lequel"],
+    "explanation": "qui ist Subjekt – der Zug 'fährt ab'."
+  },
+  {
+    "fr": "Elle a une amie ___ parle cinq langues.",
+    "de": "Sie hat eine Freundin, die fünf Sprachen spricht.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes."
+  },
+
+  {
+    "fr": "J'ai un frère ___ j'admire énormément.",
+    "de": "Ich habe einen Bruder, den ich sehr bewundere.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – 'j'admire mon frère'."
+  },
+  {
+    "fr": "J'ai trouvé un restaurant ___ je recommande à tout le monde.",
+    "de": "Ich habe ein Restaurant gefunden, das ich jedem empfehle.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt des Relativsatzes."
+  },
+  {
+    "fr": "Le livre ___ j'ai lu hier était passionnant.",
+    "de": "Das Buch, das ich gestern gelesen habe, war fesselnd.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – 'j'ai lu le livre'."
+  },
+  {
+    "fr": "C'est la chanson ___ tout le monde connaît.",
+    "de": "Das ist das Lied, das jeder kennt.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt des Relativsatzes."
+  },
+  {
+    "fr": "La robe ___ elle portait était magnifique.",
+    "de": "Das Kleid, das sie trug, war wunderschön.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – 'elle portait la robe'."
+  },
+
+  {
+    "fr": "Ma tante ___ la fille est médecin est très fière.",
+    "de": "Meine Tante, deren Tochter Ärztin ist, ist sehr stolz.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dont ersetzt 'de + Nomen' (la fille de ma tante)."
+  },
+  {
+    "fr": "C'est Thomas ___ Sophie est amoureuse.",
+    "de": "Das ist Thomas, in den Sophie verliebt ist.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dont wegen 'être amoureux de'."
+  },
+  {
+    "fr": "Il cherche l'appartement ___ il rêve depuis longtemps.",
+    "de": "Er sucht die Wohnung, von der er schon lange träumt.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dont wegen 'rêver de quelque chose'."
+  },
+  {
+    "fr": "C'est le sujet ___ nous avons beaucoup discuté.",
+    "de": "Das ist das Thema, über das wir viel diskutiert haben.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dont wegen 'discuter de quelque chose'."
+  },
+  {
+    "fr": "Voilà le médicament ___ le médecin a besoin.",
+    "de": "Hier ist das Medikament, das der Arzt braucht.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dont wegen 'avoir besoin de quelque chose'."
+  },
+
+  {
+    "fr": "Paris est la ville ___ Marie travaille maintenant.",
+    "de": "Paris ist die Stadt, in der Marie jetzt arbeitet.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für Ortsangaben."
+  },
+  {
+    "fr": "C'était une époque ___ tout semblait possible.",
+    "de": "Es war eine Zeit, in der alles möglich schien.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für Zeitangaben."
+  },
+  {
+    "fr": "Je me souviens du jour ___ nous nous sommes rencontrés.",
+    "de": "Ich erinnere mich an den Tag, an dem wir uns kennengelernt haben.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für Zeitpunkte."
+  },
+
+  {
+    "fr": "C'était un été pendant ___ il faisait très chaud.",
+    "de": "Es war ein Sommer, in dem es sehr heiß war.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "lequel – maskulin Singular (été) nach der Präposition 'pendant'."
+  },
+  {
+    "fr": "C'est l'outil sans ___ je ne peux pas travailler.",
+    "de": "Das ist das Werkzeug, ohne das ich nicht arbeiten kann.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "lequel – maskulin Singular (outil) nach 'sans'."
+  },
+
+  {
+    "fr": "La raison pour ___ je suis venu est importante.",
+    "de": "Der Grund, weshalb ich gekommen bin, ist wichtig.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "laquelle – feminin Singular (raison) nach 'pour'."
+  },
+  {
+    "fr": "La table sur ___ j'ai posé le livre est en bois.",
+    "de": "Der Tisch, auf den ich das Buch gelegt habe, ist aus Holz.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "laquelle – feminin Singular (table) nach 'sur'."
+  },
+  {
+    "fr": "Il a une voiture à côté de ___ se trouve un vélo.",
+    "de": "Er hat ein Auto, neben dem ein Fahrrad steht.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "laquelle – feminin Singular (voiture) nach 'à côté de'."
+  },
+
+  {
+    "fr": "Les amis parmi ___ je me sens bien sont précieux.",
+    "de": "Die Freunde, unter denen ich mich wohl fühle, sind wertvoll.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "lesquels – maskulin Plural (amis) nach 'parmi'."
+  },
+  {
+    "fr": "Ce sont des arguments contre ___ il est difficile de lutter.",
+    "de": "Das sind Argumente, gegen die es schwer zu kämpfen ist.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "lesquels – maskulin Plural (arguments) nach 'contre'."
+  },
+
+  {
+    "fr": "Les raisons pour ___ elle est partie restent mystérieuses.",
+    "de": "Die Gründe, aus denen sie gegangen ist, bleiben rätselhaft.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "lesquelles – feminin Plural (raisons) nach 'pour'."
+  },
+
+  {
+    "fr": "C'est le problème ___ je pensais depuis ce matin.",
+    "de": "Das ist das Problem, an das ich seit heute Morgen denke.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "auquel = à + lequel, maskulin Singular (problème) wegen 'penser à'."
+  },
+  {
+    "fr": "C'est le seul collègue ___ je fais vraiment confiance.",
+    "de": "Das ist der einzige Kollege, dem ich wirklich vertraue.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "auquel = à + lequel, maskulin Singular wegen 'faire confiance à'."
+  },
+
+  {
+    "fr": "Les projets ___ je participe sont intéressants.",
+    "de": "Die Projekte, an denen ich teilnehme, sind interessant.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "auxquels = à + lesquels, maskulin Plural (projets) wegen 'participer à'."
+  },
+  {
+    "fr": "Les cours ___ tu t'es inscrit commencent lundi.",
+    "de": "Die Kurse, für die du dich angemeldet hast, beginnen Montag.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "auxquels = à + lesquels, maskulin Plural wegen 's'inscrire à'."
+  },
+
+  {
+    "fr": "Le musée près ___ j'habite est magnifique.",
+    "de": "Das Museum, in dessen Nähe ich wohne, ist wunderschön.",
+    "answer": "duquel",
+    "distractors": ["auquel", "desquels", "auxquels"],
+    "explanation": "duquel = de + lequel, maskulin Singular (musée) nach 'près de'."
+  },
+
+  {
+    "fr": "Les arbres à l'ombre ___ nous pique-niquons sont très vieux.",
+    "de": "Die Bäume, in deren Schatten wir picknicken, sind sehr alt.",
+    "answer": "desquels",
+    "distractors": ["duquel", "auquel", "auxquels"],
+    "explanation": "desquels = de + lesquels, maskulin Plural (arbres) nach 'à l'ombre de'."
+  },
+
+  {
+    "fr": "Dis-moi ___ t'intéresse.",
+    "de": "Sag mir, was dich interessiert.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "ce qui ist Subjekt ohne bestimmtes Bezugsnomen – bedeutet 'was'."
+  },
+  {
+    "fr": "Je ne sais pas ___ va se passer.",
+    "de": "Ich weiß nicht, was passieren wird.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "que"],
+    "explanation": "ce qui ist Subjekt des eingebetteten Satzes."
+  },
+  {
+    "fr": "Il ne comprend pas ___ se passe vraiment.",
+    "de": "Er versteht nicht, was wirklich passiert.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "ce qui ist Subjekt – 'etwas passiert'."
+  },
+  {
+    "fr": "Elle m'a expliqué ___ l'avait rendue si heureuse.",
+    "de": "Sie erklärte mir, was sie so glücklich gemacht hatte.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "que"],
+    "explanation": "ce qui ist Subjekt ohne Bezugsnomen."
+  },
+
+  {
+    "fr": "Je n'ai pas compris ___ tu as dit.",
+    "de": "Ich habe nicht verstanden, was du gesagt hast.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "ce que ist direktes Objekt ohne Bezugsnomen."
+  },
+  {
+    "fr": "Fais ___ tu penses être juste.",
+    "de": "Tu, was du für richtig hältst.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "ce que ist direktes Objekt – 'du glaubst, dass etwas richtig ist'."
+  },
+  {
+    "fr": "Montre-moi ___ elle a acheté.",
+    "de": "Zeig mir, was sie gekauft hat.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "ce que ist direktes Objekt ohne Bezugsnomen."
+  },
+  {
+    "fr": "Il fait toujours ___ il veut.",
+    "de": "Er macht immer, was er will.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "ce que ist direktes Objekt."
+  },
+
+  {
+    "fr": "C'est exactement ___ nous parlions hier.",
+    "de": "Das ist genau das, wovon wir gestern sprachen.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "ce dont steht für 'de + chose indéfinie' wegen 'parler de'."
+  },
+  {
+    "fr": "J'ai enfin acheté ___ j'avais besoin pour le projet.",
+    "de": "Ich habe endlich gekauft, was ich für das Projekt brauchte.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "ce dont wegen 'avoir besoin de quelque chose' ohne Bezugsnomen."
+  },
+  {
+    "fr": "Tu as trouvé ___ tu avais besoin ?",
+    "de": "Hast du gefunden, was du gebraucht hast?",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "ce dont wegen 'avoir besoin de' ohne konkreten Bezugsnomen."
+  }
+]

@@ -1,0 +1,513 @@
+package com.hubert.ui.screens
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.Circle
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import com.hubert.ui.theme.*
+import com.hubert.viewmodel.RelativisezState
+import com.hubert.viewmodel.RelativisezViewModel
+
+private val RelativisezColor = Color(0xFF3F51B5)
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun RelativisezSelectionScreen(
+    state: RelativisezState,
+    onToggle: (String) -> Unit,
+    onToggleGroup: (List<String>) -> Unit,
+    onStart: () -> Unit,
+    onBack: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Zurück",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Column {
+                    Text(
+                        text = "Relativisez!",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = RelativisezColor
+                    )
+                    Text(
+                        text = "Wähle Relativpronomen zum Üben",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                RelativisezViewModel.PRONOUN_GROUPS.forEach { (groupName, pronouns) ->
+                    val allSelected = pronouns.all { it in state.selectedPronouns }
+                    val anySelected = pronouns.any { it in state.selectedPronouns }
+
+                    Card(
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (anySelected)
+                                RelativisezColor.copy(alpha = 0.07f)
+                            else
+                                MaterialTheme.colorScheme.surface
+                        ),
+                        border = BorderStroke(
+                            width = if (anySelected) 1.5.dp else 1.dp,
+                            color = if (anySelected) RelativisezColor.copy(alpha = 0.4f)
+                                    else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 14.dp, vertical = 10.dp),
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onToggleGroup(pronouns) },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = groupName,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = if (anySelected) RelativisezColor
+                                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                )
+                                Icon(
+                                    imageVector = if (allSelected) Icons.Filled.CheckCircle
+                                                  else Icons.Outlined.Circle,
+                                    contentDescription = null,
+                                    tint = if (allSelected) RelativisezColor
+                                           else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+
+                            FlowRow(
+                                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                pronouns.forEach { pronoun ->
+                                    val selected = pronoun in state.selectedPronouns
+                                    Surface(
+                                        shape = RoundedCornerShape(20.dp),
+                                        color = if (selected) RelativisezColor else Color.Transparent,
+                                        border = BorderStroke(
+                                            1.5.dp,
+                                            if (selected) RelativisezColor else RelativisezColor.copy(alpha = 0.25f)
+                                        ),
+                                        modifier = Modifier
+                                            .padding(bottom = 4.dp)
+                                            .clickable { onToggle(pronoun) }
+                                    ) {
+                                        Text(
+                                            text = pronoun,
+                                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp),
+                                            color = if (selected) Color.White else RelativisezColor.copy(alpha = 0.7f),
+                                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                                            fontSize = 14.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Button(
+                onClick = onStart,
+                enabled = state.selectedPronouns.isNotEmpty(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = RelativisezColor)
+            ) {
+                Text(
+                    text = "START · ${state.selectedPronouns.size} Pronomen",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    letterSpacing = 1.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}
+
+@Composable
+fun RelativisezScreen(
+    state: RelativisezState,
+    onAnswer: (Int) -> Unit,
+    onQuit: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            RelativisezTopBar(state = state, onQuit = onQuit)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TimerBar(
+                fraction = state.timerFraction,
+                timeMs = state.timeRemainingMs
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "${state.totalCorrect}",
+                    color = CorrectGreen,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = " / ",
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    fontSize = 16.sp
+                )
+                Text(
+                    text = "${state.totalWrong}",
+                    color = WrongRed,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = FrenchBlue.copy(alpha = 0.08f)
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Français",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = FrenchBlue.copy(alpha = 0.6f)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    val annotated = buildAnnotatedString {
+                        val parts = state.sentenceWithGap.split("___")
+                        parts.forEachIndexed { index, part ->
+                            append(part)
+                            if (index < parts.size - 1) {
+                                withStyle(
+                                    SpanStyle(
+                                        color = RelativisezColor,
+                                        fontWeight = FontWeight.Bold,
+                                        background = RelativisezColor.copy(alpha = 0.1f)
+                                    )
+                                ) {
+                                    append(" ___ ")
+                                }
+                            }
+                        }
+                    }
+                    Text(
+                        text = annotated,
+                        fontSize = 22.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 32.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = GermanGold.copy(alpha = 0.08f)
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Deutsch",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = GermanGold.copy(alpha = 0.6f)
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = state.germanTranslation,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 24.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                for (row in 0..1) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        for (col in 0..1) {
+                            val idx = row * 2 + col
+                            if (idx < state.choices.size) {
+                                RelChoiceCard(
+                                    text = state.choices[idx],
+                                    isCorrectAnswer = idx == state.correctIndex,
+                                    isSelected = idx == state.selectedIndex,
+                                    feedback = state.feedback,
+                                    enabled = state.isPlaying && state.feedback == null,
+                                    onClick = { onAnswer(idx) },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(72.dp)
+            ) {
+                if (state.feedback != null && state.explanation.isNotBlank()) {
+                    val feedbackColor = if (state.feedback == true) CorrectGreen else WrongRed
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        shape = RoundedCornerShape(12.dp),
+                        color = feedbackColor.copy(alpha = 0.10f)
+                    ) {
+                        Box(
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                            contentAlignment = Alignment.CenterStart
+                        ) {
+                            Text(
+                                text = "💡 ${state.explanation}",
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                                lineHeight = 18.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RelativisezTopBar(state: RelativisezState, onQuit: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = onQuit,
+            modifier = Modifier.size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Quit game",
+                tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            )
+        }
+
+        Column {
+            Text(
+                text = "Score",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+            )
+            Text(
+                text = "${state.score}",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = RelativisezColor
+            )
+        }
+
+        Text(
+            text = "Relativisez!",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        if (state.streak >= 2) {
+            Surface(
+                shape = RoundedCornerShape(20.dp),
+                color = GermanGold.copy(alpha = 0.15f)
+            ) {
+                Text(
+                    text = "x${state.streak}",
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = GermanGold
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.width(60.dp))
+        }
+    }
+}
+
+@Composable
+private fun RelChoiceCard(
+    text: String,
+    isCorrectAnswer: Boolean,
+    isSelected: Boolean,
+    feedback: Boolean?,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor: Color
+    val borderColor: Color
+    val textColor: Color
+
+    if (feedback != null) {
+        when {
+            isCorrectAnswer -> {
+                backgroundColor = CorrectGreen.copy(alpha = 0.2f)
+                borderColor = CorrectGreen
+                textColor = CorrectGreen
+            }
+            isSelected -> {
+                backgroundColor = WrongRed.copy(alpha = 0.2f)
+                borderColor = WrongRed
+                textColor = WrongRed
+            }
+            else -> {
+                backgroundColor = MaterialTheme.colorScheme.surface
+                borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                textColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            }
+        }
+    } else {
+        backgroundColor = MaterialTheme.colorScheme.surface
+        borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        textColor = MaterialTheme.colorScheme.onSurface
+    }
+
+    Card(
+        modifier = modifier
+            .fillMaxHeight()
+            .clip(RoundedCornerShape(14.dp))
+            .border(
+                width = if (isSelected || (feedback != null && isCorrectAnswer)) 2.dp else 1.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(14.dp)
+            )
+            .clickable(enabled = enabled) { onClick() },
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = text,
+                fontSize = 20.sp,
+                fontWeight = if (isSelected || (feedback != null && isCorrectAnswer))
+                    FontWeight.Bold else FontWeight.Medium,
+                color = textColor,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}

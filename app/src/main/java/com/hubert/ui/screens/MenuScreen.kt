@@ -37,6 +37,7 @@ fun MenuScreen(
     conjugationHighScore: Int,
     pronunciationHighScore: Int,
     prepositionHighScore: Int,
+    relativisezHighScore: Int,
     parlezHighScore: Int,
     onHubertChoisit: () -> Unit,
     onStartMatching: () -> Unit,
@@ -46,6 +47,7 @@ fun MenuScreen(
     onStartConjugation: () -> Unit,
     onStartPronunciation: () -> Unit,
     onStartPreposition: () -> Unit,
+    onStartRelativisez: () -> Unit,
     onStartParlez: () -> Unit,
     onShowSettings: () -> Unit,
     onShowStatistics: () -> Unit
@@ -229,6 +231,22 @@ fun MenuScreen(
                     onClick = onStartParlez,
                     modifier = Modifier.weight(1f).fillMaxHeight()
                 )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GridGameCard(
+                    title = "Relativisez!",
+                    description = "Relativpronomen einsetzen",
+                    accentColor = Color(0xFF3F51B5),
+                    highScore = relativisezHighScore,
+                    onClick = onStartRelativisez,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }

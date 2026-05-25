@@ -229,6 +229,29 @@ fun ConjuguezScreen(
                     onSubmit = onSubmitTyped,
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 )
+            } else if (state.isMoodQuestion) {
+                // Mood question: 2 large buttons (subjonctif vs indicatif)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    state.choices.forEachIndexed { idx, form ->
+                        ConjugationChoiceCard(
+                            text = form,
+                            isCorrectAnswer = idx == state.correctIndex,
+                            isSelected = idx == state.selectedIndex,
+                            feedback = state.feedback,
+                            enabled = state.isPlaying && state.feedback == null,
+                            onClick = { onAnswer(idx) },
+                            onSpeak = { onSpeak(form) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
+                        )
+                    }
+                }
             } else {
                 // 4 answer choices in 2x2 grid
                 Column(
@@ -669,7 +692,7 @@ fun TenseSelectionScreen(
     onStart: () -> Unit,
     onBack: () -> Unit
 ) {
-    // Ordered list of tenses for consistent display
+    // Ordered list of tenses for consistent display (mood_question handled separately as sub-option)
     val tenseOrder = listOf(
         "present", "passe_compose", "imparfait", "futur", "conditionnel",
         "subjonctif", "passe_simple", "imperatif"
@@ -755,6 +778,38 @@ fun TenseSelectionScreen(
                         onClick = { onToggleTense(tenseKey) },
                         onInfoClick = { showInfoForTense = tenseKey }
                     )
+
+                    // Mood question sub-option appears right after Subjonctif
+                    if (tenseKey == "subjonctif") {
+                        val moodEnabled = "subjonctif" in state.selectedTenses
+                        val moodSelected = "mood_question" in state.selectedTenses
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 24.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            // Vertical connector line
+                            Box(
+                                modifier = Modifier
+                                    .width(2.dp)
+                                    .height(40.dp)
+                                    .background(
+                                        if (moodEnabled) AccentPurple.copy(alpha = 0.3f)
+                                        else MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
+                                    )
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            TenseChip(
+                                label = "Subjonctif ou Indicatif?",
+                                isSelected = moodSelected,
+                                enabled = moodEnabled,
+                                onClick = { if (moodEnabled) onToggleTense("mood_question") },
+                                onInfoClick = { if (moodEnabled) showInfoForTense = "mood_question" },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
                 }
             }
 
@@ -789,28 +844,30 @@ private fun TenseChip(
     label: String,
     isSelected: Boolean,
     onClick: () -> Unit,
-    onInfoClick: () -> Unit
+    onInfoClick: () -> Unit,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (isSelected) {
-        AccentPurple.copy(alpha = 0.15f)
-    } else {
-        MaterialTheme.colorScheme.surface
+    val backgroundColor = when {
+        isSelected -> AccentPurple.copy(alpha = 0.15f)
+        !enabled -> MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+        else -> MaterialTheme.colorScheme.surface
     }
 
-    val borderColor = if (isSelected) {
-        AccentPurple
-    } else {
-        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+    val borderColor = when {
+        isSelected -> AccentPurple
+        !enabled -> MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
+        else -> MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
     }
 
-    val textColor = if (isSelected) {
-        AccentPurple
-    } else {
-        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+    val textColor = when {
+        isSelected -> AccentPurple
+        !enabled -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
@@ -818,7 +875,7 @@ private fun TenseChip(
                 color = borderColor,
                 shape = RoundedCornerShape(12.dp)
             )
-            .clickable { onClick() },
+            .clickable(enabled = enabled) { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
