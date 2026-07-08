@@ -203,6 +203,24 @@ class TrouvezViewModel @Inject constructor(
         }
     }
 
+    fun selectRandomCategory() {
+        val state = _uiState.value
+        val cats = state.availableCategories
+        if (cats.isEmpty()) return
+        val scores = state.categoryHighScores
+        val unplayed = cats.filter { (scores[it] ?: 0) == 0 }
+        val chosen = if (unplayed.isNotEmpty()) {
+            unplayed.random()
+        } else {
+            // weighted random: lower score = higher probability
+            val weights = cats.map { 1.0 / ((scores[it] ?: 0) + 1.0) }
+            val total = weights.sum()
+            var r = Math.random() * total
+            cats.zip(weights).firstOrNull { (_, w) -> r -= w; r <= 0 }?.first ?: cats.random()
+        }
+        selectCategory(chosen)
+    }
+
     fun selectCategory(category: String) {
         _uiState.update { it.copy(selectedCategory = category, isCategorySelection = false) }
         startGame()

@@ -191,6 +191,7 @@ private fun ModeCard(
 fun TrouvezCategoryScreen(
     state: TrouvezState,
     onSelectCategory: (String) -> Unit,
+    onRandomCategory: () -> Unit,
     onBack: () -> Unit
 ) {
     Box(
@@ -233,6 +234,38 @@ fun TrouvezCategoryScreen(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onRandomCategory() },
+                shape = RoundedCornerShape(14.dp),
+                colors = CardDefaults.cardColors(containerColor = AccentPurple.copy(alpha = 0.08f)),
+                border = BorderStroke(1.5.dp, AccentPurple.copy(alpha = 0.25f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text("🎲", fontSize = 24.sp)
+                    Column {
+                        Text(
+                            text = "Hubert wählt das Thema",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = AccentPurple
+                        )
+                        Text(
+                            text = "Ungespielte Themen zuerst, dann die schwächsten",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),

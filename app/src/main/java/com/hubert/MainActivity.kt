@@ -211,6 +211,7 @@ fun HubertApp() {
                     TrouvezCategoryScreen(
                         state = matchingState,
                         onSelectCategory = { matchingVm.selectCategory(it) },
+                        onRandomCategory = { matchingVm.selectRandomCategory() },
                         onBack = { matchingVm.showModeSelection() }
                     )
                 }
