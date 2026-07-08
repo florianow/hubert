@@ -31,6 +31,14 @@ data class TrouvezState(
     val isGameOver: Boolean = false,
     val isNewHighScore: Boolean = false,
     val isPinSelection: Boolean = false,
+    val isModeSelection: Boolean = false,
+    val isCategorySelection: Boolean = false,
+    val availableCategories: List<String> = emptyList(),
+    val categorySizes: Map<String, Int> = emptyMap(),
+    val selectedCategory: String? = null,
+    val categoryHighScores: Map<String, Int> = emptyMap(),
+    val bestCategoryName: String? = null,
+    val bestCategoryScore: Int = 0,
     val searchQuery: String = "",
     val searchResults: List<VocabWord> = emptyList(),
     val pinnedRanks: Set<Int> = emptySet(),
@@ -125,11 +133,27 @@ class TrouvezViewModel @Inject constructor(
     // Pinned words queued for this run (filled at game start, higher priority than random)
     private val pinnedPool: ArrayDeque<VocabWord> = ArrayDeque()
 
-    init {
+    private fun loadMenuScores() {
         viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore()
-            _uiState.update { it.copy(highScore = hs) }
+            val freeHs = highScoreRepository.getHighestScore("matching")
+            val cats = _uiState.value.availableCategories.ifEmpty {
+                vocabRepository.getCategories().keys.sorted()
+            }
+            val catScores = cats.associateWith { highScoreRepository.getHighestScore("matching_$it") }
+            val best = catScores.maxByOrNull { it.value }?.takeIf { it.value > 0 }
+            _uiState.update {
+                it.copy(
+                    highScore = freeHs,
+                    categoryHighScores = catScores,
+                    bestCategoryName = best?.key,
+                    bestCategoryScore = best?.value ?: 0
+                )
+            }
         }
+    }
+
+    init {
+        loadMenuScores()
         viewModelScope.launch {
             pinnedWordsRepository.pinnedRanks.collect { ranks ->
                 val words = ranks.mapNotNull { vocabRepository.getWordByRank(it) }
@@ -144,11 +168,52 @@ class TrouvezViewModel @Inject constructor(
         }
     }
 
+    fun showModeSelection() {
+        timerJob?.cancel()
+        countdownJob?.cancel()
+        val catMap = vocabRepository.getCategories()
+        val cats = catMap.keys.sorted()
+        val sizes = cats.associateWith { catMap[it]?.size ?: 0 }
+        _uiState.update {
+            it.copy(
+                isModeSelection = true,
+                isPinSelection = false,
+                isCategorySelection = false,
+                isPlaying = false,
+                isGameOver = false,
+                availableCategories = cats,
+                categorySizes = sizes,
+                selectedCategory = null
+            )
+        }
+        loadMenuScores()
+    }
+
+    fun showCategorySelection() {
+        _uiState.update {
+            it.copy(
+                isModeSelection = false,
+                isCategorySelection = true
+            )
+        }
+        viewModelScope.launch {
+            val cats = _uiState.value.availableCategories
+            val catScores = cats.associateWith { highScoreRepository.getHighestScore("matching_$it") }
+            _uiState.update { it.copy(categoryHighScores = catScores) }
+        }
+    }
+
+    fun selectCategory(category: String) {
+        _uiState.update { it.copy(selectedCategory = category, isCategorySelection = false) }
+        startGame()
+    }
+
     fun showPinSelection() {
         timerJob?.cancel()
         countdownJob?.cancel()
         _uiState.update {
             it.copy(
+                isModeSelection = false,
                 isPinSelection = true,
                 isPlaying = false,
                 isGameOver = false,
@@ -200,6 +265,7 @@ class TrouvezViewModel @Inject constructor(
             .shuffled()
         pinnedPool.addAll(pinned)
 
+        val cat = _uiState.value.selectedCategory
         _uiState.update {
             TrouvezState(
                 isPlaying = false,
@@ -208,8 +274,18 @@ class TrouvezViewModel @Inject constructor(
                 pinnedRanks = it.pinnedRanks,
                 pinnedWords = it.pinnedWords,
                 wordStreaks = it.wordStreaks,
-                masteredWords = it.masteredWords
+                masteredWords = it.masteredWords,
+                selectedCategory = it.selectedCategory,
+                availableCategories = it.availableCategories,
+                categoryHighScores = it.categoryHighScores,
+                bestCategoryName = it.bestCategoryName,
+                bestCategoryScore = it.bestCategoryScore
             )
+        }
+        viewModelScope.launch {
+            val gameType = if (cat != null) "matching_$cat" else "matching"
+            val hs = highScoreRepository.getHighestScore(gameType)
+            _uiState.update { it.copy(highScore = hs) }
         }
 
         // 3-2-1-GO countdown
@@ -224,25 +300,34 @@ class TrouvezViewModel @Inject constructor(
         }
     }
 
-    /** Pick words for a board, draining pinnedPool first then falling back to random. No duplicates. */
+    /** Pick words for a board. In Themen-Training only uses the selected category.
+     *  In Freier Modus drains pinned pool first, then falls back to all words. */
     private fun pickWords(count: Int): List<VocabWord> {
         val currentRanks = _uiState.value.frenchWords.map { it.rank }.toMutableSet()
         val usedGerman = _uiState.value.germanWords.map { it.text }.toMutableSet()
         val result = mutableListOf<VocabWord>()
-        // Drain eligible pinned words first
-        val pinnedIter = pinnedPool.iterator()
-        while (pinnedIter.hasNext() && result.size < count) {
-            val w = pinnedIter.next()
-            if (w.rank !in currentRanks && w.german !in usedGerman) {
-                pinnedIter.remove()
-                currentRanks.add(w.rank)
-                usedGerman.add(w.german)
-                result.add(w)
+
+        val category = _uiState.value.selectedCategory
+
+        if (category == null) {
+            // Freier Modus: drain pinned pool first
+            val pinnedIter = pinnedPool.iterator()
+            while (pinnedIter.hasNext() && result.size < count) {
+                val w = pinnedIter.next()
+                if (w.rank !in currentRanks && w.german !in usedGerman) {
+                    pinnedIter.remove()
+                    currentRanks.add(w.rank)
+                    usedGerman.add(w.german)
+                    result.add(w)
+                }
             }
         }
-        // Fill remainder with random words, excluding already used ranks and german texts
+
+        // Fill remainder from category (Themen-Training) or all words (Freier Modus)
         if (result.size < count) {
-            val randoms = vocabRepository.getAllWords()
+            val pool = if (category != null) vocabRepository.getWordsInCategory(category)
+                       else vocabRepository.getAllWords()
+            val randoms = pool
                 .filter { it.rank !in currentRanks && it.german !in usedGerman }
                 .shuffled()
                 .take(count - result.size)
@@ -551,15 +636,17 @@ class TrouvezViewModel @Inject constructor(
         timerJob?.cancel()
         val state = _uiState.value
         val durationMs = System.currentTimeMillis() - gameStartTime
+        val gameType = if (state.selectedCategory != null) "matching_${state.selectedCategory}" else "matching"
 
         viewModelScope.launch {
-            val previousHigh = highScoreRepository.getHighestScore()
+            val previousHigh = highScoreRepository.getHighestScore(gameType)
             val isNewHigh = state.score > previousHigh
 
             highScoreRepository.saveScore(
                 score = state.score,
                 matchesCompleted = state.totalMatches,
-                roundsCompleted = state.bestStreak
+                roundsCompleted = state.bestStreak,
+                gameType = gameType
             )
 
             statisticsRepository.saveSession(
@@ -600,10 +687,7 @@ class TrouvezViewModel @Inject constructor(
         wrongAttemptedRanks.clear()
         matchedQueue.clear()
         _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords, wordStreaks = it.wordStreaks) }
-        viewModelScope.launch {
-            val hs = highScoreRepository.getHighestScore()
-            _uiState.update { it.copy(highScore = hs) }
-        }
+        loadMenuScores()
     }
 
     override fun onCleared() {

@@ -96,7 +96,7 @@ fun HubertApp() {
             val displayName = GameType.fromKey(gameTypeKey)?.displayName ?: gameTypeKey
             Toast.makeText(context, displayName, Toast.LENGTH_SHORT).show()
             when (gameTypeKey) {
-                "matching" -> matchingVm.showPinSelection()
+                "matching" -> matchingVm.showModeSelection()
                 "gender_snap" -> genderSnapVm.startGame()
                 "gap_fill" -> gapFillVm.startGame()
                 "spelling_bee" -> spellingBeeVm.startGame()
@@ -110,8 +110,8 @@ fun HubertApp() {
     }
 
     // Navigate based on game states
-    LaunchedEffect(matchingState.isPinSelection, matchingState.isPlaying, matchingState.isGameOver, matchingState.countdown) {
-        if (matchingState.isPinSelection || matchingState.countdown != null || matchingState.isPlaying || matchingState.isGameOver) {
+    LaunchedEffect(matchingState.isModeSelection, matchingState.isCategorySelection, matchingState.isPinSelection, matchingState.isPlaying, matchingState.isGameOver, matchingState.countdown) {
+        if (matchingState.isModeSelection || matchingState.isCategorySelection || matchingState.isPinSelection || matchingState.countdown != null || matchingState.isPlaying || matchingState.isGameOver) {
             currentScreen = Screen.TROUVEZ
         }
     }
@@ -196,6 +196,24 @@ fun HubertApp() {
 
         Screen.TROUVEZ -> {
             when {
+                matchingState.isModeSelection -> {
+                    TrouvezModeScreen(
+                        state = matchingState,
+                        onThemenTraining = { matchingVm.showCategorySelection() },
+                        onFreierModus = { matchingVm.showPinSelection() },
+                        onBack = {
+                            matchingVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                matchingState.isCategorySelection -> {
+                    TrouvezCategoryScreen(
+                        state = matchingState,
+                        onSelectCategory = { matchingVm.selectCategory(it) },
+                        onBack = { matchingVm.showModeSelection() }
+                    )
+                }
                 matchingState.isPinSelection -> {
                     TrouvezPinScreen(
                         state = matchingState,
@@ -687,7 +705,7 @@ fun HubertApp() {
                 relativisezHighScore = relativisezState.highScore,
                 parlezHighScore = parlezState.highScore,
                 onHubertChoisit = onHubertChoisit,
-                onStartMatching = { matchingVm.showPinSelection() },
+                onStartMatching = { matchingVm.showModeSelection() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },
                 onStartSpellingBee = { spellingBeeVm.startGame() },

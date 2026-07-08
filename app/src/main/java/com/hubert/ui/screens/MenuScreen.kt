@@ -258,6 +258,7 @@ private fun GridGameCard(
     description: String,
     accentColor: Color,
     highScore: Int,
+    subScore: String? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -290,13 +291,25 @@ private fun GridGameCard(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
-            if (highScore > 0) {
-                Text(
-                    text = "$highScore",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight(500),
-                    color = accentColor
-                )
+            if (highScore > 0 || subScore != null) {
+                Column {
+                    if (highScore > 0) {
+                        Text(
+                            text = "$highScore",
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight(500),
+                            color = accentColor
+                        )
+                    }
+                    if (subScore != null) {
+                        Text(
+                            text = subScore,
+                            fontSize = 10.sp,
+                            lineHeight = 13.sp,
+                            color = accentColor.copy(alpha = 0.7f)
+                        )
+                    }
+                }
             } else {
                 Text(
                     text = "Noch nicht\ngespielt",

@@ -320,14 +320,14 @@ def main():
     # 1. vocab.json (enriched)
     vocab_path = os.path.join(assets_dir, 'vocab.json')
     with open(vocab_path, 'w', encoding='utf-8') as f:
-        json.dump(words, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+        json.dump(words, f, ensure_ascii=False, indent=2)
     print(f"\nvocab.json: {len(words)} words, {os.path.getsize(vocab_path) / 1024:.1f} KB")
     print(f"  {noun_count} nouns with gender")
 
     # 2. categories.json
     cat_path = os.path.join(assets_dir, 'categories.json')
     with open(cat_path, 'w', encoding='utf-8') as f:
-        json.dump(categories, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+        json.dump(categories, f, ensure_ascii=False, indent=2)
     print(f"categories.json: {len(categories)} categories, {os.path.getsize(cat_path) / 1024:.1f} KB")
     for name, ranks in sorted(categories.items()):
         print(f"  {name}: {len(ranks)} words")
@@ -335,7 +335,7 @@ def main():
     # 3. sentences.json
     sent_path = os.path.join(assets_dir, 'sentences.json')
     with open(sent_path, 'w', encoding='utf-8') as f:
-        json.dump(all_sentences, f, ensure_ascii=False, indent=None, separators=(',', ':'))
+        json.dump(all_sentences, f, ensure_ascii=False, indent=2)
     words_with_sents = len(all_sentences)
     print(f"sentences.json: {words_with_sents} words with sentences, {sentence_count} total, {os.path.getsize(sent_path) / 1024:.1f} KB")
 

@@ -2,11 +2,22 @@ package com.hubert.ui.screens
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.outlined.PushPin
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,16 +31,273 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PushPin
-import androidx.compose.material.icons.outlined.PushPin
 import com.hubert.data.local.WordStreak
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.TrouvezState
+
+private fun categoryEmoji(name: String): String = when (name) {
+    "Familie" -> "👨‍👩‍👧"
+    "Status und Beziehungen" -> "🤝"
+    "Körper und Gesundheit" -> "💪"
+    "Emotionen und Charakter" -> "😊"
+    "Haus und Wohnung" -> "🏠"
+    "Essen und Trinken" -> "🍽️"
+    "Kleidung" -> "👗"
+    "Wetter" -> "⛅"
+    "Stadt und Reise" -> "🏙️"
+    "Transport" -> "🚗"
+    "Natur" -> "🌿"
+    "Tiere" -> "🐾"
+    "Gesellschaft" -> "👥"
+    "Berufe" -> "💼"
+    "Arbeit und Wirtschaft" -> "📊"
+    "Bildung und Wissenschaft" -> "🎓"
+    "Recht" -> "⚖️"
+    "Nationalitäten" -> "🌍"
+    "Sport" -> "⚽"
+    "Kunst und Kultur" -> "🎭"
+    "Technologie und Medien" -> "💻"
+    "Farben" -> "🌈"
+    "Materialien" -> "🪨"
+    "Gegensätze" -> "↔️"
+    "Zeit" -> "⏰"
+    "Bewegungsverben" -> "🏃"
+    "Kommunikationsverben" -> "💬"
+    "Falsche Freunde" -> "⚠️"
+    "Grundverben" -> "🔧"
+    "Denken und Wissen" -> "🧠"
+    "Kommunikationsverben" -> "💬"
+    "Geld und Finanzen" -> "💶"
+    "Politik und Staat" -> "🏛️"
+    "Redewendungen und Ausdrücke" -> "🗣️"
+    else -> "📚"
+}
+
+@Composable
+fun TrouvezModeScreen(
+    state: TrouvezState,
+    onThemenTraining: () -> Unit,
+    onFreierModus: () -> Unit,
+    onBack: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Zurück",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Trouvez!",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = FrenchBlue
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            ModeCard(
+                emoji = "📚",
+                title = "Themen-Training",
+                description = "Lerne Wörter zu einem bestimmten Thema — Essen, Sport, Familie und mehr.",
+                accentColor = FrenchBlue,
+                onClick = onThemenTraining
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            ModeCard(
+                emoji = "📌",
+                title = "Freier Modus",
+                description = if (state.pinnedRanks.isEmpty()) "Pinne Wörter die du üben willst und spiele mit deiner eigenen Liste."
+                              else "${state.pinnedRanks.size} Wörter gepinnt · Spiele mit deiner eigenen Liste.",
+                accentColor = GermanGold,
+                highScore = if (state.highScore > 0) "${state.highScore}" else null,
+                onClick = onFreierModus
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModeCard(
+    emoji: String,
+    title: String,
+    description: String,
+    accentColor: Color,
+    highScore: String? = null,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = accentColor.copy(alpha = 0.08f)),
+        border = BorderStroke(1.5.dp, accentColor.copy(alpha = 0.25f))
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = emoji, fontSize = 36.sp)
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = accentColor
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+                if (highScore != null) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "🏆 $highScore",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = accentColor,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TrouvezCategoryScreen(
+    state: TrouvezState,
+    onSelectCategory: (String) -> Unit,
+    onBack: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Zurück",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Column {
+                    Text(
+                        text = "Themen-Training",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = FrenchBlue
+                    )
+                    Text(
+                        text = "Thema wählen",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(bottom = 20.dp)
+            ) {
+                items(state.availableCategories) { category ->
+                    val catHs = state.categoryHighScores[category] ?: 0
+                    val wordCount = state.categorySizes[category] ?: 0
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(84.dp)
+                            .clickable { onSelectCategory(category) },
+                        shape = RoundedCornerShape(14.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 12.dp, vertical = 10.dp),
+                            verticalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(text = categoryEmoji(category), fontSize = 20.sp)
+                                if (catHs > 0) {
+                                    Text(
+                                        text = "🏆 $catHs",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = FrenchBlue
+                                    )
+                                }
+                            }
+                            Column {
+                                Text(
+                                    text = category,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.Medium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                if (wordCount > 0) {
+                                    Text(
+                                        text = "$wordCount Wörter",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 private fun WordRow(
@@ -303,7 +571,28 @@ fun TrouvezScreen(
                 timeMs = state.timeRemainingMs
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Active category badge
+            if (state.selectedCategory != null) {
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = FrenchBlue.copy(alpha = 0.12f)
+                    ) {
+                        Text(
+                            text = "${categoryEmoji(state.selectedCategory)} ${state.selectedCategory}",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = FrenchBlue,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             // Column headers
             Row(
