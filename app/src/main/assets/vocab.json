@@ -5489,17 +5489,6 @@
     ]
   },
   {
-    "rank": 554,
-    "french": "public",
-    "german": "öffentlich",
-    "ipa": "py.blik",
-    "pos": "adj",
-    "categories": [
-      "Gegensätze",
-      "Politik und Staat"
-    ]
-  },
-  {
     "rank": 555,
     "french": "faux",
     "german": "falsch",
@@ -17503,6 +17492,7 @@
     "ipa": "pɛʃ",
     "pos": "nf, app",
     "categories": [
+      "Essen und Trinken",
       "Sport"
     ]
   },
@@ -45845,5 +45835,533 @@
     "german": "einstürzen",
     "ipa": "e.kʁu.le",
     "pos": "vr"
+  },
+  {
+    "rank": 5001,
+    "french": "poire",
+    "german": "Birne",
+    "gender": "f",
+    "ipa": "pwaʁ",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5002,
+    "french": "cerise",
+    "german": "Kirsche",
+    "gender": "f",
+    "ipa": "səʁiz",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5003,
+    "french": "banane",
+    "german": "Banane",
+    "gender": "f",
+    "ipa": "banan",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5004,
+    "french": "citron",
+    "german": "Zitrone",
+    "gender": "m",
+    "ipa": "sitʁɔ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5005,
+    "french": "fraise",
+    "german": "Erdbeere",
+    "gender": "f",
+    "ipa": "fʁɛz",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5006,
+    "french": "raisin",
+    "german": "Weintraube",
+    "gender": "m",
+    "ipa": "ʁezɛ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5007,
+    "french": "melon",
+    "german": "Melone",
+    "gender": "m",
+    "ipa": "məlɔ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5008,
+    "french": "prune",
+    "german": "Pflaume",
+    "gender": "f",
+    "ipa": "pʁyn",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5009,
+    "french": "mangue",
+    "german": "Mango",
+    "gender": "f",
+    "ipa": "mɑ̃ɡ",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5010,
+    "french": "ananas",
+    "german": "Ananas",
+    "gender": "m",
+    "ipa": "anana",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5011,
+    "french": "abricot",
+    "german": "Aprikose",
+    "gender": "m",
+    "ipa": "abʁiko",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5012,
+    "french": "framboise",
+    "german": "Himbeere",
+    "gender": "f",
+    "ipa": "fʁɑ̃bwaz",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5013,
+    "french": "myrtille",
+    "german": "Heidelbeere",
+    "gender": "f",
+    "ipa": "miʁtij",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5014,
+    "french": "noix",
+    "german": "Walnuss",
+    "gender": "f",
+    "ipa": "nwa",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5015,
+    "french": "noisette",
+    "german": "Haselnuss",
+    "gender": "f",
+    "ipa": "nwazɛt",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5016,
+    "french": "amande",
+    "german": "Mandel",
+    "gender": "f",
+    "ipa": "amɑ̃d",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5017,
+    "french": "figue",
+    "german": "Feige",
+    "gender": "f",
+    "ipa": "fiɡ",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5018,
+    "french": "kiwi",
+    "german": "Kiwi",
+    "gender": "m",
+    "ipa": "kiwi",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5019,
+    "french": "pastèque",
+    "german": "Wassermelone",
+    "gender": "f",
+    "ipa": "pastɛk",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5020,
+    "french": "pamplemousse",
+    "german": "Grapefruit",
+    "gender": "m",
+    "ipa": "pɑ̃pləmus",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5021,
+    "french": "carotte",
+    "german": "Karotte",
+    "gender": "f",
+    "ipa": "kaʁɔt",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5022,
+    "french": "tomate",
+    "german": "Tomate",
+    "gender": "f",
+    "ipa": "tɔmat",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5023,
+    "french": "concombre",
+    "german": "Gurke",
+    "gender": "m",
+    "ipa": "kɔ̃kɔ̃bʁ",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5024,
+    "french": "oignon",
+    "german": "Zwiebel",
+    "gender": "m",
+    "ipa": "ɔɲɔ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5025,
+    "french": "ail",
+    "german": "Knoblauch",
+    "gender": "m",
+    "ipa": "aj",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5026,
+    "french": "salade",
+    "german": "Salat",
+    "gender": "f",
+    "ipa": "salad",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5027,
+    "french": "laitue",
+    "german": "Kopfsalat",
+    "gender": "f",
+    "ipa": "lɛty",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5028,
+    "french": "épinard",
+    "german": "Spinat",
+    "gender": "m",
+    "ipa": "epinar",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5029,
+    "french": "brocoli",
+    "german": "Brokkoli",
+    "gender": "m",
+    "ipa": "bʁɔkɔli",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5030,
+    "french": "chou-fleur",
+    "german": "Blumenkohl",
+    "gender": "m",
+    "ipa": "ʃuflœʁ",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5031,
+    "french": "pomme de terre",
+    "german": "Kartoffel",
+    "gender": "f",
+    "ipa": "pɔmdətɛʁ",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5032,
+    "french": "poivron",
+    "german": "Paprika",
+    "gender": "m",
+    "ipa": "pwavʁɔ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5033,
+    "french": "petit pois",
+    "german": "Erbse",
+    "gender": "m",
+    "ipa": "pətipwa",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5034,
+    "french": "haricot",
+    "german": "Bohne",
+    "gender": "m",
+    "ipa": "aʁiko",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5035,
+    "french": "maïs",
+    "german": "Mais",
+    "gender": "m",
+    "ipa": "mais",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5036,
+    "french": "champignon",
+    "german": "Pilz",
+    "gender": "m",
+    "ipa": "ʃɑ̃piɲɔ̃",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5037,
+    "french": "courgette",
+    "german": "Zucchini",
+    "gender": "f",
+    "ipa": "kuʁʒɛt",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5038,
+    "french": "aubergine",
+    "german": "Aubergine",
+    "gender": "f",
+    "ipa": "obɛʁʒin",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5039,
+    "french": "poireau",
+    "german": "Lauch",
+    "gender": "m",
+    "ipa": "pwaʁo",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5040,
+    "french": "céleri",
+    "german": "Sellerie",
+    "gender": "m",
+    "ipa": "selʁi",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5041,
+    "french": "radis",
+    "german": "Radieschen",
+    "gender": "m",
+    "ipa": "ʁadi",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5042,
+    "french": "chou",
+    "german": "Kohl",
+    "gender": "m",
+    "ipa": "ʃu",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5043,
+    "french": "navet",
+    "german": "Rübe",
+    "gender": "m",
+    "ipa": "navɛ",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5044,
+    "french": "asperge",
+    "german": "Spargel",
+    "gender": "f",
+    "ipa": "aspɛʁʒ",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5045,
+    "french": "artichaut",
+    "german": "Artischocke",
+    "gender": "m",
+    "ipa": "aʁtiʃo",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5046,
+    "french": "betterave",
+    "german": "Rote Bete",
+    "gender": "f",
+    "ipa": "bɛtʁav",
+    "pos": "nf",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5047,
+    "french": "fenouil",
+    "german": "Fenchel",
+    "gender": "m",
+    "ipa": "fənuj",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
+  },
+  {
+    "rank": 5048,
+    "french": "poivron rouge",
+    "german": "roter Paprika",
+    "gender": "m",
+    "ipa": "pwavʁɔ̃ ʁuʒ",
+    "pos": "nm",
+    "categories": [
+      "Essen und Trinken"
+    ]
   }
 ]
