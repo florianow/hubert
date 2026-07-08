@@ -1,8 +1,14 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+}
+
+val localProps = Properties().also { p ->
+    rootProject.file("keystore.properties").let { if (it.exists()) p.load(it.inputStream()) }
 }
 
 android {
@@ -31,6 +37,12 @@ android {
             storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
             keyAlias = System.getenv("KEY_ALIAS") ?: "hubert"
             keyPassword = System.getenv("KEY_PASSWORD") ?: ""
+        }
+        getByName("debug") {
+            storeFile = rootProject.file(localProps.getProperty("storeFile") ?: "hubert.keystore")
+            storePassword = localProps.getProperty("storePassword") ?: ""
+            keyAlias = localProps.getProperty("keyAlias") ?: "hubert"
+            keyPassword = localProps.getProperty("keyPassword") ?: ""
         }
     }
 
