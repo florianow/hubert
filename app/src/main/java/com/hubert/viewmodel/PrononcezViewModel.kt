@@ -321,6 +321,13 @@ class PrononcezViewModel @Inject constructor(
         currentSentenceEntry = pair
         val (_, entry) = pair
 
+        val wordCount = entry.fr.split("\\s+".toRegex()).size
+        val actualLabel = when {
+            wordCount >= 11 -> "Difficile"
+            wordCount >= 7 -> "Moyen"
+            else -> "Facile"
+        }
+
         _uiState.update {
             it.copy(
                 sentenceFr = entry.fr,
@@ -334,7 +341,7 @@ class PrononcezViewModel @Inject constructor(
                 wordScores = emptyList(),
                 feedback = null,
                 errorMessage = null,
-                difficultyLabel = label
+                difficultyLabel = actualLabel
             )
         }
     }

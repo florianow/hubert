@@ -265,7 +265,13 @@ fun HubertApp() {
                         onBackToMenu = {
                             matchingVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onChooseCategory = if (matchingState.selectedCategory != null) {
+                            { matchingVm.showCategorySelection() }
+                        } else null,
+                        onRandomCategory = if (matchingState.selectedCategory != null) {
+                            { matchingVm.selectRandomCategory() }
+                        } else null
                     )
                 }
             }
@@ -455,7 +461,9 @@ fun HubertApp() {
                         onBackToMenu = {
                             conjugationVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onChooseCategory = { conjugationVm.showTenseSelection() },
+                        onChooseCategoryLabel = "🕐 Zeiten"
                     )
                 }
             }
@@ -558,7 +566,9 @@ fun HubertApp() {
                         onBackToMenu = {
                             prepositionVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onChooseCategory = { prepositionVm.showSelection() },
+                        onChooseCategoryLabel = "🔄 Auswahl"
                     )
                 }
             }
@@ -614,7 +624,9 @@ fun HubertApp() {
                         onBackToMenu = {
                             relativisezVm.resetToMenu()
                             currentScreen = Screen.MENU
-                        }
+                        },
+                        onChooseCategory = { relativisezVm.showSelection() },
+                        onChooseCategoryLabel = "🔄 Auswahl"
                     )
                 }
             }
@@ -648,6 +660,7 @@ fun HubertApp() {
                         onToggleHints = { parlezVm.toggleHints() },
                         onRequestContextHints = { parlezVm.requestContextHints() },
                         onSpeakHint = { parlezVm.speakHint(it) },
+                        onTranslate = { parlezVm.translateMessage(it) },
                         onFinish = { parlezVm.finishConversation() },
                         onQuit = {
                             parlezVm.resetToMenu()

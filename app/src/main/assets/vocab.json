@@ -2150,6 +2150,7 @@
     "ipa": "ʃwa.ziʁ",
     "pos": "vi, vt, vr",
     "categories": [
+      "Einkaufen",
       "Grundverben"
     ]
   },
@@ -2427,6 +2428,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -2494,7 +2496,10 @@
     "french": "économique",
     "german": "preiswert",
     "ipa": "e.kɔ.nɔ.mik",
-    "pos": "adj"
+    "pos": "adj",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 262,
@@ -2705,6 +2710,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen",
       "Stadt und Reise"
     ]
@@ -3014,6 +3020,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -4656,6 +4663,7 @@
     "pos": "adj, nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Farben",
       "Geld und Finanzen",
       "Materialien"
@@ -5315,6 +5323,7 @@
     "ipa": "pe.je",
     "pos": "vt, vi, vr",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen",
       "Haus und Wohnung"
     ]
@@ -6068,7 +6077,8 @@
     "ipa": "li.vʁe",
     "pos": "vt, vr",
     "categories": [
-      "Bewegungsverben"
+      "Bewegungsverben",
+      "Einkaufen"
     ]
   },
   {
@@ -6311,6 +6321,7 @@
     "ipa": "a.ʃə.te",
     "pos": "vt, vr",
     "categories": [
+      "Einkaufen",
       "Gegensätze",
       "Geld und Finanzen",
       "Haus und Wohnung"
@@ -7052,6 +7063,7 @@
     "ipa": "vɑ̃dʁ(ə)",
     "pos": "vi, vt, vr",
     "categories": [
+      "Einkaufen",
       "Gegensätze",
       "Geld und Finanzen"
     ]
@@ -7676,6 +7688,7 @@
     "pos": "nf",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen",
       "Stadt und Reise"
     ]
@@ -8248,6 +8261,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -9031,7 +9045,10 @@
     "german": "Handels-",
     "gender": "m",
     "ipa": "kɔ.mɛʁ.sjal",
-    "pos": "nm, adj"
+    "pos": "nm, adj",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 909,
@@ -9124,7 +9141,8 @@
     "ipa": "kli.jɑ̃",
     "pos": "nm",
     "categories": [
-      "Berufe"
+      "Berufe",
+      "Einkaufen"
     ]
   },
   {
@@ -9295,6 +9313,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -9519,6 +9538,7 @@
     "pos": "nf",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Essen und Trinken",
       "Stadt und Reise",
       "Technologie und Medien"
@@ -9803,6 +9823,7 @@
     "ipa": "ku.te",
     "pos": "vt, vi",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen",
       "Grundverben"
     ]
@@ -10901,6 +10922,7 @@
     "ipa": "vɑ̃t",
     "pos": "nf",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -11147,6 +11169,7 @@
     "ipa": "ɑ̃.pʁœ̃.te",
     "pos": "vi, vt",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -11468,6 +11491,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -13321,7 +13345,8 @@
     "ipa": "ɔfʁ",
     "pos": "nf",
     "categories": [
-      "Arbeit und Wirtschaft"
+      "Arbeit und Wirtschaft",
+      "Einkaufen"
     ]
   },
   {
@@ -15274,7 +15299,8 @@
     "ipa": "de.pɑ̃s",
     "pos": "nf",
     "categories": [
-      "Arbeit und Wirtschaft"
+      "Arbeit und Wirtschaft",
+      "Einkaufen"
     ]
   },
   {
@@ -15325,7 +15351,8 @@
     "ipa": "kɔ̃.pa.ʁe",
     "pos": "vt, vi, vr",
     "categories": [
-      "Denken und Wissen"
+      "Denken und Wissen",
+      "Einkaufen"
     ]
   },
   {
@@ -17166,6 +17193,7 @@
     "pos": "nm, app",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -17631,6 +17659,7 @@
     "pos": "nm",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -18357,7 +18386,10 @@
     "german": "Kasse",
     "gender": "f",
     "ipa": "kɛs",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 1882,
@@ -19895,6 +19927,7 @@
     "ipa": "kɔ̃.sɔ.me",
     "pos": "vi, vt, vr",
     "categories": [
+      "Einkaufen",
       "Essen und Trinken"
     ]
   },
@@ -19928,6 +19961,7 @@
     "pos": "vt, vr",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen",
       "Haus und Wohnung"
     ]
@@ -20540,7 +20574,10 @@
     "german": "Garantie",
     "gender": "f",
     "ipa": "ɡa.ʁɑ̃.ti",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 2118,
@@ -20597,7 +20634,10 @@
     "german": "Bestellung",
     "gender": "f",
     "ipa": "kɔ.mɑ̃d",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 2124,
@@ -20737,6 +20777,7 @@
     "ipa": "pʁɔ.mɔ.sjɔ̃",
     "pos": "nf",
     "categories": [
+      "Einkaufen",
       "Falsche Freunde"
     ]
   },
@@ -22976,7 +23017,8 @@
     "ipa": "maʁ.ʃɑ̃.diz",
     "pos": "nf",
     "categories": [
-      "Arbeit und Wirtschaft"
+      "Arbeit und Wirtschaft",
+      "Einkaufen"
     ]
   },
   {
@@ -23733,6 +23775,7 @@
     "ipa": "ɡʁa.tɥi",
     "pos": "adj",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -27856,6 +27899,7 @@
     "ipa": "ʁɛ.jɔ̃",
     "pos": "nm",
     "categories": [
+      "Einkaufen",
       "Wetter"
     ]
   },
@@ -28577,6 +28621,7 @@
     "pos": "nf",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Essen und Trinken",
       "Geld und Finanzen"
     ]
@@ -29468,6 +29513,7 @@
     "ipa": "ʁɑ̃.buʁ.se",
     "pos": "vt",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -30307,7 +30353,10 @@
     "german": "Scheck",
     "gender": "m",
     "ipa": "ʃɛk",
-    "pos": "nm"
+    "pos": "nm",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 3204,
@@ -30479,7 +30528,8 @@
     "ipa": "vɑ̃.dœʁ",
     "pos": "nmf, adj",
     "categories": [
-      "Berufe"
+      "Berufe",
+      "Einkaufen"
     ]
   },
   {
@@ -30694,6 +30744,7 @@
     "ipa": "ta.ʁif",
     "pos": "nm",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -31063,6 +31114,7 @@
     "ipa": "vɑ̃.te",
     "pos": "vt, vr",
     "categories": [
+      "Einkaufen",
       "Kommunikationsverben"
     ]
   },
@@ -32754,7 +32806,10 @@
     "french": "racheter",
     "german": "zurückkaufen",
     "ipa": "ʁaʃ.te",
-    "pos": "vt, vr"
+    "pos": "vt, vr",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 3476,
@@ -33039,7 +33094,8 @@
     "ipa": "li.vʁɛ.zɔ̃",
     "pos": "nf",
     "categories": [
-      "Arbeit und Wirtschaft"
+      "Arbeit und Wirtschaft",
+      "Einkaufen"
     ]
   },
   {
@@ -34745,6 +34801,7 @@
     "ipa": "ɑ̃.ke.se",
     "pos": "vi, vt",
     "categories": [
+      "Einkaufen",
       "Natur"
     ]
   },
@@ -35453,7 +35510,10 @@
     "german": "Laden",
     "gender": "f",
     "ipa": "bu.tik",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 3792,
@@ -36048,6 +36108,7 @@
     "ipa": "pʁo.ne",
     "pos": "vt",
     "categories": [
+      "Einkaufen",
       "Kommunikationsverben"
     ]
   },
@@ -36316,7 +36377,10 @@
     "german": "Etikett",
     "gender": "f",
     "ipa": "e.ti.kɛt",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 3891,
@@ -36894,7 +36958,8 @@
     "ipa": "ʁɑ̃.buʁ.sə.mɑ̃",
     "pos": "nm",
     "categories": [
-      "Arbeit und Wirtschaft"
+      "Arbeit und Wirtschaft",
+      "Einkaufen"
     ]
   },
   {
@@ -38483,7 +38548,10 @@
     "german": "Vertreiber",
     "gender": "m",
     "ipa": "dis.tʁi.by.tœʁ",
-    "pos": "nm"
+    "pos": "nm",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 4141,
@@ -39220,6 +39288,7 @@
     "ipa": "ʁə.sy",
     "pos": "nm, adj",
     "categories": [
+      "Einkaufen",
       "Geld und Finanzen"
     ]
   },
@@ -39999,7 +40068,10 @@
     "german": "Schaufenster",
     "gender": "f",
     "ipa": "vi.tʁin",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 4313,
@@ -40059,6 +40131,7 @@
     "pos": "vt, vi",
     "categories": [
       "Arbeit und Wirtschaft",
+      "Einkaufen",
       "Geld und Finanzen",
       "Haus und Wohnung"
     ]
@@ -40586,6 +40659,7 @@
     "pos": "nf",
     "categories": [
       "Bildung und Wissenschaft",
+      "Einkaufen",
       "Falsche Freunde"
     ]
   },
@@ -41285,6 +41359,7 @@
     "ipa": "pa.nje",
     "pos": "nm",
     "categories": [
+      "Einkaufen",
       "Haus und Wohnung"
     ]
   },
@@ -42637,7 +42712,10 @@
     "german": "Sonderangebot",
     "gender": "f",
     "ipa": "sɔld",
-    "pos": "nm, nf"
+    "pos": "nm, nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 4623,
@@ -43657,7 +43735,10 @@
     "german": "(Waren-)markt, (Waren-)messe",
     "gender": "f",
     "ipa": "fwaʁ",
-    "pos": "nf"
+    "pos": "nf",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 4747,
@@ -45359,7 +45440,10 @@
     "german": "Abrechnung",
     "gender": "m",
     "ipa": "ʁəl.ve",
-    "pos": "nm, adj"
+    "pos": "nm, adj",
+    "categories": [
+      "Einkaufen"
+    ]
   },
   {
     "rank": 4944,
@@ -46363,5 +46447,541 @@
     "categories": [
       "Essen und Trinken"
     ]
+  },
+  {
+    "rank": 5049,
+    "french": "supermarché",
+    "german": "Supermarkt",
+    "ipa": "sypɛʁmaʁʃe",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5050,
+    "french": "hypermarché",
+    "german": "Hypermarkt",
+    "ipa": "ipɛʁmaʁʃe",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5051,
+    "french": "grande surface",
+    "german": "Großmarkt",
+    "ipa": "ɡʁɑ̃d syʁfas",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5052,
+    "french": "centre commercial",
+    "german": "Einkaufszentrum",
+    "ipa": "sɑ̃tʁ kɔmɛʁsjal",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5053,
+    "french": "épicerie",
+    "german": "Lebensmittelladen",
+    "ipa": "episʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5054,
+    "french": "supérette",
+    "german": "Kleinsupermarkt",
+    "ipa": "sypɛʁɛt",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5055,
+    "french": "boucherie",
+    "german": "Metzgerei",
+    "ipa": "buʃʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5056,
+    "french": "charcuterie",
+    "german": "Wurst- und Feinkostladen",
+    "ipa": "ʃaʁkytʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5057,
+    "french": "traiteur",
+    "german": "Feinkosthändler",
+    "ipa": "tʁɛtœʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5058,
+    "french": "boulangerie",
+    "german": "Bäckerei",
+    "ipa": "bulɑ̃ʒʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5059,
+    "french": "pâtisserie",
+    "german": "Konditorei",
+    "ipa": "pɑtisʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5060,
+    "french": "poissonnerie",
+    "german": "Fischgeschäft",
+    "ipa": "pwasɔnʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5061,
+    "french": "primeur",
+    "german": "Obst- und Gemüsehändler",
+    "ipa": "pʁimœʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5062,
+    "french": "bureau de tabac",
+    "german": "Tabakladen",
+    "ipa": "byʁo də taba",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5063,
+    "french": "kiosque",
+    "german": "Kiosk",
+    "ipa": "kjɔsk",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5064,
+    "french": "mercerie",
+    "german": "Kurzwarengeschäft",
+    "ipa": "mɛʁsʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5065,
+    "french": "cordonnier",
+    "german": "Schuster",
+    "ipa": "kɔʁdɔnje",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5066,
+    "french": "papeterie",
+    "german": "Schreibwarengeschäft",
+    "ipa": "papɛtʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5067,
+    "french": "droguerie",
+    "german": "Drogerie",
+    "ipa": "dʁɔɡʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5068,
+    "french": "quincaillerie",
+    "german": "Eisenwarenhandlung",
+    "ipa": "kɛ̃kajʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5069,
+    "french": "pressing",
+    "german": "Reinigung",
+    "ipa": "pʁɛsiŋ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5070,
+    "french": "bijouterie",
+    "german": "Juweliergeschäft",
+    "ipa": "biʒutʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5071,
+    "french": "fleuriste",
+    "german": "Blumenladen",
+    "ipa": "flœʁist",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5072,
+    "french": "parfumerie",
+    "german": "Parfümerie",
+    "ipa": "paʁfymʁi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5073,
+    "french": "opticien",
+    "german": "Optiker",
+    "ipa": "ɔptisjɛ̃",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5074,
+    "french": "étalage",
+    "german": "Auslage",
+    "ipa": "etalɑʒ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5075,
+    "french": "allée",
+    "german": "Gang",
+    "ipa": "ale",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5076,
+    "french": "étagère",
+    "german": "Regal",
+    "ipa": "etaʒɛʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5077,
+    "french": "chariot",
+    "german": "Einkaufswagen",
+    "ipa": "ʃaʁjo",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5078,
+    "french": "comptoir",
+    "german": "Tresen",
+    "ipa": "kɔ̃twaʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5079,
+    "french": "cabine d'essayage",
+    "german": "Umkleidekabine",
+    "ipa": "kabin desɛjaʒ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5080,
+    "french": "vendeuse",
+    "german": "Verkäuferin",
+    "ipa": "vɑ̃døz",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5081,
+    "french": "escalator",
+    "german": "Rolltreppe",
+    "ipa": "ɛskalatɔʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5082,
+    "french": "catalogue",
+    "german": "Katalog",
+    "ipa": "katalɔɡ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5083,
+    "french": "bon d'achat",
+    "german": "Gutschein",
+    "ipa": "bɔ̃ daʃa",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5084,
+    "french": "carte fidélité",
+    "german": "Treuekarte",
+    "ipa": "kaʁt fidelite",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5085,
+    "french": "espèces",
+    "german": "Bargeld",
+    "ipa": "ɛspɛs",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5086,
+    "french": "carte bancaire",
+    "german": "Bankkarte",
+    "ipa": "kaʁt bɑ̃kɛʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5087,
+    "french": "acompte",
+    "german": "Anzahlung",
+    "ipa": "akɔ̃t",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5088,
+    "french": "devis",
+    "german": "Kostenvoranschlag",
+    "ipa": "dəvi",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5089,
+    "french": "virement bancaire",
+    "german": "Banküberweisung",
+    "ipa": "viʁmɑ̃ bɑ̃kɛʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5090,
+    "french": "aubaine",
+    "german": "Schnäppchen",
+    "ipa": "obɛn",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "f",
+    "pos": "nf"
+  },
+  {
+    "rank": 5091,
+    "french": "ticket de caisse",
+    "german": "Kassenbon",
+    "ipa": "tikɛ də kɛs",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5092,
+    "french": "livreur",
+    "german": "Lieferant",
+    "ipa": "livʁœʁ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5093,
+    "french": "dédommagement",
+    "german": "Entschädigung",
+    "ipa": "dedɔmaʒmɑ̃",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5094,
+    "french": "service après-vente",
+    "german": "Kundendienst",
+    "ipa": "sɛʁvis apʁɛvɑ̃t",
+    "categories": [
+      "Einkaufen"
+    ],
+    "gender": "m",
+    "pos": "nm"
+  },
+  {
+    "rank": 5095,
+    "french": "faire la queue",
+    "german": "anstehen",
+    "ipa": "fɛʁ la kø",
+    "categories": [
+      "Einkaufen"
+    ],
+    "pos": "vt"
+  },
+  {
+    "rank": 5096,
+    "french": "faire du shopping",
+    "german": "einkaufen gehen",
+    "ipa": "fɛʁ dy ʃɔpiŋ",
+    "categories": [
+      "Einkaufen"
+    ],
+    "pos": "vt"
+  },
+  {
+    "rank": 5097,
+    "french": "faire les courses",
+    "german": "Besorgungen machen",
+    "ipa": "fɛʁ le kuʁs",
+    "categories": [
+      "Einkaufen"
+    ],
+    "pos": "vt"
   }
 ]

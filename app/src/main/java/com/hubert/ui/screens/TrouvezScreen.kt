@@ -64,6 +64,7 @@ private fun categoryEmoji(name: String): String = when (name) {
     "Bewegungsverben" -> "🏃"
     "Kommunikationsverben" -> "💬"
     "Falsche Freunde" -> "⚠️"
+    "Einkaufen" -> "🛒"
     "Grundverben" -> "🔧"
     "Denken und Wissen" -> "🧠"
     "Kommunikationsverben" -> "💬"
