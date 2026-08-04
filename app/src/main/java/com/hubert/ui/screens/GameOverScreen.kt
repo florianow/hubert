@@ -57,7 +57,10 @@ fun GameOverScreen(
     aiAnalysis: String? = null,
     isLoadingAnalysis: Boolean = false,
     onPlayAgain: () -> Unit,
-    onBackToMenu: () -> Unit
+    onBackToMenu: () -> Unit,
+    onChooseCategory: (() -> Unit)? = null,
+    onChooseCategoryLabel: String = "📚 Thema",
+    onRandomCategory: (() -> Unit)? = null
 ) {
     val totalAttempted = totalCorrect + totalWrong
     val accuracyPct = if (totalAttempted > 0) (totalCorrect * 100f / totalAttempted) else 0f
@@ -320,6 +323,35 @@ fun GameOverScreen(
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
+        }
+
+        if (onChooseCategory != null || onRandomCategory != null) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (onRandomCategory != null) {
+                    OutlinedButton(
+                        onClick = onRandomCategory,
+                        enabled = buttonsEnabled,
+                        modifier = Modifier.weight(1f).height(52.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text("🎲 Zufall", fontWeight = FontWeight.Bold)
+                    }
+                }
+                if (onChooseCategory != null) {
+                    OutlinedButton(
+                        onClick = onChooseCategory,
+                        enabled = buttonsEnabled,
+                        modifier = Modifier.weight(1f).height(52.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(onChooseCategoryLabel, fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))

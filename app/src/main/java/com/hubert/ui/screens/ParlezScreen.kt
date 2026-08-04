@@ -9,6 +9,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -233,6 +235,7 @@ fun ParlezConversationScreen(
     onToggleHints: () -> Unit,
     onRequestContextHints: () -> Unit,
     onSpeakHint: (String) -> Unit,
+    onTranslate: (Int) -> Unit,
     onFinish: () -> Unit,
     onQuit: () -> Unit
 ) {
@@ -316,8 +319,13 @@ fun ParlezConversationScreen(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(state.messages) { msg ->
-                ChatBubble(msg)
+            itemsIndexed(state.messages) { index, msg ->
+                ChatBubble(
+                    msg = msg,
+                    translation = state.messageTranslations[index],
+                    isTranslating = state.translatingIndex == index,
+                    onTranslate = { onTranslate(index) }
+                )
             }
             if (state.isProcessing) {
                 item { TypingIndicator() }
@@ -566,28 +574,61 @@ private fun HintPanel(
 }
 
 @Composable
-private fun ChatBubble(msg: ParlezChatMessage) {
+private fun ChatBubble(
+    msg: ParlezChatMessage,
+    translation: String? = null,
+    isTranslating: Boolean = false,
+    onTranslate: () -> Unit = {}
+) {
     val isHubert = msg.isHubert
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isHubert) Arrangement.Start else Arrangement.End
     ) {
-        Surface(
-            shape = RoundedCornerShape(
-                topStart = 16.dp,
-                topEnd = 16.dp,
-                bottomStart = if (isHubert) 4.dp else 16.dp,
-                bottomEnd = if (isHubert) 16.dp else 4.dp
-            ),
-            color = if (isHubert) ParlezTeal.copy(alpha = 0.15f)
-                    else MaterialTheme.colorScheme.primaryContainer,
-            modifier = Modifier.widthIn(max = 300.dp)
-        ) {
-            Text(
-                text = msg.text,
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                style = MaterialTheme.typography.bodyMedium
-            )
+        Column(horizontalAlignment = if (isHubert) Alignment.Start else Alignment.End) {
+            Surface(
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                    bottomStart = if (isHubert) 4.dp else 16.dp,
+                    bottomEnd = if (isHubert) 16.dp else 4.dp
+                ),
+                color = if (isHubert) ParlezTeal.copy(alpha = 0.15f)
+                        else MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.widthIn(max = 300.dp)
+            ) {
+                Column(modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)) {
+                    Text(text = msg.text, style = MaterialTheme.typography.bodyMedium)
+                    if (translation != null) {
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            text = translation,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                        )
+                    }
+                }
+            }
+            if (translation == null) {
+                TextButton(
+                    onClick = onTranslate,
+                    enabled = !isTranslating,
+                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
+                    modifier = Modifier.height(24.dp)
+                ) {
+                    if (isTranslating) {
+                        Text("…", style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Translate,
+                            contentDescription = "Übersetzen",
+                            modifier = Modifier.size(14.dp),
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
+                        )
+                    }
+                }
+            }
         }
     }
 }

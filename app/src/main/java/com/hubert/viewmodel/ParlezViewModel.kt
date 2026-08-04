@@ -99,6 +99,8 @@ data class ParlezState(
     val isProcessing:  Boolean = false,  // STT or LLM in flight
     val timerExpired:  Boolean = false,  // timer hit 0, waiting for TTS to finish
     val errorMessage:  String? = null,
+    val messageTranslations: Map<Int, String> = emptyMap(),
+    val translatingIndex: Int? = null,
 
     // Hint system
     val showHints:        Boolean      = false,
@@ -286,6 +288,27 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
 
     fun toggleRecording() {
         if (_uiState.value.isRecording) stopRecording() else startRecording()
+    }
+
+    fun translateMessage(index: Int) {
+        val s = _uiState.value
+        if (s.messageTranslations.containsKey(index) || s.translatingIndex == index) return
+        val text = s.messages.getOrNull(index)?.text ?: return
+        _uiState.update { it.copy(translatingIndex = index) }
+        viewModelScope.launch {
+            val result = runCatching {
+                GeminiApi.evaluate(
+                    s.geminiApiKey,
+                    "Translate this French text to German. Reply with ONLY the translation, nothing else:\n$text"
+                )
+            }
+            _uiState.update {
+                it.copy(
+                    messageTranslations = it.messageTranslations + (index to (result.getOrElse { "Fehler" }).trim()),
+                    translatingIndex = null
+                )
+            }
+        }
     }
 
     fun resetToMenu() {
