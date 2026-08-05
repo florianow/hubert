@@ -38,11 +38,14 @@ android {
             keyAlias = System.getenv("KEY_ALIAS") ?: "hubert"
             keyPassword = System.getenv("KEY_PASSWORD") ?: ""
         }
-        getByName("debug") {
-            storeFile = rootProject.file(localProps.getProperty("storeFile") ?: "hubert.keystore")
-            storePassword = localProps.getProperty("storePassword") ?: ""
-            keyAlias = localProps.getProperty("keyAlias") ?: "hubert"
-            keyPassword = localProps.getProperty("keyPassword") ?: ""
+        val localKeystore = rootProject.file(localProps.getProperty("storeFile") ?: "hubert.keystore")
+        if (localKeystore.exists()) {
+            getByName("debug") {
+                storeFile = localKeystore
+                storePassword = localProps.getProperty("storePassword") ?: ""
+                keyAlias = localProps.getProperty("keyAlias") ?: "hubert"
+                keyPassword = localProps.getProperty("keyPassword") ?: ""
+            }
         }
     }
 
