@@ -20,7 +20,20 @@ data class LearningOverview(
     val learning: Int,     // introduced but not yet known
     val unseen: Int,       // not introduced yet
     val dueToday: Int
-)
+) {
+    /**
+     * Rough CEFR estimate from the number of words known for good (common rules of thumb:
+     * A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 words). Vocabulary only, not grammar.
+     */
+    val estimatedLevel: String get() = when {
+        known < 250 -> "Einstieg"
+        known < 500 -> "A1"
+        known < 1000 -> "A2"
+        known < 2000 -> "B1"
+        known < 4000 -> "B2"
+        else -> "C1"
+    }
+}
 
 /**
  * Spaced-repetition state per vocab word. Every vocab-game answer (Trouvez!, Classez!,
@@ -147,6 +160,9 @@ class LearningRepository @Inject constructor(
         val filler = progressDao.randomNotDue(today(), limit)
         return (due + fresh + filler).distinct().take(limit)
     }
+
+    /** Words that entered the learning path in [fromDay, toDay). */
+    suspend fun introducedBetween(fromDay: Long, toDay: Long): Int = progressDao.countIntroducedBetween(fromDay, toDay)
 
     suspend fun overview(): LearningOverview {
         val introduced = progressDao.count()

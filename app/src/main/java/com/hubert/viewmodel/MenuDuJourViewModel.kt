@@ -6,6 +6,7 @@ import com.hubert.data.local.MenuSessionDao
 import com.hubert.data.local.WordAttemptDao
 import com.hubert.data.model.MenuSession
 import com.hubert.data.model.VocabWord
+import com.hubert.data.repository.LearningOverview
 import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
@@ -140,7 +141,10 @@ data class MenuDuJourState(
     val review: List<ReviewItem> = emptyList(),
     val grammarMistakes: List<GrammarMistake> = emptyList(),
     val pinnedRanks: Set<Int> = emptySet(),
-    val menusPlayed: Int = 0
+    val menusPlayed: Int = 0,
+
+    // Learning path snapshot for the main menu strip
+    val overview: LearningOverview? = null
 ) {
     val nextCourse: Course? get() = courses.getOrNull(currentIndex)
     val needsDiscovery: Boolean get() = discoveryCards.isNotEmpty() && !discoveryDone
@@ -202,7 +206,8 @@ class MenuDuJourViewModel @Inject constructor(
                 isRunning = true,
                 isChoosingType = true,
                 availableCategories = categories,
-                pinnedRanks = it.pinnedRanks
+                pinnedRanks = it.pinnedRanks,
+                overview = it.overview
             )
         }
         viewModelScope.launch {
@@ -363,7 +368,15 @@ class MenuDuJourViewModel @Inject constructor(
     /** Abort or leave the menu (also after L'addition). */
     fun reset() {
         focusRanks = emptyList()
-        _uiState.update { MenuDuJourState(pinnedRanks = it.pinnedRanks) }
+        _uiState.update { MenuDuJourState(pinnedRanks = it.pinnedRanks, overview = it.overview) }
+    }
+
+    /** Reload the learning-path numbers shown in the main menu. */
+    fun refreshOverview() {
+        viewModelScope.launch {
+            val overview = learningRepository.overview()
+            _uiState.update { it.copy(overview = overview) }
+        }
     }
 
     // ── Scoring ─────────────────────────────────────────────────────────

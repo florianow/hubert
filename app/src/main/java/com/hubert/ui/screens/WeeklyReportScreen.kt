@@ -117,6 +117,12 @@ private fun ReportContent(report: WeeklyReport, isCurrentWeek: Boolean) {
                 StatTile("Minuten", "${report.playMinutes}", Modifier.weight(1f))
                 StatTile("Menüs", "${report.menus}", Modifier.weight(1f))
             }
+            Spacer(Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StatTile("neue Wörter", "+${report.newWords}", Modifier.weight(1f))
+                StatTile("sicher (heute)", "${report.knownNow}", Modifier.weight(1f))
+                StatTile("Wortschatz", "≈ ${report.level}", Modifier.weight(1f))
+            }
             Spacer(Modifier.height(12.dp))
             ActiveDaysRow(report.activeDays)
             Spacer(Modifier.height(20.dp))

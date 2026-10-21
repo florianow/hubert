@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.local.GameSessionDao
 import com.hubert.data.local.MenuSessionDao
 import com.hubert.data.local.WordAttemptDao
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -44,7 +45,10 @@ data class WeeklyReport(
     val previousAverageGrade: Double?,
     val gradeTrend: List<Pair<LocalDate, Double?>>,   // average menu grade of the last 8 weeks
     val games: List<GameWeekStat>,
-    val missed: List<MissedItem>
+    val missed: List<MissedItem>,
+    val newWords: Int,                 // words that entered the learning path this week
+    val knownNow: Int,                 // words known for good today
+    val level: String                  // vocabulary-based CEFR estimate
 ) {
     val isEmpty: Boolean get() = sessions == 0
 }
@@ -66,7 +70,8 @@ class WeeklyReportViewModel @Inject constructor(
     private val gameSessionDao: GameSessionDao,
     private val wordAttemptDao: WordAttemptDao,
     private val menuSessionDao: MenuSessionDao,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WeeklyReportState())
@@ -164,6 +169,7 @@ class WeeklyReportViewModel @Inject constructor(
             week to averageGrade(week)
         }
 
+        val overview = learningRepository.overview()
         return WeeklyReport(
             weekStart = start,
             activeDays = (0..6).map { start.plusDays(it.toLong()) in days },
@@ -175,7 +181,10 @@ class WeeklyReportViewModel @Inject constructor(
             previousAverageGrade = averageGrade(previousStart),
             gradeTrend = trend,
             games = games,
-            missed = missed
+            missed = missed,
+            newWords = learningRepository.introducedBetween(start.toEpochDay(), start.plusWeeks(1).toEpochDay()),
+            knownNow = overview.known,
+            level = overview.estimatedLevel
         )
     }
 }

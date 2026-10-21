@@ -26,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.R
+import com.hubert.data.repository.LearningOverview
 import com.hubert.ui.theme.*
 
 @Composable
@@ -42,6 +43,8 @@ fun MenuScreen(
     accordezHighScore: Int,
     parlezHighScore: Int,
     onMenuDuJour: () -> Unit,
+    learningOverview: LearningOverview?,
+    onShowProgress: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
@@ -134,6 +137,25 @@ fun MenuScreen(
                     fontSize = 10.sp,
                     color = Color.White.copy(alpha = 0.75f)
                 )
+            }
+        }
+
+        // Learning path at a glance — tap for the weekly report
+        if (learningOverview != null && learningOverview.known + learningOverview.learning > 0) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 6.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable(onClick = onShowProgress)
+                    .background(MenuWine.copy(alpha = 0.06f))
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ProgressFigure("${learningOverview.known}", "sicher")
+                ProgressFigure("${learningOverview.learning}", "lernend")
+                ProgressFigure("${learningOverview.dueToday}", "heute fällig")
+                ProgressFigure("≈ ${learningOverview.estimatedLevel}", "Wortschatz")
             }
         }
 
@@ -276,6 +298,14 @@ fun MenuScreen(
                 Spacer(modifier = Modifier.weight(1f))
             }
         }
+    }
+}
+
+@Composable
+private fun ProgressFigure(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = value, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = MenuWine)
+        Text(text = label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f))
     }
 }
 

@@ -260,6 +260,7 @@ fun HubertApp() {
     }
     // Quitting any course (or the menu card) back to the main menu abandons the menu
     LaunchedEffect(currentScreen) {
+        if (currentScreen == Screen.MENU) menuVm.refreshOverview()
         if (currentScreen == Screen.MENU && menuVm.uiState.value.isRunning) {
             menuVm.reset()
         }
@@ -994,6 +995,8 @@ fun HubertApp() {
                 nombrezHighScore = nombrezState.highScore,
                 accordezHighScore = accordezState.highScore,
                 parlezHighScore = parlezState.highScore,
+                learningOverview = menuState.overview,
+                onShowProgress = { weeklyVm.open(0) },
                 onMenuDuJour = {
                     menuVm.showMenuSelection()
                     currentScreen = Screen.MENU_DU_JOUR
