@@ -60,7 +60,8 @@ data class Achievement(
 @Singleton
 class StatisticsRepository @Inject constructor(
     private val dao: GameSessionDao,
-    private val wordAttemptDao: WordAttemptDao
+    private val wordAttemptDao: WordAttemptDao,
+    private val learningRepository: LearningRepository
 ) {
 
     // ── Session saving (used by all ViewModels) ─────────────────────────
@@ -325,6 +326,8 @@ class StatisticsRepository @Inject constructor(
             )
         }
         wordAttemptDao.insertAll(attempts)
+        // Vocab answers also drive the spaced-repetition schedule
+        learningRepository.recordAnswers(gameType, answers)
     }
 
     /**

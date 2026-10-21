@@ -72,6 +72,15 @@ interface WordAttemptDao {
     """)
     suspend fun getAttemptsSince(gameType: String, sinceMs: Long): List<AttemptRow>
 
+    /** All vocab-game attempts in order — replayed once to seed the spaced-repetition state. */
+    @Query("""
+        SELECT gameType, question, correctAnswer, isCorrect, timestamp
+        FROM word_attempts
+        WHERE gameType IN ('matching', 'gender_snap', 'gap_fill', 'spelling_bee')
+        ORDER BY id ASC
+    """)
+    suspend fun getVocabAttemptsInOrder(): List<VocabAttemptRow>
+
     /** Correct / total answers per game type in [fromMs, toMs) (weekly report). */
     @Query("""
         SELECT gameType,
@@ -111,6 +120,14 @@ data class AttemptRow(
     val question: String,
     val correctAnswer: String,
     val isCorrect: Boolean
+)
+
+data class VocabAttemptRow(
+    val gameType: String,
+    val question: String,
+    val correctAnswer: String,
+    val isCorrect: Boolean,
+    val timestamp: Long
 )
 
 data class GameTypeAccuracy(

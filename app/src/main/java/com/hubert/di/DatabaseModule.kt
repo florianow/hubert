@@ -6,6 +6,7 @@ import com.hubert.data.local.AppDatabase
 import com.hubert.data.local.GameSessionDao
 import com.hubert.data.local.HighScoreDao
 import com.hubert.data.local.MenuSessionDao
+import com.hubert.data.local.WordProgressDao
 import com.hubert.data.local.WordAttemptDao
 import dagger.Module
 import dagger.Provides
@@ -26,7 +27,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             "hubert_database"
         )
-            .addMigrations(AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6)
+            .addMigrations(AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6, AppDatabase.MIGRATION_6_7)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -49,5 +50,10 @@ object DatabaseModule {
     @Provides
     fun provideMenuSessionDao(database: AppDatabase): MenuSessionDao {
         return database.menuSessionDao()
+    }
+
+    @Provides
+    fun provideWordProgressDao(database: AppDatabase): WordProgressDao {
+        return database.wordProgressDao()
     }
 }

@@ -8,10 +8,11 @@ import com.hubert.data.model.GameSession
 import com.hubert.data.model.HighScore
 import com.hubert.data.model.MenuSession
 import com.hubert.data.model.WordAttempt
+import com.hubert.data.model.WordProgress
 
 @Database(
-    entities = [HighScore::class, GameSession::class, WordAttempt::class, MenuSession::class],
-    version = 6,
+    entities = [HighScore::class, GameSession::class, WordAttempt::class, MenuSession::class, WordProgress::class],
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -19,6 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun gameSessionDao(): GameSessionDao
     abstract fun wordAttemptDao(): WordAttemptDao
     abstract fun menuSessionDao(): MenuSessionDao
+    abstract fun wordProgressDao(): WordProgressDao
 
     companion object {
         /** v5: adds menu_sessions for "Menu du jour" without wiping existing stats. */
@@ -43,6 +45,27 @@ abstract class AppDatabase : RoomDatabase() {
         val MIGRATION_5_6 = object : Migration(5, 6) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE `menu_sessions` ADD COLUMN `menuType` TEXT NOT NULL DEFAULT 'A_LA_CARTE'")
+            }
+        }
+
+        /** v7: spaced-repetition state per vocab word (filled from past answers on first start). */
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `word_progress` (
+                        `rank` INTEGER NOT NULL,
+                        `intervalDays` REAL NOT NULL,
+                        `ease` REAL NOT NULL,
+                        `dueDay` INTEGER NOT NULL,
+                        `reps` INTEGER NOT NULL,
+                        `lapses` INTEGER NOT NULL,
+                        `lastReviewDay` INTEGER NOT NULL,
+                        `introducedDay` INTEGER NOT NULL,
+                        PRIMARY KEY(`rank`)
+                    )
+                    """.trimIndent()
+                )
             }
         }
     }
