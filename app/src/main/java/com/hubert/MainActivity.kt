@@ -111,6 +111,7 @@ fun HubertApp() {
                 CourseGame.CONJUGUEZ -> conjugationVm.startGame(config)
                 CourseGame.PREPOSEZ -> prepositionVm.startGame(config)
                 CourseGame.RELATIVISEZ -> relativisezVm.startGame(config)
+                CourseGame.NOMBREZ -> nombrezVm.startGame(config)
             }
         }
     }
@@ -229,6 +230,13 @@ fun HubertApp() {
         if (relativisezState.isGameOver && menuVm.uiState.value.isRunning) {
             menuVm.onCourseFinished(relativisezState.answerHistory)
             relativisezVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(nombrezState.isGameOver) {
+        if (nombrezState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(nombrezState.answerHistory)
+            nombrezVm.resetToMenu()
             currentScreen = Screen.MENU_DU_JOUR
         }
     }

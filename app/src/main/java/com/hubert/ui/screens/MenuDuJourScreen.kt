@@ -300,7 +300,7 @@ fun MenuDuJourAdditionScreen(
             item {
                 Spacer(Modifier.height(12.dp))
                 Text(
-                    text = "Grammatik — so wäre es richtig",
+                    text = "Grammatik & Zahlen — so wäre es richtig",
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp,
                     modifier = Modifier.fillMaxWidth()
@@ -486,7 +486,7 @@ fun MenuDuJourTypeScreen(
 private fun MenuTypeCard(type: MenuType, today: String?, onClick: () -> Unit) {
     val courses = when (type) {
         MenuType.EXPRESS -> "Trouvez · Classez · Écrivez"
-        MenuType.COMPLET -> "Trouvez · Complétez · Grammatik · Classez · Écrivez"
+        MenuType.COMPLET -> "Trouvez · Complétez · Grammatik · Classez · Écrivez · Nombrez"
         MenuType.A_LA_CARTE -> "Trouvez · Complétez · Classez · Écrivez"
     }
     Column(

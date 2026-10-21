@@ -62,11 +62,11 @@ A guided learning session that chains several games into one "menu", built aroun
 
 | Menu | Courses | Theme |
 |---|---|---|
-| **Express** | Entrée (Trouvez!) · Fromage (Classez!) · Dessert (Écrivez!) | picked by Hubert |
-| **Complet** | Entrée (Trouvez!) · Plat principal (Complétez!) · Plat du chef (grammar) · Fromage (Classez!) · Dessert (Écrivez!) | picked by Hubert |
+| **Express** | Entrée (Trouvez!) · Fromage (Classez!) · Dessert (Écrivez!) · Café (Nombrez!) | picked by Hubert |
+| **Complet** | Entrée (Trouvez!) · Plat principal (Complétez!) · Plat du chef (grammar) · Fromage (Classez!) · Dessert (Écrivez!) · Café (Nombrez!) | picked by Hubert |
 | **À la carte** | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) | you choose |
 
-Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez! or Relativisez!, whichever you have never played or has your lowest accuracy — using your last tense/preposition selection. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
+Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s, Nombrez! 45s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez! or Relativisez!, whichever you have never played or has your lowest accuracy — using your last tense/preposition selection. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
 
 **L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
 

@@ -45,7 +45,8 @@ enum class CourseGame(
     ECRIVEZ("spelling_bee", "Écrivez!", 45_000L, 6, true),
     CONJUGUEZ("conjugation", "Conjuguez!", 60_000L, 6, false),
     PREPOSEZ("preposition", "Préposez!", 60_000L, 8, false),
-    RELATIVISEZ("relative_pronoun", "Relativisez!", 60_000L, 8, false);
+    RELATIVISEZ("relative_pronoun", "Relativisez!", 60_000L, 8, false),
+    NOMBREZ("numbers", "Nombrez!", 45_000L, 8, false);
 
     companion object {
         val GRAMMAR = listOf(CONJUGUEZ, PREPOSEZ, RELATIVISEZ)
@@ -63,10 +64,11 @@ private val ENTREE = Course("Entrée", "Aufwärmen: Wörter wiedererkennen", Cou
 private val PLAT = Course("Plat principal", "Wörter im Satz anwenden", CourseGame.COMPLETEZ)
 private val FROMAGE = Course("Fromage", "Genus festigen: le ou la?", CourseGame.CLASSEZ)
 private val DESSERT = Course("Dessert", "Selbst schreiben — deine Fehler kommen wieder", CourseGame.ECRIVEZ)
+private val CAFE = Course("Café", "Zum Abschluss: Zahlen, Uhrzeit & Datum", CourseGame.NOMBREZ)
 
 enum class MenuType(val title: String, val description: String) {
     EXPRESS("Express", "3 Gänge · ca. 2 Min · Thema des Tages"),
-    COMPLET("Complet", "5 Gänge mit Grammatik · ca. 5 Min · Thema des Tages"),
+    COMPLET("Complet", "6 Gänge mit Grammatik & Café · ca. 6 Min · Thema des Tages"),
     A_LA_CARTE("À la carte", "4 Gänge · du wählst das Thema")
 }
 
@@ -86,7 +88,7 @@ data class ReviewItem(
     val courses: List<String>
 )
 
-/** A wrong answer from a grammar course (no vocab word to pin). */
+/** A wrong answer from a non-vocab course (grammar, numbers) — no vocab word to pin. */
 data class GrammarMistake(
     val gameName: String,
     val question: String,
@@ -209,7 +211,7 @@ class MenuDuJourViewModel @Inject constructor(
                 val goal = if (focus.isEmpty()) "Grammatik: deine eigene Auswahl"
                            else "Fokus: " + focus.joinToString(", ") { ConjuguezViewModel.TENSE_DISPLAY[it] ?: it }
                 val chef = Course("Plat du chef", goal, grammar, focus)
-                listOf(ENTREE, PLAT, chef, FROMAGE, DESSERT)
+                listOf(ENTREE, PLAT, chef, FROMAGE, DESSERT, CAFE)
             }
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
         }
