@@ -35,6 +35,8 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 ## Features
 
 - **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
+- **Spaced repetition & learning path** — every vocab answer updates a per-word review schedule (Anki-style); new words arrive in frequency order (10/day); progress and an estimated level on the main menu
+- **Daily reminder** — optional notification at a chosen hour when something is due and you haven't practised yet
 - **Accordez!** — Past participle agreement (être, avoir + preceding object, reflexive verbs), with the rule explained after each answer
 - **Nombrez!** — Numbers, clock times, dates, days and months (hear → type, plus multiple choice)
 - **Menu du jour** — Guided multi-game session (Express, Complet, À la carte) around one theme, graded on the French /20 scale
@@ -56,6 +58,21 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 - **Material Design 3** — clean, modern UI with themed game colors
 
 ## Game Modes
+
+### Spaced repetition & learning path
+
+Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word schedule (`word_progress`, `utils/SpacedRepetition.kt`, unit-tested), SM-2 style as in Anki:
+
+- **Correct** → the interval grows (1 → ~3 → ~8 → ~20 days …). Typing the word (Écrivez!) counts as *recall* and grows faster than *recognition* (matching, choosing). Practising early doesn't inflate the interval; remembering a word after an overdue gap counts part of the extra time.
+- **Wrong** → back to 1 day, the word gets harder (ease −0.2).
+- At most one step per word and day — five correct answers in one round are one review.
+- A word is **sicher** once its interval reaches 3 weeks.
+
+**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first.
+
+**Progress:** the main menu shows known / learning / due today and a rough vocabulary level (A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 known words). On first start after the update, past answers are replayed once to seed the schedule; the resulting backlog is spread over two weeks.
+
+**Daily reminder** (Einstellungen): optional notification at a chosen hour, only if no round was played that day and something is due (WorkManager).
 
 ### Menu du jour
 

@@ -3,7 +3,9 @@ package com.hubert.data.repository
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -18,7 +20,9 @@ private val Context.globalSettingsDataStore: DataStore<Preferences>
 data class AppSettings(
     val geminiKey: String = "",
     val azureKey: String = "",
-    val azureRegion: String = ""
+    val azureRegion: String = "",
+    val reminderEnabled: Boolean = false,
+    val reminderHour: Int = 19
 ) {
     val hasGemini: Boolean get() = geminiKey.isNotBlank()
     val hasAzure: Boolean get() = azureKey.isNotBlank() && azureRegion.isNotBlank()
@@ -34,11 +38,20 @@ class SettingsRepository @Inject constructor(
         private val KEY_AZURE_KEY    = stringPreferencesKey("azure_speech_key")
         private val KEY_AZURE_REGION = stringPreferencesKey("azure_speech_region")
         private val KEY_REPORT_SEEN_WEEK = stringPreferencesKey("weekly_report_seen_week")
+        private val KEY_REMINDER_ENABLED = booleanPreferencesKey("reminder_enabled")
+        private val KEY_REMINDER_HOUR = intPreferencesKey("reminder_hour")
     }
 
     /** Monday (ISO date) of the last week whose report was shown automatically. */
     val reportSeenWeek: Flow<String> = context.globalSettingsDataStore.data.map { prefs ->
         prefs[KEY_REPORT_SEEN_WEEK] ?: ""
+    }
+
+    suspend fun saveReminder(enabled: Boolean, hour: Int) {
+        context.globalSettingsDataStore.edit { prefs ->
+            prefs[KEY_REMINDER_ENABLED] = enabled
+            prefs[KEY_REMINDER_HOUR] = hour
+        }
     }
 
     suspend fun markReportSeen(weekStart: String) {
@@ -49,7 +62,9 @@ class SettingsRepository @Inject constructor(
         AppSettings(
             geminiKey   = prefs[KEY_GEMINI_KEY]   ?: "",
             azureKey    = prefs[KEY_AZURE_KEY]    ?: "",
-            azureRegion = prefs[KEY_AZURE_REGION] ?: ""
+            azureRegion = prefs[KEY_AZURE_REGION] ?: "",
+            reminderEnabled = prefs[KEY_REMINDER_ENABLED] ?: false,
+            reminderHour = prefs[KEY_REMINDER_HOUR] ?: 19
         )
     }
 

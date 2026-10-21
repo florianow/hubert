@@ -342,6 +342,7 @@ fun HubertApp() {
                     parlezVm.onSettingsSaved()
                     currentScreen = Screen.MENU
                 },
+                onReminderChange = { enabled, hour -> settingsVm.setReminder(enabled, hour) },
                 onBack = { currentScreen = Screen.MENU }
             )
         }

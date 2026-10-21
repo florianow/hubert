@@ -1,5 +1,6 @@
 package com.hubert.data.repository
 
+import com.hubert.data.local.GameSessionDao
 import com.hubert.data.local.WordAttemptDao
 import com.hubert.data.local.WordProgressDao
 import com.hubert.data.model.WordProgress
@@ -44,6 +45,7 @@ data class LearningOverview(
 class LearningRepository @Inject constructor(
     private val progressDao: WordProgressDao,
     private val attemptDao: WordAttemptDao,
+    private val gameSessionDao: GameSessionDao,
     private val vocabRepository: VocabRepository
 ) {
     private val mutex = Mutex()
@@ -163,6 +165,14 @@ class LearningRepository @Inject constructor(
 
     /** Words that entered the learning path in [fromDay, toDay). */
     suspend fun introducedBetween(fromDay: Long, toDay: Long): Int = progressDao.countIntroducedBetween(fromDay, toDay)
+
+    /** Whether any round was played today (used to skip the daily reminder). */
+    suspend fun practicedToday(): Boolean {
+        val zone = ZoneId.systemDefault()
+        val start = LocalDate.now().atStartOfDay(zone).toInstant().toEpochMilli()
+        val end = LocalDate.now().plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+        return gameSessionDao.getSessionsBetween(start, end).isNotEmpty()
+    }
 
     suspend fun overview(): LearningOverview {
         val introduced = progressDao.count()
