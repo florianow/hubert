@@ -429,6 +429,7 @@ private fun GrammarMistakeRow(mistake: GrammarMistake) {
 @Composable
 fun MenuDuJourTypeScreen(
     dailyCategory: String,
+    completPreview: String,
     onChoose: (MenuType) -> Unit,
     onShowWeeklyReport: () -> Unit,
     onBack: () -> Unit
@@ -468,6 +469,7 @@ fun MenuDuJourTypeScreen(
             MenuTypeCard(
                 type = type,
                 today = dailyCategory.takeIf { type != MenuType.A_LA_CARTE && it.isNotEmpty() },
+                coursesToday = completPreview.takeIf { type == MenuType.COMPLET && it.isNotEmpty() },
                 onClick = { onChoose(type) }
             )
             Spacer(Modifier.height(12.dp))
@@ -483,10 +485,10 @@ fun MenuDuJourTypeScreen(
 }
 
 @Composable
-private fun MenuTypeCard(type: MenuType, today: String?, onClick: () -> Unit) {
-    val courses = when (type) {
+private fun MenuTypeCard(type: MenuType, today: String?, coursesToday: String?, onClick: () -> Unit) {
+    val courses = coursesToday ?: when (type) {
         MenuType.EXPRESS -> "Trouvez · Classez · Écrivez"
-        MenuType.COMPLET -> "Trouvez · Complétez · Grammatik · Classez · Écrivez · Nombrez"
+        MenuType.COMPLET -> "Trouvez · Grammatik · 3 aus Complétez, Classez, Écrivez, Nombrez"
         MenuType.A_LA_CARTE -> "Trouvez · Complétez · Classez · Écrivez"
     }
     Column(

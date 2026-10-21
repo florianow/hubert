@@ -39,6 +39,7 @@ fun MenuScreen(
     prepositionHighScore: Int,
     relativisezHighScore: Int,
     nombrezHighScore: Int,
+    accordezHighScore: Int,
     parlezHighScore: Int,
     onMenuDuJour: () -> Unit,
     onStartMatching: () -> Unit,
@@ -50,6 +51,7 @@ fun MenuScreen(
     onStartPreposition: () -> Unit,
     onStartRelativisez: () -> Unit,
     onStartNombrez: () -> Unit,
+    onStartAccordez: () -> Unit,
     onStartParlez: () -> Unit,
     onShowSettings: () -> Unit,
     onShowStatistics: () -> Unit
@@ -256,6 +258,22 @@ fun MenuScreen(
                     onClick = onStartNombrez,
                     modifier = Modifier.weight(1f).fillMaxHeight()
                 )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                GridGameCard(
+                    title = "Accordez!",
+                    description = "Partizip richtig angleichen",
+                    accentColor = AccordezColor,
+                    highScore = accordezHighScore,
+                    onClick = onStartAccordez,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }

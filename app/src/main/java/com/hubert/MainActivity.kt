@@ -19,6 +19,7 @@ import com.hubert.viewmodel.ConjuguezViewModel
 import com.hubert.viewmodel.CourseGame
 import com.hubert.viewmodel.MenuDuJourViewModel
 import com.hubert.viewmodel.NombrezViewModel
+import com.hubert.viewmodel.AccordezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.TrouvezViewModel
 import com.hubert.viewmodel.CompletezViewModel
@@ -58,6 +59,7 @@ enum class Screen {
     PREPOSEZ,
     RELATIVISEZ,
     NOMBREZ,
+    ACCORDEZ,
     PARLEZ,
     MENU_DU_JOUR,
     STATISTICS,
@@ -75,6 +77,7 @@ fun HubertApp() {
     val prepositionVm: PreposezViewModel = hiltViewModel()
     val relativisezVm: RelativisezViewModel = hiltViewModel()
     val nombrezVm: NombrezViewModel = hiltViewModel()
+    val accordezVm: AccordezViewModel = hiltViewModel()
     val parlezVm: ParlezViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
@@ -90,6 +93,7 @@ fun HubertApp() {
     val prepositionState by prepositionVm.uiState.collectAsState()
     val relativisezState by relativisezVm.uiState.collectAsState()
     val nombrezState by nombrezVm.uiState.collectAsState()
+    val accordezState by accordezVm.uiState.collectAsState()
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
     val settingsState by settingsVm.settings.collectAsState()
@@ -112,6 +116,7 @@ fun HubertApp() {
                 CourseGame.PREPOSEZ -> prepositionVm.startGame(config)
                 CourseGame.RELATIVISEZ -> relativisezVm.startGame(config)
                 CourseGame.NOMBREZ -> nombrezVm.startGame(config)
+                CourseGame.ACCORDEZ -> accordezVm.startGame(config)
             }
         }
     }
@@ -168,6 +173,12 @@ fun HubertApp() {
     LaunchedEffect(nombrezState.isSelection, nombrezState.isPlaying, nombrezState.isGameOver, nombrezState.countdown) {
         if (nombrezState.isSelection || nombrezState.countdown != null || nombrezState.isPlaying || nombrezState.isGameOver) {
             currentScreen = Screen.NOMBREZ
+        }
+    }
+
+    LaunchedEffect(accordezState.isSelection, accordezState.isPlaying, accordezState.isGameOver, accordezState.countdown) {
+        if (accordezState.isSelection || accordezState.countdown != null || accordezState.isPlaying || accordezState.isGameOver) {
+            currentScreen = Screen.ACCORDEZ
         }
     }
 
@@ -240,6 +251,13 @@ fun HubertApp() {
             currentScreen = Screen.MENU_DU_JOUR
         }
     }
+    LaunchedEffect(accordezState.isGameOver) {
+        if (accordezState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(accordezState.answerHistory)
+            accordezVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
     // Quitting any course (or the menu card) back to the main menu abandons the menu
     LaunchedEffect(currentScreen) {
         if (currentScreen == Screen.MENU && menuVm.uiState.value.isRunning) {
@@ -265,6 +283,7 @@ fun HubertApp() {
                 menuState.isChoosingType -> {
                     MenuDuJourTypeScreen(
                         dailyCategory = menuState.dailyCategory,
+                        completPreview = menuState.completPreview,
                         onChoose = { menuVm.chooseMenuType(it) },
                         onShowWeeklyReport = { weeklyVm.open(0) },
                         onBack = { currentScreen = Screen.MENU }
@@ -822,6 +841,61 @@ fun HubertApp() {
             }
         }
 
+        Screen.ACCORDEZ -> {
+            when {
+                accordezState.isSelection -> {
+                    AccordezSelectionScreen(
+                        state = accordezState,
+                        onToggle = { accordezVm.toggleGroup(it) },
+                        onStart = { accordezVm.startGame() },
+                        onBack = {
+                            accordezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                accordezState.countdown != null -> {
+                    CountdownScreen(
+                        count = accordezState.countdown!!,
+                        onBack = {
+                            accordezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                accordezState.isPlaying -> {
+                    AccordezScreen(
+                        state = accordezState,
+                        onChoice = { accordezVm.answerChoice(it) },
+                        onQuit = {
+                            accordezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                accordezState.isGameOver && !menuState.isRunning -> {
+                    GameOverScreen(
+                        title = "TIME'S UP!",
+                        score = accordezState.score,
+                        isNewHighScore = accordezState.isNewHighScore,
+                        totalCorrect = accordezState.totalCorrect,
+                        totalWrong = accordezState.totalWrong,
+                        bestStreak = accordezState.bestStreak,
+                        highScore = accordezState.highScore,
+                        durationMs = accordezState.durationMs,
+                        answerHistory = accordezState.answerHistory,
+                        onPlayAgain = { accordezVm.startGame() },
+                        onBackToMenu = {
+                            accordezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        },
+                        onChooseCategory = { accordezVm.showSelection() },
+                        onChooseCategoryLabel = "🔄 Regeln"
+                    )
+                }
+            }
+        }
+
         Screen.PARLEZ -> {
             // Redirect to global settings when API key is missing
             if (parlezState.showSettings) {
@@ -908,6 +982,7 @@ fun HubertApp() {
                 prepositionHighScore = prepositionState.highScore,
                 relativisezHighScore = relativisezState.highScore,
                 nombrezHighScore = nombrezState.highScore,
+                accordezHighScore = accordezState.highScore,
                 parlezHighScore = parlezState.highScore,
                 onMenuDuJour = {
                     menuVm.showMenuSelection()
@@ -922,6 +997,7 @@ fun HubertApp() {
                 onStartPreposition = { prepositionVm.showSelection() },
                 onStartRelativisez = { relativisezVm.showSelection() },
                 onStartNombrez = { nombrezVm.showSelection() },
+                onStartAccordez = { accordezVm.showSelection() },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {

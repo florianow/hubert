@@ -46,10 +46,13 @@ enum class CourseGame(
     CONJUGUEZ("conjugation", "Conjuguez!", 60_000L, 6, false),
     PREPOSEZ("preposition", "Préposez!", 60_000L, 8, false),
     RELATIVISEZ("relative_pronoun", "Relativisez!", 60_000L, 8, false),
-    NOMBREZ("numbers", "Nombrez!", 45_000L, 8, false);
+    NOMBREZ("numbers", "Nombrez!", 45_000L, 8, false),
+    ACCORDEZ("agreement", "Accordez!", 60_000L, 8, false);
 
     companion object {
-        val GRAMMAR = listOf(CONJUGUEZ, PREPOSEZ, RELATIVISEZ)
+        val GRAMMAR = listOf(CONJUGUEZ, PREPOSEZ, RELATIVISEZ, ACCORDEZ)
+        /** Complet serves 3 of these 4 each day, dropping a different one daily. */
+        val COMPLET_ROTATION = listOf(COMPLETEZ, CLASSEZ, ECRIVEZ, NOMBREZ)
     }
 }
 
@@ -68,7 +71,7 @@ private val CAFE = Course("Café", "Zum Abschluss: Zahlen, Uhrzeit & Datum", Cou
 
 enum class MenuType(val title: String, val description: String) {
     EXPRESS("Express", "3 Gänge · ca. 2 Min · Thema des Tages"),
-    COMPLET("Complet", "6 Gänge mit Grammatik & Café · ca. 6 Min · Thema des Tages"),
+    COMPLET("Complet", "5 Gänge mit Grammatik · Spiele wechseln täglich · Thema des Tages"),
     A_LA_CARTE("À la carte", "4 Gänge · du wählst das Thema")
 }
 
@@ -107,6 +110,7 @@ data class MenuDuJourState(
     val menuType: MenuType = MenuType.A_LA_CARTE,
     val availableCategories: List<String> = emptyList(),
     val dailyCategory: String = "",      // theme of the day for Express and Complet
+    val completPreview: String = "",     // today's Complet line-up, e.g. "Trouvez! · Préposez! · …"
     val category: String = "",
     val courses: List<Course> = emptyList(),
     val focusCount: Int = 0,             // struggled/pinned words worked into the menu
@@ -179,7 +183,13 @@ class MenuDuJourViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            _uiState.update { it.copy(dailyCategory = dailyCategory(categories)) }
+            val chef = Course("Plat du chef", "", dailyGrammarGame())
+            _uiState.update {
+                it.copy(
+                    dailyCategory = dailyCategory(categories),
+                    completPreview = completCourses(chef).joinToString(" · ") { c -> c.game.gameName }
+                )
+            }
         }
     }
 
@@ -211,7 +221,7 @@ class MenuDuJourViewModel @Inject constructor(
                 val goal = if (focus.isEmpty()) "Grammatik: deine eigene Auswahl"
                            else "Fokus: " + focus.joinToString(", ") { ConjuguezViewModel.TENSE_DISPLAY[it] ?: it }
                 val chef = Course("Plat du chef", goal, grammar, focus)
-                listOf(ENTREE, PLAT, chef, FROMAGE, DESSERT, CAFE)
+                completCourses(chef)
             }
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
         }
@@ -348,6 +358,16 @@ class MenuDuJourViewModel @Inject constructor(
             words.count { it.gender != null && it.pos in listOf("nm", "nf") } >= MIN_CATEGORY_NOUNS &&
                 words.count { it.rank in sentenceRanks } >= MIN_CATEGORY_SENTENCES
         }
+    }
+
+    /**
+     * Always 5 courses: Entrée and the grammar course are fixed, the other three come from
+     * Complétez / Classez / Écrivez / Nombrez — a different one is left out each day.
+     */
+    private fun completCourses(chef: Course): List<Course> {
+        val rotation = CourseGame.COMPLET_ROTATION
+        val dropped = rotation[(LocalDate.now().toEpochDay() % rotation.size).toInt()]
+        return listOf(ENTREE, PLAT, chef, FROMAGE, DESSERT, CAFE).filter { it.game != dropped }
     }
 
     private fun startOfDay(date: LocalDate): Long =

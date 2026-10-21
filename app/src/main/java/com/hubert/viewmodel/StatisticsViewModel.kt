@@ -30,6 +30,7 @@ enum class GameType(val key: String, val displayName: String) {
     PREPOSITION("preposition", "Pr\u00E9posez!"),
     RELATIVE_PRONOUN("relative_pronoun", "Relativisez!"),
     NUMBERS("numbers", "Nombrez!"),
+    AGREEMENT("agreement", "Accordez!"),
     PARLEZ("parlez", "Parlez!");
 
     companion object {

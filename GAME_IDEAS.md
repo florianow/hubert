@@ -11,7 +11,7 @@ into the guided learning mode.
 | Priority | Item | Why |
 |---|---|---|
 | ✅ | ~~**Nombrez!** (#11)~~ | Implemented 2026-10-21 (numbers, times, dates, days & months) |
-| 2 | **Accordez!** (#8) | Low effort, data already present; adds a 4th grammar game to the Plat du chef rotation |
+| ✅ | ~~**Accordez!** (#8)~~ | Implemented 2026-10-21 — 4th grammar game in the Plat du chef rotation |
 | 3 | **Expand existing data** | Relativisez! has only 43 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
 | 4 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value for German speakers; generate a dataset instead of filtering the noisy corpus |
 | later | Démontrez! + Possédez! (#2, #3) | Merge into one "Pronoms!" game — each is small on its own |
@@ -77,7 +77,7 @@ ideas below would require re-blanking or entirely new datasets.
 | 5 | Partagez! | Partially sufficient (needs disambiguation) | Medium |
 | 6 | ~~Subjonctiez!~~ → ✅ Conjuguez! enhancement | Partially implemented — fallback active, data generation pending (see scripts/MOOD_TASK_INSTRUCTIONS.md) | — |
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
-| 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
+| 8 | ~~Accordez!~~ | ✅ **Implemented** — generated from curated sentence patterns | — |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
 | 10 | Déjouez! | Partially — "Falsche Freunde" category (96 words) already playable as theme; lookalike data missing | Medium |
 | 11 | ~~Nombrez!~~ | ✅ **Implemented** — generated in code, no data file | — |
@@ -308,7 +308,14 @@ but significant data transformation required.
 
 ---
 
-## 8. Accordez! — Accords du participe passé
+## 8. ~~Accordez!~~ — Accords du participe passé — ✅ Implemented
+
+> **Status (2026-10-21):** Implemented with generated questions (`AccordezQuestionGenerator`,
+> unit-tested) instead of corpus sentences: the PC sentences are stored 6× (once per person),
+> barely show visible agreement and don't mark preceding objects, so detection would be
+> unreliable. Rules covered: être (incl. mixed groups → masc. plural, polite vous singular),
+> avoir with the object after vs. before (que / l' / les), reflexive verbs (se = direct object,
+> object after, se = indirect object). The feasibility notes below are kept for reference.
 
 Choose the correctly agreed past participle form.
 

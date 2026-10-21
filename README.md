@@ -35,6 +35,7 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 ## Features
 
 - **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
+- **Accordez!** — Past participle agreement (être, avoir + preceding object, reflexive verbs), with the rule explained after each answer
 - **Nombrez!** — Numbers, clock times, dates, days and months (hear → type, plus multiple choice)
 - **Menu du jour** — Guided multi-game session (Express, Complet, À la carte) around one theme, graded on the French /20 scale
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
@@ -63,12 +64,26 @@ A guided learning session that chains several games into one "menu", built aroun
 | Menu | Courses | Theme |
 |---|---|---|
 | **Express** | Entrée (Trouvez!) · Fromage (Classez!) · Dessert (Écrivez!) · Café (Nombrez!) | picked by Hubert |
-| **Complet** | Entrée (Trouvez!) · Plat principal (Complétez!) · Plat du chef (grammar) · Fromage (Classez!) · Dessert (Écrivez!) · Café (Nombrez!) | picked by Hubert |
+| **Complet** | Always 5 courses: Entrée (Trouvez!) · Plat du chef (grammar) · 3 of Plat principal (Complétez!) / Fromage (Classez!) / Dessert (Écrivez!) / Café (Nombrez!) — a different one is left out each day | picked by Hubert |
 | **À la carte** | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) | you choose |
 
-Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s, Nombrez! 45s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez! or Relativisez!, whichever you have never played or has your lowest accuracy — using your last tense/preposition selection. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
+Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s, Nombrez! 45s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez!, Relativisez! or Accordez! — never the same as the previous Complet, otherwise the one with the lowest accuracy over the last 4 weeks; inside the game it focuses on your most-missed tenses/prepositions/pronouns. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
 
 **L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
+
+### Accordez!
+
+Past participle agreement — pick the correctly agreed form (écrit / écrite / écrits / écrites). After each answer the full sentence and the rule are shown. Questions are generated from curated patterns (`AccordezQuestionGenerator`, unit-tested):
+
+| Rule | Example |
+|---|---|
+| être → agrees with the subject | Marie est **partie** · Julie et Marc sont **arrivés** · Madame, vous êtes **venue** |
+| avoir, object after → no agreement | Nous avons **écrit** la lettre. |
+| avoir, object before (que / l' / les) | Voici la lettre que j'ai **écrite**. · Les photos ? Elle les a **prises**. |
+| reflexive, se = direct object | Elle s'est **levée** tôt. |
+| reflexive, object after / se = indirect | Elle s'est **lavé** les mains. · Ils se sont **parlé**. |
+
+- **Scoring**: 150 pts + streak bonus · **Timer**: 60s, +3s correct, -5s wrong
 
 ### Nombrez!
 
