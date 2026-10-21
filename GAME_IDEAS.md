@@ -10,7 +10,7 @@ into the guided learning mode.
 
 | Priority | Item | Why |
 |---|---|---|
-| 1 | **Nombrez!** (#11) | Low effort, fully generatable data, numbers (quatre-vingt-dix-sept) are a real hurdle and no other game covers them |
+| ✅ | ~~**Nombrez!** (#11)~~ | Implemented 2026-10-21 (numbers, times, dates, days & months) |
 | 2 | **Accordez!** (#8) | Low effort, data already present; adds a 4th grammar game to the Plat du chef rotation |
 | 3 | **Expand existing data** | Relativisez! has only 43 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
 | 4 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value for German speakers; generate a dataset instead of filtering the noisy corpus |
@@ -80,7 +80,7 @@ ideas below would require re-blanking or entirely new datasets.
 | 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
 | 10 | Déjouez! | Partially — "Falsche Freunde" category (96 words) already playable as theme; lookalike data missing | Medium |
-| 11 | **Nombrez!** | **Needs new dataset (fully generatable, no corpus needed)** | **Low** |
+| 11 | ~~Nombrez!~~ | ✅ **Implemented** — generated in code, no data file | — |
 
 ---
 
@@ -413,7 +413,13 @@ provides the French side but contains no false-friend metadata. Entirely separat
 
 ---
 
-## 11. Nombrez! — Nombres, dates et calendrier
+## 11. ~~Nombrez!~~ — Nombres, dates et calendrier — ✅ Implemented
+
+> **Status (2026-10-21):** Implemented without a data file — `utils/FrenchNumbers.kt` spells
+> numbers, dates and times (unit-tested), `NombrezQuestionGenerator` builds the questions.
+> Topics: numbers to 100 (half from 70–99), to 1000, big numbers & years (hear → type),
+> colloquial and 24h clock times, dates (hear → pick), days & months (translate, what comes
+> next). Not built (yet): calendar-grid tap, number bingo.
 
 A dedicated number and date training mode. Unlike all other games in Hubert, **Nombrez! does not
 use sentences** — it uses purpose-built interactions tuned to how numbers and dates are actually

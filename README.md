@@ -35,6 +35,7 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 ## Features
 
 - **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
+- **Nombrez!** — Numbers, clock times, dates, days and months (hear → type, plus multiple choice)
 - **Menu du jour** — Guided multi-game session (Express, Complet, À la carte) around one theme, graded on the French /20 scale
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
@@ -68,6 +69,23 @@ A guided learning session that chains several games into one "menu", built aroun
 Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez! or Relativisez!, whichever you have never played or has your lowest accuracy — using your last tense/preposition selection. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
 
 **L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
+
+### Nombrez!
+
+Numbers, clock times and dates — the classic hurdle for German speakers (soixante-dix-sept, quatre-vingt-dix-sept, trois heures moins le quart). Pick topics on the selection screen; questions are mixed:
+
+| Topic | Question |
+|---|---|
+| Zahlen bis 100 | Hear a number, type the digits — half of the questions from 70–99 |
+| Zahlen bis 1000 / Große Zahlen & Jahre | Hear → type (1990, 250 300, …) |
+| Uhrzeit | Read « trois heures moins le quart » → pick 2:45; hear « quatorze heures trente-sept » → pick 14:37 |
+| Datum | Hear « le quinze août » → pick 15.08. |
+| Tage & Monate | Translate, or pick the day/month that comes next |
+
+All questions are generated in code (`utils/FrenchNumbers.kt`, unit-tested) — no data file. Distractors are built from typical confusions (hour ±1, et ↔ moins, treize/quatorze/quinze/seize).
+
+- **Scoring**: 100 pts (choice) / 150 pts (typed) + streak bonus
+- **Timer**: 60s, +3s correct, -5s wrong
 
 ### 1. Trouvez!
 

@@ -18,6 +18,7 @@ import com.hubert.ui.theme.HubertTheme
 import com.hubert.viewmodel.ConjuguezViewModel
 import com.hubert.viewmodel.CourseGame
 import com.hubert.viewmodel.MenuDuJourViewModel
+import com.hubert.viewmodel.NombrezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.TrouvezViewModel
 import com.hubert.viewmodel.CompletezViewModel
@@ -56,6 +57,7 @@ enum class Screen {
     PRONONCEZ,
     PREPOSEZ,
     RELATIVISEZ,
+    NOMBREZ,
     PARLEZ,
     MENU_DU_JOUR,
     STATISTICS,
@@ -72,6 +74,7 @@ fun HubertApp() {
     val pronunciationVm: PrononcezViewModel = hiltViewModel()
     val prepositionVm: PreposezViewModel = hiltViewModel()
     val relativisezVm: RelativisezViewModel = hiltViewModel()
+    val nombrezVm: NombrezViewModel = hiltViewModel()
     val parlezVm: ParlezViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
@@ -86,6 +89,7 @@ fun HubertApp() {
     val pronunciationState by pronunciationVm.uiState.collectAsState()
     val prepositionState by prepositionVm.uiState.collectAsState()
     val relativisezState by relativisezVm.uiState.collectAsState()
+    val nombrezState by nombrezVm.uiState.collectAsState()
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
     val settingsState by settingsVm.settings.collectAsState()
@@ -157,6 +161,12 @@ fun HubertApp() {
     LaunchedEffect(relativisezState.isSelection, relativisezState.isPlaying, relativisezState.isGameOver, relativisezState.countdown) {
         if (relativisezState.isSelection || relativisezState.countdown != null || relativisezState.isPlaying || relativisezState.isGameOver) {
             currentScreen = Screen.RELATIVISEZ
+        }
+    }
+
+    LaunchedEffect(nombrezState.isSelection, nombrezState.isPlaying, nombrezState.isGameOver, nombrezState.countdown) {
+        if (nombrezState.isSelection || nombrezState.countdown != null || nombrezState.isPlaying || nombrezState.isGameOver) {
+            currentScreen = Screen.NOMBREZ
         }
     }
 
@@ -746,6 +756,64 @@ fun HubertApp() {
             }
         }
 
+        Screen.NOMBREZ -> {
+            when {
+                nombrezState.isSelection -> {
+                    NombrezSelectionScreen(
+                        state = nombrezState,
+                        onToggle = { nombrezVm.toggleTopic(it) },
+                        onStart = { nombrezVm.startGame() },
+                        onBack = {
+                            nombrezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                nombrezState.countdown != null -> {
+                    CountdownScreen(
+                        count = nombrezState.countdown!!,
+                        onBack = {
+                            nombrezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                nombrezState.isPlaying -> {
+                    NombrezScreen(
+                        state = nombrezState,
+                        onTypedTextChanged = { nombrezVm.onTypedTextChanged(it) },
+                        onSubmitTyped = { nombrezVm.submitTyped() },
+                        onChoice = { nombrezVm.answerChoice(it) },
+                        onReplay = { nombrezVm.replayAudio() },
+                        onQuit = {
+                            nombrezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                nombrezState.isGameOver && !menuState.isRunning -> {
+                    GameOverScreen(
+                        title = "TIME'S UP!",
+                        score = nombrezState.score,
+                        isNewHighScore = nombrezState.isNewHighScore,
+                        totalCorrect = nombrezState.totalCorrect,
+                        totalWrong = nombrezState.totalWrong,
+                        bestStreak = nombrezState.bestStreak,
+                        highScore = nombrezState.highScore,
+                        durationMs = nombrezState.durationMs,
+                        answerHistory = nombrezState.answerHistory,
+                        onPlayAgain = { nombrezVm.startGame() },
+                        onBackToMenu = {
+                            nombrezVm.resetToMenu()
+                            currentScreen = Screen.MENU
+                        },
+                        onChooseCategory = { nombrezVm.showSelection() },
+                        onChooseCategoryLabel = "🔢 Themen"
+                    )
+                }
+            }
+        }
+
         Screen.PARLEZ -> {
             // Redirect to global settings when API key is missing
             if (parlezState.showSettings) {
@@ -831,6 +899,7 @@ fun HubertApp() {
                 pronunciationHighScore = pronunciationState.highScore,
                 prepositionHighScore = prepositionState.highScore,
                 relativisezHighScore = relativisezState.highScore,
+                nombrezHighScore = nombrezState.highScore,
                 parlezHighScore = parlezState.highScore,
                 onMenuDuJour = {
                     menuVm.showMenuSelection()
@@ -844,6 +913,7 @@ fun HubertApp() {
                 onStartPronunciation = { pronunciationVm.onGameSelected() },
                 onStartPreposition = { prepositionVm.showSelection() },
                 onStartRelativisez = { relativisezVm.showSelection() },
+                onStartNombrez = { nombrezVm.showSelection() },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {

@@ -38,6 +38,7 @@ fun MenuScreen(
     pronunciationHighScore: Int,
     prepositionHighScore: Int,
     relativisezHighScore: Int,
+    nombrezHighScore: Int,
     parlezHighScore: Int,
     onMenuDuJour: () -> Unit,
     onStartMatching: () -> Unit,
@@ -48,6 +49,7 @@ fun MenuScreen(
     onStartPronunciation: () -> Unit,
     onStartPreposition: () -> Unit,
     onStartRelativisez: () -> Unit,
+    onStartNombrez: () -> Unit,
     onStartParlez: () -> Unit,
     onShowSettings: () -> Unit,
     onShowStatistics: () -> Unit
@@ -246,7 +248,14 @@ fun MenuScreen(
                     onClick = onStartRelativisez,
                     modifier = Modifier.weight(1f).fillMaxHeight()
                 )
-                Spacer(modifier = Modifier.weight(1f))
+                GridGameCard(
+                    title = "Nombrez!",
+                    description = "Zahlen, Uhrzeit & Datum",
+                    accentColor = NombrezColor,
+                    highScore = nombrezHighScore,
+                    onClick = onStartNombrez,
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
             }
         }
     }
