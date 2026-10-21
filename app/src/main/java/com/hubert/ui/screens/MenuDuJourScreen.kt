@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.hubert.ui.theme.*
 import com.hubert.viewmodel.Course
 import com.hubert.viewmodel.GrammarMistake
+import com.hubert.viewmodel.MenuPart
 import com.hubert.viewmodel.MenuType
 import com.hubert.viewmodel.CourseResult
 import com.hubert.viewmodel.MenuDuJourState
@@ -98,11 +99,6 @@ fun MenuDuJourCourseScreen(
                 val line = when {
                     state.menuType == MenuType.A_LA_CARTE && state.focusCount > 0 ->
                         "+ ${state.focusCount} Wörter, die dir zuletzt schwerfielen"
-                    state.menuType != MenuType.A_LA_CARTE ->
-                        listOfNotNull(
-                            state.discoveryCards.size.takeIf { it > 0 }?.let { "Amuse-bouche : $it neue Wörter" },
-                            state.dueCount.takeIf { it > 0 }?.let { "$it Wiederholungen fällig" }
-                        ).joinToString(" · ").ifEmpty { null }
                     else -> null
                 }
                 if (line != null) {
@@ -121,6 +117,23 @@ fun MenuDuJourCourseScreen(
                     .padding(vertical = 8.dp)
             ) {
                 state.courses.forEachIndexed { index, course ->
+                    val previous = state.courses.getOrNull(index - 1)
+                    val hasParts = state.courses.any { it.part == MenuPart.LEARNING }
+                    if (hasParts && (previous == null || previous.part != course.part)) {
+                        PartHeader(
+                            title = if (course.part == MenuPart.LEARNING) "Teil 1 · Deine Wörter"
+                                    else "Teil 2 · Thème : ${state.category}",
+                            subtitle = if (course.part == MenuPart.LEARNING) {
+                                listOfNotNull(
+                                    state.discoveryCards.size.takeIf { it > 0 }?.let { "$it neue" },
+                                    state.dueCount.takeIf { it > 0 }?.let { "$it fällig" }
+                                ).joinToString(" · ").ifEmpty { "Wiederholen, was du schon gelernt hast" }
+                            } else if (state.courses.any { it.part == MenuPart.THEME && !it.game.isVocab }) {
+                                "Wörter zum Thema, dazu Grammatik & Zahlen"
+                            } else "Nur Wörter zum Thema",
+                            first = previous == null
+                        )
+                    }
                     CourseRow(
                         course = course,
                         result = state.results.getOrNull(index),
@@ -153,6 +166,14 @@ fun MenuDuJourCourseScreen(
                 fontSize = 16.sp
             )
         }
+    }
+}
+
+@Composable
+private fun PartHeader(title: String, subtitle: String, first: Boolean) {
+    Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = if (first) 4.dp else 14.dp, bottom = 2.dp)) {
+        Text(text = title, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = MenuWine, letterSpacing = 0.5.sp)
+        Text(text = subtitle, fontSize = 11.sp, color = MenuWine.copy(alpha = 0.65f))
     }
 }
 

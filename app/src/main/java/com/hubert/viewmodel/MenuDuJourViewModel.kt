@@ -23,13 +23,13 @@ import kotlin.random.Random
 
 /**
  * Settings a game uses when it is played as one course of a Menu du jour:
- * shorter round, words restricted to [category], [focusRanks] asked first.
+ * shorter round, words restricted to [category] (null = no theme), [focusRanks] asked first.
  * Grammar games ignore category/focus words; [grammarFocus] (tense keys, prepositions or
  * pronouns) replaces the player's own selection for that round when not empty.
  */
 data class StageConfig(
     val timeMs: Long,
-    val category: String,
+    val category: String?,
     val focusRanks: List<Int>,
     val grammarFocus: Set<String> = emptySet()
 )
@@ -59,11 +59,15 @@ enum class CourseGame(
     }
 }
 
+/** Express/Complet are split: first the player's own words, then the theme of the day. */
+enum class MenuPart { LEARNING, THEME }
+
 data class Course(
     val label: String,
     val goal: String,
     val game: CourseGame,
-    val grammarFocus: Set<String> = emptySet()
+    val grammarFocus: Set<String> = emptySet(),
+    val part: MenuPart = MenuPart.THEME
 )
 
 private val ENTREE = Course("Entrée", "Aufwärmen: Wörter wiedererkennen", CourseGame.TROUVEZ)
@@ -175,6 +179,9 @@ class MenuDuJourViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MenuDuJourState())
     val uiState: StateFlow<MenuDuJourState> = _uiState.asStateFlow()
 
+    // Express/Complet part 1: new words, due reviews, recent mistakes, then learned words
+    private var learningRanks: List<Int> = emptyList()
+    // À la carte: recent mistakes worked into the theme
     private var focusRanks: List<Int> = emptyList()
     private val discoveryKnown = mutableSetOf<Int>()
     private var startTime = 0L
@@ -257,9 +264,12 @@ class MenuDuJourViewModel @Inject constructor(
                 DiscoveryCard(word, example?.fr, example?.de)
             }
             due = learningRepository.dueRanks(MAX_DUE_PER_MENU)
-            focusRanks = (learningRepository.introducedToday() + newRanks + due + struggled)
+            // Part 1 must never run dry: learned words fill up after new/due/mistakes
+            learningRanks = (learningRepository.introducedToday() + newRanks + due + struggled +
+                learningRepository.practiceRanks(MAX_MENU_FOCUS))
                 .distinct()
                 .take(MAX_MENU_FOCUS)
+            focusRanks = emptyList()
         }
         val courses = when (type) {
             MenuType.EXPRESS -> listOf(ENTREE, FROMAGE, DESSERT)
@@ -272,7 +282,7 @@ class MenuDuJourViewModel @Inject constructor(
                 completCourses(chef)
             }
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
-        }
+        }.let { withParts(type, it) }
         _uiState.update {
             it.copy(
                 isChoosingType = false,
@@ -317,7 +327,7 @@ class MenuDuJourViewModel @Inject constructor(
         }
         val ranks = state.discoveryCards.map { it.word.rank }
         val known = discoveryKnown.toSet()
-        focusRanks = focusRanks - known
+        learningRanks = learningRanks - known
         viewModelScope.launch { learningRepository.introduce(ranks, known) }
         _uiState.update { it.copy(isDiscovering = false, discoveryDone = true) }
         return true
@@ -328,16 +338,25 @@ class MenuDuJourViewModel @Inject constructor(
         val state = _uiState.value
         val course = state.nextCourse ?: return null
         if (state.currentIndex == 0) startTime = System.currentTimeMillis()
-        // Later courses repeat what went wrong earlier in this menu, then the long-term focus words
-        val missedSoFar = state.results.flatMap { r -> r.answers.filter { !it.isCorrect && it.rank >= 0 }.map { it.rank } }
-        val focus = (missedSoFar + focusRanks).distinct()
+        // Mistakes come back in later courses of the same part only, so the theme part stays thematic
+        // (part-1 mistakes are rescheduled for tomorrow by the spaced-repetition state anyway)
+        val missedInPart = state.results
+            .filter { it.course.part == course.part }
+            .flatMap { r -> r.answers.filter { !it.isCorrect && it.rank >= 0 }.map { it.rank } }
         _uiState.update { it.copy(isIntro = false, isBetweenCourses = false) }
-        return StageConfig(
-            timeMs = course.game.timeMs,
-            category = state.category,
-            focusRanks = focus,
-            grammarFocus = course.grammarFocus
-        )
+        return when (course.part) {
+            MenuPart.LEARNING -> StageConfig(
+                timeMs = course.game.timeMs,
+                category = null,
+                focusRanks = (missedInPart + learningRanks).distinct()
+            )
+            MenuPart.THEME -> StageConfig(
+                timeMs = course.game.timeMs,
+                category = state.category,
+                focusRanks = (missedInPart + focusRanks).distinct(),
+                grammarFocus = course.grammarFocus
+            )
+        }
     }
 
     /** Called by the navigation layer when the running game reports game over. */
@@ -368,6 +387,7 @@ class MenuDuJourViewModel @Inject constructor(
     /** Abort or leave the menu (also after L'addition). */
     fun reset() {
         focusRanks = emptyList()
+        learningRanks = emptyList()
         _uiState.update { MenuDuJourState(pinnedRanks = it.pinnedRanks, overview = it.overview) }
     }
 
@@ -461,6 +481,26 @@ class MenuDuJourViewModel @Inject constructor(
         val rotation = CourseGame.COMPLET_ROTATION
         val dropped = rotation[(LocalDate.now().toEpochDay() % rotation.size).toInt()]
         return listOf(ENTREE, PLAT, chef, FROMAGE, DESSERT, CAFE).filter { it.game != dropped }
+    }
+
+    /**
+     * Express: part 1 is the Entrée. Complet: the Entrée plus the next vocab course. All other
+     * courses form the theme part, in their usual order. À la carte has no part 1.
+     */
+    private fun withParts(type: MenuType, courses: List<Course>): List<Course> {
+        if (type == MenuType.A_LA_CARTE) return courses
+        val entree = courses.first()
+        val second = if (type == MenuType.COMPLET) courses.drop(1).firstOrNull { it.game.isVocab } else null
+        val learning = listOfNotNull(entree, second).map { it.copy(part = MenuPart.LEARNING, goal = learningGoal(it.game)) }
+        return learning + courses.filter { it != entree && it != second }
+    }
+
+    private fun learningGoal(game: CourseGame): String = when (game) {
+        CourseGame.TROUVEZ -> "Neue & fällige Wörter wiedererkennen"
+        CourseGame.COMPLETEZ -> "Deine Wörter im Satz anwenden"
+        CourseGame.CLASSEZ -> "Genus deiner Wörter: le ou la?"
+        CourseGame.ECRIVEZ -> "Deine Wörter selbst schreiben"
+        else -> game.gameName
     }
 
     private fun startOfDay(date: LocalDate): Long =
