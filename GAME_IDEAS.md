@@ -2,20 +2,50 @@
 
 Future game mode ideas for the French-German vocabulary learning app.
 
-## Priorities (as of 2026-10-21)
+## Status & priorities (as of 2026-10-21)
 
 Every new grammar game automatically becomes a candidate for the **Plat du chef** course in the
-*Menu du jour* (Complet), every new vocab game can replace a course — so new games plug straight
-into the guided learning mode.
+*Menu du jour* (Complet), every new vocab game can join the daily course rotation — so new games
+plug straight into the guided learning mode.
+
+### Done
+
+| Item | Notes |
+|---|---|
+| ✅ Nombrez! (#11) | Numbers, clock times, dates, days & months — generated in code, unit-tested |
+| ✅ Accordez! (#8) | Past participle agreement — generated from curated patterns, in the Plat du chef rotation |
+| ✅ Relativisez! data (#1) | 43 → 298 questions, every form ≥ 13 |
+| ✅ Préposez! (#4) | 1,397 questions |
+| ✅ Adaptive level (mostly) | Superseded by Menu du jour (weak words, weakest grammar game & tenses) |
+
+### Next
 
 | Priority | Item | Why |
 |---|---|---|
-| ✅ | ~~**Nombrez!** (#11)~~ | Implemented 2026-10-21 (numbers, times, dates, days & months) |
-| ✅ | ~~**Accordez!** (#8)~~ | Implemented 2026-10-21 — 4th grammar game in the Plat du chef rotation |
-| 3 | **Expand existing data** | ✅ Relativisez! expanded to 298 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
-| 4 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value for German speakers; generate a dataset instead of filtering the noisy corpus |
+| 1 | **Subjonctif data** (#6) | Only 10 nous / 5 vous sentences; prompts + merge script are ready, results never generated |
+| 2 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value; write curated questions instead of filtering the noisy corpus |
+| 3 | **Négativez!** (#9) | Common patterns (pas, plus, jamais, rien, que, aucun) — good 5th Plat du chef candidate |
 | later | Démontrez! + Possédez! (#2, #3) | Merge into one "Pronoms!" game — each is small on its own |
-| later | Négativez! (#9), Remplacez! (#7) | Solid but less urgent; Remplacez! needs the most UI work (pronoun order) |
+| later | Déjouez! (#10) | Needs the German lookalike per false friend; the 96 words already play as a theme |
+| later | Remplacez! (#7) | Most UI work (pronoun order) |
+
+### Lesson learned: curated or generated beats corpus filtering
+
+Nombrez!, Accordez! and the Relativisez! expansion all worked best with **questions written or
+generated for the rule being taught** rather than re-blanking `sentences.json` /
+`conjugations.json`: the corpus sentences are duplicated per person, rarely show the grammar
+point and can't tell e.g. a partitive *du* from *de + le*. Prefer the same approach for
+Partagez!, Négativez! and the pronoun games — the feasibility counts below mainly show where
+the corpus is *not* enough.
+
+### Follow-ups from the Menu du jour work
+
+- **Accordez! focus in the Plat du chef:** the game doesn't store which rule a question tested,
+  so the menu can't target the weakest rule yet (Conjuguez/Préposez/Relativisez can).
+- **Relativisez!:** auxquelles, desquelles and « à laquelle » are not in the game's pronoun list yet.
+- **Nombrez!:** calendar-grid tap and number bingo from the original idea are not built.
+- **Parlez!:** pre-select the CEFR level from statistics instead of always A1.
+- **Statistics screen:** planned overhaul (weekly report entry point, new games).
 
 ---
 
@@ -60,7 +90,7 @@ Data files in `app/src/main/assets/`:
 | `conjugations.json` | 1,182 verbs with 8-tense conjugation tables + 15,173 matched sentences | 3.16 MB |
 | `categories.json` | Thematic category → word rank mappings (incl. "Falsche Freunde", 96 words) | 12 KB |
 | `prepositions.json` | 1,397 Préposez! questions | — |
-| `relative_pronouns.json` | 43 Relativisez! questions | — |
+| `relative_pronouns.json` | 298 Relativisez! questions (`scripts/add_relative_pronouns.py`) | — |
 | `parlez_topics.json` | 99 Parlez! conversation topics | — |
 
 All sentence blanks target the **vocabulary word**, not grammar elements. Most game
