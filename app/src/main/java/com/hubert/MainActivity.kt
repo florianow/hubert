@@ -296,6 +296,14 @@ fun HubertApp() {
                         onBack = { menuVm.backToMenuTypes() }
                     )
                 }
+                menuState.isDiscovering -> {
+                    MenuDuJourDiscoveryScreen(
+                        state = menuState,
+                        onAnswer = { known -> if (menuVm.discoveryAnswer(known)) startNextCourse() },
+                        onSpeak = { menuVm.speakCurrentCard() },
+                        onBack = { currentScreen = Screen.MENU }
+                    )
+                }
                 menuState.isFinished -> {
                     MenuDuJourAdditionScreen(
                         state = menuState,
@@ -310,7 +318,9 @@ fun HubertApp() {
                 menuState.isIntro || menuState.isBetweenCourses -> {
                     MenuDuJourCourseScreen(
                         state = menuState,
-                        onContinue = startNextCourse,
+                        onContinue = {
+                            if (menuVm.uiState.value.needsDiscovery) menuVm.startDiscovery() else startNextCourse()
+                        },
                         onBack = { currentScreen = Screen.MENU }
                     )
                 }

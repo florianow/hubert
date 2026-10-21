@@ -6,9 +6,11 @@ import com.hubert.data.local.MenuSessionDao
 import com.hubert.data.local.WordAttemptDao
 import com.hubert.data.model.MenuSession
 import com.hubert.data.model.VocabWord
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
+import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -91,6 +93,13 @@ data class ReviewItem(
     val courses: List<String>
 )
 
+/** A new word presented in the Amuse-bouche before the first course. */
+data class DiscoveryCard(
+    val word: VocabWord,
+    val exampleFr: String?,
+    val exampleDe: String?
+)
+
 /** A wrong answer from a non-vocab course (grammar, numbers) — no vocab word to pin. */
 data class GrammarMistake(
     val gameName: String,
@@ -114,6 +123,13 @@ data class MenuDuJourState(
     val category: String = "",
     val courses: List<Course> = emptyList(),
     val focusCount: Int = 0,             // struggled/pinned words worked into the menu
+    val dueCount: Int = 0,               // reviews due today (Express/Complet)
+
+    // Amuse-bouche: new words of the day, presented before the first course
+    val discoveryCards: List<DiscoveryCard> = emptyList(),
+    val discoveryIndex: Int = 0,
+    val isDiscovering: Boolean = false,
+    val discoveryDone: Boolean = false,
     val currentIndex: Int = 0,           // index into [courses] of the next/current course
     val results: List<CourseResult> = emptyList(),
 
@@ -127,6 +143,8 @@ data class MenuDuJourState(
     val menusPlayed: Int = 0
 ) {
     val nextCourse: Course? get() = courses.getOrNull(currentIndex)
+    val needsDiscovery: Boolean get() = discoveryCards.isNotEmpty() && !discoveryDone
+    val currentCard: DiscoveryCard? get() = discoveryCards.getOrNull(discoveryIndex)
     val grade: Double get() = (overallScore / 5.0 * 2).roundToInt() / 2.0   // /20, in half points
 }
 
@@ -145,13 +163,16 @@ class MenuDuJourViewModel @Inject constructor(
     private val statisticsRepository: StatisticsRepository,
     private val pinnedWordsRepository: PinnedWordsRepository,
     private val menuSessionDao: MenuSessionDao,
-    private val wordAttemptDao: WordAttemptDao
+    private val wordAttemptDao: WordAttemptDao,
+    private val learningRepository: LearningRepository,
+    private val frenchTts: FrenchTts
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuDuJourState())
     val uiState: StateFlow<MenuDuJourState> = _uiState.asStateFlow()
 
     private var focusRanks: List<Int> = emptyList()
+    private val discoveryKnown = mutableSetOf<Int>()
     private var startTime = 0L
 
     companion object {
@@ -160,6 +181,8 @@ class MenuDuJourViewModel @Inject constructor(
         const val MAX_FOCUS_WORDS = 8
         const val GRAMMAR_WINDOW_DAYS = 28L
         const val MIN_FOCUS_ATTEMPTS = 4
+        const val MAX_DUE_PER_MENU = 30
+        const val MAX_MENU_FOCUS = 45
     }
 
     init {
@@ -212,7 +235,27 @@ class MenuDuJourViewModel @Inject constructor(
     }
 
     private suspend fun buildMenu(type: MenuType, category: String) {
-        focusRanks = loadFocusRanks()
+        val struggled = loadFocusRanks()
+        discoveryKnown.clear()
+        var cards = emptyList<DiscoveryCard>()
+        var due = emptyList<Int>()
+        if (type == MenuType.A_LA_CARTE) {
+            // À la carte stays thematic: theme words plus recent mistakes
+            focusRanks = struggled
+        } else {
+            // Learning path first: new words of the day, due reviews, then recent mistakes;
+            // the theme of the day fills whatever room is left in each course
+            val newRanks = learningRepository.wordsToIntroduce()
+            cards = newRanks.mapNotNull { rank ->
+                val word = vocabRepository.getWordByRank(rank) ?: return@mapNotNull null
+                val example = vocabRepository.getRandomSentence(rank)
+                DiscoveryCard(word, example?.fr, example?.de)
+            }
+            due = learningRepository.dueRanks(MAX_DUE_PER_MENU)
+            focusRanks = (learningRepository.introducedToday() + newRanks + due + struggled)
+                .distinct()
+                .take(MAX_MENU_FOCUS)
+        }
         val courses = when (type) {
             MenuType.EXPRESS -> listOf(ENTREE, FROMAGE, DESSERT)
             MenuType.COMPLET -> {
@@ -233,9 +276,46 @@ class MenuDuJourViewModel @Inject constructor(
                 menuType = type,
                 category = category,
                 courses = courses,
-                focusCount = focusRanks.size
+                focusCount = focusRanks.size,
+                dueCount = due.size,
+                discoveryCards = cards,
+                discoveryIndex = 0,
+                isDiscovering = false,
+                discoveryDone = false
             )
         }
+    }
+
+    // ── Amuse-bouche ────────────────────────────────────────────────────
+
+    fun startDiscovery() {
+        _uiState.update { it.copy(isIntro = false, isDiscovering = true, discoveryIndex = 0) }
+        speakCurrentCard()
+    }
+
+    fun speakCurrentCard() {
+        _uiState.value.currentCard?.let { frenchTts.speak(it.word.french) }
+    }
+
+    /**
+     * Answer for the current card. Returns true when the last card is done — the caller then
+     * starts the first course. Known words are checked again in a week instead of today.
+     */
+    fun discoveryAnswer(alreadyKnown: Boolean): Boolean {
+        val state = _uiState.value
+        val card = state.currentCard ?: return true
+        if (alreadyKnown) discoveryKnown += card.word.rank
+        if (state.discoveryIndex + 1 < state.discoveryCards.size) {
+            _uiState.update { it.copy(discoveryIndex = it.discoveryIndex + 1) }
+            speakCurrentCard()
+            return false
+        }
+        val ranks = state.discoveryCards.map { it.word.rank }
+        val known = discoveryKnown.toSet()
+        focusRanks = focusRanks - known
+        viewModelScope.launch { learningRepository.introduce(ranks, known) }
+        _uiState.update { it.copy(isDiscovering = false, discoveryDone = true) }
+        return true
     }
 
     /** Config for the course that is about to be played. */

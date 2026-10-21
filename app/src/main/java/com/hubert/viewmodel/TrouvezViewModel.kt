@@ -6,6 +6,7 @@ import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
 import com.hubert.data.local.WordStreak
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
@@ -94,7 +95,8 @@ class TrouvezViewModel @Inject constructor(
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val pinnedWordsRepository: PinnedWordsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TrouvezState())
@@ -321,6 +323,15 @@ class TrouvezViewModel @Inject constructor(
             for (i in 3 downTo 1) {
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
+            }
+            if (stage == null && _uiState.value.selectedCategory == null) {
+                // Freier Modus: pinned words first, then the learning path (due and learned words)
+                val pinnedRanks = pinnedPool.map { it.rank }.toSet()
+                pinnedPool.addAll(
+                    learningRepository.practiceRanks()
+                        .filter { it !in pinnedRanks }
+                        .mapNotNull { vocabRepository.getWordByRank(it) }
+                )
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()

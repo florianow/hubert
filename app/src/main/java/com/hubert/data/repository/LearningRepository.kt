@@ -91,6 +91,63 @@ class LearningRepository @Inject constructor(
         }
     }
 
+    // ── Word selection for games and menus ──────────────────────────────
+
+    suspend fun dueRanks(limit: Int): List<Int> = progressDao.dueRanks(today(), limit)
+
+    /** Words introduced today (new words of the day). */
+    suspend fun introducedToday(): List<Int> = progressDao.introducedOn(today())
+
+    /**
+     * Next new words in frequency order, so that at most [NEW_WORDS_PER_DAY] are introduced
+     * per day. Words that already have a learning state are skipped.
+     */
+    suspend fun wordsToIntroduce(): List<Int> {
+        val remaining = NEW_WORDS_PER_DAY - progressDao.introducedOn(today()).size
+        if (remaining <= 0) return emptyList()
+        val seen = progressDao.allRanks().toSet()
+        return vocabRepository.getAllWords()
+            .asSequence()
+            .map { it.rank }
+            .filter { it !in seen }
+            .sorted()
+            .take(remaining)
+            .toList()
+    }
+
+    /**
+     * Put words on the learning path. New ones are due right away; words the player already
+     * knows ("Kenne ich schon") are checked again in a week.
+     */
+    suspend fun introduce(newRanks: List<Int>, alreadyKnown: Set<Int>) {
+        if (newRanks.isEmpty()) return
+        val today = today()
+        mutex.withLock {
+            val existing = progressDao.getByRanks(newRanks).map { it.rank }.toSet()
+            val rows = newRanks.filter { it !in existing }.map { rank ->
+                if (rank in alreadyKnown) WordProgress(
+                    rank = rank, intervalDays = 7.0, ease = SpacedRepetition.START_EASE, dueDay = today + 7,
+                    reps = 1, lapses = 0, lastReviewDay = today, introducedDay = today
+                ) else WordProgress(
+                    rank = rank, intervalDays = 0.0, ease = SpacedRepetition.START_EASE, dueDay = today,
+                    reps = 0, lapses = 0, lastReviewDay = -1, introducedDay = today
+                )
+            }
+            progressDao.upsertAll(rows)
+        }
+    }
+
+    /**
+     * Words for a free practice round: due first, then today's new words, then a few
+     * already learned ones. Only words on the learning path — nothing unseen.
+     */
+    suspend fun practiceRanks(limit: Int = 40): List<Int> {
+        val due = progressDao.dueRanks(today(), limit)
+        val fresh = introducedToday()
+        val filler = progressDao.randomNotDue(today(), limit)
+        return (due + fresh + filler).distinct().take(limit)
+    }
+
     suspend fun overview(): LearningOverview {
         val introduced = progressDao.count()
         val known = progressDao.countKnown(WordProgress.KNOWN_INTERVAL_DAYS)

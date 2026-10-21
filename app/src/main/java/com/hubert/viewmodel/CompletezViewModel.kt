@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -60,7 +61,8 @@ class CompletezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CompletezState())
@@ -121,6 +123,12 @@ class CompletezViewModel @Inject constructor(
             for (i in 3 downTo 1) {
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
+            }
+            if (stage == null) {
+                // Free play follows the learning path: due and learned words first
+                val withSentences = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
+                val practice = learningRepository.practiceRanks().filter { it in withSentences }
+                questionPool = (practice + questionPool.filter { it !in practice }).toMutableList()
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()

@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.outlined.PushPin
@@ -93,13 +94,21 @@ fun MenuDuJourCourseScreen(
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
             )
-            if (state.isIntro && state.focusCount > 0) {
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = "+ ${state.focusCount} Wörter, die dir zuletzt schwerfielen",
-                    fontSize = 12.sp,
-                    color = MenuWine.copy(alpha = 0.8f)
-                )
+            if (state.isIntro) {
+                val line = when {
+                    state.menuType == MenuType.A_LA_CARTE && state.focusCount > 0 ->
+                        "+ ${state.focusCount} Wörter, die dir zuletzt schwerfielen"
+                    state.menuType != MenuType.A_LA_CARTE ->
+                        listOfNotNull(
+                            state.discoveryCards.size.takeIf { it > 0 }?.let { "Amuse-bouche : $it neue Wörter" },
+                            state.dueCount.takeIf { it > 0 }?.let { "$it Wiederholungen fällig" }
+                        ).joinToString(" · ").ifEmpty { null }
+                    else -> null
+                }
+                if (line != null) {
+                    Spacer(Modifier.height(4.dp))
+                    Text(text = line, fontSize = 12.sp, color = MenuWine.copy(alpha = 0.8f))
+                }
             }
 
             Spacer(Modifier.height(24.dp))
@@ -569,6 +578,146 @@ fun MenuDuJourCategoryScreen(
                         .clickable { onChoose(category) }
                         .padding(horizontal = 16.dp, vertical = 14.dp)
                 )
+            }
+        }
+    }
+}
+
+/** Amuse-bouche: the new words of the day, one card at a time, before the first course. */
+@Composable
+fun MenuDuJourDiscoveryScreen(
+    state: MenuDuJourState,
+    onAnswer: (alreadyKnown: Boolean) -> Unit,
+    onSpeak: () -> Unit,
+    onBack: () -> Unit
+) {
+    val card = state.currentCard ?: return
+    val word = card.word
+    // Article for nouns; with l' or a leading h (muet or aspiré isn't in the data) show the gender instead
+    val isNoun = word.gender != null && word.pos in listOf("nm", "nf")
+    val first = word.french.first().lowercaseChar()
+    val article = when {
+        !isNoun -> null
+        first in "aeiouâéèêîôûœ" -> "l'"
+        first == 'h' -> null
+        word.gender == "m" -> "le "
+        else -> "la "
+    }
+    val genderNote = if (isNoun && (article == "l'" || first == 'h')) {
+        if (word.gender == "m") "männlich" else "weiblich"
+    } else null
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Menü abbrechen",
+                    tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = "Amuse-bouche · ${state.discoveryIndex + 1}/${state.discoveryCards.size}",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic,
+                color = MenuWine
+            )
+        }
+        LinearProgressIndicator(
+            progress = { (state.discoveryIndex + 1f) / state.discoveryCards.size },
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp).height(6.dp),
+            color = MenuWine,
+            trackColor = MenuWine.copy(alpha = 0.12f)
+        )
+
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Neues Wort · Rang ${word.rank}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = (article ?: "") + word.french,
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Black,
+                color = FrenchBlue,
+                textAlign = TextAlign.Center
+            )
+            val details = listOfNotNull(word.ipa?.let { "/$it/" }, genderNote).joinToString(" · ")
+            if (details.isNotEmpty()) {
+                Text(text = details, fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f))
+            }
+            Spacer(Modifier.height(12.dp))
+            Text(
+                text = word.german,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(Modifier.height(12.dp))
+            IconButton(
+                onClick = onSpeak,
+                modifier = Modifier
+                    .size(56.dp)
+                    .border(2.dp, FrenchBlue.copy(alpha = 0.3f), CircleShape)
+                    .background(FrenchBlue.copy(alpha = 0.1f), CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                    contentDescription = "Anhören",
+                    tint = FrenchBlue
+                )
+            }
+            if (card.exampleFr != null) {
+                Spacer(Modifier.height(20.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MenuWine.copy(alpha = 0.05f), RoundedCornerShape(12.dp))
+                        .padding(14.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = card.exampleFr, fontSize = 16.sp, textAlign = TextAlign.Center)
+                    card.exampleDe?.let {
+                        Spacer(Modifier.height(4.dp))
+                        Text(
+                            text = it,
+                            fontSize = 13.sp,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            OutlinedButton(
+                onClick = { onAnswer(true) },
+                modifier = Modifier.weight(1f).height(56.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text("Kenne ich schon", fontWeight = FontWeight.Medium)
+            }
+            Button(
+                onClick = { onAnswer(false) },
+                modifier = Modifier.weight(1f).height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MenuWine)
+            ) {
+                Text("Neu für mich →", fontWeight = FontWeight.Bold)
             }
         }
     }
