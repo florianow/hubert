@@ -80,7 +80,7 @@ A guided learning session that chains several games into one "menu", built aroun
 
 | Menu | Part 1 · your words | Part 2 · theme |
 |---|---|---|
-| **Express** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Dessert (Écrivez!) — theme picked by Hubert |
+| **Express** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Dessert (Écrivez!) · alternating daily: Fromage (Classez!) or Café (Nombrez!) — theme picked by Hubert |
 | **Complet** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Plat du chef (grammar) · 2 of Complétez! / Classez! / Écrivez! / Nombrez!, a different pair each day — 5 courses in total |
 | **À la carte** | — | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) — you choose the theme |
 

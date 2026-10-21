@@ -517,7 +517,7 @@ fun MenuDuJourTypeScreen(
 @Composable
 private fun MenuTypeCard(type: MenuType, today: String?, coursesToday: String?, onClick: () -> Unit) {
     val courses = coursesToday ?: when (type) {
-        MenuType.EXPRESS -> "Trouvez (deine Wörter) · Trouvez · Écrivez (Thema)"
+        MenuType.EXPRESS -> "Trouvez (deine Wörter) · Trouvez · Écrivez · im Wechsel Classez oder Nombrez"
         MenuType.COMPLET -> "Trouvez · Trouvez · Grammatik · 2 aus Complétez, Classez, Écrivez, Nombrez"
         MenuType.A_LA_CARTE -> "Trouvez · Complétez · Classez · Écrivez"
     }

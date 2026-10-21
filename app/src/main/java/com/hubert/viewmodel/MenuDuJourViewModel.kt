@@ -81,7 +81,7 @@ private val DESSERT = Course("Dessert", "Selbst schreiben — deine Fehler komme
 private val CAFE = Course("Café", "Zum Abschluss: Zahlen, Uhrzeit & Datum", CourseGame.NOMBREZ)
 
 enum class MenuType(val title: String, val description: String) {
-    EXPRESS("Express", "3 Gänge · ca. 2 Min · Thema des Tages"),
+    EXPRESS("Express", "4 Gänge · ca. 3 Min · Thema des Tages"),
     COMPLET("Complet", "5 Gänge mit Grammatik · Spiele wechseln täglich · Thema des Tages"),
     A_LA_CARTE("À la carte", "4 Gänge · du wählst das Thema")
 }
@@ -276,7 +276,9 @@ class MenuDuJourViewModel @Inject constructor(
             focusRanks = emptyList()
         }
         val courses = when (type) {
-            MenuType.EXPRESS -> listOf(APERITIF, ENTREE, DESSERT)
+            // 4th course alternates daily: Fromage (Classez!) before or Café (Nombrez!) after the Dessert
+            MenuType.EXPRESS -> if (LocalDate.now().toEpochDay() % 2 == 0L) listOf(APERITIF, ENTREE, FROMAGE, DESSERT)
+                                else listOf(APERITIF, ENTREE, DESSERT, CAFE)
             MenuType.COMPLET -> {
                 val grammar = dailyGrammarGame()
                 val focus = grammarFocus(grammar)
