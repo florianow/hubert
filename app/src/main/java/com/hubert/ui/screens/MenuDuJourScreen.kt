@@ -306,7 +306,7 @@ fun MenuDuJourAdditionScreen(
         }
 
         items(state.results) { result ->
-            CourseScoreBar(result, state.previousCourseScores[result.course.game.gameType])
+            CourseScoreBar(result, state.previousCourseScores[result.course.scoreKey])
             Spacer(Modifier.height(10.dp))
         }
 
@@ -517,8 +517,8 @@ fun MenuDuJourTypeScreen(
 @Composable
 private fun MenuTypeCard(type: MenuType, today: String?, coursesToday: String?, onClick: () -> Unit) {
     val courses = coursesToday ?: when (type) {
-        MenuType.EXPRESS -> "Trouvez · Classez · Écrivez"
-        MenuType.COMPLET -> "Trouvez · Grammatik · 3 aus Complétez, Classez, Écrivez, Nombrez"
+        MenuType.EXPRESS -> "Trouvez (deine Wörter) · Trouvez · Écrivez (Thema)"
+        MenuType.COMPLET -> "Trouvez · Trouvez · Grammatik · 2 aus Complétez, Classez, Écrivez, Nombrez"
         MenuType.A_LA_CARTE -> "Trouvez · Complétez · Classez · Écrivez"
     }
     Column(

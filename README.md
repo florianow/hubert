@@ -78,11 +78,13 @@ Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word
 
 A guided learning session that chains several games into one "menu", built around a thematic category plus words you recently struggled with (and pinned words). The courses follow a learning progression — recognise → apply in context → grammar → consolidate gender → produce — and words missed in earlier courses come back in later ones.
 
-| Menu | Courses | Theme |
+| Menu | Part 1 · your words | Part 2 · theme |
 |---|---|---|
-| **Express** | Entrée (Trouvez!) · Fromage (Classez!) · Dessert (Écrivez!) · Café (Nombrez!) | picked by Hubert |
-| **Complet** | Always 5 courses: Entrée (Trouvez!) · Plat du chef (grammar) · 3 of Plat principal (Complétez!) / Fromage (Classez!) / Dessert (Écrivez!) / Café (Nombrez!) — a different one is left out each day | picked by Hubert |
-| **À la carte** | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) | you choose |
+| **Express** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Dessert (Écrivez!) — theme picked by Hubert |
+| **Complet** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Plat du chef (grammar) · 2 of Complétez! / Classez! / Écrivez! / Nombrez!, a different pair each day — 5 courses in total |
+| **À la carte** | — | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) — you choose the theme |
+
+Part 1 uses only the learning path (new words of the day, due reviews, recent mistakes, then learned words); part 2 only the theme, starting with a Trouvez! round to get to know the theme words. Mistakes come back within the same part.
 
 Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s, Nombrez! 45s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez!, Relativisez! or Accordez! — never the same as the previous Complet, otherwise the one with the lowest accuracy over the last 4 weeks; inside the game it focuses on your most-missed tenses/prepositions/pronouns. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
 
