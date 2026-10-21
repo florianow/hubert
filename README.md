@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 8 game modes + smart practice picker</strong></p>
+  <p><strong>Gamified French-German vocabulary trainer with 8 game modes + guided Menu du jour</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -35,7 +35,7 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 ## Features
 
 - **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
-- **Hubert choisit!** — Smart practice picker that launches the game mode you've played the least, encouraging balanced practice
+- **Menu du jour** — Guided multi-game session (Express, Complet, À la carte) around one theme, graded on the French /20 scale
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
 - **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services, with second-chance retry
@@ -55,16 +55,26 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Game Modes
 
-### Hubert choisit!
+### Menu du jour
 
-A smart practice picker — tap to let Hubert choose which game you should play next. Hubert queries your total play time per game mode and launches the one you've practiced the least, encouraging balanced learning across all modes. A toast shows which game was selected.
+A guided learning session that chains several games into one "menu", built around a thematic category plus words you recently struggled with (and pinned words). The courses follow a learning progression — recognise → apply in context → grammar → consolidate gender → produce — and words missed in earlier courses come back in later ones.
+
+| Menu | Courses | Theme |
+|---|---|---|
+| **Express** | Entrée (Trouvez!) · Fromage (Classez!) · Dessert (Écrivez!) | picked by Hubert |
+| **Complet** | Entrée (Trouvez!) · Plat principal (Complétez!) · Plat du chef (grammar) · Fromage (Classez!) · Dessert (Écrivez!) | picked by Hubert |
+| **À la carte** | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) | you choose |
+
+Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez! or Relativisez!, whichever you have never played or has your lowest accuracy — using your last tense/preposition selection. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
+
+**L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
 
 ### 1. Trouvez!
 
 Match French words on the left with their German translations on the right. Four pairs are shown at a time — tap a French word, then tap its German match. Matched pairs are replaced immediately so the game flows continuously. IPA phonetic transcription is shown on each French card.
 
 - **Scoring**: 100 pts per match + streak bonus
-- **Timer**: 60s, +2s correct, -5s wrong
+- **Timer**: 40s, +5s for clearing the board, -2s wrong
 
 ### 2. Classez!
 
@@ -317,7 +327,7 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 8 game mode cards
+│   │   ├── MenuScreen.kt           # Main menu with Menu du jour + game mode cards
 │   │   ├── TrouvezScreen.kt        # Trouvez! game UI (with IPA on French cards)
 │   │   ├── ClassezScreen.kt        # Classez! game UI (with IPA)
 │   │   ├── CompletezScreen.kt      # Complétez! game UI

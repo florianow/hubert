@@ -185,7 +185,12 @@ def parse_card(filepath):
             ipa = ipa.strip('\\')
             card['ipa'] = ipa
         elif stripped.startswith('Definition:'):
-            card['german'] = unquote(stripped.split(':', 1)[1])
+            value = stripped.split(':', 1)[1].strip()
+            if value.startswith('|') or value.startswith('>'):
+                # YAML block scalar (e.g. "|-", "|2-"): the text is on the following indented lines
+                card['german'] = read_block_scalar(raw_lines, i + 1)
+            else:
+                card['german'] = unquote(value)
         elif stripped.startswith('Beispielsätze:'):
             card['sentences'] = parse_sentences(raw_lines, i + 1)
 
@@ -195,9 +200,31 @@ def parse_card(filepath):
     return card
 
 
+def read_block_scalar(lines, start_idx):
+    """Collect the indented lines of a YAML block scalar starting at start_idx."""
+    block = []
+    for line in lines[start_idx:]:
+        if line.strip() and not line.startswith((' ', '\t')):
+            break
+        block.append(line.strip())
+    return '\n'.join(block).strip()
+
+
 def clean_german(german):
     """Clean up German definition for game display."""
-    clean = german
+    # Gender-dependent meanings ("<span class="disamb">le: </span>Tour<br><span ...>la: </span>Turm"):
+    # clean each meaning separately and join them -> "Tour / Turm"
+    if 'class="disamb"' in german:
+        parts = [re.sub(r'<span class="disamb">.*?</span>', '', p) for p in re.split(r'<br\s*/?>', german)]
+        meanings = []
+        for part in parts:
+            if part.strip():
+                meaning = clean_german(part.strip())
+                if meaning and meaning not in meanings:
+                    meanings.append(meaning)
+        return ' / '.join(meanings)
+
+    clean = german.replace('\n', ' ')
 
     # Remove HTML tags like <br>
     clean = re.sub(r'<[^>]+>', ' ', clean)

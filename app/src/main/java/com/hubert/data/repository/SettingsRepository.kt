@@ -33,6 +33,16 @@ class SettingsRepository @Inject constructor(
         private val KEY_GEMINI_KEY   = stringPreferencesKey("gemini_api_key")
         private val KEY_AZURE_KEY    = stringPreferencesKey("azure_speech_key")
         private val KEY_AZURE_REGION = stringPreferencesKey("azure_speech_region")
+        private val KEY_REPORT_SEEN_WEEK = stringPreferencesKey("weekly_report_seen_week")
+    }
+
+    /** Monday (ISO date) of the last week whose report was shown automatically. */
+    val reportSeenWeek: Flow<String> = context.globalSettingsDataStore.data.map { prefs ->
+        prefs[KEY_REPORT_SEEN_WEEK] ?: ""
+    }
+
+    suspend fun markReportSeen(weekStart: String) {
+        context.globalSettingsDataStore.edit { prefs -> prefs[KEY_REPORT_SEEN_WEEK] = weekStart }
     }
 
     val settings: Flow<AppSettings> = context.globalSettingsDataStore.data.map { prefs ->

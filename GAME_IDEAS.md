@@ -2,9 +2,29 @@
 
 Future game mode ideas for the French-German vocabulary learning app.
 
+## Priorities (as of 2026-10-21)
+
+Every new grammar game automatically becomes a candidate for the **Plat du chef** course in the
+*Menu du jour* (Complet), every new vocab game can replace a course — so new games plug straight
+into the guided learning mode.
+
+| Priority | Item | Why |
+|---|---|---|
+| 1 | **Nombrez!** (#11) | Low effort, fully generatable data, numbers (quatre-vingt-dix-sept) are a real hurdle and no other game covers them |
+| 2 | **Accordez!** (#8) | Low effort, data already present; adds a 4th grammar game to the Plat du chef rotation |
+| 3 | **Expand existing data** | Relativisez! has only 43 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
+| 4 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value for German speakers; generate a dataset instead of filtering the noisy corpus |
+| later | Démontrez! + Possédez! (#2, #3) | Merge into one "Pronoms!" game — each is small on its own |
+| later | Négativez! (#9), Remplacez! (#7) | Solid but less urgent; Remplacez! needs the most UI work (pronoun order) |
+
 ---
 
 ## Adaptive Niveau-Erkennung (alle Spielmodi)
+
+> **Status (2026-10-21): largely superseded by Menu du jour.** The menu already targets weak
+> spots automatically (struggled words, weakest grammar game, weakest tenses/prepositions of the
+> last 4 weeks). The remaining useful part is small: Parlez! always starts on **A1** and could
+> pre-select the level from the statistics.
 
 **Idee:** Hubert erkennt automatisch das Niveau des Spielers aus seinen Statistiken und schlägt
 das passende Niveau vor — in Parlez! beim Thema wählen, generell als Spieler-Profil.
@@ -31,14 +51,17 @@ Conjuguez! High Score > 70                           →  B1/B2 freischalten
 
 ## Data Sources
 
-The app currently has 4 data files in `app/src/main/assets/`:
+Data files in `app/src/main/assets/`:
 
 | File | Content | Size |
 |------|---------|------|
 | `vocab.json` | 5,000 words (rank, french, german, ipa, pos, gender, categories) | 548 KB |
 | `sentences.json` | 9,940 example sentences keyed by word rank (fr, de, blank) | 1.45 MB |
 | `conjugations.json` | 1,182 verbs with 8-tense conjugation tables + 15,173 matched sentences | 3.16 MB |
-| `categories.json` | Thematic category → word rank mappings | 12 KB |
+| `categories.json` | Thematic category → word rank mappings (incl. "Falsche Freunde", 96 words) | 12 KB |
+| `prepositions.json` | 1,397 Préposez! questions | — |
+| `relative_pronouns.json` | 43 Relativisez! questions | — |
+| `parlez_topics.json` | 99 Parlez! conversation topics | — |
 
 All sentence blanks target the **vocabulary word**, not grammar elements. Most game
 ideas below would require re-blanking or entirely new datasets.
@@ -47,7 +70,7 @@ ideas below would require re-blanking or entirely new datasets.
 
 | # | Game | Data Status | Effort |
 |---|------|-------------|--------|
-| 1 | Relativisez! | Needs new dataset | High |
+| 1 | ~~Relativisez!~~ | ✅ **Implemented** — but only 43 questions, needs ~300 | Medium (data) |
 | 2 | Démontrez! | Partially sufficient (simple forms only) | Medium |
 | 3 | Possédez! | Needs new dataset | High |
 | 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
@@ -56,12 +79,17 @@ ideas below would require re-blanking or entirely new datasets.
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
 | 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
-| 10 | Déjouez! | Needs new dataset | High |
+| 10 | Déjouez! | Partially — "Falsche Freunde" category (96 words) already playable as theme; lookalike data missing | Medium |
 | 11 | **Nombrez!** | **Needs new dataset (fully generatable, no corpus needed)** | **Low** |
 
 ---
 
-## 1. Relativisez! — Pronoms relatifs
+## 1. ~~Relativisez!~~ — Pronoms relatifs — ✅ Implemented, dataset too small
+
+> **Status (2026-10-21):** Implemented as a game mode with `relative_pronouns.json`, but the
+> dataset has only **43 questions** (qui/que/dont 5 each, rare forms like duquel, desquels,
+> lesquelles 1 each). Players repeat the same sentences quickly. Next step: grow it to
+> ~300 questions (10–20 per form) as planned below. The analysis below is kept for reference.
 
 Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, lesquels, lesquelles, auquel, auxquels, duquel, desquels, ce qui, ce que**.
 
@@ -156,9 +184,8 @@ A purpose-built dataset of ~200+ sentences (10+ per form) is needed.
 
 ## ~~4. Préposez!~~ — ✅ Implemented
 
-Fully integrated as game mode #7. 764 sentences extracted from anki_french preposition cards
-covering 16 prepositions: à, de, en, dans, sur, avec, sans, par, pour, avant, après, entre,
-contre, sous, vers, chez. See `app/src/main/assets/prepositions.json` and
+Fully integrated as game mode #7. Originally 764 sentences extracted from anki_french preposition
+cards; now **1,397 questions** covering the preposition groups on the selection screen. See `app/src/main/assets/prepositions.json` and
 `scripts/extract_prepositions.py`.
 
 ---
@@ -213,6 +240,9 @@ when the player has both **Subjonctif** and **Présent** enabled.
   on the fly — *"Il faut que nous ___."* (subjonctif) / *"Je sais que nous ___."* (indicatif)
 
 ### Known limitation — data gap
+
+> **Status (2026-10-21): still open.** The 16 prompt files and `merge_mood_results.py` exist, but
+> no `mood_result_*.json` has been generated yet; the numbers below are unchanged.
 
 Sentence coverage in `conjugations.json` is skewed:
 
@@ -343,6 +373,11 @@ with generated sentences, or scope the game to the 6 common patterns.
 ---
 
 ## 10. Déjouez! — Faux amis (French-German false friends)
+
+> **Status (2026-10-21): partially covered.** `categories.json` contains a **"Falsche Freunde"**
+> category with 96 words, already playable as a Trouvez! theme and as an *À la carte* menu.
+> The table below (from the earlier vocab-only scan) understates what exists. What is still
+> missing for the actual game is the German lookalike + its real meaning per word.
 
 Given a French sentence with a highlighted word, choose the correct German translation (not the false friend).
 

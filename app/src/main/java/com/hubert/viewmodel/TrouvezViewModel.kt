@@ -114,10 +114,14 @@ class TrouvezViewModel @Inject constructor(
     private var gameStartTime = 0L
     // Track per-question answers for post-game review
     private val answerLog = mutableListOf<AnswerRecord>()
+    // Round length (shorter when played as a Menu du jour course)
+    private var gameTimeMs = GAME_TIME_MS
+    // Menu du jour focus words — drained before anything else, in every mode
+    private val focusPool: ArrayDeque<VocabWord> = ArrayDeque()
 
     companion object {
         const val SLOTS = 5
-        const val GAME_TIME_MS = 30_000L      // 30 seconds total
+        const val GAME_TIME_MS = 40_000L      // 40 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 2_000L   // lose 2 seconds on wrong match
@@ -267,9 +271,15 @@ class TrouvezViewModel @Inject constructor(
     }
 
 
-    fun startGame() {
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        focusPool.clear()
+        if (stage != null) {
+            focusPool.addAll(stage.focusRanks.mapNotNull { vocabRepository.getWordByRank(it) })
+            _uiState.update { it.copy(selectedCategory = stage.category) }
+        }
         nextPairId = 0
         answerLog.clear()
         matchedQueue.clear()
@@ -327,6 +337,17 @@ class TrouvezViewModel @Inject constructor(
 
         val category = _uiState.value.selectedCategory
 
+        val focusIter = focusPool.iterator()
+        while (focusIter.hasNext() && result.size < count) {
+            val w = focusIter.next()
+            if (w.rank !in currentRanks && w.german !in usedGerman) {
+                focusIter.remove()
+                currentRanks.add(w.rank)
+                usedGerman.add(w.german)
+                result.add(w)
+            }
+        }
+
         if (category == null) {
             // Freier Modus: drain pinned pool first
             val pinnedIter = pinnedPool.iterator()
@@ -377,13 +398,13 @@ class TrouvezViewModel @Inject constructor(
                 selectedGerman = null,
                 frenchFeedback = emptyMap(),
                 germanFeedback = emptyMap(),
-                timeRemainingMs = GAME_TIME_MS,
-                totalTimeMs = GAME_TIME_MS,
+                timeRemainingMs = gameTimeMs,
+                totalTimeMs = gameTimeMs,
                 timerFraction = 1f
             )
         }
 
-        timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+        timerDeadline = System.currentTimeMillis() + gameTimeMs
         startTimer()
     }
 
@@ -400,7 +421,7 @@ class TrouvezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)
@@ -702,6 +723,7 @@ class TrouvezViewModel @Inject constructor(
         answerLog.clear()
         replayPool.clear()
         pinnedPool.clear()
+        focusPool.clear()
         wrongAttemptedRanks.clear()
         matchedQueue.clear()
         _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords, wordStreaks = it.wordStreaks) }

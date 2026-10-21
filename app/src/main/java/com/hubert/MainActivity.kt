@@ -1,21 +1,24 @@
 package com.hubert
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hubert.ui.screens.*
 import com.hubert.ui.theme.HubertTheme
 import com.hubert.viewmodel.ConjuguezViewModel
-import com.hubert.viewmodel.GameType
+import com.hubert.viewmodel.CourseGame
+import com.hubert.viewmodel.MenuDuJourViewModel
+import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.TrouvezViewModel
 import com.hubert.viewmodel.CompletezViewModel
 import com.hubert.viewmodel.ClassezViewModel
@@ -27,7 +30,6 @@ import com.hubert.viewmodel.ParlezViewModel
 import com.hubert.viewmodel.SettingsViewModel
 import com.hubert.viewmodel.StatisticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -55,6 +57,7 @@ enum class Screen {
     PREPOSEZ,
     RELATIVISEZ,
     PARLEZ,
+    MENU_DU_JOUR,
     STATISTICS,
     SETTINGS
 }
@@ -72,6 +75,8 @@ fun HubertApp() {
     val parlezVm: ParlezViewModel = hiltViewModel()
     val statisticsVm: StatisticsViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
+    val menuVm: MenuDuJourViewModel = hiltViewModel()
+    val weeklyVm: WeeklyReportViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
@@ -84,27 +89,24 @@ fun HubertApp() {
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
     val settingsState by settingsVm.settings.collectAsState()
+    val menuState by menuVm.uiState.collectAsState()
+    val weeklyState by weeklyVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
-    // "Hubert choisit!" — query least-played game, show toast, launch it
-    val onHubertChoisit: () -> Unit = {
-        coroutineScope.launch {
-            val gameTypeKey = statisticsVm.getLeastPlayedGameType()
-            val displayName = GameType.fromKey(gameTypeKey)?.displayName ?: gameTypeKey
-            Toast.makeText(context, displayName, Toast.LENGTH_SHORT).show()
-            when (gameTypeKey) {
-                "matching" -> matchingVm.showModeSelection()
-                "gender_snap" -> genderSnapVm.startGame()
-                "gap_fill" -> gapFillVm.startGame()
-                "spelling_bee" -> spellingBeeVm.startGame()
-                "conjugation" -> conjugationVm.showTenseSelection()
-                "pronunciation" -> pronunciationVm.onGameSelected()
-                "preposition" -> prepositionVm.showSelection()
-                "relative_pronoun" -> relativisezVm.showSelection()
-                "parlez"      -> parlezVm.onGameSelected()
+    // "Menu du jour" — start the next course with the menu's stage config
+    val startNextCourse: () -> Unit = {
+        val course = menuVm.uiState.value.nextCourse
+        val config = menuVm.configForNextCourse()
+        if (course != null && config != null) {
+            when (course.game) {
+                CourseGame.TROUVEZ -> matchingVm.startGame(config)
+                CourseGame.COMPLETEZ -> gapFillVm.startGame(config)
+                CourseGame.CLASSEZ -> genderSnapVm.startGame(config)
+                CourseGame.ECRIVEZ -> spellingBeeVm.startGame(config)
+                CourseGame.CONJUGUEZ -> conjugationVm.startGame(config)
+                CourseGame.PREPOSEZ -> prepositionVm.startGame(config)
+                CourseGame.RELATIVISEZ -> relativisezVm.startGame(config)
             }
         }
     }
@@ -170,7 +172,119 @@ fun HubertApp() {
         }
     }
 
+    // "Menu du jour" — a finished game hands its answers to the menu instead of showing GameOver
+    LaunchedEffect(matchingState.isGameOver) {
+        if (matchingState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(matchingState.answerHistory)
+            matchingVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(gapFillState.isGameOver) {
+        if (gapFillState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(gapFillState.answerHistory)
+            gapFillVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(genderSnapState.isGameOver) {
+        if (genderSnapState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(genderSnapState.answerHistory)
+            genderSnapVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(spellingBeeState.isGameOver) {
+        if (spellingBeeState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(spellingBeeState.answerHistory)
+            spellingBeeVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(conjugationState.isGameOver) {
+        if (conjugationState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(conjugationState.answerHistory)
+            conjugationVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(prepositionState.isGameOver) {
+        if (prepositionState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(prepositionState.answerHistory)
+            prepositionVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    LaunchedEffect(relativisezState.isGameOver) {
+        if (relativisezState.isGameOver && menuVm.uiState.value.isRunning) {
+            menuVm.onCourseFinished(relativisezState.answerHistory)
+            relativisezVm.resetToMenu()
+            currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    // Quitting any course (or the menu card) back to the main menu abandons the menu
+    LaunchedEffect(currentScreen) {
+        if (currentScreen == Screen.MENU && menuVm.uiState.value.isRunning) {
+            menuVm.reset()
+        }
+    }
+
+    // "Rapport de la semaine" — once per new week on app start, or opened from the menu card
+    LaunchedEffect(Unit) { weeklyVm.showIfNewWeek() }
+    if (weeklyState.isVisible) {
+        WeeklyReportScreen(
+            state = weeklyState,
+            onPreviousWeek = { weeklyVm.previousWeek() },
+            onNextWeek = { weeklyVm.nextWeek() },
+            onClose = { weeklyVm.close() }
+        )
+        return
+    }
+
     when (currentScreen) {
+        Screen.MENU_DU_JOUR -> {
+            when {
+                menuState.isChoosingType -> {
+                    MenuDuJourTypeScreen(
+                        dailyCategory = menuState.dailyCategory,
+                        onChoose = { menuVm.chooseMenuType(it) },
+                        onShowWeeklyReport = { weeklyVm.open(0) },
+                        onBack = { currentScreen = Screen.MENU }
+                    )
+                }
+                menuState.isChoosingCategory -> {
+                    MenuDuJourCategoryScreen(
+                        categories = menuState.availableCategories,
+                        onChoose = { menuVm.chooseCategory(it) },
+                        onBack = { menuVm.backToMenuTypes() }
+                    )
+                }
+                menuState.isFinished -> {
+                    MenuDuJourAdditionScreen(
+                        state = menuState,
+                        onTogglePin = { menuVm.togglePin(it) },
+                        onNewMenu = { menuVm.showMenuSelection() },
+                        onBackToMenu = {
+                            menuVm.reset()
+                            currentScreen = Screen.MENU
+                        }
+                    )
+                }
+                menuState.isIntro || menuState.isBetweenCourses -> {
+                    MenuDuJourCourseScreen(
+                        state = menuState,
+                        onContinue = startNextCourse,
+                        onBack = { currentScreen = Screen.MENU }
+                    )
+                }
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = MenuWine)
+                    }
+                }
+            }
+        }
+
         Screen.SETTINGS -> {
             SettingsScreen(
                 settings = settingsState,
@@ -247,7 +361,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                matchingState.isGameOver -> {
+                matchingState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = matchingState.score,
@@ -298,7 +412,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                genderSnapState.isGameOver -> {
+                genderSnapState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = genderSnapState.score,
@@ -340,7 +454,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                gapFillState.isGameOver -> {
+                gapFillState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = gapFillState.score,
@@ -384,7 +498,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                spellingBeeState.isGameOver -> {
+                spellingBeeState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = spellingBeeState.score,
@@ -444,7 +558,7 @@ fun HubertApp() {
                         onSubmitTyped = { conjugationVm.submitTyped() },
                     )
                 }
-                conjugationState.isGameOver -> {
+                conjugationState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "GAME OVER",
                         score = conjugationState.score,
@@ -549,7 +663,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                prepositionState.isGameOver -> {
+                prepositionState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = prepositionState.score,
@@ -607,7 +721,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                relativisezState.isGameOver -> {
+                relativisezState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = relativisezState.score,
@@ -718,7 +832,10 @@ fun HubertApp() {
                 prepositionHighScore = prepositionState.highScore,
                 relativisezHighScore = relativisezState.highScore,
                 parlezHighScore = parlezState.highScore,
-                onHubertChoisit = onHubertChoisit,
+                onMenuDuJour = {
+                    menuVm.showMenuSelection()
+                    currentScreen = Screen.MENU_DU_JOUR
+                },
                 onStartMatching = { matchingVm.showModeSelection() },
                 onStartGenderSnap = { genderSnapVm.startGame() },
                 onStartGapFill = { gapFillVm.startGame() },

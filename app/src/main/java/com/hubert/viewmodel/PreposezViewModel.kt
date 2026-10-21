@@ -161,9 +161,19 @@ class PreposezViewModel @Inject constructor(
         _uiState.update { it.copy(selectedPrepositions = new) }
     }
 
-    fun startGame() {
+    // Round length (shorter when played as a Menu du jour course)
+    private var gameTimeMs = GAME_TIME_MS
+    // Player's own selection while a Menu du jour focus selection is active
+    private var savedSelection: Set<String>? = null
+
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        if (stage != null && stage.grammarFocus.isNotEmpty()) {
+            savedSelection = savedSelection ?: _uiState.value.selectedPrepositions
+            _uiState.update { it.copy(selectedPrepositions = stage.grammarFocus) }
+        }
         answerLog.clear()
 
         val selected = _uiState.value.selectedPrepositions
@@ -188,8 +198,8 @@ class PreposezViewModel @Inject constructor(
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
-            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
-            _uiState.update { it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f) }
+            timerDeadline = System.currentTimeMillis() + gameTimeMs
+            _uiState.update { it.copy(timeRemainingMs = gameTimeMs, timerFraction = 1f) }
             showNextQuestion()
             startTimer()
         }
@@ -309,7 +319,7 @@ class PreposezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)
@@ -414,7 +424,8 @@ Sei präzise und ermutigend. Maximal 4 Stichpunkte gesamt.
         countdownJob?.cancel()
         answerLog.clear()
         replayPool.clear()
-        val selected = _uiState.value.selectedPrepositions
+        val selected = savedSelection ?: _uiState.value.selectedPrepositions
+        savedSelection = null
         _uiState.value = PreposezState(selectedPrepositions = selected)
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = GAME_TYPE)

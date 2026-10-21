@@ -12,7 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -39,7 +39,7 @@ fun MenuScreen(
     prepositionHighScore: Int,
     relativisezHighScore: Int,
     parlezHighScore: Int,
-    onHubertChoisit: () -> Unit,
+    onMenuDuJour: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
@@ -104,29 +104,29 @@ fun MenuScreen(
 
         Spacer(Modifier.height(10.dp))
 
-        // "Hubert choisit!" — solid full-width button
+        // "Menu du jour" — guided multi-game session with a final grade
         Button(
-            onClick = onHubertChoisit,
+            onClick = onMenuDuJour,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(58.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6B5CE7))
+            colors = ButtonDefaults.buttonColors(containerColor = MenuWine)
         ) {
             Icon(
-                imageVector = Icons.Default.Psychology,
+                imageVector = Icons.Default.Restaurant,
                 contentDescription = null,
                 modifier = Modifier.size(22.dp)
             )
             Spacer(Modifier.width(10.dp))
             Column {
                 Text(
-                    text = "Hubert choisit!",
+                    text = "Menu du jour",
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp
                 )
                 Text(
-                    text = "Hubert wählt was du üben solltest",
+                    text = "Express · Complet · À la carte — mit Note am Ende",
                     fontSize = 10.sp,
                     color = Color.White.copy(alpha = 0.75f)
                 )

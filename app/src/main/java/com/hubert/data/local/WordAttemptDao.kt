@@ -64,12 +64,60 @@ interface WordAttemptDao {
     """)
     suspend fun getAttemptsForWords(frenchWords: List<String>): List<WordAttemptRow>
 
+    /** Grammar attempts of one game in a time window (Menu du jour focus selection). */
+    @Query("""
+        SELECT question, correctAnswer, isCorrect
+        FROM word_attempts
+        WHERE gameType = :gameType AND timestamp >= :sinceMs
+    """)
+    suspend fun getAttemptsSince(gameType: String, sinceMs: Long): List<AttemptRow>
+
+    /** Correct / total answers per game type in [fromMs, toMs) (weekly report). */
+    @Query("""
+        SELECT gameType,
+               COUNT(*) AS total,
+               SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS correct
+        FROM word_attempts
+        WHERE timestamp >= :fromMs AND timestamp < :toMs
+        GROUP BY gameType
+    """)
+    suspend fun getAccuracyByGameType(fromMs: Long, toMs: Long): List<GameTypeAccuracy>
+
+    /** Most-missed questions in [fromMs, toMs) (weekly report). */
+    @Query("""
+        SELECT question,
+               gameType,
+               correctAnswer,
+               COUNT(*) AS totalAttempts,
+               SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS totalWrong,
+               CAST(SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS REAL) / COUNT(*) AS errorRate
+        FROM word_attempts
+        WHERE timestamp >= :fromMs AND timestamp < :toMs
+        GROUP BY question
+        HAVING SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) > 0
+        ORDER BY totalWrong DESC, errorRate DESC
+        LIMIT :limit
+    """)
+    suspend fun getMissedBetween(fromMs: Long, toMs: Long, limit: Int): List<StruggledWord>
+
     @Query("DELETE FROM word_attempts WHERE question = :french")
     suspend fun deleteAttemptsForWord(french: String)
 
     @Query("DELETE FROM word_attempts")
     suspend fun clearAll()
 }
+
+data class AttemptRow(
+    val question: String,
+    val correctAnswer: String,
+    val isCorrect: Boolean
+)
+
+data class GameTypeAccuracy(
+    val gameType: String,
+    val total: Int,
+    val correct: Int
+)
 
 data class WordAttemptRow(
     val question: String,
