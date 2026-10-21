@@ -12,7 +12,7 @@ into the guided learning mode.
 |---|---|---|
 | ✅ | ~~**Nombrez!** (#11)~~ | Implemented 2026-10-21 (numbers, times, dates, days & months) |
 | ✅ | ~~**Accordez!** (#8)~~ | Implemented 2026-10-21 — 4th grammar game in the Plat du chef rotation |
-| 3 | **Expand existing data** | Relativisez! has only 43 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
+| 3 | **Expand existing data** | ✅ Relativisez! expanded to 298 questions (#1); Subjonctif nous/vous sentences still missing (#6) |
 | 4 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value for German speakers; generate a dataset instead of filtering the noisy corpus |
 | later | Démontrez! + Possédez! (#2, #3) | Merge into one "Pronoms!" game — each is small on its own |
 | later | Négativez! (#9), Remplacez! (#7) | Solid but less urgent; Remplacez! needs the most UI work (pronoun order) |
@@ -70,7 +70,7 @@ ideas below would require re-blanking or entirely new datasets.
 
 | # | Game | Data Status | Effort |
 |---|------|-------------|--------|
-| 1 | ~~Relativisez!~~ | ✅ **Implemented** — but only 43 questions, needs ~300 | Medium (data) |
+| 1 | ~~Relativisez!~~ | ✅ **Implemented** — 298 questions | — |
 | 2 | Démontrez! | Partially sufficient (simple forms only) | Medium |
 | 3 | Possédez! | Needs new dataset | High |
 | 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
@@ -84,12 +84,14 @@ ideas below would require re-blanking or entirely new datasets.
 
 ---
 
-## 1. ~~Relativisez!~~ — Pronoms relatifs — ✅ Implemented, dataset too small
+## 1. ~~Relativisez!~~ — Pronoms relatifs — ✅ Implemented
 
-> **Status (2026-10-21):** Implemented as a game mode with `relative_pronouns.json`, but the
-> dataset has only **43 questions** (qui/que/dont 5 each, rare forms like duquel, desquels,
-> lesquelles 1 each). Players repeat the same sentences quickly. Next step: grow it to
-> ~300 questions (10–20 per form) as planned below. The analysis below is kept for reference.
+> **Status (2026-10-21):** `relative_pronouns.json` expanded from 43 to **298 questions** via
+> `scripts/add_relative_pronouns.py` (curated sentences, 13–30 per form, every form incl.
+> duquel/desquels/auxquels ≥ 13). Rules: lequel family only with things (with persons
+> "avec qui" would also be correct), no que/ce que before il/elle/on (elision), duquel/desquels
+> only after prepositional phrases with de. Three old questions with an elision problem were
+> fixed. Not covered yet: auxquelles, desquelles, à laquelle. The analysis below is kept for reference.
 
 Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, lesquels, lesquelles, auquel, auxquels, duquel, desquels, ce qui, ce que**.
 

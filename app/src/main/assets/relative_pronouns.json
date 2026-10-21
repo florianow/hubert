@@ -64,8 +64,8 @@
     "explanation": "que ist direktes Objekt des Relativsatzes."
   },
   {
-    "fr": "La robe ___ elle portait était magnifique.",
-    "de": "Das Kleid, das sie trug, war wunderschön.",
+    "fr": "La robe ___ Julie portait était magnifique.",
+    "de": "Das Kleid, das Julie trug, war wunderschön.",
     "answer": "que",
     "distractors": ["qui", "dont", "où"],
     "explanation": "que ist direktes Objekt – 'elle portait la robe'."
@@ -279,15 +279,15 @@
     "explanation": "ce que ist direktes Objekt – 'du glaubst, dass etwas richtig ist'."
   },
   {
-    "fr": "Montre-moi ___ elle a acheté.",
-    "de": "Zeig mir, was sie gekauft hat.",
+    "fr": "Montre-moi ___ ta sœur a acheté.",
+    "de": "Zeig mir, was deine Schwester gekauft hat.",
     "answer": "ce que",
     "distractors": ["ce qui", "ce dont", "que"],
     "explanation": "ce que ist direktes Objekt ohne Bezugsnomen."
   },
   {
-    "fr": "Il fait toujours ___ il veut.",
-    "de": "Er macht immer, was er will.",
+    "fr": "Il fait toujours ___ bon lui semble.",
+    "de": "Er macht immer, was ihm gefällt.",
     "answer": "ce que",
     "distractors": ["ce qui", "ce dont", "que"],
     "explanation": "ce que ist direktes Objekt."
@@ -313,5 +313,1790 @@
     "answer": "ce dont",
     "distractors": ["ce que", "ce qui", "dont"],
     "explanation": "ce dont wegen 'avoir besoin de' ohne konkreten Bezugsnomen."
+  },
+  {
+    "fr": "Le garçon ___ chante est mon cousin.",
+    "de": "Der Junge, der singt, ist mein Cousin.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "J'ai une collègue ___ vient de Lyon.",
+    "de": "Ich habe eine Kollegin, die aus Lyon kommt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le bus ___ va à la gare est en retard.",
+    "de": "Der Bus, der zum Bahnhof fährt, hat Verspätung.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Prends le pull ___ est sur la chaise.",
+    "de": "Nimm den Pullover, der auf dem Stuhl liegt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "C'est un film ___ fait peur.",
+    "de": "Das ist ein Film, der Angst macht.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Les étudiants ___ ont réussi l'examen sont contents.",
+    "de": "Die Studenten, die die Prüfung bestanden haben, sind froh.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Je connais une boulangerie ___ ouvre à six heures.",
+    "de": "Ich kenne eine Bäckerei, die um sechs Uhr öffnet.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "La femme ___ parle avec le directeur est avocate.",
+    "de": "Die Frau, die mit dem Direktor spricht, ist Anwältin.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "C'est moi ___ ai fait le gâteau.",
+    "de": "Ich bin es, der den Kuchen gebacken hat.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Il y a un chat ___ dort sur le toit.",
+    "de": "Da ist eine Katze, die auf dem Dach schläft.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Les fleurs ___ poussent dans le jardin sont belles.",
+    "de": "Die Blumen, die im Garten wachsen, sind schön.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Nous cherchons quelqu'un ___ parle allemand.",
+    "de": "Wir suchen jemanden, der Deutsch spricht.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le restaurant ___ se trouve au coin de la rue est fermé.",
+    "de": "Das Restaurant, das an der Straßenecke liegt, ist geschlossen.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "J'aime les gens ___ disent la vérité.",
+    "de": "Ich mag Menschen, die die Wahrheit sagen.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "C'est une histoire ___ finit bien.",
+    "de": "Das ist eine Geschichte, die gut ausgeht.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le médecin ___ m'a soigné était très gentil.",
+    "de": "Der Arzt, der mich behandelt hat, war sehr nett.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Voilà l'enfant ___ a perdu son ballon.",
+    "de": "Da ist das Kind, das seinen Ball verloren hat.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Les voitures ___ consomment peu sont plus chères.",
+    "de": "Autos, die wenig verbrauchen, sind teurer.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le prof ___ enseigne l'histoire est malade.",
+    "de": "Der Lehrer, der Geschichte unterrichtet, ist krank.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "J'ai lu un article ___ parle du climat.",
+    "de": "Ich habe einen Artikel gelesen, der vom Klima handelt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "La lampe ___ éclaire le salon est cassée.",
+    "de": "Die Lampe, die das Wohnzimmer beleuchtet, ist kaputt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Ce sont mes parents ___ m'ont offert ce vélo.",
+    "de": "Es sind meine Eltern, die mir dieses Fahrrad geschenkt haben.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Il a un chien ___ aboie toute la nuit.",
+    "de": "Er hat einen Hund, der die ganze Nacht bellt.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "La personne ___ a appelé n'a pas laissé de message.",
+    "de": "Die Person, die angerufen hat, hat keine Nachricht hinterlassen.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le magasin ___ vend des vélos a fermé.",
+    "de": "Der Laden, der Fahrräder verkauft, hat zugemacht.",
+    "answer": "qui",
+    "distractors": ["que", "dont", "où"],
+    "explanation": "qui ist Subjekt des Relativsatzes – direkt danach folgt das Verb."
+  },
+  {
+    "fr": "Le gâteau ___ tu as fait est délicieux.",
+    "de": "Der Kuchen, den du gebacken hast, ist köstlich.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La ville ___ nous avons visitée était magnifique.",
+    "de": "Die Stadt, die wir besucht haben, war wunderschön.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le film ___ j'ai vu hier était trop long.",
+    "de": "Der Film, den ich gestern gesehen habe, war zu lang.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "C'est une question ___ je me pose souvent.",
+    "de": "Das ist eine Frage, die ich mir oft stelle.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Les amis ___ j'ai invités arrivent ce soir.",
+    "de": "Die Freunde, die ich eingeladen habe, kommen heute Abend.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La voiture ___ mon père conduit est neuve.",
+    "de": "Das Auto, das mein Vater fährt, ist neu.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Voici le cadeau ___ j'ai acheté pour toi.",
+    "de": "Hier ist das Geschenk, das ich für dich gekauft habe.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "L'homme ___ tu vois là-bas est mon oncle.",
+    "de": "Der Mann, den du dort drüben siehst, ist mein Onkel.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La musique ___ ma sœur écoute est trop forte.",
+    "de": "Die Musik, die meine Schwester hört, ist zu laut.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Les photos ___ vous avez prises sont superbes.",
+    "de": "Die Fotos, die ihr gemacht habt, sind großartig.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "C'est le professeur ___ tous les élèves adorent.",
+    "de": "Das ist der Lehrer, den alle Schüler lieben.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le plat ___ je préfère est le couscous.",
+    "de": "Das Gericht, das ich am liebsten mag, ist Couscous.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La langue ___ Paul apprend est difficile.",
+    "de": "Die Sprache, die Paul lernt, ist schwierig.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Les chaussures ___ j'ai achetées sont trop petites.",
+    "de": "Die Schuhe, die ich gekauft habe, sind zu klein.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le livre ___ tu m'as prêté est passionnant.",
+    "de": "Das Buch, das du mir geliehen hast, ist spannend.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La maison ___ mes parents ont construite est immense.",
+    "de": "Das Haus, das meine Eltern gebaut haben, ist riesig.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "C'est un homme ___ je respecte beaucoup.",
+    "de": "Das ist ein Mann, den ich sehr respektiere.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Les vacances ___ nous avons passées en Italie étaient géniales.",
+    "de": "Die Ferien, die wir in Italien verbracht haben, waren toll.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le mot ___ tu cherches est « bibliothèque ».",
+    "de": "Das Wort, das du suchst, ist „bibliothèque“.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "L'appartement ___ Julie loue est au cinquième étage.",
+    "de": "Die Wohnung, die Julie mietet, liegt im fünften Stock.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le message ___ j'ai reçu était bizarre.",
+    "de": "Die Nachricht, die ich bekommen habe, war seltsam.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "La chanson ___ tu chantes est triste.",
+    "de": "Das Lied, das du singst, ist traurig.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Les fruits ___ tu as achetés sont mûrs.",
+    "de": "Das Obst, das du gekauft hast, ist reif.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "C'est la plus belle plage ___ je connaisse.",
+    "de": "Das ist der schönste Strand, den ich kenne.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "Le café ___ je bois le matin est très fort.",
+    "de": "Der Kaffee, den ich morgens trinke, ist sehr stark.",
+    "answer": "que",
+    "distractors": ["qui", "dont", "où"],
+    "explanation": "que ist direktes Objekt – der Relativsatz hat ein eigenes Subjekt."
+  },
+  {
+    "fr": "C'est le livre ___ je t'ai parlé.",
+    "de": "Das ist das Buch, von dem ich dir erzählt habe.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "parler de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Voici l'outil ___ j'ai besoin.",
+    "de": "Hier ist das Werkzeug, das ich brauche.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "avoir besoin de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "La ville ___ il est originaire est petite.",
+    "de": "Die Stadt, aus der er stammt, ist klein.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être originaire de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est un résultat ___ nous sommes fiers.",
+    "de": "Das ist ein Ergebnis, auf das wir stolz sind.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être fier de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "L'homme ___ la voiture est rouge habite ici.",
+    "de": "Der Mann, dessen Auto rot ist, wohnt hier.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "la voiture de l'homme → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le film ___ tout le monde parle sort demain.",
+    "de": "Der Film, über den alle reden, kommt morgen heraus.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "parler de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est une chose ___ j'ai peur.",
+    "de": "Das ist etwas, wovor ich Angst habe.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "avoir peur de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Les enfants ___ elle s'occupe sont adorables.",
+    "de": "Die Kinder, um die sie sich kümmert, sind entzückend.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "s'occuper de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le projet ___ je suis responsable est en retard.",
+    "de": "Das Projekt, für das ich verantwortlich bin, ist im Verzug.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être responsable de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est une maladie ___ on guérit facilement.",
+    "de": "Das ist eine Krankheit, von der man leicht geheilt wird.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "guérir de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le cadeau ___ j'ai envie coûte trop cher.",
+    "de": "Das Geschenk, das ich mir wünsche, ist zu teuer.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "avoir envie de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Une amie ___ le frère est pilote vient dîner.",
+    "de": "Eine Freundin, deren Bruder Pilot ist, kommt zum Abendessen.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "le frère de l'amie → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est un travail ___ il est très content.",
+    "de": "Das ist eine Arbeit, mit der er sehr zufrieden ist.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être content de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Les difficultés ___ il se plaint sont réelles.",
+    "de": "Die Schwierigkeiten, über die er sich beklagt, sind echt.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "se plaindre de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est une région ___ je me souviens bien.",
+    "de": "Das ist eine Gegend, an die ich mich gut erinnere.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "se souvenir de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "L'accident ___ il a été témoin était terrible.",
+    "de": "Der Unfall, dessen Zeuge er war, war schrecklich.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être témoin de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est un auteur ___ j'ai lu tous les livres.",
+    "de": "Das ist ein Autor, von dem ich alle Bücher gelesen habe.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "les livres de l'auteur → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "La maison ___ les fenêtres sont bleues est à vendre.",
+    "de": "Das Haus, dessen Fenster blau sind, steht zum Verkauf.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "les fenêtres de la maison → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est la seule chose ___ je suis sûr.",
+    "de": "Das ist das Einzige, dessen ich mir sicher bin.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "être sûr de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le chien ___ elle a peur est pourtant gentil.",
+    "de": "Der Hund, vor dem sie Angst hat, ist doch lieb.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "avoir peur de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Les étudiants, ___ trois sont étrangers, ont réussi.",
+    "de": "Die Studenten, von denen drei Ausländer sind, haben bestanden.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "trois des étudiants → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est un sujet ___ je ne sais rien.",
+    "de": "Das ist ein Thema, über das ich nichts weiß.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "ne rien savoir de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le collègue ___ je me méfie travaille ici depuis peu.",
+    "de": "Der Kollege, dem ich misstraue, arbeitet erst seit kurzem hier.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "se méfier de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "C'est le voyage ___ nous rêvons depuis des années.",
+    "de": "Das ist die Reise, von der wir seit Jahren träumen.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "rêver de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "Le restaurant ___ on dit tant de bien a ouvert hier.",
+    "de": "Das Restaurant, über das man so viel Gutes sagt, hat gestern eröffnet.",
+    "answer": "dont",
+    "distractors": ["qui", "que", "où"],
+    "explanation": "dire du bien de → dont ersetzt de + Ergänzung."
+  },
+  {
+    "fr": "La maison ___ j'ai grandi est à vendre.",
+    "de": "Das Haus, in dem ich aufgewachsen bin, steht zum Verkauf.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le jour ___ il est né, il neigeait.",
+    "de": "An dem Tag, an dem er geboren wurde, schneite es.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Je connais un café ___ on mange bien.",
+    "de": "Ich kenne ein Café, wo man gut isst.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "C'est l'année ___ nous nous sommes mariés.",
+    "de": "Das ist das Jahr, in dem wir geheiratet haben.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "La plage ___ nous allons est très calme.",
+    "de": "Der Strand, an den wir gehen, ist sehr ruhig.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Au moment ___ il est entré, tout le monde s'est tu.",
+    "de": "In dem Moment, als er hereinkam, verstummten alle.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le pays ___ elle vit est très froid.",
+    "de": "Das Land, in dem sie lebt, ist sehr kalt.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "C'est le bureau ___ je travaille.",
+    "de": "Das ist das Büro, in dem ich arbeite.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Au moment ___ je partais, le téléphone a sonné.",
+    "de": "Gerade als ich gehen wollte, klingelte das Telefon.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "La rue ___ se trouve l'école est fermée.",
+    "de": "Die Straße, in der die Schule liegt, ist gesperrt.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Je ne connais pas la ville ___ il habite.",
+    "de": "Ich kenne die Stadt nicht, in der er wohnt.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "C'est la période ___ il y a le plus de touristes.",
+    "de": "Das ist die Zeit, in der es die meisten Touristen gibt.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le parc ___ je cours le dimanche est immense.",
+    "de": "Der Park, in dem ich sonntags laufe, ist riesig.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le soir ___ je l'ai rencontrée, il pleuvait.",
+    "de": "An dem Abend, an dem ich sie kennenlernte, regnete es.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Voici la chambre ___ tu vas dormir.",
+    "de": "Hier ist das Zimmer, in dem du schlafen wirst.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "L'hôpital ___ elle travaille est tout neuf.",
+    "de": "Das Krankenhaus, in dem sie arbeitet, ist ganz neu.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "C'était l'époque ___ on écrivait encore des lettres.",
+    "de": "Das war die Zeit, in der man noch Briefe schrieb.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le village ___ il a passé son enfance est minuscule.",
+    "de": "Das Dorf, in dem er seine Kindheit verbracht hat, ist winzig.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le magasin ___ j'ai acheté ce manteau a fermé.",
+    "de": "Der Laden, in dem ich diesen Mantel gekauft habe, hat zugemacht.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Il y a des jours ___ tout va mal.",
+    "de": "Es gibt Tage, an denen alles schiefgeht.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "La salle ___ a lieu le concert est pleine.",
+    "de": "Der Saal, in dem das Konzert stattfindet, ist voll.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le siècle ___ nous vivons change vite.",
+    "de": "Das Jahrhundert, in dem wir leben, verändert sich schnell.",
+    "answer": "où",
+    "distractors": ["qui", "que", "dont"],
+    "explanation": "où steht für einen Ort oder einen Zeitpunkt."
+  },
+  {
+    "fr": "Le stylo avec ___ j'écris est bleu.",
+    "de": "Der Stift, mit dem ich schreibe, ist blau.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le bureau sur ___ tu travailles est en désordre.",
+    "de": "Der Schreibtisch, an dem du arbeitest, ist unordentlich.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le pont sous ___ passent les bateaux est très ancien.",
+    "de": "Die Brücke, unter der die Boote durchfahren, ist sehr alt.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est le projet pour ___ elle a travaillé jour et nuit.",
+    "de": "Das ist das Projekt, für das sie Tag und Nacht gearbeitet hat.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le mur contre ___ il s'appuie est fragile.",
+    "de": "Die Mauer, an die er sich lehnt, ist brüchig.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le parapluie sans ___ je ne sors jamais est cassé.",
+    "de": "Der Regenschirm, ohne den ich nie hinausgehe, ist kaputt.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est un sujet sur ___ nous ne sommes pas d'accord.",
+    "de": "Das ist ein Thema, bei dem wir uns nicht einig sind.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le canapé sur ___ le chat dort est tout neuf.",
+    "de": "Das Sofa, auf dem die Katze schläft, ist ganz neu.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le chemin par ___ nous sommes passés était boueux.",
+    "de": "Der Weg, über den wir gegangen sind, war schlammig.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est le film pendant ___ je me suis endormi.",
+    "de": "Das ist der Film, bei dem ich eingeschlafen bin.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le contrat selon ___ il doit payer est clair.",
+    "de": "Der Vertrag, nach dem er zahlen muss, ist eindeutig.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "L'arbre derrière ___ il se cache est énorme.",
+    "de": "Der Baum, hinter dem er sich versteckt, ist riesig.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le motif pour ___ il a démissionné reste flou.",
+    "de": "Der Grund, aus dem er gekündigt hat, bleibt unklar.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est l'ordinateur avec ___ j'ai écrit ma thèse.",
+    "de": "Das ist der Computer, mit dem ich meine Abschlussarbeit geschrieben habe.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Le lit dans ___ je dors est trop petit.",
+    "de": "Das Bett, in dem ich schlafe, ist zu klein.",
+    "answer": "lequel",
+    "distractors": ["laquelle", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lequel – männlich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La chaise sur ___ tu es assis est cassée.",
+    "de": "Der Stuhl, auf dem du sitzt, ist kaputt.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La boîte dans ___ j'ai mis les clés a disparu.",
+    "de": "Die Schachtel, in die ich die Schlüssel gelegt habe, ist verschwunden.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est une idée pour ___ je me bats.",
+    "de": "Das ist eine Idee, für die ich kämpfe.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La fenêtre par ___ le voleur est entré était ouverte.",
+    "de": "Das Fenster, durch das der Dieb eingestiegen ist, war offen.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La porte derrière ___ il attend est fermée.",
+    "de": "Die Tür, hinter der er wartet, ist geschlossen.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est la solution sans ___ nous serions perdus.",
+    "de": "Das ist die Lösung, ohne die wir verloren wären.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La valise dans ___ j'ai rangé mes affaires est lourde.",
+    "de": "Der Koffer, in den ich meine Sachen gepackt habe, ist schwer.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La période pendant ___ il a vécu à Rome était heureuse.",
+    "de": "Die Zeit, in der er in Rom lebte, war glücklich.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La règle selon ___ on doit arriver à l'heure est stricte.",
+    "de": "Die Regel, nach der man pünktlich sein muss, ist streng.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "C'est la raison pour ___ je suis en retard.",
+    "de": "Das ist der Grund, warum ich zu spät bin.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La lampe sous ___ je lis est trop faible.",
+    "de": "Die Lampe, unter der ich lese, ist zu schwach.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La statue devant ___ il pose est célèbre.",
+    "de": "Die Statue, vor der er posiert, ist berühmt.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "L'entreprise pour ___ elle travaille est suisse.",
+    "de": "Die Firma, für die sie arbeitet, ist schweizerisch.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La méthode avec ___ il apprend est efficace.",
+    "de": "Die Methode, mit der er lernt, ist wirksam.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "La table autour de ___ nous dînons est ronde.",
+    "de": "Der Tisch, um den wir zu Abend essen, ist rund.",
+    "answer": "laquelle",
+    "distractors": ["lequel", "lesquels", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: laquelle – weiblich Singular wie das Bezugswort."
+  },
+  {
+    "fr": "Les outils avec ___ il répare la voiture sont vieux.",
+    "de": "Die Werkzeuge, mit denen er das Auto repariert, sind alt.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les livres sans ___ je ne pourrais pas vivre sont ici.",
+    "de": "Die Bücher, ohne die ich nicht leben könnte, sind hier.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les sujets sur ___ ils débattent sont sensibles.",
+    "de": "Die Themen, über die sie debattieren, sind heikel.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les murs entre ___ nous vivons sont trop fins.",
+    "de": "Die Wände, zwischen denen wir leben, sind zu dünn.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les problèmes pour ___ il cherche une solution sont nombreux.",
+    "de": "Die Probleme, für die er eine Lösung sucht, sind zahlreich.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les arbres sous ___ nous déjeunons donnent de l'ombre.",
+    "de": "Die Bäume, unter denen wir zu Mittag essen, spenden Schatten.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les documents dans ___ j'ai trouvé l'erreur sont confidentiels.",
+    "de": "Die Dokumente, in denen ich den Fehler gefunden habe, sind vertraulich.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les critères selon ___ on choisit les candidats sont secrets.",
+    "de": "Die Kriterien, nach denen man die Kandidaten auswählt, sind geheim.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les jeux avec ___ les enfants jouent sont en bois.",
+    "de": "Die Spielsachen, mit denen die Kinder spielen, sind aus Holz.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les meubles parmi ___ il a trouvé ce trésor étaient anciens.",
+    "de": "Die Möbel, unter denen er diesen Schatz gefunden hat, waren alt.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les murs contre ___ on a posé les vélos sont sales.",
+    "de": "Die Mauern, an die man die Fahrräder gestellt hat, sind schmutzig.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les gants sans ___ je ne fais pas de ski sont perdus.",
+    "de": "Die Handschuhe, ohne die ich nicht Ski fahre, sind verloren.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les dossiers sur ___ elle travaille sont urgents.",
+    "de": "Die Akten, an denen sie arbeitet, sind dringend.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les chemins par ___ nous sommes rentrés étaient étroits.",
+    "de": "Die Wege, auf denen wir heimgegangen sind, waren eng.",
+    "answer": "lesquels",
+    "distractors": ["lequel", "laquelle", "lesquelles"],
+    "explanation": "Nach Präposition bei Sachen: lesquels – männlich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les chaises sur ___ nous sommes assis sont dures.",
+    "de": "Die Stühle, auf denen wir sitzen, sind hart.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les conditions dans ___ ils travaillent sont difficiles.",
+    "de": "Die Bedingungen, unter denen sie arbeiten, sind schwierig.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les idées pour ___ il se bat sont généreuses.",
+    "de": "Die Ideen, für die er kämpft, sind großzügig.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les lunettes sans ___ je ne vois rien sont dans mon sac.",
+    "de": "Die Brille, ohne die ich nichts sehe, ist in meiner Tasche.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les rues par ___ nous sommes passés étaient étroites.",
+    "de": "Die Straßen, durch die wir gegangen sind, waren eng.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les questions sur ___ il a hésité étaient faciles.",
+    "de": "Die Fragen, bei denen er gezögert hat, waren einfach.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les fenêtres derrière ___ il se cachait étaient sales.",
+    "de": "Die Fenster, hinter denen er sich versteckte, waren schmutzig.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les règles selon ___ le jeu fonctionne sont simples.",
+    "de": "Die Regeln, nach denen das Spiel funktioniert, sind einfach.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les entreprises pour ___ elle a travaillé sont connues.",
+    "de": "Die Firmen, für die sie gearbeitet hat, sind bekannt.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les tables entre ___ le serveur passe sont trop serrées.",
+    "de": "Die Tische, zwischen denen der Kellner hindurchgeht, stehen zu eng.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les montagnes parmi ___ se trouve le Mont Blanc sont magnifiques.",
+    "de": "Die Berge, zu denen der Mont Blanc gehört, sind herrlich.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les valises dans ___ j'ai mis les cadeaux sont lourdes.",
+    "de": "Die Koffer, in die ich die Geschenke gelegt habe, sind schwer.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les vacances pendant ___ il a plu tous les jours étaient décevantes.",
+    "de": "Die Ferien, in denen es jeden Tag geregnet hat, waren enttäuschend.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Les photos sur ___ on te voit sont floues.",
+    "de": "Die Fotos, auf denen man dich sieht, sind unscharf.",
+    "answer": "lesquelles",
+    "distractors": ["lequel", "laquelle", "lesquels"],
+    "explanation": "Nach Präposition bei Sachen: lesquelles – weiblich Plural wie das Bezugswort."
+  },
+  {
+    "fr": "Le concours ___ je participe commence demain.",
+    "de": "Der Wettbewerb, an dem ich teilnehme, beginnt morgen.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "participer à → à + lequel = auquel."
+  },
+  {
+    "fr": "C'est un problème ___ je n'avais pas pensé.",
+    "de": "Das ist ein Problem, an das ich nicht gedacht hatte.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "penser à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le poste ___ il a postulé est intéressant.",
+    "de": "Die Stelle, auf die er sich beworben hat, ist interessant.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "postuler à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le jeu ___ les enfants jouent est nouveau.",
+    "de": "Das Spiel, das die Kinder spielen, ist neu.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "jouer à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le club ___ elle appartient est très fermé.",
+    "de": "Der Club, dem sie angehört, ist sehr exklusiv.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "appartenir à → à + lequel = auquel."
+  },
+  {
+    "fr": "C'est un détail ___ je n'ai pas fait attention.",
+    "de": "Das ist ein Detail, auf das ich nicht geachtet habe.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "faire attention à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le résultat ___ nous sommes arrivés est surprenant.",
+    "de": "Das Ergebnis, zu dem wir gekommen sind, ist überraschend.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "arriver à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le cours ___ tu t'intéresses est complet.",
+    "de": "Der Kurs, für den du dich interessierst, ist ausgebucht.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "s'intéresser à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le guichet ___ il faut s'adresser est fermé.",
+    "de": "Der Schalter, an den man sich wenden muss, ist geschlossen.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "s'adresser à → à + lequel = auquel."
+  },
+  {
+    "fr": "C'est un événement ___ j'assiste chaque année.",
+    "de": "Das ist eine Veranstaltung, die ich jedes Jahr besuche.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "assister à → à + lequel = auquel."
+  },
+  {
+    "fr": "C'est un changement ___ on doit s'habituer.",
+    "de": "Das ist eine Veränderung, an die man sich gewöhnen muss.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "s'habituer à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le projet ___ elle tient le plus est celui-ci.",
+    "de": "Das Projekt, das ihr am meisten am Herzen liegt, ist dieses.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "tenir à → à + lequel = auquel."
+  },
+  {
+    "fr": "L'examen ___ je me prépare est difficile.",
+    "de": "Die Prüfung, auf die ich mich vorbereite, ist schwierig.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "se préparer à → à + lequel = auquel."
+  },
+  {
+    "fr": "Le message ___ tu n'as pas répondu était important.",
+    "de": "Die Nachricht, auf die du nicht geantwortet hast, war wichtig.",
+    "answer": "auquel",
+    "distractors": ["auxquels", "duquel", "desquels"],
+    "explanation": "répondre à → à + lequel = auquel."
+  },
+  {
+    "fr": "Les jeux ___ nous jouons sont amusants.",
+    "de": "Die Spiele, die wir spielen, sind lustig.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "jouer à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les messages ___ je dois répondre sont urgents.",
+    "de": "Die Nachrichten, auf die ich antworten muss, sind dringend.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "répondre à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les clubs ___ il appartient sont sélectifs.",
+    "de": "Die Clubs, denen er angehört, sind exklusiv.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "appartenir à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les concerts ___ nous avons assisté étaient géniaux.",
+    "de": "Die Konzerte, die wir besucht haben, waren toll.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "assister à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les détails ___ tu fais attention sont importants.",
+    "de": "Die Details, auf die du achtest, sind wichtig.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "faire attention à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les sujets ___ elle s'intéresse sont variés.",
+    "de": "Die Themen, für die sie sich interessiert, sind vielfältig.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "s'intéresser à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les examens ___ ils se préparent sont difficiles.",
+    "de": "Die Prüfungen, auf die sie sich vorbereiten, sind schwer.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "se préparer à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les changements ___ nous devons nous habituer sont nombreux.",
+    "de": "Die Veränderungen, an die wir uns gewöhnen müssen, sind zahlreich.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "s'habituer à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les tournois ___ il a participé l'ont rendu célèbre.",
+    "de": "Die Turniere, an denen er teilgenommen hat, haben ihn berühmt gemacht.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "participer à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les postes ___ elle a postulé sont bien payés.",
+    "de": "Die Stellen, auf die sie sich beworben hat, sind gut bezahlt.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "postuler à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les objets ___ il tient le plus sont des souvenirs.",
+    "de": "Die Gegenstände, an denen er am meisten hängt, sind Andenken.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "tenir à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Les problèmes ___ nous pensons sont sérieux.",
+    "de": "Die Probleme, an die wir denken, sind ernst.",
+    "answer": "auxquels",
+    "distractors": ["auquel", "duquel", "desquels"],
+    "explanation": "penser à → à + lesquels = auxquels."
+  },
+  {
+    "fr": "Le parc près ___ nous habitons est calme.",
+    "de": "Der Park, in dessen Nähe wir wohnen, ist ruhig.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "près de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le lac au bord ___ nous avons pique-niqué est magnifique.",
+    "de": "Der See, an dessen Ufer wir gepicknickt haben, ist herrlich.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "au bord de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le bâtiment en face ___ se trouve la poste est moderne.",
+    "de": "Das Gebäude, gegenüber dem die Post liegt, ist modern.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "en face de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le jardin au milieu ___ il y a une fontaine est public.",
+    "de": "Der Garten, in dessen Mitte ein Brunnen steht, ist öffentlich.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "au milieu de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "L'arbre à l'ombre ___ je lis est un chêne.",
+    "de": "Der Baum, in dessen Schatten ich lese, ist eine Eiche.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "à l'ombre de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le voyage au cours ___ ils se sont rencontrés était en Grèce.",
+    "de": "Die Reise, auf der sie sich kennengelernt haben, war in Griechenland.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "au cours de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le château autour ___ on a construit le village est médiéval.",
+    "de": "Die Burg, um die herum das Dorf gebaut wurde, ist mittelalterlich.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "autour de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le stade à côté ___ j'habite est bruyant.",
+    "de": "Das Stadion, neben dem ich wohne, ist laut.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "à côté de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le bureau à l'intérieur ___ il travaille n'a pas de fenêtre.",
+    "de": "Das Büro, in dem er arbeitet, hat kein Fenster.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "à l'intérieur de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le fleuve le long ___ nous marchons est la Seine.",
+    "de": "Der Fluss, an dem wir entlanggehen, ist die Seine.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "le long de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le magasin en face ___ je t'attends est fermé.",
+    "de": "Der Laden, gegenüber dem ich auf dich warte, ist geschlossen.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "en face de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Le carrefour près ___ l'accident a eu lieu est dangereux.",
+    "de": "Die Kreuzung, in deren Nähe der Unfall passiert ist, ist gefährlich.",
+    "answer": "duquel",
+    "distractors": ["dont", "auquel", "desquels"],
+    "explanation": "près de + lequel = duquel – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les arbres au pied ___ poussent des champignons sont vieux.",
+    "de": "Die Bäume, an deren Fuß Pilze wachsen, sind alt.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au pied de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les magasins en face ___ il habite sont toujours pleins.",
+    "de": "Die Läden, gegenüber denen er wohnt, sind immer voll.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "en face de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les immeubles à côté ___ on construit une école sont neufs.",
+    "de": "Die Gebäude, neben denen eine Schule gebaut wird, sind neu.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "à côté de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les champs au milieu ___ se trouve la ferme sont immenses.",
+    "de": "Die Felder, in deren Mitte der Bauernhof liegt, sind riesig.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au milieu de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les projets au cours ___ j'ai beaucoup appris étaient difficiles.",
+    "de": "Die Projekte, bei denen ich viel gelernt habe, waren schwierig.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au cours de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les murs le long ___ nous marchons sont très hauts.",
+    "de": "Die Mauern, an denen wir entlanggehen, sind sehr hoch.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "le long de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les bâtiments près ___ nous avons garé la voiture sont anciens.",
+    "de": "Die Gebäude, in deren Nähe wir das Auto geparkt haben, sind alt.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "près de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les nuages au-dessus ___ vole l'avion sont gris.",
+    "de": "Die Wolken, über denen das Flugzeug fliegt, sind grau.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au-dessus de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les rochers au bord ___ on se baigne sont glissants.",
+    "de": "Die Felsen, an denen man badet, sind rutschig.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au bord de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les villages autour ___ il y a des vignes sont charmants.",
+    "de": "Die Dörfer, um die herum Weinberge liegen, sind reizend.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "autour de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les événements à la suite ___ il a démissionné sont restés secrets.",
+    "de": "Die Ereignisse, nach denen er zurückgetreten ist, blieben geheim.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "à la suite de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "Les jardins au fond ___ coule une rivière sont superbes.",
+    "de": "Die Gärten, an deren Ende ein Fluss fließt, sind herrlich.",
+    "answer": "desquels",
+    "distractors": ["duquel", "dont", "auxquels"],
+    "explanation": "au fond de + lesquels = desquels – nach einer Wendung mit de ist dont nicht möglich."
+  },
+  {
+    "fr": "___ me plaît, c'est la mer.",
+    "de": "Was mir gefällt, ist das Meer.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Je ne sais pas ___ est arrivé.",
+    "de": "Ich weiß nicht, was passiert ist.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Dis-moi ___ ne va pas.",
+    "de": "Sag mir, was nicht stimmt.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Il a oublié ___ était important.",
+    "de": "Er hat vergessen, was wichtig war.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "___ m'énerve, c'est le bruit.",
+    "de": "Was mich nervt, ist der Lärm.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Raconte-moi ___ s'est passé hier soir.",
+    "de": "Erzähl mir, was gestern Abend passiert ist.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Je comprends ___ te fait peur.",
+    "de": "Ich verstehe, was dir Angst macht.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Elle fait toujours ___ lui plaît.",
+    "de": "Sie macht immer, was ihr gefällt.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Prends ___ te semble utile.",
+    "de": "Nimm, was dir nützlich erscheint.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Il est encore en retard, ___ arrive souvent.",
+    "de": "Er ist wieder zu spät, was oft vorkommt.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "On ne sait jamais ___ peut arriver.",
+    "de": "Man weiß nie, was passieren kann.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "___ compte, c'est la santé.",
+    "de": "Was zählt, ist die Gesundheit.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Il a gagné, ___ a surpris tout le monde.",
+    "de": "Er hat gewonnen, was alle überrascht hat.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Regarde ___ se trouve dans la boîte.",
+    "de": "Schau, was in der Schachtel ist.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Je me demande ___ a causé la panne.",
+    "de": "Ich frage mich, was die Panne verursacht hat.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Explique-moi ___ te dérange.",
+    "de": "Erklär mir, was dich stört.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Tout ___ brille n'est pas or.",
+    "de": "Es ist nicht alles Gold, was glänzt.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "Choisis ___ te fait plaisir.",
+    "de": "Such dir aus, was dir Freude macht.",
+    "answer": "ce qui",
+    "distractors": ["ce que", "ce dont", "qui"],
+    "explanation": "Kein Bezugswort und Subjekt → ce qui."
+  },
+  {
+    "fr": "___ je préfère, c'est le chocolat.",
+    "de": "Was ich am liebsten mag, ist Schokolade.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Dis-moi ___ tu veux.",
+    "de": "Sag mir, was du willst.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Je ne comprends pas ___ tu dis.",
+    "de": "Ich verstehe nicht, was du sagst.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Elle mange tout ___ sa grand-mère prépare.",
+    "de": "Sie isst alles, was ihre Großmutter kocht.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Je me demande ___ tu penses de mon idée.",
+    "de": "Ich frage mich, was du von meiner Idee hältst.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Montre-moi ___ tu as dessiné.",
+    "de": "Zeig mir, was du gezeichnet hast.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "___ tu racontes est incroyable.",
+    "de": "Was du erzählst, ist unglaublich.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Il a fait exactement ___ je lui ai demandé.",
+    "de": "Er hat genau das gemacht, worum ich ihn gebeten habe.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Tu sais ___ j'aime chez toi ?",
+    "de": "Weißt du, was ich an dir mag?",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "___ nous avons vu était magnifique.",
+    "de": "Was wir gesehen haben, war wunderschön.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Je ne sais pas ___ je vais faire ce week-end.",
+    "de": "Ich weiß nicht, was ich am Wochenende machen werde.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Écoute ___ le professeur explique.",
+    "de": "Hör zu, was der Lehrer erklärt.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Il a perdu tout ___ son père lui avait laissé.",
+    "de": "Er hat alles verloren, was sein Vater ihm hinterlassen hatte.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "C'est exactement ___ je pensais.",
+    "de": "Das ist genau das, was ich dachte.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Répète ___ tu viens de dire.",
+    "de": "Wiederhole, was du gerade gesagt hast.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Personne ne sait ___ Marie cherche.",
+    "de": "Niemand weiß, was Marie sucht.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "___ je veux, c'est un peu de calme.",
+    "de": "Was ich will, ist ein bisschen Ruhe.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "Achète ___ tu veux pour le dîner.",
+    "de": "Kauf, was du fürs Abendessen willst.",
+    "answer": "ce que",
+    "distractors": ["ce qui", "ce dont", "que"],
+    "explanation": "Kein Bezugswort und direktes Objekt → ce que."
+  },
+  {
+    "fr": "C'est ___ j'ai besoin.",
+    "de": "Das ist das, was ich brauche.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und avoir besoin de → ce dont."
+  },
+  {
+    "fr": "Dis-moi ___ tu as envie.",
+    "de": "Sag mir, worauf du Lust hast.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und avoir envie de → ce dont."
+  },
+  {
+    "fr": "___ je me souviens, c'est son sourire.",
+    "de": "Woran ich mich erinnere, ist ihr Lächeln.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und se souvenir de → ce dont."
+  },
+  {
+    "fr": "Il ne sait pas ___ il parle.",
+    "de": "Er weiß nicht, wovon er redet.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und parler de → ce dont."
+  },
+  {
+    "fr": "___ elle a peur, c'est la solitude.",
+    "de": "Wovor sie Angst hat, ist die Einsamkeit.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und avoir peur de → ce dont."
+  },
+  {
+    "fr": "Voilà ___ je suis fier.",
+    "de": "Darauf bin ich stolz.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und être fier de → ce dont."
+  },
+  {
+    "fr": "Je ne sais pas ___ tu te plains.",
+    "de": "Ich weiß nicht, worüber du dich beklagst.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und se plaindre de → ce dont."
+  },
+  {
+    "fr": "Raconte-moi ___ tu rêves.",
+    "de": "Erzähl mir, wovon du träumst.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und rêver de → ce dont."
+  },
+  {
+    "fr": "___ il s'agit est très sérieux.",
+    "de": "Worum es geht, ist sehr ernst.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und il s'agit de → ce dont."
+  },
+  {
+    "fr": "Il a enfin obtenu ___ il rêvait.",
+    "de": "Er hat endlich bekommen, wovon er träumte.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und rêver de → ce dont."
+  },
+  {
+    "fr": "Prends ___ tu as besoin.",
+    "de": "Nimm, was du brauchst.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und avoir besoin de → ce dont."
+  },
+  {
+    "fr": "___ nous avons discuté reste entre nous.",
+    "de": "Worüber wir gesprochen haben, bleibt unter uns.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und discuter de → ce dont."
+  },
+  {
+    "fr": "C'est exactement ___ je me doutais.",
+    "de": "Das ist genau das, was ich vermutet hatte.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und se douter de → ce dont."
+  },
+  {
+    "fr": "Il oublie toujours ___ il est responsable.",
+    "de": "Er vergisst immer, wofür er verantwortlich ist.",
+    "answer": "ce dont",
+    "distractors": ["ce que", "ce qui", "dont"],
+    "explanation": "Kein Bezugswort und être responsable de → ce dont."
   }
 ]
