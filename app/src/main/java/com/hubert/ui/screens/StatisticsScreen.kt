@@ -439,6 +439,8 @@ private fun gameTypeColor(gameType: GameType): Color {
         GameType.RELATIVE_PRONOUN -> Color(0xFF3F51B5)
         GameType.NUMBERS -> NombrezColor
         GameType.AGREEMENT -> AccordezColor
+        GameType.LISTENING -> FrenchBlue
+        GameType.RECALL -> CorrectGreen
         GameType.PARLEZ -> ParlezTeal
     }
 }

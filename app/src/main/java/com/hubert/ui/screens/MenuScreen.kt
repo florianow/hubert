@@ -45,7 +45,7 @@ fun MenuScreen(
     onMenuDuJour: () -> Unit,
     learningOverview: LearningOverview?,
     onShowProgress: () -> Unit,
-    onStartReview: () -> Unit,
+    onStartLearning: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
@@ -141,6 +141,22 @@ fun MenuScreen(
             }
         }
 
+        // "Vokabeln lernen" — works through today's due words, game by game
+        Spacer(Modifier.height(6.dp))
+        OutlinedButton(
+            onClick = onStartLearning,
+            modifier = Modifier.fillMaxWidth().height(48.dp),
+            shape = RoundedCornerShape(16.dp),
+            border = androidx.compose.foundation.BorderStroke(1.5.dp, LernenGreen),
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = LernenGreen)
+        ) {
+            Text(
+                text = learningOverview?.dueToday?.takeIf { it > 0 }?.let { "🔁 Vokabeln lernen · $it fällig" } ?: "🔁 Vokabeln lernen",
+                fontWeight = FontWeight.Bold,
+                fontSize = 15.sp
+            )
+        }
+
         // Learning path at a glance — tap for the weekly report
         if (learningOverview != null && learningOverview.known + learningOverview.learning > 0) {
             Row(
@@ -156,7 +172,7 @@ fun MenuScreen(
                 ProgressFigure("${learningOverview.known}", "sicher")
                 ProgressFigure("${learningOverview.learning}", "lernend")
                 // Tapping the due count starts a review round right away
-                ProgressFigure("${learningOverview.dueToday} ▶", "heute fällig", onClick = onStartReview)
+                ProgressFigure("${learningOverview.dueToday} ▶", "heute fällig", onClick = onStartLearning)
                 ProgressFigure("≈ ${learningOverview.estimatedLevel}", "Wortschatz")
             }
         }

@@ -22,6 +22,9 @@ interface WordProgressDao {
     @Query("SELECT rank FROM word_progress WHERE dueDay <= :today ORDER BY dueDay ASC, rank ASC LIMIT :limit")
     suspend fun dueRanks(today: Long, limit: Int): List<Int>
 
+    @Query("SELECT * FROM word_progress WHERE dueDay <= :today ORDER BY dueDay ASC, rank ASC LIMIT :limit")
+    suspend fun dueProgress(today: Long, limit: Int): List<WordProgress>
+
     @Query("SELECT COUNT(*) FROM word_progress WHERE dueDay <= :today")
     suspend fun countDue(today: Long): Int
 

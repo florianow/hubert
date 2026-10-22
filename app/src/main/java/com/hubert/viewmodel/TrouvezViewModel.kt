@@ -34,9 +34,8 @@ data class TrouvezState(
     val isPinSelection: Boolean = false,
     val isModeSelection: Boolean = false,
     val isCategorySelection: Boolean = false,
-    // "Wiederholen": only words due for review today (spaced repetition)
+    // Round of "Vokabeln lernen": due words from the learning mode, learned words as filler
     val isReviewMode: Boolean = false,
-    val reviewDueCount: Int = 0,
     val availableCategories: List<String> = emptyList(),
     val categorySizes: Map<String, Int> = emptyMap(),
     val selectedCategory: String? = null,
@@ -200,22 +199,6 @@ class TrouvezViewModel @Inject constructor(
             )
         }
         loadMenuScores()
-        refreshDueCount()
-    }
-
-    private fun refreshDueCount() {
-        viewModelScope.launch {
-            val due = learningRepository.overview().dueToday
-            _uiState.update { it.copy(reviewDueCount = due) }
-        }
-    }
-
-    /** Wiederholen: a round with only today's due words (most overdue and frequent first). */
-    fun startReview() {
-        _uiState.update {
-            it.copy(isReviewMode = true, selectedCategory = null, isModeSelection = false, isCategorySelection = false, isPinSelection = false)
-        }
-        startGame()
     }
 
     fun showCategorySelection() {
@@ -303,7 +286,9 @@ class TrouvezViewModel @Inject constructor(
         focusPool.clear()
         if (stage != null) {
             focusPool.addAll(stage.focusRanks.mapNotNull { vocabRepository.getWordByRank(it) })
-            _uiState.update { it.copy(selectedCategory = stage.category) }
+            _uiState.update { it.copy(selectedCategory = stage.category, isReviewMode = stage.learningRound) }
+        } else {
+            _uiState.update { it.copy(isReviewMode = false) }
         }
         nextPairId = 0
         answerLog.clear()
@@ -331,7 +316,6 @@ class TrouvezViewModel @Inject constructor(
                 masteredWords = it.masteredWords,
                 selectedCategory = it.selectedCategory,
                 isReviewMode = it.isReviewMode,
-                reviewDueCount = it.reviewDueCount,
                 availableCategories = it.availableCategories,
                 categoryHighScores = it.categoryHighScores,
                 bestCategoryName = it.bestCategoryName,
@@ -350,11 +334,8 @@ class TrouvezViewModel @Inject constructor(
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
             }
-            if (stage == null && _uiState.value.isReviewMode) {
-                // Wiederholen: due words only; learned words fill in once they are all on the board
-                focusPool.addAll(
-                    learningRepository.dueRanks(REVIEW_ROUND_LIMIT).mapNotNull { vocabRepository.getWordByRank(it) }
-                )
+            if (_uiState.value.isReviewMode) {
+                // Learning round: the given due words first; learned words fill in once they are all on the board
                 reviewFiller = learningRepository.practiceRanks(REVIEW_ROUND_LIMIT)
                     .mapNotNull { vocabRepository.getWordByRank(it) }
             } else if (stage == null && _uiState.value.selectedCategory == null) {
@@ -749,8 +730,6 @@ class TrouvezViewModel @Inject constructor(
             )
 
             statisticsRepository.saveWordAttempts("matching", answerLog)
-            // Review mode: how many are still due after this round (answers are already counted)
-            val stillDue = if (state.isReviewMode) learningRepository.overview().dueToday else 0
 
             // Load accuracy for all words that appeared in this run (includes updated counts)
             val runWords = answerLog.map { it.question }.distinct()
@@ -764,8 +743,7 @@ class TrouvezViewModel @Inject constructor(
                     highScore = maxOf(it.highScore, state.score),
                     durationMs = durationMs,
                     answerHistory = answerLog.toList(),
-                    wordStreaks = it.wordStreaks + accuracy,
-                    reviewDueCount = stillDue
+                    wordStreaks = it.wordStreaks + accuracy
                 )
             }
         }

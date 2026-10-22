@@ -77,7 +77,6 @@ private fun categoryEmoji(name: String): String = when (name) {
 @Composable
 fun TrouvezModeScreen(
     state: TrouvezState,
-    onReview: () -> Unit,
     onThemenTraining: () -> Unit,
     onFreierModus: () -> Unit,
     onBack: () -> Unit
@@ -115,17 +114,6 @@ fun TrouvezModeScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            ModeCard(
-                emoji = "🔁",
-                title = if (state.reviewDueCount > 0) "Wiederholen · ${state.reviewDueCount} fällig" else "Wiederholen",
-                description = if (state.reviewDueCount > 0) "Nur deine heute fälligen Vokabeln – die überfälligsten zuerst. Richtige verschwinden aus „fällig“."
-                              else "Heute ist nichts fällig 🎉 – du übst bereits gelernte Wörter.",
-                accentColor = CorrectGreen,
-                onClick = onReview
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             ModeCard(
                 emoji = "📚",
@@ -621,7 +609,7 @@ fun TrouvezScreen(
 
             // Active category badge
             val chipText = when {
-                state.isReviewMode -> "🔁 Wiederholen · ${state.reviewDueCount} fällig"
+                state.isReviewMode -> "🔁 Vokabeln lernen"
                 state.selectedCategory != null -> "${categoryEmoji(state.selectedCategory)} ${state.selectedCategory}"
                 else -> null
             }

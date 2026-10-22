@@ -21,6 +21,11 @@ import com.hubert.viewmodel.MenuDuJourViewModel
 import com.hubert.viewmodel.NombrezViewModel
 import com.hubert.viewmodel.AccordezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
+import com.hubert.viewmodel.LernenViewModel
+import com.hubert.viewmodel.LernRundeViewModel
+import com.hubert.viewmodel.LernRundeKind
+import com.hubert.viewmodel.LernSpiel
+import com.hubert.viewmodel.StageConfig
 import com.hubert.viewmodel.TrouvezViewModel
 import com.hubert.viewmodel.CompletezViewModel
 import com.hubert.viewmodel.ClassezViewModel
@@ -62,6 +67,7 @@ enum class Screen {
     ACCORDEZ,
     PARLEZ,
     MENU_DU_JOUR,
+    LERNEN,
     STATISTICS,
     SETTINGS
 }
@@ -83,6 +89,8 @@ fun HubertApp() {
     val settingsVm: SettingsViewModel = hiltViewModel()
     val menuVm: MenuDuJourViewModel = hiltViewModel()
     val weeklyVm: WeeklyReportViewModel = hiltViewModel()
+    val lernenVm: LernenViewModel = hiltViewModel()
+    val lernRundeVm: LernRundeViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
@@ -99,6 +107,8 @@ fun HubertApp() {
     val settingsState by settingsVm.settings.collectAsState()
     val menuState by menuVm.uiState.collectAsState()
     val weeklyState by weeklyVm.uiState.collectAsState()
+    val lernenState by lernenVm.uiState.collectAsState()
+    val lernRundeState by lernRundeVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
 
@@ -119,6 +129,27 @@ fun HubertApp() {
                 CourseGame.ACCORDEZ -> accordezVm.startGame(config)
             }
         }
+    }
+
+    // "Vokabeln lernen" — start the planned round in its game
+    val startLearningRound: () -> Unit = {
+        val round = lernenVm.uiState.value.nextRound
+        if (round != null) {
+            when (round.spiel) {
+                LernSpiel.TROUVEZ -> matchingVm.startGame(
+                    StageConfig(TrouvezViewModel.GAME_TIME_MS, category = null, focusRanks = round.ranks, learningRound = true)
+                )
+                LernSpiel.COMPLETEZ -> gapFillVm.startGame(
+                    StageConfig(CompletezViewModel.GAME_TIME_MS, category = null, focusRanks = round.ranks, learningRound = true)
+                )
+                LernSpiel.ECOUTEZ -> lernRundeVm.start(LernRundeKind.LISTEN, round.ranks)
+                LernSpiel.RAPPEL -> lernRundeVm.start(LernRundeKind.RECALL, round.ranks)
+            }
+        }
+    }
+    val startLearning: () -> Unit = {
+        lernenVm.start()
+        currentScreen = Screen.LERNEN
     }
 
     // Navigate based on game states
@@ -258,9 +289,35 @@ fun HubertApp() {
             currentScreen = Screen.MENU_DU_JOUR
         }
     }
+    // "Vokabeln lernen" — finished rounds report back to the learning overview
+    LaunchedEffect(matchingState.isGameOver) {
+        if (matchingState.isGameOver && lernenVm.uiState.value.isRunning) {
+            lernenVm.onRoundFinished(matchingState.answerHistory)
+            matchingVm.resetToMenu()
+            currentScreen = Screen.LERNEN
+        }
+    }
+    LaunchedEffect(gapFillState.isGameOver) {
+        if (gapFillState.isGameOver && lernenVm.uiState.value.isRunning) {
+            lernenVm.onRoundFinished(gapFillState.answerHistory)
+            gapFillVm.resetToMenu()
+            currentScreen = Screen.LERNEN
+        }
+    }
+    LaunchedEffect(lernRundeState.isFinished) {
+        if (lernRundeState.isFinished && lernenVm.uiState.value.isRunning) {
+            lernenVm.onRoundFinished(lernRundeState.answerHistory)
+            lernRundeVm.reset()
+        }
+    }
+
     // Quitting any course (or the menu card) back to the main menu abandons the menu
     LaunchedEffect(currentScreen) {
         if (currentScreen == Screen.MENU) menuVm.refreshOverview()
+        if (currentScreen == Screen.MENU && lernenVm.uiState.value.isRunning) {
+            lernenVm.stop()
+            lernRundeVm.reset()
+        }
         if (currentScreen == Screen.MENU && menuVm.uiState.value.isRunning) {
             menuVm.reset()
         }
@@ -279,6 +336,26 @@ fun HubertApp() {
     }
 
     when (currentScreen) {
+        Screen.LERNEN -> {
+            if (lernRundeState.isActive && !lernRundeState.isFinished) {
+                LernRundeScreen(
+                    state = lernRundeState,
+                    onChoice = { lernRundeVm.answerChoice(it) },
+                    onTyped = { lernRundeVm.onTypedTextChanged(it) },
+                    onSubmit = { lernRundeVm.submitTyped() },
+                    onNext = { lernRundeVm.next() },
+                    onSpeak = { lernRundeVm.speak() },
+                    onQuit = { currentScreen = Screen.MENU }
+                )
+            } else {
+                LernenScreen(
+                    state = lernenState,
+                    onContinue = startLearningRound,
+                    onStop = { currentScreen = Screen.MENU }
+                )
+            }
+        }
+
         Screen.MENU_DU_JOUR -> {
             when {
                 menuState.isChoosingType -> {
@@ -362,7 +439,6 @@ fun HubertApp() {
                 matchingState.isModeSelection -> {
                     TrouvezModeScreen(
                         state = matchingState,
-                        onReview = { matchingVm.startReview() },
                         onThemenTraining = { matchingVm.showCategorySelection() },
                         onFreierModus = { matchingVm.showPinSelection() },
                         onBack = {
@@ -411,13 +487,9 @@ fun HubertApp() {
                         }
                     )
                 }
-                matchingState.isGameOver && !menuState.isRunning -> {
+                matchingState.isGameOver && !menuState.isRunning && !lernenState.isRunning -> {
                     GameOverScreen(
-                        title = when {
-                            !matchingState.isReviewMode -> "TIME'S UP!"
-                            matchingState.reviewDueCount == 0 -> "ALLES WIEDERHOLT!"
-                            else -> "NOCH ${matchingState.reviewDueCount} FÄLLIG"
-                        },
+                        title = "TIME'S UP!",
                         score = matchingState.score,
                         isNewHighScore = matchingState.isNewHighScore,
                         totalCorrect = matchingState.totalMatches,
@@ -429,9 +501,7 @@ fun HubertApp() {
                         pinnedRanks = matchingState.pinnedRanks,
                         onTogglePin = { matchingVm.togglePin(it) },
                         wordStreaks = matchingState.wordStreaks,
-                        onPlayAgain = {
-                            if (matchingState.isReviewMode) matchingVm.startReview() else matchingVm.startGame()
-                        },
+                        onPlayAgain = { matchingVm.startGame() },
                         onBackToMenu = {
                             matchingVm.resetToMenu()
                             currentScreen = Screen.MENU
@@ -510,7 +580,7 @@ fun HubertApp() {
                         }
                     )
                 }
-                gapFillState.isGameOver && !menuState.isRunning -> {
+                gapFillState.isGameOver && !menuState.isRunning && !lernenState.isRunning -> {
                     GameOverScreen(
                         title = "TIME'S UP!",
                         score = gapFillState.score,
@@ -1005,7 +1075,7 @@ fun HubertApp() {
                 parlezHighScore = parlezState.highScore,
                 learningOverview = menuState.overview,
                 onShowProgress = { weeklyVm.open(0) },
-                onStartReview = { matchingVm.startReview() },
+                onStartLearning = startLearning,
                 onMenuDuJour = {
                     menuVm.showMenuSelection()
                     currentScreen = Screen.MENU_DU_JOUR

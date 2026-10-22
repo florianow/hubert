@@ -31,7 +31,8 @@ data class StageConfig(
     val timeMs: Long,
     val category: String?,
     val focusRanks: List<Int>,
-    val grammarFocus: Set<String> = emptySet()
+    val grammarFocus: Set<String> = emptySet(),
+    val learningRound: Boolean = false     // "Vokabeln lernen": focus words only, learned words as filler
 )
 
 /** A game that can be served as a course. [gameType] matches the GameSession keys. */

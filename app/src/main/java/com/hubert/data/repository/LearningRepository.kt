@@ -110,6 +110,8 @@ class LearningRepository @Inject constructor(
 
     suspend fun dueRanks(limit: Int): List<Int> = progressDao.dueRanks(today(), limit)
 
+    suspend fun dueProgress(limit: Int): List<WordProgress> = progressDao.dueProgress(today(), limit)
+
     /** Words introduced today (new words of the day). */
     suspend fun introducedToday(): List<Int> = progressDao.introducedOn(today())
 
