@@ -7,6 +7,9 @@ import com.hubert.data.repository.ParcoursProgress
 import com.hubert.data.repository.ParcoursRepository
 import com.hubert.data.repository.ParcoursUnit
 import com.hubert.data.repository.SettingsRepository
+import com.hubert.data.repository.VocabRepository
+import com.hubert.data.model.ParlezTopic
+import com.hubert.data.model.VocabHint
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +37,7 @@ data class ParcoursState(
 class ParcoursViewModel @Inject constructor(
     private val parcoursRepository: ParcoursRepository,
     settingsRepository: SettingsRepository,
+    private val vocabRepository: VocabRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -100,4 +104,30 @@ class ParcoursViewModel @Inject constructor(
     }
 
     fun speak(text: String) = frenchTts.speak(text)
+
+    /** The étape's conversation as a Parlez! topic; hints are the theme's most frequent words. */
+    fun parlezTopic(unit: ParcoursUnit): ParlezTopic? {
+        val p = unit.parlez ?: return null
+        val index = _uiState.value.units.indexOf(unit)
+        val hints = vocabRepository.getWordsInCategory(unit.theme)
+            .sortedBy { it.rank }
+            .take(PARLEZ_HINTS)
+            .map { VocabHint(fr = it.french, de = it.german) }
+        return ParlezTopic(
+            id = "parcours_${unit.id}",
+            themeFr = p.themeFr,
+            themeDe = "🧭 Étape ${index + 1}: ${unit.title}",
+            niveau = unit.level.take(2),
+            descriptionDe = "Grammatik-Ziel: ${unit.title}",
+            scenarioDe = p.scenarioDe,
+            hubertRoleFr = p.hubertRoleFr,
+            starterFr = p.starterFr,
+            vocabHints = hints,
+            grammarFr = p.grammarFr
+        )
+    }
+
+    companion object {
+        const val PARLEZ_HINTS = 6
+    }
 }

@@ -57,6 +57,7 @@ data class ParcoursActions(
     val jumpTo: (ParcoursUnit) -> Unit,
     val setEnabled: (Boolean) -> Unit,
     val startMenu: () -> Unit,
+    val startParlez: (ParcoursUnit) -> Unit,
     val speak: (String) -> Unit
 )
 
@@ -98,7 +99,8 @@ private fun Overview(state: ParcoursState, actions: ParcoursActions) {
         Header("Parcours", actions.back)
         Text(
             text = "${state.progress.passed.size} von ${state.units.size} Étapes geschafft · " +
-                "Leçon lesen → ${ParcoursRepository.MENUS_BEFORE_CONTROL} Menüs → Contrôle (Complet ab 12/20)",
+                "Leçon lesen → ${ParcoursRepository.MENUS_BEFORE_CONTROL} Menüs → Contrôle (Complet ab 12/20). " +
+                "Bestandene Étapes kommen nach 3, 7, 21 und 60 Tagen als Révision ins Menü zurück.",
             fontSize = 12.sp,
             color = muted,
             modifier = Modifier.padding(horizontal = 4.dp)
@@ -173,6 +175,14 @@ private fun UnitRow(index: Int, unit: ParcoursUnit, progress: ParcoursProgress, 
         Column(modifier = Modifier.weight(1f)) {
             Text(unit.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
             Text("${unit.theme} · ${parcoursGameName(unit.game)}", fontSize = 12.sp, color = muted)
+            progress.reviews[unit.id]?.let { r ->
+                val days = r.dueDay - java.time.LocalDate.now().toEpochDay()
+                Text(
+                    text = if (days <= 0) "🔁 Wiederholung fällig – kommt im nächsten Menü" else "🔁 Wiederholung in $days ${if (days == 1L) "Tag" else "Tagen"}",
+                    fontSize = 11.sp,
+                    color = if (days <= 0) ParcoursBlue else muted
+                )
+            }
         }
         if (current) Text("jetzt", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = ParcoursBlue)
     }
@@ -227,6 +237,22 @@ private fun UnitDetail(unit: ParcoursUnit, state: ParcoursState, actions: Parcou
         }
 
         Spacer(Modifier.weight(1f))
+        if (unit.parlez != null) {
+            OutlinedButton(
+                onClick = { actions.startParlez(unit) },
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text("🗣️ Parlez! – „${unit.parlez.themeFr}“", color = ParcoursBlue)
+            }
+            Text(
+                text = "Freies Gespräch mit Hubert, das genau diese Grammatik braucht (optional).",
+                fontSize = 11.sp,
+                color = muted,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 8.dp)
+            )
+        }
         if (current) {
             Button(
                 onClick = actions.startMenu,

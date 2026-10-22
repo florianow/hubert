@@ -11,5 +11,6 @@ data class ParlezTopic(
     val scenarioDe: String = "",   // Situation + what the player should do (shown in UI)
     val hubertRoleFr: String = "", // Hubert's role in French (fed to system prompt)
     val starterFr: String,         // Hubert's opening line
-    val vocabHints: List<VocabHint> = emptyList()
+    val vocabHints: List<VocabHint> = emptyList(),
+    val grammarFr: String = ""     // Parcours: grammar goal Hubert steers towards (prompt + evaluation)
 )

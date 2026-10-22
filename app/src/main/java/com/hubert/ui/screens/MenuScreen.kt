@@ -539,6 +539,14 @@ private fun ParcoursCard(parcours: ParcoursStatus?, onShowParcours: () -> Unit, 
             }
             ParcoursChip("🎓 Contrôle", false)
         }
+        if (parcours.dueReviews > 0) {
+            Text(
+                text = "🔁 ${parcours.dueReviews} ${if (parcours.dueReviews == 1) "Étape" else "Étapes"} zur Wiederholung – kommt als Révision ins nächste Menü",
+                fontSize = 12.sp,
+                color = ParcoursBlue,
+                modifier = Modifier.padding(top = 6.dp)
+            )
+        }
         if (!parcours.lessonRead) {
             Spacer(Modifier.height(8.dp))
             OutlinedButton(

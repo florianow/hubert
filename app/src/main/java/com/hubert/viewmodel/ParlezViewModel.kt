@@ -85,6 +85,7 @@ data class ParlezState(
     val availableTopics:  List<ParlezTopic>  = emptyList(),
     val selectedTopic:    ParlezTopic?       = null,
     val selectedNiveau:   String             = "A1",
+    val pinnedTopic:      ParlezTopic?       = null,   // Parcours étape's conversation, listed first
     val topicHighScores:  Map<String, Int>   = emptyMap(),  // topicId -> best score
 
     // Conversation
@@ -175,6 +176,12 @@ class ParlezViewModel @Inject constructor(
     }
 
     // ── Public API ─────────────────────────────────────────────────────────────
+
+    /** Opens the topic selection with the étape's conversation pinned on top and selected. */
+    fun openWithTopic(topic: ParlezTopic) {
+        _uiState.update { it.copy(pinnedTopic = topic, selectedTopic = topic, selectedNiveau = topic.niveau) }
+        onGameSelected()
+    }
 
     fun onGameSelected() {
         val s = _uiState.value
@@ -339,6 +346,7 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
             highScore       = s.highScore,
             topicHighScores = s.topicHighScores,
             selectedNiveau  = s.selectedNiveau,
+            pinnedTopic     = s.pinnedTopic,
             isTopicSelection = true
         )
     }
@@ -667,7 +675,7 @@ Réponds UNIQUEMENT avec un tableau JSON de 3 strings, sans markdown:
 Tu es Hubert, un assistant de conversation français amical et patient.
 $roleInstruction
 CONTEXTE: Tu aides un germanophone à pratiquer le français oral dans une conversation de 2 minutes sur le thème: "${topic.themeFr}".
-
+${if (topic.grammarFr.isNotBlank()) "\nOBJECTIF GRAMMATICAL: ${topic.grammarFr}\nOriente tes questions pour que le joueur doive utiliser cette structure. Utilise-la toi-même comme modèle.\n" else ""}
 RÈGLES DE CONVERSATION:
 1. Parle UNIQUEMENT en français, niveau $niveau
 2. Pose des questions ouvertes pour faire parler le joueur
@@ -709,7 +717,7 @@ TRANSCRIPTION COMPLÈTE (avec les réponses de Hubert):
 $fullTranscript
 
 THÈME: ${topic.themeFr}
-NIVEAU CIBLE: $niveau
+${if (topic.grammarFr.isNotBlank()) "POINT DE GRAMMAIRE TRAVAILLÉ: ${topic.grammarFr}\nDans le critère GRAMMAIRE et dans le conseil, dis en particulier si le joueur a bien utilisé cette structure.\n" else ""}NIVEAU CIBLE: $niveau
 
 Évalue selon 5 critères (chacun sur 20 pts):
 1. VOCABULAIRE — variété, adéquation au thème

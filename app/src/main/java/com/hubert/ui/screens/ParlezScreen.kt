@@ -51,8 +51,10 @@ fun ParlezTopicSelectionScreen(
     onBack: () -> Unit
 ) {
     val niveaux = listOf("A1", "A2", "B1", "B2")
-    val filtered = if (state.availableTopics.isEmpty()) emptyList()
-                   else state.availableTopics.filter { it.niveau == state.selectedNiveau }
+    // The Parcours étape's conversation (if opened from there) comes first, whatever the level
+    val filtered = listOfNotNull(state.pinnedTopic) +
+        (if (state.availableTopics.isEmpty()) emptyList()
+         else state.availableTopics.filter { it.niveau == state.selectedNiveau })
 
     Column(
         modifier = Modifier

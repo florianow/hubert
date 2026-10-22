@@ -19,7 +19,14 @@
    }
   ],
   "game": "gender_snap",
-  "focus": []
+  "focus": [],
+  "parlez": {
+   "themeFr": "Ma famille",
+   "scenarioDe": "Stell deine Familie vor: Wer gehört dazu, was machen sie?",
+   "hubertRoleFr": "",
+   "starterFr": "Salut ! Parle-moi un peu de ta famille. Tu as des frères et sœurs ?",
+   "grammarFr": "Fais parler le joueur de personnes et de choses avec beaucoup de noms et leur article (le, la, un, une, les)."
+  }
  },
  {
   "id": 2,
@@ -39,7 +46,14 @@
   "game": "conjugation",
   "focus": [
    "present"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Chez moi",
+   "scenarioDe": "Beschreibe deine Wohnung und was du dort jeden Tag machst.",
+   "hubertRoleFr": "",
+   "starterFr": "Bonjour ! Tu habites où ? Décris-moi ton appartement !",
+   "grammarFr": "Pose des questions sur les habitudes quotidiennes pour que le joueur utilise le présent (je fais, je prends, je vais)."
+  }
  },
  {
   "id": 3,
@@ -56,7 +70,14 @@
   "focus": [
    "NUMBERS_100",
    "NUMBERS_1000"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Au marché",
+   "scenarioDe": "Du kaufst auf dem Markt ein: Mengen und Preise.",
+   "hubertRoleFr": "Tu es marchand(e) de fruits et légumes au marché.",
+   "starterFr": "Bonjour ! Qu'est-ce qu'il vous faut aujourd'hui ? Les tomates sont à trois euros le kilo.",
+   "grammarFr": "Parle de quantités et de prix pour que le joueur utilise beaucoup de nombres."
+  }
  },
  {
   "id": 4,
@@ -78,7 +99,14 @@
    "TIME",
    "DATES",
    "DAYS_MONTHS"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Prendre rendez-vous",
+   "scenarioDe": "Vereinbare einen Arzttermin: Tag, Datum, Uhrzeit.",
+   "hubertRoleFr": "Tu es la secrétaire d'un cabinet médical.",
+   "starterFr": "Cabinet du docteur Martin, bonjour ! Vous voulez prendre rendez-vous ?",
+   "grammarFr": "Demande le jour, la date et l'heure ; propose des créneaux (le mardi douze, à quinze heures trente)."
+  }
  },
  {
   "id": 5,
@@ -101,7 +129,14 @@
    "au",
    "aux",
    "de"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Demander le chemin",
+   "scenarioDe": "Du suchst in einer fremden Stadt den Weg.",
+   "hubertRoleFr": "Tu es un passant sympathique qui connaît bien la ville.",
+   "starterFr": "Bonjour ! Vous cherchez quelque chose ? Je connais bien le quartier.",
+   "grammarFr": "Fais utiliser les prépositions de lieu : à, en, dans, sur, chez, au (aller à la gare, en France, chez le médecin)."
+  }
  },
  {
   "id": 6,
@@ -123,7 +158,14 @@
    }
   ],
   "game": "gender_snap",
-  "focus": []
+  "focus": [],
+  "parlez": {
+   "themeFr": "Décrire quelqu'un",
+   "scenarioDe": "Beschreibe Menschen, die dir wichtig sind: Aussehen und Charakter.",
+   "hubertRoleFr": "",
+   "starterFr": "Dis-moi, comment est ton meilleur ami ? Il est comment ?",
+   "grammarFr": "Fais décrire des personnes avec des adjectifs (accord masculin/féminin et pluriel, place de l'adjectif)."
+  }
  },
  {
   "id": 7,
@@ -143,7 +185,14 @@
   "game": "conjugation",
   "focus": [
    "present"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Dans une boutique",
+   "scenarioDe": "Du kaufst Kleidung: Größe, Farbe, Anprobe.",
+   "hubertRoleFr": "Tu es vendeur / vendeuse dans une boutique de vêtements.",
+   "starterFr": "Bonjour ! Vous cherchez quelque chose de particulier ? Vous faites quelle taille ?",
+   "grammarFr": "Fais utiliser avoir et être (j'ai besoin de, je suis grand, c'est trop petit, j'ai froid)."
+  }
  },
  {
   "id": 8,
@@ -160,7 +209,14 @@
   "focus": [
    "passe_compose",
    "present"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Le repas d'hier",
+   "scenarioDe": "Erzähl, was du gestern gegessen und getrunken hast.",
+   "hubertRoleFr": "",
+   "starterFr": "Salut ! Qu'est-ce que tu as mangé hier soir ?",
+   "grammarFr": "Pose des questions sur le passé pour que le joueur utilise le passé composé avec avoir (j'ai mangé, j'ai bu, j'ai pris)."
+  }
  },
  {
   "id": 9,
@@ -176,7 +232,14 @@
   "game": "agreement",
   "focus": [
    "ETRE"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mon dernier voyage",
+   "scenarioDe": "Erzähl von deiner letzten Reise: Wohin, wie, wann angekommen?",
+   "hubertRoleFr": "",
+   "starterFr": "Alors, tu es parti en voyage récemment ? Tu es allé où ?",
+   "grammarFr": "Fais raconter un trajet au passé composé avec être (je suis parti, je suis arrivé, nous sommes allés) avec l'accord du participe."
+  }
  },
  {
   "id": 10,
@@ -193,7 +256,14 @@
   "focus": [
    "imperatif",
    "present"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Un ami malade",
+   "scenarioDe": "Hubert ist krank. Gib ihm Ratschläge – im Imperativ.",
+   "hubertRoleFr": "Tu es un ami malade qui demande des conseils.",
+   "starterFr": "Oh là là, j'ai mal à la tête et je tousse depuis hier… Qu'est-ce que je dois faire ?",
+   "grammarFr": "Demande des conseils pour que le joueur utilise l'impératif (bois, reste au lit, prends un médicament)."
+  }
  },
  {
   "id": 11,
@@ -214,7 +284,14 @@
    "pendant",
    "en",
    "dans"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Le sport et moi",
+   "scenarioDe": "Erzähl, welchen Sport du machst – seit wann, wie lange, wann.",
+   "hubertRoleFr": "",
+   "starterFr": "Tu fais du sport ? Depuis quand ?",
+   "grammarFr": "Fais utiliser les prépositions de temps : depuis, pendant, avant, après, en, dans (depuis deux ans, pendant une heure)."
+  }
  },
  {
   "id": 12,
@@ -235,7 +312,14 @@
   "focus": [
    "qui",
    "que"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Les gens que j'admire",
+   "scenarioDe": "Erzähl von Menschen, die du bewunderst.",
+   "hubertRoleFr": "",
+   "starterFr": "Parle-moi d'une personne que tu admires. C'est quelqu'un qui fait quoi ?",
+   "grammarFr": "Pousse le joueur à faire des phrases relatives avec qui et que (une amie qui…, le livre que…)."
+  }
  },
  {
   "id": 13,
@@ -256,7 +340,14 @@
   "focus": [
    "REFLEXIVE",
    "ETRE"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Ma routine",
+   "scenarioDe": "Dein Tagesablauf und wie du mit anderen auskommst.",
+   "hubertRoleFr": "",
+   "starterFr": "À quelle heure tu te lèves le matin ? Et tu t'entends bien avec tes collègues ?",
+   "grammarFr": "Fais utiliser des verbes pronominaux (se lever, se dépêcher, s'entendre, se rencontrer), au présent et au passé composé."
+  }
  },
  {
   "id": 14,
@@ -277,7 +368,14 @@
   "focus": [
    "à",
    "de"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Apprendre",
+   "scenarioDe": "Was willst du lernen, was hast du angefangen, was ist dir gelungen?",
+   "hubertRoleFr": "",
+   "starterFr": "Qu'est-ce que tu as envie d'apprendre cette année ? Tu as déjà commencé ?",
+   "grammarFr": "Fais utiliser des verbes + à/de + infinitif (commencer à, essayer de, avoir envie de, réussir à, arrêter de)."
+  }
  },
  {
   "id": 15,
@@ -298,7 +396,14 @@
    "par",
    "contre",
    "selon"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mon téléphone et moi",
+   "scenarioDe": "Wofür nutzt du Handy und Internet – und ginge es ohne?",
+   "hubertRoleFr": "",
+   "starterFr": "Tu pourrais vivre sans ton téléphone ? Tu l'utilises pour quoi ?",
+   "grammarFr": "Fais utiliser avec, sans, pour, par, contre, selon."
+  }
  },
  {
   "id": 16,
@@ -319,7 +424,14 @@
   "focus": [
    "NUMBERS_BIG",
    "DATES"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mon budget",
+   "scenarioDe": "Rede über Ausgaben, Preise und Anteile deines Budgets.",
+   "hubertRoleFr": "",
+   "starterFr": "Combien tu dépenses par mois pour le logement ? C'est le premier poste de ton budget ?",
+   "grammarFr": "Fais utiliser de grands nombres, des fractions et des ordinaux (le premier, la moitié, un tiers, mille deux cents euros)."
+  }
  },
  {
   "id": 17,
@@ -336,7 +448,14 @@
   "focus": [
    "imparfait",
    "passe_compose"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Quand j'étais petit",
+   "scenarioDe": "Erzähl von deiner Kindheit: Wie war es, was hast du immer gemacht?",
+   "hubertRoleFr": "",
+   "starterFr": "Quand tu étais enfant, tu passais tes vacances où ? C'était comment ?",
+   "grammarFr": "Fais décrire des souvenirs et des habitudes passées à l'imparfait (j'allais, il faisait beau, on jouait)."
+  }
  },
  {
   "id": 18,
@@ -353,7 +472,14 @@
   "focus": [
    "futur",
    "present"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mes projets",
+   "scenarioDe": "Wetter fürs Wochenende und deine Pläne für die Zukunft.",
+   "hubertRoleFr": "",
+   "starterFr": "Quel temps fera-t-il ce week-end chez toi ? Et qu'est-ce que tu feras ?",
+   "grammarFr": "Fais parler de l'avenir avec le futur simple (il fera beau, je partirai, nous verrons)."
+  }
  },
  {
   "id": 19,
@@ -375,7 +501,14 @@
    "conditionnel",
    "imparfait",
    "futur"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Si j'étais artiste",
+   "scenarioDe": "Was würdest du tun, wenn …? Hypothesen rund um Kunst und Kultur.",
+   "hubertRoleFr": "",
+   "starterFr": "Si tu avais beaucoup de temps libre, quel art est-ce que tu pratiquerais ?",
+   "grammarFr": "Pose des questions hypothétiques pour faire utiliser si + imparfait et le conditionnel (si j'avais…, je ferais…)."
+  }
  },
  {
   "id": 20,
@@ -398,7 +531,14 @@
    "que",
    "dont",
    "où"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Un fait divers",
+   "scenarioDe": "Erzähl von einem Fall aus den Nachrichten: Wo, wer, worum ging es?",
+   "hubertRoleFr": "",
+   "starterFr": "Tu as entendu parler de cette affaire dont tout le monde parle ? Raconte-moi ce que tu sais.",
+   "grammarFr": "Pousse le joueur à utiliser dont et où (la ville où…, l'homme dont on parle…)."
+  }
  },
  {
   "id": 21,
@@ -427,7 +567,14 @@
    "aux",
    "du",
    "des"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Une conversation importante",
+   "scenarioDe": "Erzähl von einem wichtigen Gespräch: mit wem, worüber, worum gebeten?",
+   "hubertRoleFr": "",
+   "starterFr": "Tu te souviens de la dernière conversation importante que tu as eue ? Tu as parlé à qui ?",
+   "grammarFr": "Fais utiliser des verbes avec à et de (parler à/de, demander à, se souvenir de, répondre à, s'occuper de)."
+  }
  },
  {
   "id": 22,
@@ -443,7 +590,14 @@
   "game": "agreement",
   "focus": [
    "AVOIR"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Ma semaine de travail",
+   "scenarioDe": "Was hast du diese Woche erledigt – und was ist daraus geworden?",
+   "hubertRoleFr": "",
+   "starterFr": "Les dossiers que tu as traités cette semaine, ils étaient compliqués ?",
+   "grammarFr": "Fais utiliser le passé composé avec un complément placé avant (la lettre que j'ai écrite, je les ai finies)."
+  }
  },
  {
   "id": 23,
@@ -474,7 +628,14 @@
    "pour",
    "contre",
    "en"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Un débat",
+   "scenarioDe": "Bist du dafür oder dagegen? Diskutiere über Politik.",
+   "hubertRoleFr": "",
+   "starterFr": "Tu es pour ou contre le vote à seize ans ? Pourquoi ?",
+   "grammarFr": "Fais utiliser être pour/contre, compter sur, croire en, voter pour, en avoir assez."
+  }
  },
  {
   "id": 24,
@@ -491,7 +652,14 @@
   "focus": [
    "subjonctif",
    "mood_question"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Opinions et souhaits",
+   "scenarioDe": "Was muss passieren, was wünschst du dir, woran zweifelst du?",
+   "hubertRoleFr": "",
+   "starterFr": "Qu'est-ce qu'il faut que tu fasses cette semaine ? Et qu'est-ce que tu veux que je fasse pour toi ?",
+   "grammarFr": "Provoque le subjonctif (il faut que, je veux que, bien que, je doute que, avant que)."
+  }
  },
  {
   "id": 25,
@@ -511,7 +679,14 @@
    "ce dont",
    "qui",
    "que"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mon métier idéal",
+   "scenarioDe": "Was zählt für dich im Beruf, was brauchst du, was gefällt dir?",
+   "hubertRoleFr": "",
+   "starterFr": "Ce qui compte le plus pour toi dans un travail, c'est quoi ?",
+   "grammarFr": "Fais utiliser ce qui, ce que, ce dont (ce qui me plaît, ce dont j'ai besoin)."
+  }
  },
  {
   "id": 26,
@@ -534,7 +709,14 @@
    "auxquels",
    "duquel",
    "desquels"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Mes études",
+   "scenarioDe": "Erzähl von Schule, Studium und den Fächern, für die du brennst.",
+   "hubertRoleFr": "",
+   "starterFr": "Quelle est la matière pour laquelle tu étais le plus doué à l'école ?",
+   "grammarFr": "Fais utiliser lequel, laquelle, auquel, duquel après une préposition (la raison pour laquelle, le projet auquel je pense)."
+  }
  },
  {
   "id": 27,
@@ -556,6 +738,13 @@
    "imparfait",
    "conditionnel",
    "passe_compose"
-  ]
+  ],
+  "parlez": {
+   "themeFr": "Rapporter une conversation",
+   "scenarioDe": "Gib wieder, was jemand zu dir gesagt oder dich gefragt hat.",
+   "hubertRoleFr": "",
+   "starterFr": "Qu'est-ce que ton chef t'a dit à la dernière réunion ? Il a dit qu'il était content ?",
+   "grammarFr": "Fais rapporter des paroles au discours indirect (il a dit que…, il m'a demandé si…) avec la concordance des temps."
+  }
  }
 ]

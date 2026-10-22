@@ -73,10 +73,15 @@ data class Course(
     val goal: String,
     val game: CourseGame,
     val grammarFocus: Set<String> = emptySet(),
-    val part: MenuPart = MenuPart.THEME
+    val part: MenuPart = MenuPart.THEME,
+    val reviewOf: Int? = null           // Parcours Révision: id of the passed étape it repeats
 ) {
     /** Key for stored course scores; the two Trouvez! courses (own words / theme) stay apart. */
-    val scoreKey: String get() = if (part == MenuPart.LEARNING) "learning_${game.gameType}" else game.gameType
+    val scoreKey: String get() = when {
+        part == MenuPart.LEARNING -> "learning_${game.gameType}"
+        reviewOf != null -> "review_${game.gameType}"
+        else -> game.gameType
+    }
 }
 
 private val APERITIF = Course("Apéritif", "Neue & fällige Wörter wiedererkennen", CourseGame.TROUVEZ, part = MenuPart.LEARNING)
@@ -250,15 +255,16 @@ class MenuDuJourViewModel @Inject constructor(
             )
         }
         viewModelScope.launch {
-            val chef = Course("Plat du chef", "", dailyGrammarGame())
             val learningPart = hasLearningPart()
             val parcours = parcoursRepository.status()
+            val chef = chefCourse(parcours)
+            val review = reviewCourse(parcours)
             _uiState.update {
                 it.copy(
                     dailyCategory = dailyCategory(categories),
                     parcours = parcours,
-                    expressPreview = expressCourses(learningPart, chef.takeIf { parcours != null }).joinToString(" · ") { c -> c.game.gameName },
-                    completPreview = completCourses(chef, learningPart).joinToString(" · ") { c -> c.game.gameName }
+                    expressPreview = expressCourses(learningPart, chef.takeIf { parcours != null }, review).joinToString(" · ") { c -> courseLabel(c) },
+                    completPreview = completCourses(chef, learningPart, review).joinToString(" · ") { c -> courseLabel(c) }
                 )
             }
         }
@@ -315,8 +321,8 @@ class MenuDuJourViewModel @Inject constructor(
             // 4th course alternates daily: Fromage (Classez!) before or Café (Nombrez!) after the Dessert;
             // without part 1 (Anki) the Plat (Complétez!) takes the Apéritif's place
             // In the Parcours the Express also serves the étape's grammar game
-            MenuType.EXPRESS -> expressCourses(learningPart, if (parcours != null) chefCourse(parcours) else null)
-            MenuType.COMPLET -> completCourses(chefCourse(parcours), learningPart)
+            MenuType.EXPRESS -> expressCourses(learningPart, if (parcours != null) chefCourse(parcours) else null, reviewCourse(parcours))
+            MenuType.COMPLET -> completCourses(chefCourse(parcours), learningPart, reviewCourse(parcours))
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
         }
         _uiState.update {
@@ -474,7 +480,14 @@ class MenuDuJourViewModel @Inject constructor(
                     durationMs = durationMs
                 )
             )
-            val outcome = state.parcours?.let { recordParcours(it, state.menuType, overall) }
+            val outcome = state.parcours?.let { status ->
+                val reviews = results.filter { it.course.reviewOf != null }.map { r ->
+                    val days = parcoursRepository.recordReview(r.course.reviewOf!!, r.score)
+                    "🔁 Révision ${r.course.goal.substringBefore(':')}: " +
+                        if (r.score >= ParcoursRepository.REVIEW_PASS_SCORE) "sitzt – wieder in $days Tagen" else "noch wacklig – morgen nochmal"
+                }
+                (listOf(recordParcours(status, state.menuType, overall)) + reviews).joinToString("\n")
+            }
             _uiState.update {
                 it.copy(
                     parcoursOutcome = outcome,
@@ -545,11 +558,23 @@ class MenuDuJourViewModel @Inject constructor(
      * the theme words), the grammar course and 2 of Complétez / Classez / Écrivez / Nombrez —
      * a different pair each day, served in menu order. Without part 1 (Anki) it is 3 of them.
      */
-    private fun expressCourses(learningPart: Boolean, chef: Course? = null): List<Course> {
+    private fun expressCourses(learningPart: Boolean, chef: Course? = null, review: Course? = null): List<Course> {
         val opener = if (learningPart) listOf(APERITIF, ENTREE) else listOf(ENTREE, PLAT)
-        if (chef != null) return opener + listOf(chef, DESSERT)
+        // A due Révision takes the Dessert's place
+        if (chef != null) return opener + listOf(chef, review ?: DESSERT)
         return if (LocalDate.now().toEpochDay() % 2 == 0L) opener + listOf(FROMAGE, DESSERT)
                else opener + listOf(DESSERT, CAFE)
+    }
+
+    /** Game name for the line-up preview; a Révision is marked as such. */
+    private fun courseLabel(c: Course): String = if (c.reviewOf != null) "🔁 ${c.game.gameName}" else c.game.gameName
+
+    /** Révision of a passed étape whose grammar is due again (Parcours only). */
+    private suspend fun reviewCourse(parcours: ParcoursStatus?): Course? {
+        if (parcours == null) return null
+        val due = parcoursRepository.dueReview() ?: return null
+        val game = CourseGame.entries.firstOrNull { it.gameType == due.unit.game } ?: return null
+        return Course("Révision", "Étape ${due.index + 1}: ${due.unit.title}", game, due.unit.focus.toSet(), reviewOf = due.unit.id)
     }
 
     /** The grammar course: the étape's game and focus in the Parcours, otherwise the game you need most. */
@@ -564,13 +589,13 @@ class MenuDuJourViewModel @Inject constructor(
         return Course("Plat du chef", goal, grammar, focus)
     }
 
-    private fun completCourses(chef: Course, learningPart: Boolean): List<Course> {
+    private fun completCourses(chef: Course, learningPart: Boolean, review: Course? = null): List<Course> {
         // The chef's game (Classez!/Nombrez! in some étapes) is not served twice
         val rotation = CourseGame.COMPLET_ROTATION - chef.game
         val first = (LocalDate.now().toEpochDay() % rotation.size).toInt()
-        val count = if (learningPart) 2 else 3
+        val count = (if (learningPart) 2 else 3) - (if (review != null) 1 else 0)
         val today = (0 until count).map { rotation[(first + it) % rotation.size] }.toSet()
-        val opener = if (learningPart) listOf(APERITIF, ENTREE, chef) else listOf(ENTREE, chef)
+        val opener = (if (learningPart) listOf(APERITIF, ENTREE, chef) else listOf(ENTREE, chef)) + listOfNotNull(review)
         return opener + listOf(PLAT, FROMAGE, DESSERT, CAFE).filter { it.game in today }
     }
 

@@ -466,6 +466,12 @@ fun HubertApp() {
                         menuVm.showMenuSelection()
                         currentScreen = Screen.MENU_DU_JOUR
                     },
+                    startParlez = { unit ->
+                        parcoursVm.parlezTopic(unit)?.let { topic ->
+                            parlezVm.openWithTopic(topic)
+                            currentScreen = Screen.PARLEZ
+                        }
+                    },
                     speak = { parcoursVm.speak(it) }
                 )
             )
