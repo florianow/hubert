@@ -33,6 +33,7 @@ import com.hubert.ui.theme.*
 import com.hubert.viewmodel.LernRundeKind
 import com.hubert.viewmodel.LernRundeState
 import com.hubert.viewmodel.LernSpiel
+import com.hubert.viewmodel.LernReport
 import com.hubert.viewmodel.LernStufe
 import com.hubert.viewmodel.LernenState
 
@@ -52,6 +53,7 @@ fun LernenScreen(
     state: LernenState,
     onContinue: () -> Unit,
     onContinuePastLimit: () -> Unit,
+    onFinish: () -> Unit,
     onStop: () -> Unit
 ) {
     Column(
@@ -185,13 +187,122 @@ fun LernenScreen(
         if (state.results.isNotEmpty() || state.isDone) {
             Spacer(Modifier.height(8.dp))
             OutlinedButton(
-                onClick = onStop,
+                onClick = if (state.results.isNotEmpty()) onFinish else onStop,
                 modifier = Modifier.fillMaxWidth().height(52.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(if (state.isDone) "Zurück zum Menü" else "Fertig für heute")
+                Text(if (state.results.isEmpty()) "Zurück zum Menü" else "Fertig für heute")
             }
         }
+    }
+}
+
+/** Short report after "Fertig für heute". */
+@Composable
+fun LernReportScreen(report: LernReport, onClose: () -> Unit) {
+    val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(1f).verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.height(24.dp))
+            Text(
+                text = when {
+                    report.accuracy >= 90 -> "🌟"
+                    report.accuracy >= 70 -> "👍"
+                    else -> "💪"
+                },
+                fontSize = 48.sp
+            )
+            Text("Bilan du jour", fontSize = 28.sp, fontWeight = FontWeight.Black, color = LernenGreen)
+            Spacer(Modifier.height(20.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                ReportFigure("${report.words}", "Wörter geübt")
+                ReportFigure("${report.accuracy} %", "richtig")
+                ReportFigure(if (report.minutes < 1) "<1" else "${report.minutes}", "Minuten")
+            }
+            Spacer(Modifier.height(20.dp))
+            if (report.dueAtStart > 0) {
+                val progress = report.doneToday.toFloat() / report.dueAtStart
+                Text(
+                    text = "${report.doneToday} von ${report.dueAtStart} fälligen erledigt",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(6.dp))
+                LinearProgressIndicator(
+                    progress = { progress.coerceIn(0f, 1f) },
+                    modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
+                    color = LernenGreen,
+                    trackColor = LernenGreen.copy(alpha = 0.15f)
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = if (report.stillDue == 0) "Alles geschafft für heute 🎉" else "Noch ${report.stillDue} offen – die kannst du später machen.",
+                    fontSize = 12.sp,
+                    color = muted,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(20.dp))
+            }
+            Text("Runden", fontWeight = FontWeight.Bold, fontSize = 14.sp, modifier = Modifier.fillMaxWidth())
+            Spacer(Modifier.height(4.dp))
+            report.perGame.forEach { r ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(r.spiel.title, fontSize = 14.sp, modifier = Modifier.weight(1f))
+                    Text("✓ ${r.correct}", color = CorrectGreen, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.width(10.dp))
+                    Text("✗ ${r.wrong}", color = WrongRed, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+            if (report.toReview.isNotEmpty()) {
+                Spacer(Modifier.height(20.dp))
+                Text("À revoir", fontWeight = FontWeight.Bold, fontSize = 14.sp, modifier = Modifier.fillMaxWidth())
+                Text(
+                    text = "Zuletzt falsch – die kommen bald wieder.",
+                    fontSize = 12.sp,
+                    color = muted,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(4.dp))
+                report.toReview.take(12).forEach { w ->
+                    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
+                        Text(w.french, fontSize = 14.sp, fontWeight = FontWeight.Medium, modifier = Modifier.weight(1f))
+                        Text(w.german, fontSize = 14.sp, color = muted, modifier = Modifier.weight(1f), textAlign = TextAlign.End)
+                    }
+                }
+                if (report.toReview.size > 12) {
+                    Text("… und ${report.toReview.size - 12} weitere", fontSize = 12.sp, color = muted, modifier = Modifier.fillMaxWidth())
+                }
+            }
+        }
+        Spacer(Modifier.height(8.dp))
+        Button(
+            onClick = onClose,
+            modifier = Modifier.fillMaxWidth().height(56.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = LernenGreen)
+        ) {
+            Text("Zurück zum Menü", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        }
+    }
+}
+
+@Composable
+private fun ReportFigure(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, fontSize = 26.sp, fontWeight = FontWeight.Black, color = LernenGreen)
+        Text(label, fontSize = 12.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f))
     }
 }
 

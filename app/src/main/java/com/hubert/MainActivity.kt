@@ -375,11 +375,14 @@ fun HubertApp() {
                     onSpeak = { lernRundeVm.speak() },
                     onQuit = { currentScreen = Screen.MENU }
                 )
+            } else if (lernenState.report != null) {
+                LernReportScreen(report = lernenState.report!!, onClose = { currentScreen = Screen.MENU })
             } else {
                 LernenScreen(
                     state = lernenState,
                     onContinue = startLearningRound,
                     onContinuePastLimit = { lernenVm.continuePastLimit() },
+                    onFinish = { lernenVm.finish() },
                     onStop = { currentScreen = Screen.MENU }
                 )
             }

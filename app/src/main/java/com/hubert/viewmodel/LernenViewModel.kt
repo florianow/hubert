@@ -43,6 +43,25 @@ data class LernRunde(val spiel: LernSpiel, val ranks: List<Int>, val stufe: Lern
 
 data class RundenErgebnis(val spiel: LernSpiel, val correct: Int, val wrong: Int)
 
+/** A word answered wrong in the session (and not got right afterwards). */
+data class LernFehler(val french: String, val german: String)
+
+/** Short report after "Fertig für heute". */
+data class LernReport(
+    val words: Int,              // different words practised
+    val correct: Int,
+    val wrong: Int,
+    val rounds: Int,
+    val minutes: Int,
+    val dueAtStart: Int,
+    val stillDue: Int,
+    val perGame: List<RundenErgebnis>,
+    val toReview: List<LernFehler>
+) {
+    val accuracy: Int get() = if (correct + wrong == 0) 0 else correct * 100 / (correct + wrong)
+    val doneToday: Int get() = (dueAtStart - stillDue).coerceAtLeast(0)
+}
+
 data class LernenState(
     val isRunning: Boolean = false,
     val isLoading: Boolean = false,
@@ -51,7 +70,8 @@ data class LernenState(
     val ignoringLimit: Boolean = false,
     val duePerStufe: Map<LernStufe, Int> = emptyMap(),
     val nextRound: LernRunde? = null,
-    val results: List<RundenErgebnis> = emptyList()
+    val results: List<RundenErgebnis> = emptyList(),
+    val report: LernReport? = null
 ) {
     val isDone: Boolean get() = !isLoading && dueTotal == 0
     val limitReached: Boolean get() = isDone && dueBeyondLimit > 0
@@ -78,6 +98,9 @@ class LernenViewModel @Inject constructor(
     private var contextRounds = 0
     private var recallRounds = 0
     private var lastStufe: LernStufe? = null
+    private val answers = mutableListOf<AnswerRecord>()
+    private var dueAtStart = -1
+    private var startTime = 0L
     private var ignoreLimit = false
 
     companion object {
@@ -89,6 +112,9 @@ class LernenViewModel @Inject constructor(
         contextRounds = 0
         recallRounds = 0
         lastStufe = null
+        answers.clear()
+        dueAtStart = -1
+        startTime = System.currentTimeMillis()
         ignoreLimit = false
         _uiState.value = LernenState(isRunning = true, isLoading = true)
         viewModelScope.launch {
@@ -101,6 +127,7 @@ class LernenViewModel @Inject constructor(
     /** Called by the navigation layer when a round's game is over. */
     fun onRoundFinished(answers: List<AnswerRecord>) {
         val round = _uiState.value.nextRound ?: return
+        this.answers += answers
         val correct = answers.count { it.isCorrect }
         _uiState.update {
             it.copy(
@@ -120,6 +147,31 @@ class LernenViewModel @Inject constructor(
         ignoreLimit = true
         _uiState.update { it.copy(isLoading = true, ignoringLimit = true) }
         planNextRound()
+    }
+
+    /** "Fertig für heute": a short report of the session (nothing to report → null). */
+    fun finish() {
+        val state = _uiState.value
+        if (state.results.isEmpty()) return
+        // Words still wrong at their last answer of the session
+        val lastByRank = answers.filter { it.rank >= 0 }.groupBy { it.rank }.mapValues { it.value.last() }
+        val toReview = lastByRank.filterValues { !it.isCorrect }.keys.mapNotNull { rank ->
+            vocabRepository.getWordByRank(rank)?.let { LernFehler(it.french, it.german) }
+        }
+        val report = LernReport(
+            words = answers.filter { it.rank >= 0 }.map { it.rank }.distinct().size,
+            correct = state.results.sumOf { it.correct },
+            wrong = state.results.sumOf { it.wrong },
+            rounds = state.results.size,
+            minutes = ((System.currentTimeMillis() - startTime) / 60_000).toInt(),
+            dueAtStart = dueAtStart.coerceAtLeast(0),
+            stillDue = state.dueTotal + state.dueBeyondLimit,
+            perGame = state.results.groupBy { it.spiel }.map { (spiel, list) ->
+                RundenErgebnis(spiel, list.sumOf { it.correct }, list.sumOf { it.wrong })
+            },
+            toReview = toReview
+        )
+        _uiState.update { it.copy(report = report) }
     }
 
     fun stop() {
@@ -154,6 +206,7 @@ class LernenViewModel @Inject constructor(
                 val batch = if (spiel == LernSpiel.COMPLETEZ) completezWords else words
                 LernRunde(spiel, batch.take(spiel.batchSize), it)
             }
+            if (dueAtStart < 0) dueAtStart = due.size + beyondLimit
             _uiState.update {
                 it.copy(
                     isLoading = false,
