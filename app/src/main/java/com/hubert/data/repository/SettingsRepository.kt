@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -47,6 +48,8 @@ class SettingsRepository @Inject constructor(
         private val KEY_ANKI_ENABLED = booleanPreferencesKey("anki_enabled")
         private val KEY_ANKI_DECK = stringPreferencesKey("anki_deck")
         private val KEY_ANKI_LAST_SYNC = stringPreferencesKey("anki_last_sync")
+        private val KEY_DUE_REVIEWS_DAY = stringPreferencesKey("due_reviews_day")
+        private val KEY_DUE_REVIEWS_COUNT = intPreferencesKey("due_reviews_count")
     }
 
     /** Monday (ISO date) of the last week whose report was shown automatically. */
@@ -66,6 +69,20 @@ class SettingsRepository @Inject constructor(
 
     suspend fun saveAnkiLastSync(summary: String) {
         context.globalSettingsDataStore.edit { prefs -> prefs[KEY_ANKI_LAST_SYNC] = summary }
+    }
+
+    /** Due reviews done on [day] (epoch day) — what the daily review limit counts. */
+    suspend fun dueReviewsOn(day: Long): Int {
+        val prefs = context.globalSettingsDataStore.data.first()
+        return if (prefs[KEY_DUE_REVIEWS_DAY] == day.toString()) prefs[KEY_DUE_REVIEWS_COUNT] ?: 0 else 0
+    }
+
+    suspend fun addDueReviewsToday(day: Long, count: Int) {
+        context.globalSettingsDataStore.edit { prefs ->
+            val sameDay = prefs[KEY_DUE_REVIEWS_DAY] == day.toString()
+            prefs[KEY_DUE_REVIEWS_DAY] = day.toString()
+            prefs[KEY_DUE_REVIEWS_COUNT] = (if (sameDay) prefs[KEY_DUE_REVIEWS_COUNT] ?: 0 else 0) + count
+        }
     }
 
     suspend fun saveDailyReviewLimit(limit: Int) {

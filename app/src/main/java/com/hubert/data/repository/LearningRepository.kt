@@ -72,6 +72,9 @@ class LearningRepository @Inject constructor(
             val state = progressDao.getByRanks(relevant.map { it.rank }.distinct())
                 .associateBy { it.rank }
                 .toMutableMap()
+            // Only words that were actually due count against the daily limit
+            val dueReviewed = state.values.count { it.dueDay <= today && it.lastReviewDay != today }
+            if (dueReviewed > 0) settingsRepository.addDueReviewsToday(today, dueReviewed)
             for (answer in relevant) {
                 state[answer.rank] = SpacedRepetition.review(state[answer.rank], answer.rank, answer.isCorrect, strength, today)
             }
@@ -115,12 +118,13 @@ class LearningRepository @Inject constructor(
 
     /**
      * How many more reviews fit into today's limit (Einstellungen → Wiederholungen pro Tag).
-     * Words beyond it stay due and move up on the next days, most overdue/frequent first.
+     * Only due words count (not filler or free-play words); words beyond the limit stay due
+     * and move up on the next days, most overdue/frequent first.
      */
     suspend fun remainingToday(): Int {
         val limit = settingsRepository.settings.first().dailyReviewLimit
         if (limit <= 0) return Int.MAX_VALUE
-        return (limit - progressDao.countReviewedOn(today())).coerceAtLeast(0)
+        return (limit - settingsRepository.dueReviewsOn(today())).coerceAtLeast(0)
     }
 
     suspend fun dueRanks(limit: Int): List<Int> =
