@@ -94,6 +94,10 @@ Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, gram
 
 **L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
 
+### Dites!
+
+The Anki routine with pronunciation feedback: see the German word and example sentence, translate it in your head, reveal the French word and sentence (read aloud), **speak the sentence** and get it scored by Azure — mispronounced words turn red — then rate yourself "Wusste ich" / "Wusste ich nicht". Ten cards per session, due words with an example sentence first. The self-rating counts as recall in Hubert's schedule; nothing is written to Anki. Without an Azure key everything works except the scoring.
+
 ### Accordez!
 
 Past participle agreement — pick the correctly agreed form (écrit / écrite / écrits / écrites). After each answer the full sentence and the rule are shown. Questions are generated from curated patterns (`AccordezQuestionGenerator`, unit-tested):

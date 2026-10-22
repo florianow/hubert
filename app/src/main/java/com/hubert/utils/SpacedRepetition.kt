@@ -13,7 +13,7 @@ enum class ReviewStrength(val growthShare: Double) {
 
     companion object {
         fun forGameType(gameType: String): ReviewStrength? = when (gameType) {
-            "spelling_bee", "recall" -> RECALL
+            "spelling_bee", "recall", "phrases" -> RECALL
             "matching", "gender_snap", "gap_fill", "listening" -> RECOGNITION
             else -> null      // grammar/number games don't review vocab words
         }

@@ -22,6 +22,7 @@ import com.hubert.viewmodel.NombrezViewModel
 import com.hubert.viewmodel.AccordezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.LernenViewModel
+import com.hubert.viewmodel.DitesViewModel
 import com.hubert.viewmodel.LernRundeViewModel
 import com.hubert.viewmodel.LernRundeKind
 import com.hubert.viewmodel.LernSpiel
@@ -68,6 +69,7 @@ enum class Screen {
     PARLEZ,
     MENU_DU_JOUR,
     LERNEN,
+    DITES,
     STATISTICS,
     SETTINGS
 }
@@ -91,6 +93,7 @@ fun HubertApp() {
     val weeklyVm: WeeklyReportViewModel = hiltViewModel()
     val lernenVm: LernenViewModel = hiltViewModel()
     val lernRundeVm: LernRundeViewModel = hiltViewModel()
+    val ditesVm: DitesViewModel = hiltViewModel()
 
     val matchingState by matchingVm.uiState.collectAsState()
     val genderSnapState by genderSnapVm.uiState.collectAsState()
@@ -111,6 +114,7 @@ fun HubertApp() {
     val weeklyState by weeklyVm.uiState.collectAsState()
     val lernenState by lernenVm.uiState.collectAsState()
     val lernRundeState by lernRundeVm.uiState.collectAsState()
+    val ditesState by ditesVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
 
@@ -338,6 +342,20 @@ fun HubertApp() {
     }
 
     when (currentScreen) {
+        Screen.DITES -> {
+            DitesScreen(
+                state = ditesState,
+                onReveal = { ditesVm.reveal() },
+                onListen = { ditesVm.listen() },
+                onToggleRecording = { ditesVm.toggleRecording() },
+                onRate = { ditesVm.rate(it) },
+                onQuit = {
+                    ditesVm.reset()
+                    currentScreen = Screen.MENU
+                }
+            )
+        }
+
         Screen.LERNEN -> {
             if (lernRundeState.isActive && !lernRundeState.isFinished) {
                 LernRundeScreen(
@@ -1100,6 +1118,10 @@ fun HubertApp() {
                 onStartRelativisez = { relativisezVm.showSelection() },
                 onStartNombrez = { nombrezVm.showSelection() },
                 onStartAccordez = { accordezVm.showSelection() },
+                onStartDites = {
+                    ditesVm.start()
+                    currentScreen = Screen.DITES
+                },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {

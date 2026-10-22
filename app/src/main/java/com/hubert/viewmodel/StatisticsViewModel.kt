@@ -33,6 +33,7 @@ enum class GameType(val key: String, val displayName: String) {
     AGREEMENT("agreement", "Accordez!"),
     LISTENING("listening", "Écoutez!"),
     RECALL("recall", "Rappel"),
+    PHRASES("phrases", "Dites!"),
     PARLEZ("parlez", "Parlez!");
 
     companion object {

@@ -441,6 +441,7 @@ private fun gameTypeColor(gameType: GameType): Color {
         GameType.AGREEMENT -> AccordezColor
         GameType.LISTENING -> FrenchBlue
         GameType.RECALL -> CorrectGreen
+        GameType.PHRASES -> DitesColor
         GameType.PARLEZ -> ParlezTeal
     }
 }
