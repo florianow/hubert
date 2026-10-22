@@ -56,7 +56,6 @@ fun MenuScreen(
     onStartRelativisez: () -> Unit,
     onStartNombrez: () -> Unit,
     onStartAccordez: () -> Unit,
-    onStartDites: () -> Unit,
     onStartParlez: () -> Unit,
     onShowSettings: () -> Unit,
     onShowStatistics: () -> Unit
@@ -314,15 +313,7 @@ fun MenuScreen(
                     onClick = onStartAccordez,
                     modifier = Modifier.weight(1f).fillMaxHeight()
                 )
-                GridGameCard(
-                    title = "Dites!",
-                    description = "Satz übersetzen & sprechen",
-                    accentColor = DitesColor,
-                    highScore = 0,
-                    subScore = "wie Anki, mit Aussprache",
-                    onClick = onStartDites,
-                    modifier = Modifier.weight(1f).fillMaxHeight()
-                )
+                Spacer(modifier = Modifier.weight(1f))
             }
         }
     }

@@ -33,6 +33,7 @@ enum class LernSpiel(val title: String, val stufe: LernStufe, val batchSize: Int
     TROUVEZ("Trouvez!", LernStufe.ERKENNEN, 20),
     ECOUTEZ("Écoutez!", LernStufe.ERKENNEN, 15),
     COMPLETEZ("Complétez!", LernStufe.IM_SATZ, 10),
+    DITES("Dites!", LernStufe.IM_SATZ, 8),
     RAPPEL("Rappel", LernStufe.ABRUFEN, 10)
 }
 
@@ -70,6 +71,7 @@ class LernenViewModel @Inject constructor(
     val uiState: StateFlow<LernenState> = _uiState.asStateFlow()
 
     private var recognitionRounds = 0
+    private var contextRounds = 0
     private var ignoreLimit = false
 
     companion object {
@@ -78,6 +80,7 @@ class LernenViewModel @Inject constructor(
 
     fun start() {
         recognitionRounds = 0
+        contextRounds = 0
         ignoreLimit = false
         _uiState.value = LernenState(isRunning = true, isLoading = true)
         planNextRound()
@@ -94,6 +97,7 @@ class LernenViewModel @Inject constructor(
             )
         }
         if (round.spiel.stufe == LernStufe.ERKENNEN) recognitionRounds++
+        if (round.spiel.stufe == LernStufe.IM_SATZ) contextRounds++
         planNextRound()
     }
 
@@ -114,24 +118,23 @@ class LernenViewModel @Inject constructor(
             val beyondLimit = if (ignoreLimit) 0 else learningRepository.overview().dueBeyondLimit
             val byStufe = due.groupBy { LernStufe.of(it) }.mapValues { (_, list) -> list.map { it.rank } }.toMutableMap()
 
-            // Complétez! needs an example sentence; other "im Satz" words are recalled instead
+            // Complétez! needs one of its gap sentences; Dites! works with every word (deck examples)
             val withSentences = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
-            byStufe[LernStufe.IM_SATZ]?.let { context ->
-                val (ok, noSentence) = context.partition { it in withSentences }
-                byStufe[LernStufe.IM_SATZ] = ok
-                byStufe[LernStufe.ABRUFEN] = byStufe[LernStufe.ABRUFEN].orEmpty() + noSentence
-            }
 
             val stufe = LernStufe.entries
                 .filter { byStufe[it].orEmpty().isNotEmpty() }
                 .maxByOrNull { byStufe[it].orEmpty().size }
             val round = stufe?.let {
+                val words = byStufe[it].orEmpty()
+                val completezWords = words.filter { r -> r in withSentences }
                 val spiel = when (it) {
                     LernStufe.ERKENNEN -> if (recognitionRounds % 2 == 0) LernSpiel.TROUVEZ else LernSpiel.ECOUTEZ
-                    LernStufe.IM_SATZ -> LernSpiel.COMPLETEZ
+                    // "im Satz" alternates between Complétez! and Dites!
+                    LernStufe.IM_SATZ -> if (contextRounds % 2 == 0 && completezWords.isNotEmpty()) LernSpiel.COMPLETEZ else LernSpiel.DITES
                     LernStufe.ABRUFEN -> LernSpiel.RAPPEL
                 }
-                LernRunde(spiel, byStufe[it].orEmpty().take(spiel.batchSize))
+                val batch = if (spiel == LernSpiel.COMPLETEZ) completezWords else words
+                LernRunde(spiel, batch.take(spiel.batchSize))
             }
             _uiState.update {
                 it.copy(

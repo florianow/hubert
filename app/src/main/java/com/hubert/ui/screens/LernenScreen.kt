@@ -42,6 +42,7 @@ private fun spielBeschreibung(spiel: LernSpiel): String = when (spiel) {
     LernSpiel.TROUVEZ -> "Zuordnen – Wörter wiedererkennen"
     LernSpiel.ECOUTEZ -> "Hören – Bedeutung wählen"
     LernSpiel.COMPLETEZ -> "Im Satz – das passende Wort wählen"
+    LernSpiel.DITES -> "Satz bauen – ★ ist dein Wort"
     LernSpiel.RAPPEL -> "Abrufen – Französisch selbst tippen"
 }
 

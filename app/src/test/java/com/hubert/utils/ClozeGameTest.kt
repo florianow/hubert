@@ -63,6 +63,28 @@ class ClozeGameTest {
     }
 
     @Test
+    fun counts_errors_and_hints_for_self_grading() {
+        var game = ClozeGame.create(sentence, "prononcé")
+        game = game.tapTile(game.tiles.indexOfFirst { it.word == "la" })          // wrong
+        assertEquals(1, game.errors)
+        game = game.tapSlot(game.segments.indexOfFirst { it is ClozeGame.Segment.Slot && it.word == "Le" })
+        assertEquals(1, game.hints)
+        assertFalse(game.starHinted)
+        game = game.revealAllButStar()                                             // ⚡ is no hint
+        assertEquals(1, game.hints)
+        game = game.tapSlot(game.segments.indexOfFirst { it is ClozeGame.Segment.Slot && it.isStar })
+        assertTrue(game.starHinted)
+        assertTrue(game.isFinished)
+    }
+
+    @Test
+    fun give_up_reveals_everything_and_marks_the_star() {
+        val game = ClozeGame.create(sentence, "prononcé").revealAll()
+        assertTrue(game.isFinished)
+        assertTrue(game.starHinted)
+    }
+
+    @Test
     fun multi_word_target_and_duplicates() {
         val game = ClozeGame.create("Il a mis la table et la chaise.", "mis la table")
         assertEquals("mis la table", game.slots.single { it.isStar }.word)

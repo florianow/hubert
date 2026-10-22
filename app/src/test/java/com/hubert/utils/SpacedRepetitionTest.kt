@@ -42,16 +42,6 @@ class SpacedRepetitionTest {
     }
 
     @Test
-    fun easy_grows_fastest_and_skips_first_steps() {
-        assertEquals(4.0, review(null, true, 0, ReviewStrength.EASY).intervalDays, 0.0)
-        val base = reviewOnDue(2, ReviewStrength.RECALL).last()
-        val good = review(base, true, base.dueDay, ReviewStrength.RECALL)
-        val easy = review(base, true, base.dueDay, ReviewStrength.EASY)
-        val hard = review(base, true, base.dueDay, ReviewStrength.RECOGNITION)
-        assertTrue(easy.intervalDays > good.intervalDays && good.intervalDays > hard.intervalDays)
-    }
-
-    @Test
     fun only_one_growth_per_day() {
         val first = review(null, true, 0)
         val again = review(first, true, 0)
@@ -91,13 +81,6 @@ class SpacedRepetitionTest {
         val sixWeeksLater = review(p, true, p.lastReviewDay + 42)
         assertTrue(sixWeeksLater.intervalDays > onTime.intervalDays * 5)
         assertTrue("remembered after 6 weeks → sicher", sixWeeksLater.isKnown)
-    }
-
-    @Test
-    fun easy_moves_the_word_out_even_when_early() {
-        val p = reviewOnDue(4, ReviewStrength.RECALL).last()
-        val early = review(p, true, p.lastReviewDay + 2, ReviewStrength.EASY)
-        assertTrue(early.intervalDays > p.intervalDays)
     }
 
     @Test

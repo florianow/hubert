@@ -9,12 +9,16 @@ import java.util.Locale
  * - tiles are sorted alphabetically (German collation, case-insensitive), ★ appears once
  * - a tile is accepted only if it is the next hidden word; otherwise it is marked as error
  * - tapping a hidden slot reveals it as a hint; "lightning" reveals all but the ★
+ * It also counts wrong tiles and hints, so a round can grade itself (no self-rating).
  * Immutable: every action returns the next state.
  */
 data class ClozeGame(
     val segments: List<Segment>,
     val tiles: List<Tile>,
-    val errorTile: Int? = null
+    val errorTile: Int? = null,
+    val errors: Int = 0,          // wrong tiles tapped
+    val hints: Int = 0,           // hidden words revealed by tapping them
+    val starHinted: Boolean = false   // the target word itself was revealed as a hint
 ) {
     sealed interface Segment {
         data class Text(val text: String) : Segment
@@ -38,7 +42,7 @@ data class ClozeGame(
         if (tile.used) return this
         val next = firstHidden().takeIf { it >= 0 } ?: return this
         val slot = segments[next] as Segment.Slot
-        if (!matches(tile, slot)) return copy(errorTile = index)
+        if (!matches(tile, slot)) return copy(errorTile = index, errors = errors + 1)
         return reveal(next).useTile(index)
     }
 
@@ -46,16 +50,28 @@ data class ClozeGame(
     fun tapSlot(segmentIndex: Int): ClozeGame {
         val slot = segments.getOrNull(segmentIndex) as? Segment.Slot ?: return this
         if (slot.revealed) return this
+        return open(segmentIndex).copy(hints = hints + 1, starHinted = starHinted || slot.isStar)
+    }
+
+    /** ⚡: reveal everything except the target word (not a hint — the word is what is tested). */
+    fun revealAllButStar(): ClozeGame {
+        var game = this
+        segments.forEachIndexed { i, s -> if (s is Segment.Slot && !s.isStar && !s.revealed) game = game.open(i) }
+        return game
+    }
+
+    /** Give up: everything revealed, counts as not knowing the target. */
+    fun revealAll(): ClozeGame {
+        var game = this
+        segments.forEachIndexed { i, s -> if (s is Segment.Slot && !s.revealed) game = game.open(i) }
+        return game.copy(starHinted = game.starHinted || hasStar)
+    }
+
+    private fun open(segmentIndex: Int): ClozeGame {
+        val slot = segments[segmentIndex] as Segment.Slot
         val tileIndex = tiles.indexOfFirst { !it.used && matches(it, slot) }
         val revealed = reveal(segmentIndex)
         return if (tileIndex >= 0) revealed.useTile(tileIndex) else revealed
-    }
-
-    /** ⚡: reveal everything except the target word. */
-    fun revealAllButStar(): ClozeGame {
-        var game = this
-        segments.forEachIndexed { i, s -> if (s is Segment.Slot && !s.isStar && !s.revealed) game = game.tapSlot(i) }
-        return game
     }
 
     private fun reveal(index: Int): ClozeGame {

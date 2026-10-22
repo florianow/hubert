@@ -68,17 +68,9 @@ class LearningRepository @Inject constructor(
         review(answers.filter { it.rank >= 0 }.map { Triple(it.rank, it.isCorrect, strength) })
     }
 
-    /** Anki-style self rating from Dites!: null strength = "Nochmal" (forgotten). */
+    /** Graded outcome of one Dites! card: null strength = not known (lapse). */
     suspend fun recordGrade(rank: Int, strength: ReviewStrength?) {
         review(listOf(Triple(rank, strength != null, strength ?: ReviewStrength.RECALL)))
-    }
-
-    /** What each Anki button would do to [rank] now: next interval in days per grade. */
-    suspend fun previewIntervals(rank: Int): Map<ReviewStrength?, Double> {
-        val current = progressDao.getByRanks(listOf(rank)).firstOrNull()
-        val today = today()
-        return listOf<ReviewStrength?>(null, ReviewStrength.RECOGNITION, ReviewStrength.RECALL, ReviewStrength.EASY)
-            .associateWith { s -> SpacedRepetition.review(current, rank, s != null, s ?: ReviewStrength.RECALL, today).intervalDays }
     }
 
     private suspend fun review(items: List<Triple<Int, Boolean, ReviewStrength>>) {

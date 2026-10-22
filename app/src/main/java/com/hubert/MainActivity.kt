@@ -69,7 +69,6 @@ enum class Screen {
     PARLEZ,
     MENU_DU_JOUR,
     LERNEN,
-    DITES,
     STATISTICS,
     SETTINGS
 }
@@ -150,6 +149,7 @@ fun HubertApp() {
                 )
                 LernSpiel.ECOUTEZ -> lernRundeVm.start(LernRundeKind.LISTEN, round.ranks)
                 LernSpiel.RAPPEL -> lernRundeVm.start(LernRundeKind.RECALL, round.ranks)
+                LernSpiel.DITES -> ditesVm.start(round.ranks)
             }
         }
     }
@@ -310,6 +310,12 @@ fun HubertApp() {
             currentScreen = Screen.LERNEN
         }
     }
+    LaunchedEffect(ditesState.isFinished) {
+        if (ditesState.isFinished && lernenVm.uiState.value.isRunning) {
+            lernenVm.onRoundFinished(ditesState.answerHistory)
+            ditesVm.reset()
+        }
+    }
     LaunchedEffect(lernRundeState.isFinished) {
         if (lernRundeState.isFinished && lernenVm.uiState.value.isRunning) {
             lernenVm.onRoundFinished(lernRundeState.answerHistory)
@@ -323,6 +329,7 @@ fun HubertApp() {
         if (currentScreen == Screen.MENU && lernenVm.uiState.value.isRunning) {
             lernenVm.stop()
             lernRundeVm.reset()
+            ditesVm.reset()
         }
         if (currentScreen == Screen.MENU && menuVm.uiState.value.isRunning) {
             menuVm.reset()
@@ -342,35 +349,23 @@ fun HubertApp() {
     }
 
     when (currentScreen) {
-        Screen.DITES -> {
-            DitesScreen(
-                state = ditesState,
-                actions = DitesActions(
-                    startCloze = { ditesVm.startCloze() },
-                    lightning = { ditesVm.clozeLightning() },
-                    clozeTile = { ditesVm.tapClozeTile(it) },
-                    clozeSlot = { ditesVm.tapClozeSlot(it) },
-                    backClozeTile = { ditesVm.tapBackClozeTile(it) },
-                    backClozeSlot = { ditesVm.tapBackClozeSlot(it) },
-                    toggleBackCloze = { ditesVm.toggleBackCloze() },
-                    reveal = { ditesVm.reveal() },
-                    speakWord = { ditesVm.speakWord() },
-                    speakSentence = { ditesVm.speakSentence() },
-                    toggleTranslation = { ditesVm.toggleTranslation() },
-                    nextExample = { ditesVm.nextExample() },
-                    toggleConjugation = { ditesVm.toggleConjugation() },
-                    toggleRecording = { ditesVm.toggleRecording() },
-                    rate = { ditesVm.rate(it) },
-                    quit = {
-                        ditesVm.reset()
-                        currentScreen = Screen.MENU
-                    }
-                )
-            )
-        }
-
         Screen.LERNEN -> {
-            if (lernRundeState.isActive && !lernRundeState.isFinished) {
+            if (ditesState.isActive && !ditesState.isFinished) {
+                DitesScreen(
+                    state = ditesState,
+                    actions = DitesActions(
+                        tile = { ditesVm.tapTile(it) },
+                        slot = { ditesVm.tapSlot(it) },
+                        lightning = { ditesVm.lightning() },
+                        giveUp = { ditesVm.giveUp() },
+                        speakSentence = { ditesVm.speakSentence() },
+                        speakWord = { ditesVm.speakWord() },
+                        toggleRecording = { ditesVm.toggleRecording() },
+                        next = { ditesVm.next() },
+                        quit = { currentScreen = Screen.MENU }
+                    )
+                )
+            } else if (lernRundeState.isActive && !lernRundeState.isFinished) {
                 LernRundeScreen(
                     state = lernRundeState,
                     onChoice = { lernRundeVm.answerChoice(it) },
@@ -1131,10 +1126,6 @@ fun HubertApp() {
                 onStartRelativisez = { relativisezVm.showSelection() },
                 onStartNombrez = { nombrezVm.showSelection() },
                 onStartAccordez = { accordezVm.showSelection() },
-                onStartDites = {
-                    ditesVm.start()
-                    currentScreen = Screen.DITES
-                },
                 onStartParlez = { parlezVm.onGameSelected() },
                 onShowSettings = { currentScreen = Screen.SETTINGS },
                 onShowStatistics = {

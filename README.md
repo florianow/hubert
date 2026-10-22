@@ -68,7 +68,7 @@ Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word
 - At most one step per word and day — five correct answers in one round are one review.
 - A word is **sicher** once its interval reaches 3 weeks.
 
-**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first. **Vokabeln lernen** (main menu, or tapping "heute fällig") works through today's due words in rounds; each round takes the stage with the most due words and the matching game — *erkennen* (interval < 3 days): Trouvez! / **Écoutez!** (hear → pick the meaning), *im Satz* (3–10 days): Complétez!, *abrufen* (10+ days): **Rappel** (see the German meaning → type the French word; article and accents optional). After each round it shows what is still due.
+**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first. **Vokabeln lernen** (main menu, or tapping "heute fällig") works through today's due words in rounds; each round takes the stage with the most due words and the matching game — *erkennen* (interval < 3 days): Trouvez! / **Écoutez!** (hear → pick the meaning), *im Satz* (3–10 days): Complétez! / **Dites!** (rebuild the sentence, ★ = target), *abrufen* (10+ days): **Rappel** (see the German meaning → type the French word; article and accents optional). After each round it shows what is still due.
 
 **Progress:** the main menu shows known / learning / due today and a rough vocabulary level (A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 known words). On first start after the update, past answers are replayed once to seed the schedule; the resulting backlog is spread over two weeks.
 
@@ -94,16 +94,9 @@ Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, gram
 
 **L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
 
-### Dites!
+### Dites! (round in Vokabeln lernen)
 
-Modelled on the anki_french card templates, plus pronunciation feedback. Cards alternate between the deck's two directions (FR → DE and DE → FR) and use the deck's own example sentences (`examples.json`, up to 20 per word for all 5000 words, built by `scripts/build_examples.py`).
-
-- **Front**: the example sentence in the front language with the target word underlined; below it the **Lückenspiel**, first behind a blurred cover with ⚡ (only the target word is left to find), 🔊 (read the French sentence) and 🧩 (play). The other-language sentence is rebuilt by tapping alphabetically sorted word tiles in order — the target is the ★ tile, a wrong tile is outlined red, tapping a block reveals it as a hint, the finished sentence is read aloud (`utils/ClozeGame.kt`, unit-tested).
-- **Back**: rank, the French word with article, IPA and ▶, part of speech and the German meaning; the example box with counter (1/20), › for the next sentence and 🧩 to play it as a Lückenspiel — front language first, translation shown for the first example and as tap-to-reveal spoiler for the next ones, 🔊 for the French sentence; conjugation table for verbs.
-- **🎤** (Hubert's extra): speak the French sentence, Azure scores it and marks mispronounced words red.
-- **Nochmal / Schwer / Gut / Einfach** like Anki, each showing Hubert's next interval; grades go into Hubert's schedule only, nothing is written to Anki.
-
-Not built yet: the deck's grammar boxes (e.g. "B1 Verb + sur", "Thema …").
+Built on the anki_french **Lückenspiel**, but graded by the game instead of self-rating — Anki stays the place for the full card routine. The front shows a deck example sentence with the target word underlined; the sentence in the other language (DE → FR or FR → DE, alternating) is rebuilt by tapping alphabetically sorted word tiles in order, the target word being the ★ tile (`utils/ClozeGame.kt`, unit-tested). Result per card: **richtig** (no wrong tile, no hint) · **noch wacklig** (found with mistakes or hints) · **falsch** (target revealed or "Auflösen"); ⚡ (only the target left) is not counted as a hint. Afterwards: word, meaning and the French sentence with audio, plus optional speaking with an Azure score (not graded). Uses the deck's example sentences (`examples.json`, up to 20 per word, built by `scripts/build_examples.py`). In Vokabeln lernen the *im Satz* stage alternates between Complétez! and Dites!.
 
 ### Accordez!
 
