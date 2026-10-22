@@ -72,6 +72,8 @@ Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word
 
 **Progress:** the main menu shows known / learning / due today and a rough vocabulary level (A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 known words). On first start after the update, past answers are replayed once to seed the schedule; the resulting backlog is spread over two weeks.
 
+**Anki (read-only)** (Einstellungen → Mit Anki abgleichen): reads the player's AnkiDroid deck through AnkiDroid's public ContentProvider (`AnkiRepository`, permission `com.ichi2.anki.permission.READ_WRITE_DATABASE`, but Hubert only reads). Cards are matched to Hubert's words by the deck's rank field (the vocab comes from the same anki_french deck). Words started in Anki join Hubert's learning path (spread over a week), words Anki keeps for 3+ weeks get at least Anki's interval in Hubert, and Hubert stops introducing new words itself — Anki stays the place for deep learning, Hubert reinforces it in games. Runs on app start and via "Jetzt abgleichen". Nothing is ever written to Anki.
+
 **Daily review limit** (Einstellungen → Wiederholungen pro Tag: 50 / 100 / 150 / 200 / unbegrenzt, default 150): "heute fällig" only counts what still fits into today's limit (reviews already done today count against it); the rest stays due and moves up on the next days, most overdue and frequent first. Vokabeln lernen offers "Trotzdem weiter" once the limit is reached.
 
 **Daily reminder** (Einstellungen): optional notification at a chosen hour, only if no round was played that day and something is due (WorkManager).

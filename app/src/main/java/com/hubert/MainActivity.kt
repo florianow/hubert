@@ -105,6 +105,8 @@ fun HubertApp() {
     val parlezState by parlezVm.uiState.collectAsState()
     val statisticsState by statisticsVm.uiState.collectAsState()
     val settingsState by settingsVm.settings.collectAsState()
+    val ankiUiState by settingsVm.anki.collectAsState()
+    val ankiLastSync by settingsVm.ankiLastSync.collectAsState()
     val menuState by menuVm.uiState.collectAsState()
     val weeklyState by weeklyVm.uiState.collectAsState()
     val lernenState by lernenVm.uiState.collectAsState()
@@ -422,6 +424,12 @@ fun HubertApp() {
                 },
                 onReminderChange = { enabled, hour -> settingsVm.setReminder(enabled, hour) },
                 onDailyLimitChange = { settingsVm.setDailyReviewLimit(it) },
+                anki = ankiUiState,
+                ankiLastSync = ankiLastSync,
+                onAnkiEnable = { settingsVm.setAnkiEnabled(it) },
+                onAnkiDeck = { settingsVm.chooseAnkiDeck(it) },
+                onAnkiSync = { settingsVm.syncAnkiNow() },
+                onAnkiRefresh = { settingsVm.refreshAnki() },
                 onBack = { currentScreen = Screen.MENU }
             )
         }

@@ -23,7 +23,9 @@ data class AppSettings(
     val azureRegion: String = "",
     val reminderEnabled: Boolean = false,
     val reminderHour: Int = 19,
-    val dailyReviewLimit: Int = 150     // 0 = unlimited
+    val dailyReviewLimit: Int = 150,    // 0 = unlimited
+    val ankiEnabled: Boolean = false,   // read-only sync with AnkiDroid
+    val ankiDeck: String = ""
 ) {
     val hasGemini: Boolean get() = geminiKey.isNotBlank()
     val hasAzure: Boolean get() = azureKey.isNotBlank() && azureRegion.isNotBlank()
@@ -42,11 +44,28 @@ class SettingsRepository @Inject constructor(
         private val KEY_REMINDER_ENABLED = booleanPreferencesKey("reminder_enabled")
         private val KEY_REMINDER_HOUR = intPreferencesKey("reminder_hour")
         private val KEY_DAILY_REVIEW_LIMIT = intPreferencesKey("daily_review_limit")
+        private val KEY_ANKI_ENABLED = booleanPreferencesKey("anki_enabled")
+        private val KEY_ANKI_DECK = stringPreferencesKey("anki_deck")
+        private val KEY_ANKI_LAST_SYNC = stringPreferencesKey("anki_last_sync")
     }
 
     /** Monday (ISO date) of the last week whose report was shown automatically. */
     val reportSeenWeek: Flow<String> = context.globalSettingsDataStore.data.map { prefs ->
         prefs[KEY_REPORT_SEEN_WEEK] ?: ""
+    }
+
+    suspend fun saveAnki(enabled: Boolean, deck: String) {
+        context.globalSettingsDataStore.edit { prefs ->
+            prefs[KEY_ANKI_ENABLED] = enabled
+            prefs[KEY_ANKI_DECK] = deck
+        }
+    }
+
+    /** Short summary of the last Anki sync, e.g. "1234 Wörter · 456 sicher". */
+    val ankiLastSync: Flow<String> = context.globalSettingsDataStore.data.map { it[KEY_ANKI_LAST_SYNC] ?: "" }
+
+    suspend fun saveAnkiLastSync(summary: String) {
+        context.globalSettingsDataStore.edit { prefs -> prefs[KEY_ANKI_LAST_SYNC] = summary }
     }
 
     suspend fun saveDailyReviewLimit(limit: Int) {
@@ -71,7 +90,9 @@ class SettingsRepository @Inject constructor(
             azureRegion = prefs[KEY_AZURE_REGION] ?: "",
             reminderEnabled = prefs[KEY_REMINDER_ENABLED] ?: false,
             reminderHour = prefs[KEY_REMINDER_HOUR] ?: 19,
-            dailyReviewLimit = prefs[KEY_DAILY_REVIEW_LIMIT] ?: 150
+            dailyReviewLimit = prefs[KEY_DAILY_REVIEW_LIMIT] ?: 150,
+            ankiEnabled = prefs[KEY_ANKI_ENABLED] ?: false,
+            ankiDeck = prefs[KEY_ANKI_DECK] ?: ""
         )
     }
 

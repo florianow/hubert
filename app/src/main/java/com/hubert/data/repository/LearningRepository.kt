@@ -57,6 +57,8 @@ class LearningRepository @Inject constructor(
         const val NEW_WORDS_PER_DAY = 10
         /** After the one-time import, overdue words are spread over this many days. */
         const val SEED_SPREAD_DAYS = 14
+        /** Words newly taken over from Anki are spread over this many days. */
+        const val ANKI_SPREAD_DAYS = 7
     }
 
     fun today(): Long = LocalDate.now().toEpochDay()
@@ -136,6 +138,8 @@ class LearningRepository @Inject constructor(
      * per day. Words that already have a learning state are skipped.
      */
     suspend fun wordsToIntroduce(): List<Int> {
+        // With the Anki sync on, new words are introduced in Anki, not here
+        if (settingsRepository.settings.first().ankiEnabled) return emptyList()
         val remaining = NEW_WORDS_PER_DAY - progressDao.introducedOn(today()).size
         if (remaining <= 0) return emptyList()
         val seen = progressDao.allRanks().toSet()
@@ -183,6 +187,44 @@ class LearningRepository @Inject constructor(
 
     /** Words that entered the learning path in [fromDay, toDay). */
     suspend fun introducedBetween(fromDay: Long, toDay: Long): Int = progressDao.countIntroducedBetween(fromDay, toDay)
+
+    /**
+     * Adapt Hubert's schedule to the player's Anki deck (read-only, nothing goes back):
+     * - words started in Anki but unknown to Hubert join the learning path, spread over a week
+     * - words Anki already keeps for weeks get at least Anki's interval here, so Hubert asks
+     *   them rarely instead of drilling what is known
+     * Words that are new in Anki are left alone. Returns (started, known) counts.
+     */
+    suspend fun applyAnki(cards: List<AnkiCard>): Pair<Int, Int> {
+        val started = cards.filter { it.isStarted }
+        if (started.isEmpty()) return 0 to 0
+        val today = today()
+        mutex.withLock {
+            val existing = progressDao.getByRanks(started.map { it.rank }).associateBy { it.rank }
+            val updates = mutableListOf<WordProgress>()
+            started.sortedBy { it.rank }.forEachIndexed { index, card ->
+                val current = existing[card.rank]
+                val ankiInterval = card.intervalDays.toDouble().coerceAtMost(365.0)
+                when {
+                    current == null -> updates += WordProgress(
+                        rank = card.rank,
+                        intervalDays = if (ankiInterval >= WordProgress.KNOWN_INTERVAL_DAYS) ankiInterval else 0.0,
+                        ease = SpacedRepetition.START_EASE,
+                        dueDay = if (ankiInterval >= WordProgress.KNOWN_INTERVAL_DAYS) today + Math.round(ankiInterval / 2)
+                                 else today + index % ANKI_SPREAD_DAYS,
+                        reps = 0, lapses = 0, lastReviewDay = -1, introducedDay = today
+                    )
+                    ankiInterval >= WordProgress.KNOWN_INTERVAL_DAYS && current.intervalDays < ankiInterval ->
+                        updates += current.copy(
+                            intervalDays = ankiInterval,
+                            dueDay = maxOf(current.dueDay, today + Math.round(ankiInterval / 2))
+                        )
+                }
+            }
+            if (updates.isNotEmpty()) progressDao.upsertAll(updates)
+        }
+        return started.size to started.count { it.intervalDays >= WordProgress.KNOWN_INTERVAL_DAYS }
+    }
 
     /** Whether any round was played today (used to skip the daily reminder). */
     suspend fun practicedToday(): Boolean {
