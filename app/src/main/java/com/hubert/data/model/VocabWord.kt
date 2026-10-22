@@ -20,7 +20,8 @@ data class VocabWord(
 data class SentenceEntry(
     val fr: String,    // French sentence (full)
     val de: String,    // German translation (full)
-    val blank: String  // The word that was blanked out
+    val blank: String,  // The word that was blanked out
+    val deBlank: String? = null  // The German counterpart of the target word (Anki highlight)
 )
 
 /**

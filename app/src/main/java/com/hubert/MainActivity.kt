@@ -350,6 +350,9 @@ fun HubertApp() {
                 onSpeakSentence = { ditesVm.speakSentence() },
                 onToggleTranslation = { ditesVm.toggleTranslation() },
                 onNextSentence = { ditesVm.nextSentence() },
+                onClozeTile = { ditesVm.tapClozeTile(it) },
+                onClozeSlot = { ditesVm.tapClozeSlot(it) },
+                onClozeLightning = { ditesVm.clozeLightning() },
                 onToggleRecording = { ditesVm.toggleRecording() },
                 onRate = { ditesVm.rate(it) },
                 onQuit = {

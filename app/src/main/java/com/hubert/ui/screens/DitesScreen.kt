@@ -25,7 +25,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -34,6 +38,7 @@ import androidx.core.content.ContextCompat
 import com.hubert.ui.theme.*
 import com.hubert.utils.AzurePronunciationApi
 import com.hubert.data.model.VocabWord
+import com.hubert.utils.ClozeGame
 import com.hubert.viewmodel.DitesCard
 import com.hubert.viewmodel.DitesDirection
 import com.hubert.viewmodel.DitesState
@@ -48,6 +53,9 @@ fun DitesScreen(
     onSpeakSentence: () -> Unit,
     onToggleTranslation: () -> Unit,
     onNextSentence: () -> Unit,
+    onClozeTile: (Int) -> Unit,
+    onClozeSlot: (Int) -> Unit,
+    onClozeLightning: () -> Unit,
     onToggleRecording: () -> Unit,
     onRate: (knewIt: Boolean) -> Unit,
     onQuit: () -> Unit
@@ -94,7 +102,10 @@ fun DitesScreen(
             card == null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = DitesColor)
             }
-            else -> DitesCardView(state, card, onReveal, onSpeakWord, onSpeakSentence, onToggleTranslation, onNextSentence, record, onRate)
+            else -> DitesCardView(
+                state, card, onReveal, onSpeakWord, onSpeakSentence, onToggleTranslation, onNextSentence,
+                onClozeTile, onClozeSlot, onClozeLightning, record, onRate
+            )
         }
     }
 }
@@ -121,6 +132,9 @@ private fun DitesCardView(
     onSpeakSentence: () -> Unit,
     onToggleTranslation: () -> Unit,
     onNextSentence: () -> Unit,
+    onClozeTile: (Int) -> Unit,
+    onClozeSlot: (Int) -> Unit,
+    onClozeLightning: () -> Unit,
     onRecord: () -> Unit,
     onRate: (Boolean) -> Unit
 ) {
@@ -140,33 +154,41 @@ private fun DitesCardView(
                     Icon(Icons.AutoMirrored.Filled.VolumeUp, contentDescription = "Anhören", tint = FrenchBlue)
                 }
             }
-        } else {
+        } else if (state.isRevealed || card.sentences.isEmpty()) {
             Text(card.word.german, fontSize = 28.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
         }
         if (!state.isRevealed) {
             sentence?.let {
                 Spacer(Modifier.height(12.dp))
+                // Front sentence with the target word underlined/bold, as on the Anki card
                 Text(
-                    text = if (frenchFirst) it.fr else it.de,
-                    fontSize = 17.sp,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
+                    text = highlighted(if (frenchFirst) it.fr else it.de, if (frenchFirst) it.blank else it.deBlank),
+                    fontSize = 19.sp,
+                    fontStyle = if (frenchFirst) FontStyle.Normal else FontStyle.Italic,
+                    textAlign = TextAlign.Center
                 )
+                if (frenchFirst) {
+                    IconButton(onClick = onSpeakSentence) {
+                        Icon(Icons.AutoMirrored.Filled.VolumeUp, contentDescription = "Satz anhören", tint = FrenchBlue)
+                    }
+                }
             }
-            Spacer(Modifier.height(6.dp))
-            Text(
-                text = if (frenchFirst) "Was bedeutet das?" else "Wie heißt das auf Französisch? Übersetze den Satz im Kopf.",
-                fontSize = 12.sp,
-                color = DitesColor,
-                textAlign = TextAlign.Center
-            )
-            Spacer(Modifier.height(40.dp))
+            state.cloze?.let { cloze ->
+                Spacer(Modifier.height(12.dp))
+                ClozeBox(cloze, isGerman = frenchFirst, onClozeTile, onClozeSlot, onClozeLightning, onSpeakSentence)
+            }
+            if (!frenchFirst) {
+                Spacer(Modifier.height(10.dp))
+                Text("(${card.word.german})", fontSize = 15.sp, fontStyle = FontStyle.Italic,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f))
+            }
+            Spacer(Modifier.height(24.dp))
             Button(
                 onClick = onReveal,
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = DitesColor)
-            ) { Text("Aufdecken", fontWeight = FontWeight.Bold, fontSize = 16.sp) }
+            ) { Text("Antwort anzeigen", fontWeight = FontWeight.Bold, fontSize = 16.sp) }
             return@Column
         }
 
@@ -359,5 +381,119 @@ private fun DitesSummary(state: DitesState, onDone: () -> Unit) {
         Spacer(Modifier.height(24.dp))
         Button(onClick = onDone, shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(containerColor = DitesColor)) { Text("Zurück zum Menü") }
+    }
+}
+
+/** Sentence with the target word bold and underlined. */
+private fun highlighted(sentence: String, target: String?) = buildAnnotatedString {
+    val word = target?.takeIf { it.isNotBlank() }
+    val at = word?.let { sentence.indexOf(it, ignoreCase = true) } ?: -1
+    if (word == null || at < 0) {
+        append(sentence)
+        return@buildAnnotatedString
+    }
+    append(sentence.substring(0, at))
+    withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
+        append(sentence.substring(at, at + word.length))
+    }
+    append(sentence.substring(at + word.length))
+}
+
+/** The Lückenspiel: hidden word blocks, alphabetical tiles, ★ for the target word. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ClozeBox(
+    cloze: ClozeGame,
+    isGerman: Boolean,
+    onTile: (Int) -> Unit,
+    onSlot: (Int) -> Unit,
+    onLightning: () -> Unit,
+    onPlay: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.05f), RoundedCornerShape(16.dp))
+            .padding(14.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // The sentence being rebuilt: hidden words are grey blocks (tap = hint)
+        FlowRow(
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            cloze.segments.forEachIndexed { i, segment ->
+                // No gap before punctuation that follows a word directly ("ongle.", "l'")
+                val next = cloze.segments.getOrNull(i + 1)
+                val gap = if (next is ClozeGame.Segment.Text && next.text.firstOrNull()?.isWhitespace() != true) 0.dp else 4.dp
+                when (segment) {
+                    is ClozeGame.Segment.Text -> {
+                        val t = segment.text.trim()
+                        if (t.isNotEmpty()) Text(t, fontSize = 18.sp, modifier = Modifier.padding(end = 4.dp))
+                    }
+                    is ClozeGame.Segment.Slot -> {
+                        if (segment.revealed) {
+                            Text(
+                                text = segment.word,
+                                fontSize = 18.sp,
+                                fontStyle = if (isGerman) FontStyle.Italic else FontStyle.Normal,
+                                fontWeight = if (segment.isStar) FontWeight.Bold else FontWeight.Normal,
+                                color = if (segment.isStar) DitesColor else MaterialTheme.colorScheme.onBackground,
+                                modifier = Modifier.padding(end = gap)
+                            )
+                        } else {
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = maxOf(gap, 2.dp))
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(MaterialTheme.colorScheme.onBackground.copy(alpha = 0.15f))
+                                    .clickable { onSlot(i) }
+                                    // Hidden word must not leak to screen readers (or UI tests)
+                                    .clearAndSetSemantics { contentDescription = "verdecktes Wort, tippen für Hinweis" }
+                                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                            ) {
+                                // Invisible text keeps the block as wide as the hidden word
+                                Text(segment.word, fontSize = 18.sp, color = Color.Transparent)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (!cloze.isFinished) {
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                cloze.tiles.forEachIndexed { i, tile ->
+                    if (!tile.used) {
+                        OutlinedButton(
+                            onClick = { onTile(i) },
+                            shape = RoundedCornerShape(12.dp),
+                            border = androidx.compose.foundation.BorderStroke(
+                                if (cloze.errorTile == i) 2.dp else 1.dp,
+                                if (cloze.errorTile == i) WrongRed else MaterialTheme.colorScheme.outline
+                            ),
+                            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
+                        ) {
+                            if (tile.isStar) Text("★", fontSize = 18.sp, color = DitesColor)
+                            else Text(tile.word, fontSize = 17.sp, color = MaterialTheme.colorScheme.onBackground)
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                if (cloze.hasStar) {
+                    TextButton(onClick = onLightning) { Text("⚡ nur das Zielwort", color = DitesColor) }
+                }
+                if (isGerman.not()) {
+                    TextButton(onClick = onPlay) { Text("▶ anhören", color = FrenchBlue) }
+                }
+            }
+        }
     }
 }

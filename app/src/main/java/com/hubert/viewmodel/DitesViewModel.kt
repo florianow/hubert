@@ -9,6 +9,7 @@ import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.AudioRecorder
+import com.hubert.utils.ClozeGame
 import com.hubert.utils.AzurePronunciationApi
 import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,7 @@ data class DitesState(
     val cards: List<DitesCard> = emptyList(),
     val index: Int = 0,
     val isRevealed: Boolean = false,
+    val cloze: ClozeGame? = null,               // front: rebuild the sentence from word tiles
     val sentenceIndex: Int = 0,                 // which example sentence is shown
     val translationRevealed: Boolean = false,   // the translation is a spoiler until tapped
     val hasAzure: Boolean = false,
@@ -101,9 +103,38 @@ class DitesViewModel @Inject constructor(
                 )
             }
             _uiState.update {
-                it.copy(cards = cards, hasAzure = settings.hasAzure, isFinished = cards.isEmpty())
+                it.copy(
+                    cards = cards, hasAzure = settings.hasAzure, isFinished = cards.isEmpty(),
+                    cloze = cards.firstOrNull()?.let { c -> clozeFor(c) }
+                )
             }
         }
+    }
+
+    /**
+     * The Lückenspiel as on the Anki card: DE → FR rebuilds the French sentence (target word
+     * as ★), FR → DE the German one (its highlighted counterpart as ★).
+     */
+    private fun clozeFor(card: DitesCard): ClozeGame? {
+        val sentence = card.sentences.firstOrNull() ?: return null
+        return if (card.direction == DitesDirection.DE_FR) ClozeGame.create(sentence.fr, sentence.blank)
+               else ClozeGame.create(sentence.de, sentence.deBlank)
+    }
+
+    fun tapClozeTile(index: Int) = updateCloze { it.tapTile(index) }
+
+    fun tapClozeSlot(index: Int) = updateCloze { it.tapSlot(index) }
+
+    /** ⚡ — only the target word is left to find. */
+    fun clozeLightning() = updateCloze { it.revealAllButStar() }
+
+    private fun updateCloze(action: (ClozeGame) -> ClozeGame) {
+        val before = _uiState.value.cloze ?: return
+        if (before.isFinished) return
+        val after = action(before)
+        _uiState.update { it.copy(cloze = after) }
+        // Finished: read the French sentence aloud, like the Anki card
+        if (after.isFinished) speakSentence()
     }
 
     fun reveal() {
@@ -200,6 +231,7 @@ class DitesViewModel @Inject constructor(
                 unknownCount = it.unknownCount + if (knewIt) 0 else 1,
                 index = next,
                 isRevealed = false,
+                cloze = it.cards.getOrNull(next)?.let { c -> clozeFor(c) },
                 sentenceIndex = 0,
                 translationRevealed = false,
                 pronScore = null,
