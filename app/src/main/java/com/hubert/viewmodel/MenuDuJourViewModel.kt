@@ -202,6 +202,9 @@ class MenuDuJourViewModel @Inject constructor(
         const val MIN_FOCUS_ATTEMPTS = 4
         const val MAX_DUE_PER_MENU = 30
         const val MAX_MENU_FOCUS = 45
+        const val CONJUGUEZ_TENSES = 3
+        /** Tenses a menu's Conjuguez! draws from (no passé simple / impératif / mood question). */
+        val CORE_TENSES = listOf("present", "passe_compose", "imparfait", "futur", "conditionnel", "subjonctif")
     }
 
     init {
@@ -565,18 +568,28 @@ class MenuDuJourViewModel @Inject constructor(
      */
     private suspend fun grammarFocus(game: CourseGame): Set<String> {
         val since = startOfDay(LocalDate.now().minusDays(GRAMMAR_WINDOW_DAYS))
-        val errorRates = wordAttemptDao.getAttemptsSince(game.gameType, since)
+        val results = wordAttemptDao.getAttemptsSince(game.gameType, since)
             .mapNotNull { attempt -> focusKey(game, attempt.question, attempt.correctAnswer)?.let { it to attempt.isCorrect } }
             .groupBy({ it.first }, { it.second })
+        val errorRates = results
             .filterValues { it.size >= MIN_FOCUS_ATTEMPTS }
             .mapValues { (_, results) -> results.count { !it }.toDouble() / results.size }
             .filterValues { it > 0 }
         val top = errorRates.entries.sortedByDescending { it.value }
             .take(if (game == CourseGame.CONJUGUEZ) 2 else 4)
             .map { it.key }
-            .toSet()
+        if (game == CourseGame.CONJUGUEZ) {
+            // Always 3 tenses: the weakest ones, topped up with the core tenses practised least
+            // lately (ties rotate daily) — otherwise a round of only présent keeps itself going
+            val offset = LocalDate.now().toEpochDay().toInt()
+            val fill = CORE_TENSES.indices
+                .map { CORE_TENSES[(it + offset).mod(CORE_TENSES.size)] }
+                .filter { it !in top }
+                .sortedBy { results[it]?.size ?: 0 }
+            return (top + fill).take(CONJUGUEZ_TENSES).toSet()
+        }
         // Préposez/Relativisez need at least two forms to make a useful round
-        return if (game == CourseGame.CONJUGUEZ || top.size >= 2) top else emptySet()
+        return if (top.size >= 2) top.toSet() else emptySet()
     }
 
     /** Conjuguez logs "voir (Conditionnel, vous)"; the others log the form as correct answer. */
