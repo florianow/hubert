@@ -346,7 +346,10 @@ fun HubertApp() {
             DitesScreen(
                 state = ditesState,
                 onReveal = { ditesVm.reveal() },
-                onListen = { ditesVm.listen() },
+                onSpeakWord = { ditesVm.speakWord() },
+                onSpeakSentence = { ditesVm.speakSentence() },
+                onToggleTranslation = { ditesVm.toggleTranslation() },
+                onNextSentence = { ditesVm.nextSentence() },
                 onToggleRecording = { ditesVm.toggleRecording() },
                 onRate = { ditesVm.rate(it) },
                 onQuit = {

@@ -2,6 +2,7 @@ package com.hubert.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.SettingsRepository
@@ -17,16 +18,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-/** One card: a word with an example sentence (when the deck has one). */
+/** Like the two sub-decks in Anki: French first (FR → DE) or German first (DE → FR). */
+enum class DitesDirection { FR_DE, DE_FR }
+
+/** One card: a word with all its example sentences, asked in one direction. */
 data class DitesCard(
     val word: VocabWord,
-    val sentenceFr: String?,
-    val sentenceDe: String?,
-    val blank: String?          // the word as it appears in the sentence (highlighted)
-) {
-    /** What is spoken and assessed: the sentence, or the word itself without one. */
-    val spokenText: String get() = sentenceFr ?: word.french
-}
+    val direction: DitesDirection,
+    val sentences: List<SentenceEntry>
+)
 
 data class DitesState(
     val isActive: Boolean = false,
@@ -34,6 +34,8 @@ data class DitesState(
     val cards: List<DitesCard> = emptyList(),
     val index: Int = 0,
     val isRevealed: Boolean = false,
+    val sentenceIndex: Int = 0,                 // which example sentence is shown
+    val translationRevealed: Boolean = false,   // the translation is a spoiler until tapped
     val hasAzure: Boolean = false,
     val isRecording: Boolean = false,
     val isAssessing: Boolean = false,
@@ -45,6 +47,9 @@ data class DitesState(
     val pronScores: List<Int> = emptyList()
 ) {
     val current: DitesCard? get() = cards.getOrNull(index)
+    val sentence: SentenceEntry? get() = current?.sentences?.getOrNull(sentenceIndex)
+    /** What is spoken and assessed: the shown French sentence, or the word without one. */
+    val spokenText: String? get() = sentence?.fr ?: current?.word?.french
     val averagePronScore: Int? get() = pronScores.takeIf { it.isNotEmpty() }?.average()?.roundToInt()
 }
 
@@ -86,10 +91,14 @@ class DitesViewModel @Inject constructor(
             val ranks = learningRepository.practiceRanks(CARDS_PER_SESSION * 4)
             val withSentence = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
             val ordered = ranks.filter { it in withSentence } + ranks.filter { it !in withSentence }
-            val cards = ordered.take(CARDS_PER_SESSION).mapNotNull { rank ->
-                val word = vocabRepository.getWordByRank(rank) ?: return@mapNotNull null
-                val sentence = vocabRepository.getRandomSentence(rank)
-                DitesCard(word, sentence?.fr, sentence?.de, sentence?.blank)
+            val sentences = vocabRepository.getSentences()
+            val cards = ordered.take(CARDS_PER_SESSION).mapIndexedNotNull { i, rank ->
+                val word = vocabRepository.getWordByRank(rank) ?: return@mapIndexedNotNull null
+                DitesCard(
+                    word = word,
+                    direction = if (i % 2 == 0) DitesDirection.DE_FR else DitesDirection.FR_DE,
+                    sentences = sentences[rank.toString()].orEmpty().shuffled()
+                )
             }
             _uiState.update {
                 it.copy(cards = cards, hasAzure = settings.hasAzure, isFinished = cards.isEmpty())
@@ -98,13 +107,37 @@ class DitesViewModel @Inject constructor(
     }
 
     fun reveal() {
-        val card = _uiState.value.current ?: return
         _uiState.update { it.copy(isRevealed = true) }
-        frenchTts.speak(card.spokenText)
+        _uiState.value.current?.let { frenchTts.speak(it.word.french) }
     }
 
-    fun listen() {
-        _uiState.value.current?.let { frenchTts.speak(it.spokenText) }
+    fun speakWord() {
+        _uiState.value.current?.let { frenchTts.speak(it.word.french) }
+    }
+
+    fun speakSentence() {
+        _uiState.value.spokenText?.let { frenchTts.speak(it) }
+    }
+
+    /** Tap on the hidden translation. */
+    fun toggleTranslation() {
+        _uiState.update { it.copy(translationRevealed = !it.translationRevealed) }
+    }
+
+    /** "›": next example sentence (cycles), translation hidden again. */
+    fun nextSentence() {
+        val state = _uiState.value
+        val count = state.current?.sentences?.size ?: 0
+        if (count < 2 || state.isRecording || state.isAssessing) return
+        _uiState.update {
+            it.copy(
+                sentenceIndex = (it.sentenceIndex + 1) % count,
+                translationRevealed = false,
+                pronScore = null,
+                wordScores = emptyList(),
+                error = null
+            )
+        }
     }
 
     // ── Speaking ────────────────────────────────────────────────────────
@@ -125,16 +158,20 @@ class DitesViewModel @Inject constructor(
         val wav = recorder?.stop() ?: return
         recorder = null
         recordingJob?.cancel()
-        val card = _uiState.value.current ?: return
+        val text = _uiState.value.spokenText ?: return
         _uiState.update { it.copy(isRecording = false, isAssessing = true) }
         viewModelScope.launch {
             val settings = settingsRepository.settings.first()
             runCatching {
-                AzurePronunciationApi.assess(settings.azureRegion, settings.azureKey, card.spokenText, wav)
+                AzurePronunciationApi.assess(settings.azureRegion, settings.azureKey, text, wav)
             }.onSuccess { result ->
                 val score = result.pronScore.roundToInt()
+                // After speaking, the French sentence is shown with its word colours
                 _uiState.update {
-                    it.copy(isAssessing = false, pronScore = score, wordScores = result.words, pronScores = it.pronScores + score)
+                    it.copy(
+                        isAssessing = false, pronScore = score, wordScores = result.words,
+                        pronScores = it.pronScores + score, translationRevealed = true
+                    )
                 }
             }.onFailure { e ->
                 _uiState.update { it.copy(isAssessing = false, error = "Bewertung fehlgeschlagen: ${e.message ?: "Netzwerk"}") }
@@ -153,7 +190,7 @@ class DitesViewModel @Inject constructor(
             yourAnswer = if (knewIt) card.word.french else "—",
             correctAnswer = card.word.french,
             isCorrect = knewIt,
-            explanation = card.sentenceFr ?: "",
+            explanation = state.sentence?.fr ?: "",
             rank = card.word.rank
         )
         val next = state.index + 1
@@ -163,6 +200,8 @@ class DitesViewModel @Inject constructor(
                 unknownCount = it.unknownCount + if (knewIt) 0 else 1,
                 index = next,
                 isRevealed = false,
+                sentenceIndex = 0,
+                translationRevealed = false,
                 pronScore = null,
                 wordScores = emptyList(),
                 error = null

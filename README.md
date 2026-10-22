@@ -96,7 +96,7 @@ Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, gram
 
 ### Dites!
 
-The Anki routine with pronunciation feedback: see the German word and example sentence, translate it in your head, reveal the French word and sentence (read aloud), **speak the sentence** and get it scored by Azure — mispronounced words turn red — then rate yourself "Wusste ich" / "Wusste ich nicht". Ten cards per session, due words with an example sentence first. The self-rating counts as recall in Hubert's schedule; nothing is written to Anki. Without an Azure key everything works except the scoring.
+Built like the anki_french cards, plus pronunciation feedback. Cards alternate between the two directions of the Anki deck (FR → DE and DE → FR). The front shows the word and an example sentence in the front language; the back shows the French word with article, IPA and ▶, and an example box: sentence in the front language, the translation hidden until tapped (spoiler), ▶ for the French sentence, "›" to cycle through all example sentences. **🎤** records the French sentence and Azure scores it (mispronounced words turn red) — on DE → FR cards you can translate and speak the sentence from memory before revealing it. As in Anki the rating is about the word: "Wusstest du das Wort? Nein / Ja" (counts as recall in Hubert's schedule, nothing is written to Anki). Ten cards per session, due words with example sentences first.
 
 ### Accordez!
 
