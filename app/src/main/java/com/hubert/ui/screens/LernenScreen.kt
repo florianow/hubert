@@ -50,6 +50,7 @@ private fun spielBeschreibung(spiel: LernSpiel): String = when (spiel) {
 fun LernenScreen(
     state: LernenState,
     onContinue: () -> Unit,
+    onContinuePastLimit: () -> Unit,
     onStop: () -> Unit
 ) {
     Column(
@@ -74,6 +75,26 @@ fun LernenScreen(
             Spacer(Modifier.height(16.dp))
             when {
                 state.isLoading -> CircularProgressIndicator(color = LernenGreen)
+                state.limitReached -> {
+                    Text("🎉", fontSize = 56.sp)
+                    Text(
+                        text = "Tageslimit erreicht!",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Noch ${state.dueBeyondLimit} weitere fällig – die kommen in den nächsten Tagen dran. " +
+                            "Das Limit änderst du in den Einstellungen.",
+                        fontSize = 13.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedButton(onClick = onContinuePastLimit, shape = RoundedCornerShape(16.dp)) {
+                        Text("Trotzdem weiter", color = LernenGreen)
+                    }
+                }
                 state.isDone -> {
                     Text("🎉", fontSize = 56.sp)
                     Text(

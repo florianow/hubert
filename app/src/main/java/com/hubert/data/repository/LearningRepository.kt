@@ -12,6 +12,7 @@ import kotlinx.coroutines.sync.withLock
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +21,8 @@ data class LearningOverview(
     val known: Int,        // "sicher": interval ≥ 3 weeks
     val learning: Int,     // introduced but not yet known
     val unseen: Int,       // not introduced yet
-    val dueToday: Int
+    val dueToday: Int,      // due and still within today's review limit
+    val dueBeyondLimit: Int // also due, but postponed by the daily limit
 ) {
     /**
      * Rough CEFR estimate from the number of words known for good (common rules of thumb:
@@ -46,7 +48,8 @@ class LearningRepository @Inject constructor(
     private val progressDao: WordProgressDao,
     private val attemptDao: WordAttemptDao,
     private val gameSessionDao: GameSessionDao,
-    private val vocabRepository: VocabRepository
+    private val vocabRepository: VocabRepository,
+    private val settingsRepository: SettingsRepository
 ) {
     private val mutex = Mutex()
 
@@ -108,9 +111,22 @@ class LearningRepository @Inject constructor(
 
     // ── Word selection for games and menus ──────────────────────────────
 
-    suspend fun dueRanks(limit: Int): List<Int> = progressDao.dueRanks(today(), limit)
+    /**
+     * How many more reviews fit into today's limit (Einstellungen → Wiederholungen pro Tag).
+     * Words beyond it stay due and move up on the next days, most overdue/frequent first.
+     */
+    suspend fun remainingToday(): Int {
+        val limit = settingsRepository.settings.first().dailyReviewLimit
+        if (limit <= 0) return Int.MAX_VALUE
+        return (limit - progressDao.countReviewedOn(today())).coerceAtLeast(0)
+    }
 
-    suspend fun dueProgress(limit: Int): List<WordProgress> = progressDao.dueProgress(today(), limit)
+    suspend fun dueRanks(limit: Int): List<Int> =
+        progressDao.dueRanks(today(), minOf(limit, remainingToday()))
+
+    /** Due words in priority order; [ignoreDailyLimit] for "trotzdem weiter". */
+    suspend fun dueProgress(limit: Int, ignoreDailyLimit: Boolean = false): List<WordProgress> =
+        progressDao.dueProgress(today(), if (ignoreDailyLimit) limit else minOf(limit, remainingToday()))
 
     /** Words introduced today (new words of the day). */
     suspend fun introducedToday(): List<Int> = progressDao.introducedOn(today())
@@ -159,7 +175,7 @@ class LearningRepository @Inject constructor(
      * already learned ones. Only words on the learning path — nothing unseen.
      */
     suspend fun practiceRanks(limit: Int = 40): List<Int> {
-        val due = progressDao.dueRanks(today(), limit)
+        val due = dueRanks(limit)
         val fresh = introducedToday()
         val filler = progressDao.randomNotDue(today(), limit)
         return (due + fresh + filler).distinct().take(limit)
@@ -183,7 +199,8 @@ class LearningRepository @Inject constructor(
             known = known,
             learning = introduced - known,
             unseen = (vocabRepository.getAllWords().size - introduced).coerceAtLeast(0),
-            dueToday = progressDao.countDue(today())
+            dueToday = minOf(progressDao.countDue(today()), remainingToday()),
+            dueBeyondLimit = (progressDao.countDue(today()) - remainingToday()).coerceAtLeast(0)
         )
     }
 }

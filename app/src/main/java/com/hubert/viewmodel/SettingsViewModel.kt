@@ -32,6 +32,10 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun setDailyReviewLimit(limit: Int) {
+        viewModelScope.launch { settingsRepository.saveDailyReviewLimit(limit) }
+    }
+
     /** Daily reminder: stored setting + (re)scheduled WorkManager job. */
     fun setReminder(enabled: Boolean, hour: Int) {
         viewModelScope.launch {

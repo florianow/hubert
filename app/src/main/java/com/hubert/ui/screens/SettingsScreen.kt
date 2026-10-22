@@ -32,6 +32,7 @@ fun SettingsScreen(
     settings: AppSettings,
     onSave: (geminiKey: String, azureKey: String, azureRegion: String) -> Unit,
     onReminderChange: (enabled: Boolean, hour: Int) -> Unit,
+    onDailyLimitChange: (Int) -> Unit,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -79,6 +80,32 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
+
+            // ── Daily review limit ──────────────────────────────────────────────
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = LernenGreen.copy(alpha = 0.06f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Wiederholungen pro Tag", fontWeight = FontWeight.Bold, color = LernenGreen)
+                    Text(
+                        text = "Mehr fällige Wörter verschiebt Hubert auf die nächsten Tage – die überfälligsten und häufigsten zuerst",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf(50, 100, 150, 200, 0).forEach { limit ->
+                            FilterChip(
+                                selected = settings.dailyReviewLimit == limit,
+                                onClick = { onDailyLimitChange(limit) },
+                                label = { Text(if (limit == 0) "unbegrenzt" else "$limit", fontSize = 12.sp) }
+                            )
+                        }
+                    }
+                }
+            }
 
             // ── Daily reminder ──────────────────────────────────────────────────
             Card(

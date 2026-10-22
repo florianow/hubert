@@ -351,6 +351,7 @@ fun HubertApp() {
                 LernenScreen(
                     state = lernenState,
                     onContinue = startLearningRound,
+                    onContinuePastLimit = { lernenVm.continuePastLimit() },
                     onStop = { currentScreen = Screen.MENU }
                 )
             }
@@ -420,6 +421,7 @@ fun HubertApp() {
                     currentScreen = Screen.MENU
                 },
                 onReminderChange = { enabled, hour -> settingsVm.setReminder(enabled, hour) },
+                onDailyLimitChange = { settingsVm.setDailyReviewLimit(it) },
                 onBack = { currentScreen = Screen.MENU }
             )
         }

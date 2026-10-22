@@ -44,11 +44,14 @@ data class LernenState(
     val isRunning: Boolean = false,
     val isLoading: Boolean = false,
     val dueTotal: Int = 0,
+    val dueBeyondLimit: Int = 0,          // due, but over today's limit
+    val ignoringLimit: Boolean = false,
     val duePerStufe: Map<LernStufe, Int> = emptyMap(),
     val nextRound: LernRunde? = null,
     val results: List<RundenErgebnis> = emptyList()
 ) {
     val isDone: Boolean get() = !isLoading && dueTotal == 0
+    val limitReached: Boolean get() = isDone && dueBeyondLimit > 0
 }
 
 /**
@@ -67,6 +70,7 @@ class LernenViewModel @Inject constructor(
     val uiState: StateFlow<LernenState> = _uiState.asStateFlow()
 
     private var recognitionRounds = 0
+    private var ignoreLimit = false
 
     companion object {
         const val DUE_SCAN_LIMIT = 2000
@@ -74,6 +78,7 @@ class LernenViewModel @Inject constructor(
 
     fun start() {
         recognitionRounds = 0
+        ignoreLimit = false
         _uiState.value = LernenState(isRunning = true, isLoading = true)
         planNextRound()
     }
@@ -92,13 +97,21 @@ class LernenViewModel @Inject constructor(
         planNextRound()
     }
 
+    /** "Trotzdem weiter": keep going past today's review limit for this session. */
+    fun continuePastLimit() {
+        ignoreLimit = true
+        _uiState.update { it.copy(isLoading = true, ignoringLimit = true) }
+        planNextRound()
+    }
+
     fun stop() {
         _uiState.value = LernenState()
     }
 
     private fun planNextRound() {
         viewModelScope.launch {
-            val due = learningRepository.dueProgress(DUE_SCAN_LIMIT)
+            val due = learningRepository.dueProgress(DUE_SCAN_LIMIT, ignoreDailyLimit = ignoreLimit)
+            val beyondLimit = if (ignoreLimit) 0 else learningRepository.overview().dueBeyondLimit
             val byStufe = due.groupBy { LernStufe.of(it) }.mapValues { (_, list) -> list.map { it.rank } }.toMutableMap()
 
             // Complétez! needs an example sentence; other "im Satz" words are recalled instead
@@ -124,6 +137,7 @@ class LernenViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     dueTotal = due.size,
+                    dueBeyondLimit = beyondLimit,
                     duePerStufe = LernStufe.entries.associateWith { s -> byStufe[s].orEmpty().size },
                     nextRound = round
                 )

@@ -37,6 +37,9 @@ interface WordProgressDao {
     @Query("SELECT COUNT(*) FROM word_progress WHERE introducedDay >= :fromDay AND introducedDay < :toDay")
     suspend fun countIntroducedBetween(fromDay: Long, toDay: Long): Int
 
+    @Query("SELECT COUNT(*) FROM word_progress WHERE lastReviewDay = :day")
+    suspend fun countReviewedOn(day: Long): Int
+
     @Query("SELECT rank FROM word_progress")
     suspend fun allRanks(): List<Int>
 
