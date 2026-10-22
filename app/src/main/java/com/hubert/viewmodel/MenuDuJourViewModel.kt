@@ -294,8 +294,8 @@ class MenuDuJourViewModel @Inject constructor(
         var cards = emptyList<DiscoveryCard>()
         var due = emptyList<Int>()
         val learningPart = hasLearningPart()
-        // The Parcours only applies to menus on the étape's theme (not À la carte)
-        val parcours = parcoursRepository.status()?.takeIf { type != MenuType.A_LA_CARTE && it.unit.theme == category }
+        // The Parcours sets the grammar of Express and Complet; the theme stays the theme of the day
+        val parcours = parcoursRepository.status()?.takeIf { type != MenuType.A_LA_CARTE }
         if (type == MenuType.A_LA_CARTE || !learningPart) {
             // Theme words plus recent mistakes: À la carte always, Express/Complet with Anki
             // (the own words are learned in "Vokabeln lernen" then)
@@ -618,8 +618,6 @@ class MenuDuJourViewModel @Inject constructor(
      * comes round once before any repeats. Today's menus don't count, keeping the pick stable.
      */
     private suspend fun dailyCategory(categories: List<String>): String {
-        // The Parcours sets the theme
-        parcoursRepository.status()?.let { return it.unit.theme }
         val today = LocalDate.now()
         val recent = menuSessionDao
             .getBetween(startOfDay(today.minusDays(categories.size.toLong())), startOfDay(today))

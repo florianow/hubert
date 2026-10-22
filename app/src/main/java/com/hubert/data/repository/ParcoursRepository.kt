@@ -16,8 +16,9 @@ import javax.inject.Singleton
 data class ParcoursLesson(val title: String, val file: String)
 
 /**
- * One étape of the Parcours: a grammar point with its lesson(s), the theme the menus use and
- * the grammar game (GameSession key) with its focus that serves as Plat du chef.
+ * One étape of the Parcours: a grammar point with its lesson(s) and the grammar game
+ * (GameSession key) with its focus that serves as Plat du chef. [theme] supplies the word
+ * hints of the étape's Parlez! conversation; the menus keep the theme of the day.
  */
 /** The étape's conversation for Parlez! (scripts/build_parcours.py, PARLEZ). */
 data class ParcoursParlez(
@@ -70,8 +71,8 @@ data class ParcoursStatus(
 
 /**
  * The Parcours: units from A1 to B2 (assets/parcours.json, built by scripts/build_parcours.py
- * from the anki_french grammar notes). Menu du jour follows the current unit — its theme and
- * grammar game — and a passed Contrôle moves on to the next one.
+ * from the anki_french grammar notes). Menu du jour serves the current unit's grammar game
+ * (the theme of the day stays) and a passed Contrôle moves on to the next one.
  */
 @Singleton
 class ParcoursRepository @Inject constructor(

@@ -4,8 +4,9 @@ Builds the Parcours (learning path) for Hubert:
 - app/src/main/assets/parcours.json: the units (étapes), A1 → B2
 - app/src/main/assets/grammar/<id>.html: the anki_french grammar notes each unit teaches
 
-Each unit = one grammar point (lesson from anki_french/grammar, by jacbz) + a theme of the
-day (Hubert vocab category) + the grammar game that practises it (with its focus).
+Each unit = one grammar point (lesson from anki_french/grammar, by jacbz) + the grammar game
+that practises it (with its focus) + a Parlez! conversation; the theme (Hubert vocab
+category) supplies the conversation's word hints. Menus keep the theme of the day.
 Run from the repo root: python3 scripts/build_parcours.py
 """
 import json

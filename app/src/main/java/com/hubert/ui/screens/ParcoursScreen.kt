@@ -174,7 +174,11 @@ private fun UnitRow(index: Int, unit: ParcoursUnit, progress: ParcoursProgress, 
         Spacer(Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(unit.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            Text("${unit.theme} · ${parcoursGameName(unit.game)}", fontSize = 12.sp, color = muted)
+            Text(
+                text = listOfNotNull(parcoursGameName(unit.game), unit.parlez?.let { "🗣️ ${it.themeFr}" }).joinToString(" · "),
+                fontSize = 12.sp,
+                color = muted
+            )
             progress.reviews[unit.id]?.let { r ->
                 val days = r.dueDay - java.time.LocalDate.now().toEpochDay()
                 Text(
@@ -205,7 +209,11 @@ private fun UnitDetail(unit: ParcoursUnit, state: ParcoursState, actions: Parcou
         Header("Étape ${index + 1} · ${unit.level}", actions.toOverview)
         Spacer(Modifier.height(8.dp))
         Text(unit.title, fontSize = 26.sp, fontWeight = FontWeight.Black)
-        Text("Thema: ${unit.theme} · Grammatik-Gang: ${parcoursGameName(unit.game)}", fontSize = 13.sp, color = muted)
+        Text(
+            text = "Grammatik-Gang im Menü: ${parcoursGameName(unit.game)}" + (unit.parlez?.let { " · Gespräch: ${it.themeFr}" } ?: ""),
+            fontSize = 13.sp,
+            color = muted
+        )
         Spacer(Modifier.height(20.dp))
 
         StepLine("📖", "Leçon lesen", unit.id in p.lessonsRead)
