@@ -48,6 +48,9 @@ class SettingsRepository @Inject constructor(
         private val KEY_ANKI_ENABLED = booleanPreferencesKey("anki_enabled")
         private val KEY_ANKI_DECK = stringPreferencesKey("anki_deck")
         private val KEY_ANKI_LAST_SYNC = stringPreferencesKey("anki_last_sync")
+        private val KEY_ANKI_TODAY_DAY = stringPreferencesKey("anki_today_day")
+        private val KEY_ANKI_TODAY_RANKS = stringPreferencesKey("anki_today_ranks")
+        private val KEY_ANKI_DONE_RANKS = stringPreferencesKey("anki_done_ranks")
         private val KEY_DUE_REVIEWS_DAY = stringPreferencesKey("due_reviews_day")
         private val KEY_DUE_REVIEWS_COUNT = intPreferencesKey("due_reviews_count")
     }
@@ -70,6 +73,47 @@ class SettingsRepository @Inject constructor(
     suspend fun saveAnkiLastSync(summary: String) {
         context.globalSettingsDataStore.edit { prefs -> prefs[KEY_ANKI_LAST_SYNC] = summary }
     }
+
+    /**
+     * Anki's queue of [day] (new + learning + review cards as Hubert ranks), taken in the
+     * morning so it is still known after the cards were done in Anki. Null for another day.
+     */
+    suspend fun ankiQueueOn(day: Long): List<Int>? {
+        val prefs = context.globalSettingsDataStore.data.first()
+        if (prefs[KEY_ANKI_TODAY_DAY] != day.toString()) return null
+        return parseRanks(prefs[KEY_ANKI_TODAY_RANKS])
+    }
+
+    /** Store Anki's queue for [day]; later snapshots of the same day only add cards. */
+    suspend fun saveAnkiQueue(day: Long, ranks: List<Int>) {
+        context.globalSettingsDataStore.edit { prefs ->
+            val sameDay = prefs[KEY_ANKI_TODAY_DAY] == day.toString()
+            val merged = if (sameDay) (parseRanks(prefs[KEY_ANKI_TODAY_RANKS]) + ranks).distinct() else ranks
+            prefs[KEY_ANKI_TODAY_DAY] = day.toString()
+            prefs[KEY_ANKI_TODAY_RANKS] = merged.joinToString(",")
+            if (!sameDay) prefs[KEY_ANKI_DONE_RANKS] = ""
+        }
+    }
+
+    /** Words of today's Anki queue answered correctly in Hubert. */
+    suspend fun ankiDoneOn(day: Long): Set<Int> {
+        val prefs = context.globalSettingsDataStore.data.first()
+        if (prefs[KEY_ANKI_TODAY_DAY] != day.toString()) return emptySet()
+        return parseRanks(prefs[KEY_ANKI_DONE_RANKS]).toSet()
+    }
+
+    suspend fun addAnkiDone(day: Long, ranks: Collection<Int>) {
+        if (ranks.isEmpty()) return
+        context.globalSettingsDataStore.edit { prefs ->
+            if (prefs[KEY_ANKI_TODAY_DAY] != day.toString()) return@edit
+            val queue = parseRanks(prefs[KEY_ANKI_TODAY_RANKS]).toSet()
+            val done = parseRanks(prefs[KEY_ANKI_DONE_RANKS]).toSet() + ranks.filter { it in queue }
+            prefs[KEY_ANKI_DONE_RANKS] = done.joinToString(",")
+        }
+    }
+
+    private fun parseRanks(text: String?): List<Int> =
+        text.orEmpty().split(",").mapNotNull { it.toIntOrNull() }
 
     /** Due reviews done on [day] (epoch day) — what the daily review limit counts. */
     suspend fun dueReviewsOn(day: Long): Int {

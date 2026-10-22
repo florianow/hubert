@@ -4,6 +4,7 @@ import android.app.Application
 import com.hubert.data.repository.AnkiSync
 import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.SettingsRepository
+import com.hubert.utils.AnkiMorningSync
 import com.hubert.utils.DailyReminder
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,8 @@ class HubertApplication : Application() {
             // Read-only: adapt Hubert's schedule to the Anki deck (no-op when the sync is off)
             ankiSync.syncIfEnabled()
         }
+        // Take Anki's queue each morning, before the cards are done in Anki
+        AnkiMorningSync.schedule(this)
         // Re-anchor the daily reminder to the chosen hour (survives updates and time changes)
         appScope.launch {
             val settings = settingsRepository.settings.first()

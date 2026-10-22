@@ -37,6 +37,8 @@ class AnkiRepository @Inject constructor(
         private val NOTES_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "notes")
         private val CARDS_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "cards")
         private val DECKS_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "decks")
+        private val SCHEDULE_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "schedule")
+        private const val MAX_QUEUE = 2000
         private const val FIELD_SEPARATOR = '\u001f'
     }
 
@@ -69,15 +71,7 @@ class AnkiRepository @Inject constructor(
      */
     suspend fun cards(deckName: String, rankByFrench: Map<String, Int>): List<AnkiCard> = withContext(Dispatchers.IO) {
         val search = "\"deck:$deckName\""
-        val rankByNote = mutableMapOf<Long, Int>()
-        context.contentResolver.query(NOTES_URI, arrayOf("_id", "flds"), search, null, null)?.use { c ->
-            while (c.moveToNext()) {
-                val fields = c.getString(1).split(FIELD_SEPARATOR).map { stripHtml(it) }
-                val rank = fields.firstOrNull { f -> f.isNotEmpty() && f.all { it.isDigit() } && f.length <= 4 }?.toIntOrNull()
-                    ?: fields.firstNotNullOfOrNull { rankByFrench[it] }
-                if (rank != null) rankByNote[c.getLong(0)] = rank
-            }
-        }
+        val rankByNote = rankByNote(deckName, rankByFrench)
         val cards = mutableMapOf<Int, AnkiCard>()
         context.contentResolver.query(CARDS_URI, arrayOf("note_id", "type", "interval"), search, null, null)?.use { c ->
             while (c.moveToNext()) {
@@ -91,6 +85,37 @@ class AnkiRepository @Inject constructor(
             }
         }
         cards.values.toList()
+    }
+
+    /**
+     * Today's queue of [deckName] as Anki would show it (new, learning and review cards within
+     * the deck's daily limits), mapped to ranks in queue order. Read-only: AnkiDroid selects the
+     * deck for the query and restores the previous selection afterwards.
+     */
+    suspend fun queuedRanks(deckName: String, rankByFrench: Map<String, Int>): List<Int> = withContext(Dispatchers.IO) {
+        val deck = decks().firstOrNull { it.name == deckName } ?: return@withContext emptyList()
+        val rankByNote = rankByNote(deckName, rankByFrench)
+        val ranks = mutableListOf<Int>()
+        context.contentResolver.query(
+            SCHEDULE_URI, arrayOf("note_id"), "limit=?,deckID=?", arrayOf(MAX_QUEUE.toString(), deck.id.toString()), null
+        )?.use { c ->
+            while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { ranks += it }
+        }
+        ranks.distinct()
+    }
+
+    /** Note id → Hubert rank for all notes of [deckName]. */
+    private fun rankByNote(deckName: String, rankByFrench: Map<String, Int>): Map<Long, Int> {
+        val rankByNote = mutableMapOf<Long, Int>()
+        context.contentResolver.query(NOTES_URI, arrayOf("_id", "flds"), "\"deck:$deckName\"", null, null)?.use { c ->
+            while (c.moveToNext()) {
+                val fields = c.getString(1).split(FIELD_SEPARATOR).map { stripHtml(it) }
+                val rank = fields.firstOrNull { f -> f.isNotEmpty() && f.all { it.isDigit() } && f.length <= 4 }?.toIntOrNull()
+                    ?: fields.firstNotNullOfOrNull { rankByFrench[it] }
+                if (rank != null) rankByNote[c.getLong(0)] = rank
+            }
+        }
+        return rankByNote
     }
 
     private fun stripHtml(text: String): String =

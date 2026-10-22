@@ -89,6 +89,19 @@ class LearningRepository @Inject constructor(
             }
             progressDao.upsertAll(state.values.toList())
         }
+        // With Anki: a word of today's Anki queue is done once answered right in Hubert
+        settingsRepository.addAnkiDone(today, relevant.filter { it.second }.map { it.first })
+    }
+
+    /**
+     * With the Anki sync: the words of today's Anki queue not yet answered right in Hubert.
+     * Null without Anki or without a snapshot for today (then Hubert's own schedule counts).
+     */
+    private suspend fun ankiOpenToday(): List<Int>? {
+        if (!settingsRepository.settings.first().ankiEnabled) return null
+        val queue = settingsRepository.ankiQueueOn(today()) ?: return null
+        val done = settingsRepository.ankiDoneOn(today())
+        return queue.filter { it !in done }
     }
 
     /**
@@ -137,11 +150,23 @@ class LearningRepository @Inject constructor(
     }
 
     suspend fun dueRanks(limit: Int): List<Int> =
-        progressDao.dueRanks(today(), minOf(limit, remainingToday()))
+        ankiOpenToday()?.take(limit) ?: progressDao.dueRanks(today(), minOf(limit, remainingToday()))
 
     /** Due words in priority order; [ignoreDailyLimit] for "trotzdem weiter". */
-    suspend fun dueProgress(limit: Int, ignoreDailyLimit: Boolean = false): List<WordProgress> =
-        progressDao.dueProgress(today(), if (ignoreDailyLimit) limit else minOf(limit, remainingToday()))
+    suspend fun dueProgress(limit: Int, ignoreDailyLimit: Boolean = false): List<WordProgress> {
+        // With Anki, Anki's daily limits apply: its queue in queue order; cards still new in
+        // Anki have no state here yet and count as just started
+        ankiOpenToday()?.take(limit)?.let { ranks ->
+            val known = progressDao.getByRanks(ranks).associateBy { it.rank }
+            return ranks.map { rank ->
+                known[rank] ?: WordProgress(
+                    rank = rank, intervalDays = 0.0, ease = SpacedRepetition.START_EASE, dueDay = today(),
+                    reps = 0, lapses = 0, lastReviewDay = -1, introducedDay = today()
+                )
+            }
+        }
+        return progressDao.dueProgress(today(), if (ignoreDailyLimit) limit else minOf(limit, remainingToday()))
+    }
 
     /** Words introduced today (new words of the day). */
     suspend fun introducedToday(): List<Int> = progressDao.introducedOn(today())
@@ -250,12 +275,13 @@ class LearningRepository @Inject constructor(
     suspend fun overview(): LearningOverview {
         val introduced = progressDao.count()
         val known = progressDao.countKnown(WordProgress.KNOWN_INTERVAL_DAYS)
+        val anki = ankiOpenToday()
         return LearningOverview(
             known = known,
             learning = introduced - known,
             unseen = (vocabRepository.getAllWords().size - introduced).coerceAtLeast(0),
-            dueToday = minOf(progressDao.countDue(today()), remainingToday()),
-            dueBeyondLimit = (progressDao.countDue(today()) - remainingToday()).coerceAtLeast(0)
+            dueToday = anki?.size ?: minOf(progressDao.countDue(today()), remainingToday()),
+            dueBeyondLimit = if (anki != null) 0 else (progressDao.countDue(today()) - remainingToday()).coerceAtLeast(0)
         )
     }
 }

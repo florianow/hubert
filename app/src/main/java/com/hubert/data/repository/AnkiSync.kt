@@ -4,7 +4,12 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
-/** Runs the read-only Anki sync when it is enabled and allowed; returns a short summary. */
+/**
+ * Runs the read-only Anki sync when it is enabled and allowed; returns a short summary.
+ * Besides the learning state it takes today's Anki queue, which "Vokabeln lernen" works
+ * through — taken on app start and early each morning, so it is known before (and after)
+ * the cards were done in Anki.
+ */
 @Singleton
 class AnkiSync @Inject constructor(
     private val ankiRepository: AnkiRepository,
@@ -20,7 +25,8 @@ class AnkiSync @Inject constructor(
             val rankByFrench = vocabRepository.getAllWords().associate { it.french to it.rank }
             val cards = ankiRepository.cards(settings.ankiDeck, rankByFrench)
             val (started, known) = learningRepository.applyAnki(cards)
-            val summary = "${cards.size} Karten erkannt · $started begonnen · $known sicher"
+            val queue = snapshotQueue(settings.ankiDeck, rankByFrench)
+            val summary = "${cards.size} Karten erkannt · $started begonnen · $known sicher · heute $queue fällig"
             settingsRepository.saveAnkiLastSync(summary)
             summary
         }.getOrElse { e ->
@@ -28,5 +34,27 @@ class AnkiSync @Inject constructor(
             settingsRepository.saveAnkiLastSync(summary)
             summary
         }
+    }
+
+    /** Only today's queue (morning job / start of "Vokabeln lernen"); false if not possible. */
+    suspend fun snapshotQueueIfEnabled(): Boolean {
+        val settings = settingsRepository.settings.first()
+        if (!settings.ankiEnabled || settings.ankiDeck.isBlank()) return false
+        if (!ankiRepository.isInstalled() || !ankiRepository.hasPermission()) return false
+        return runCatching {
+            snapshotQueue(settings.ankiDeck, vocabRepository.getAllWords().associate { it.french to it.rank })
+        }.isSuccess
+    }
+
+    /** Takes today's queue unless there already is one for today. */
+    suspend fun ensureTodayQueue() {
+        if (settingsRepository.ankiQueueOn(learningRepository.today()) == null) snapshotQueueIfEnabled()
+    }
+
+    /** Stores today's Anki queue (merged with an earlier snapshot of the day); returns its size. */
+    private suspend fun snapshotQueue(deck: String, rankByFrench: Map<String, Int>): Int {
+        val day = learningRepository.today()
+        settingsRepository.saveAnkiQueue(day, ankiRepository.queuedRanks(deck, rankByFrench))
+        return settingsRepository.ankiQueueOn(day)?.size ?: 0
     }
 }

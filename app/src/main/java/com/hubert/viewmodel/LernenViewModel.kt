@@ -3,6 +3,7 @@ package com.hubert.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.WordProgress
+import com.hubert.data.repository.AnkiSync
 import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.VocabRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -66,7 +67,8 @@ data class LernenState(
 @HiltViewModel
 class LernenViewModel @Inject constructor(
     private val learningRepository: LearningRepository,
-    private val vocabRepository: VocabRepository
+    private val vocabRepository: VocabRepository,
+    private val ankiSync: AnkiSync
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LernenState())
@@ -89,7 +91,11 @@ class LernenViewModel @Inject constructor(
         lastStufe = null
         ignoreLimit = false
         _uiState.value = LernenState(isRunning = true, isLoading = true)
-        planNextRound()
+        viewModelScope.launch {
+            // With Anki: make sure today's Anki queue is known (normally taken in the morning)
+            ankiSync.ensureTodayQueue()
+            planNextRound()
+        }
     }
 
     /** Called by the navigation layer when a round's game is over. */
