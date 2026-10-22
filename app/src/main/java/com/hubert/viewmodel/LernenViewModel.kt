@@ -33,11 +33,12 @@ enum class LernSpiel(val title: String, val stufe: LernStufe, val batchSize: Int
     TROUVEZ("Trouvez!", LernStufe.ERKENNEN, 20),
     ECOUTEZ("Écoutez!", LernStufe.ERKENNEN, 15),
     COMPLETEZ("Complétez!", LernStufe.IM_SATZ, 10),
-    DITES("Dites!", LernStufe.IM_SATZ, 8),
+    DITES("Dites!", LernStufe.IM_SATZ, 8),    // also the 2nd recall game
     RAPPEL("Rappel", LernStufe.ABRUFEN, 10)
 }
 
-data class LernRunde(val spiel: LernSpiel, val ranks: List<Int>)
+/** [stufe] is the stage the words come from (Dites! serves two stages). */
+data class LernRunde(val spiel: LernSpiel, val ranks: List<Int>, val stufe: LernStufe = spiel.stufe)
 
 data class RundenErgebnis(val spiel: LernSpiel, val correct: Int, val wrong: Int)
 
@@ -56,10 +57,11 @@ data class LernenState(
 }
 
 /**
- * "Vokabeln lernen": works through today's due words in rounds. Each round takes the stage
- * with the most due words and the matching game (recognition: Trouvez!/Écoutez! alternating,
- * context: Complétez!, recall: Rappel). Answers update the schedule, so finished words drop
- * out of "fällig" and the next round is planned from what is left.
+ * "Vokabeln lernen": works through today's due words in rounds. The stages take turns (a
+ * small stage is not starved by a big one), starting with the one with the most due words.
+ * Games per stage alternate: recognition Trouvez!/Écoutez!, context Complétez!/Dites!,
+ * recall Rappel/Dites!. Answers update the schedule, so finished words drop out of "fällig"
+ * and the next round is planned from what is left.
  */
 @HiltViewModel
 class LernenViewModel @Inject constructor(
@@ -72,6 +74,8 @@ class LernenViewModel @Inject constructor(
 
     private var recognitionRounds = 0
     private var contextRounds = 0
+    private var recallRounds = 0
+    private var lastStufe: LernStufe? = null
     private var ignoreLimit = false
 
     companion object {
@@ -81,6 +85,8 @@ class LernenViewModel @Inject constructor(
     fun start() {
         recognitionRounds = 0
         contextRounds = 0
+        recallRounds = 0
+        lastStufe = null
         ignoreLimit = false
         _uiState.value = LernenState(isRunning = true, isLoading = true)
         planNextRound()
@@ -96,8 +102,10 @@ class LernenViewModel @Inject constructor(
                 results = it.results + RundenErgebnis(round.spiel, correct, answers.size - correct)
             )
         }
-        if (round.spiel.stufe == LernStufe.ERKENNEN) recognitionRounds++
-        if (round.spiel.stufe == LernStufe.IM_SATZ) contextRounds++
+        if (round.stufe == LernStufe.ERKENNEN) recognitionRounds++
+        if (round.stufe == LernStufe.IM_SATZ) contextRounds++
+        if (round.stufe == LernStufe.ABRUFEN) recallRounds++
+        lastStufe = round.stufe
         planNextRound()
     }
 
@@ -112,6 +120,12 @@ class LernenViewModel @Inject constructor(
         _uiState.value = LernenState()
     }
 
+    /** First round: the biggest stage; after that the stages with due words take turns. */
+    private fun nextStufe(withDue: List<LernStufe>, size: (LernStufe) -> Int): LernStufe? {
+        val last = lastStufe ?: return withDue.maxByOrNull(size)
+        return withDue.firstOrNull { it.ordinal > last.ordinal } ?: withDue.firstOrNull()
+    }
+
     private fun planNextRound() {
         viewModelScope.launch {
             val due = learningRepository.dueProgress(DUE_SCAN_LIMIT, ignoreDailyLimit = ignoreLimit)
@@ -121,9 +135,7 @@ class LernenViewModel @Inject constructor(
             // Complétez! needs one of its gap sentences; Dites! works with every word (deck examples)
             val withSentences = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
 
-            val stufe = LernStufe.entries
-                .filter { byStufe[it].orEmpty().isNotEmpty() }
-                .maxByOrNull { byStufe[it].orEmpty().size }
+            val stufe = nextStufe(LernStufe.entries.filter { byStufe[it].orEmpty().isNotEmpty() }) { byStufe[it].orEmpty().size }
             val round = stufe?.let {
                 val words = byStufe[it].orEmpty()
                 val completezWords = words.filter { r -> r in withSentences }
@@ -131,10 +143,10 @@ class LernenViewModel @Inject constructor(
                     LernStufe.ERKENNEN -> if (recognitionRounds % 2 == 0) LernSpiel.TROUVEZ else LernSpiel.ECOUTEZ
                     // "im Satz" alternates between Complétez! and Dites!
                     LernStufe.IM_SATZ -> if (contextRounds % 2 == 0 && completezWords.isNotEmpty()) LernSpiel.COMPLETEZ else LernSpiel.DITES
-                    LernStufe.ABRUFEN -> LernSpiel.RAPPEL
+                    LernStufe.ABRUFEN -> if (recallRounds % 2 == 0) LernSpiel.RAPPEL else LernSpiel.DITES
                 }
                 val batch = if (spiel == LernSpiel.COMPLETEZ) completezWords else words
-                LernRunde(spiel, batch.take(spiel.batchSize))
+                LernRunde(spiel, batch.take(spiel.batchSize), it)
             }
             _uiState.update {
                 it.copy(

@@ -9,6 +9,7 @@ import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.LearningOverview
 import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.PinnedWordsRepository
+import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -130,6 +131,7 @@ data class MenuDuJourState(
     val availableCategories: List<String> = emptyList(),
     val dailyCategory: String = "",      // theme of the day for Express and Complet
     val completPreview: String = "",     // today's Complet line-up, e.g. "Trouvez! · Préposez! · …"
+    val expressPreview: String = "",     // today's Express line-up
     val category: String = "",
     val courses: List<Course> = emptyList(),
     val focusCount: Int = 0,             // struggled/pinned words worked into the menu
@@ -178,6 +180,7 @@ class MenuDuJourViewModel @Inject constructor(
     private val menuSessionDao: MenuSessionDao,
     private val wordAttemptDao: WordAttemptDao,
     private val learningRepository: LearningRepository,
+    private val settingsRepository: SettingsRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -224,10 +227,12 @@ class MenuDuJourViewModel @Inject constructor(
         }
         viewModelScope.launch {
             val chef = Course("Plat du chef", "", dailyGrammarGame())
+            val learningPart = hasLearningPart()
             _uiState.update {
                 it.copy(
                     dailyCategory = dailyCategory(categories),
-                    completPreview = completCourses(chef).joinToString(" · ") { c -> c.game.gameName }
+                    expressPreview = expressCourses(learningPart).joinToString(" · ") { c -> c.game.gameName },
+                    completPreview = completCourses(chef, learningPart).joinToString(" · ") { c -> c.game.gameName }
                 )
             }
         }
@@ -256,8 +261,9 @@ class MenuDuJourViewModel @Inject constructor(
         discoveryKnown.clear()
         var cards = emptyList<DiscoveryCard>()
         var due = emptyList<Int>()
-        if (type == MenuType.A_LA_CARTE) {
-            // À la carte stays thematic: theme words plus recent mistakes
+        val learningPart = hasLearningPart()
+        if (type == MenuType.A_LA_CARTE || !learningPart) {
+            // À la carte stays thematic; with Anki the own words are learned in "Vokabeln lernen: theme words plus recent mistakes
             focusRanks = struggled
         } else {
             // Learning path first: new words of the day, due reviews, then recent mistakes;
@@ -277,16 +283,16 @@ class MenuDuJourViewModel @Inject constructor(
             focusRanks = emptyList()
         }
         val courses = when (type) {
-            // 4th course alternates daily: Fromage (Classez!) before or Café (Nombrez!) after the Dessert
-            MenuType.EXPRESS -> if (LocalDate.now().toEpochDay() % 2 == 0L) listOf(APERITIF, ENTREE, FROMAGE, DESSERT)
-                                else listOf(APERITIF, ENTREE, DESSERT, CAFE)
+            // 4th course alternates daily: Fromage (Classez!) before or Café (Nombrez!) after the Dessert;
+            // without part 1 (Anki) the Plat (Complétez!) takes the Apéritif's place
+            MenuType.EXPRESS -> expressCourses(learningPart)
             MenuType.COMPLET -> {
                 val grammar = dailyGrammarGame()
                 val focus = grammarFocus(grammar)
                 val goal = if (focus.isEmpty()) "Grammatik: deine eigene Auswahl"
                            else "Fokus: " + focus.joinToString(", ") { ConjuguezViewModel.TENSE_DISPLAY[it] ?: it }
                 val chef = Course("Plat du chef", goal, grammar, focus)
-                completCourses(chef)
+                completCourses(chef, learningPart)
             }
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
         }
@@ -483,14 +489,28 @@ class MenuDuJourViewModel @Inject constructor(
     /**
      * Always 5 courses: Apéritif (own words), then the theme part with Entrée (getting to know
      * the theme words), the grammar course and 2 of Complétez / Classez / Écrivez / Nombrez —
-     * a different pair each day, served in menu order.
+     * a different pair each day, served in menu order. Without part 1 (Anki) it is 3 of them.
      */
-    private fun completCourses(chef: Course): List<Course> {
+    private fun expressCourses(learningPart: Boolean): List<Course> {
+        val opener = if (learningPart) listOf(APERITIF, ENTREE) else listOf(ENTREE, PLAT)
+        return if (LocalDate.now().toEpochDay() % 2 == 0L) opener + listOf(FROMAGE, DESSERT)
+               else opener + listOf(DESSERT, CAFE)
+    }
+
+    private fun completCourses(chef: Course, learningPart: Boolean): List<Course> {
         val rotation = CourseGame.COMPLET_ROTATION
         val first = (LocalDate.now().toEpochDay() % rotation.size).toInt()
-        val today = setOf(rotation[first], rotation[(first + 1) % rotation.size])
-        return listOf(APERITIF, ENTREE, chef) + listOf(PLAT, FROMAGE, DESSERT, CAFE).filter { it.game in today }
+        val count = if (learningPart) 2 else 3
+        val today = (0 until count).map { rotation[(first + it) % rotation.size] }.toSet()
+        val opener = if (learningPart) listOf(APERITIF, ENTREE, chef) else listOf(ENTREE, chef)
+        return opener + listOf(PLAT, FROMAGE, DESSERT, CAFE).filter { it.game in today }
     }
+
+    /**
+     * Part 1 ("Deine Wörter" with the Amuse-bouche) only without Anki: with the Anki sync the
+     * own words come from the deck and are worked through in "Vokabeln lernen".
+     */
+    private suspend fun hasLearningPart(): Boolean = !settingsRepository.settings.first().ankiEnabled
 
     /**
      * Express: part 1 is the Entrée. Complet: the Entrée plus the next vocab course. All other

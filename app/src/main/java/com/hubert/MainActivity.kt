@@ -391,6 +391,7 @@ fun HubertApp() {
                     MenuDuJourTypeScreen(
                         dailyCategory = menuState.dailyCategory,
                         completPreview = menuState.completPreview,
+                        expressPreview = menuState.expressPreview,
                         onChoose = { menuVm.chooseMenuType(it) },
                         onShowWeeklyReport = { weeklyVm.open(0) },
                         onBack = { currentScreen = Screen.MENU }

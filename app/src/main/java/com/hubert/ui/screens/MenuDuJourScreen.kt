@@ -460,6 +460,7 @@ private fun GrammarMistakeRow(mistake: GrammarMistake) {
 fun MenuDuJourTypeScreen(
     dailyCategory: String,
     completPreview: String,
+    expressPreview: String,
     onChoose: (MenuType) -> Unit,
     onShowWeeklyReport: () -> Unit,
     onBack: () -> Unit
@@ -499,7 +500,11 @@ fun MenuDuJourTypeScreen(
             MenuTypeCard(
                 type = type,
                 today = dailyCategory.takeIf { type != MenuType.A_LA_CARTE && it.isNotEmpty() },
-                coursesToday = completPreview.takeIf { type == MenuType.COMPLET && it.isNotEmpty() },
+                coursesToday = when (type) {
+                    MenuType.COMPLET -> completPreview
+                    MenuType.EXPRESS -> expressPreview
+                    MenuType.A_LA_CARTE -> ""
+                }.takeIf { it.isNotEmpty() },
                 onClick = { onChoose(type) }
             )
             Spacer(Modifier.height(12.dp))
