@@ -59,6 +59,7 @@ class LearningRepository @Inject constructor(
         const val SEED_SPREAD_DAYS = 14
         /** Words newly taken over from Anki are spread over this many days. */
         const val ANKI_SPREAD_DAYS = 7
+        const val STREAK_WINDOW_DAYS = 400L
     }
 
     fun today(): Long = LocalDate.now().toEpochDay()
@@ -270,6 +271,27 @@ class LearningRepository @Inject constructor(
         val start = LocalDate.now().atStartOfDay(zone).toInstant().toEpochMilli()
         val end = LocalDate.now().plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
         return gameSessionDao.getSessionsBetween(start, end).isNotEmpty()
+    }
+
+    /**
+     * Days in a row with at least one game played, ending today — or yesterday, so the
+     * streak only breaks once a whole day is missed.
+     */
+    suspend fun streakDays(): Int {
+        val zone = ZoneId.systemDefault()
+        val today = LocalDate.now()
+        val from = today.minusDays(STREAK_WINDOW_DAYS).atStartOfDay(zone).toInstant().toEpochMilli()
+        val to = today.plusDays(1).atStartOfDay(zone).toInstant().toEpochMilli()
+        val days = gameSessionDao.getSessionsBetween(from, to)
+            .map { Instant.ofEpochMilli(it.timestamp).atZone(zone).toLocalDate() }
+            .toSet()
+        var day = if (today in days) today else today.minusDays(1)
+        var streak = 0
+        while (day in days) {
+            streak++
+            day = day.minusDays(1)
+        }
+        return streak
     }
 
     suspend fun overview(): LearningOverview {

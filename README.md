@@ -59,6 +59,8 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Game Modes
 
+The start screen leads with **Heute**, the plan of the day: ① *Vokabeln lernen* (today's due words) → ② *Menu du jour* (theme of the day). Each step shows its status (due count / "✓" with the menu's grade out of 20), plus a 🔥 streak of days in a row with practice. Below, all games stay available as *Freies Spiel*.
+
 ### Spaced repetition & learning path
 
 Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word schedule (`word_progress`, `utils/SpacedRepetition.kt`, unit-tested), SM-2 style as in Anki:

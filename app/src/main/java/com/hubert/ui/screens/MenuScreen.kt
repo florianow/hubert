@@ -9,6 +9,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
@@ -27,7 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hubert.R
 import com.hubert.data.repository.LearningOverview
+import com.hubert.viewmodel.TodayPlan
 import com.hubert.ui.theme.*
+
+private val GRID_CARD_HEIGHT = 104.dp
 
 @Composable
 fun MenuScreen(
@@ -44,6 +49,7 @@ fun MenuScreen(
     parlezHighScore: Int,
     onMenuDuJour: () -> Unit,
     learningOverview: LearningOverview?,
+    today: TodayPlan?,
     onShowProgress: () -> Unit,
     onStartLearning: () -> Unit,
     onStartMatching: () -> Unit,
@@ -112,50 +118,9 @@ fun MenuScreen(
 
         Spacer(Modifier.height(10.dp))
 
-        // "Menu du jour" — guided multi-game session with a final grade
-        Button(
-            onClick = onMenuDuJour,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(58.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MenuWine)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Restaurant,
-                contentDescription = null,
-                modifier = Modifier.size(22.dp)
-            )
-            Spacer(Modifier.width(10.dp))
-            Column {
-                Text(
-                    text = "Menu du jour",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
-                )
-                Text(
-                    text = "Express · Complet · À la carte — mit Note am Ende",
-                    fontSize = 10.sp,
-                    color = Color.White.copy(alpha = 0.75f)
-                )
-            }
-        }
+        // The day's plan: ① Vokabeln lernen → ② Menu du jour; single games below stay free
+        TodayCard(today = today, dueFallback = learningOverview?.dueToday, onStartLearning = onStartLearning, onMenuDuJour = onMenuDuJour)
 
-        // "Vokabeln lernen" — works through today's due words, game by game
-        Spacer(Modifier.height(6.dp))
-        OutlinedButton(
-            onClick = onStartLearning,
-            modifier = Modifier.fillMaxWidth().height(48.dp),
-            shape = RoundedCornerShape(16.dp),
-            border = androidx.compose.foundation.BorderStroke(1.5.dp, LernenGreen),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = LernenGreen)
-        ) {
-            Text(
-                text = learningOverview?.dueToday?.takeIf { it > 0 }?.let { "🔁 Vokabeln lernen · $it fällig" } ?: "🔁 Vokabeln lernen",
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
-            )
-        }
 
         // Learning path at a glance — tap for the weekly report
         if (learningOverview != null && learningOverview.known + learningOverview.learning > 0) {
@@ -171,23 +136,28 @@ fun MenuScreen(
             ) {
                 ProgressFigure("${learningOverview.known}", "sicher")
                 ProgressFigure("${learningOverview.learning}", "lernend")
-                // Tapping the due count starts a review round right away
-                ProgressFigure("${learningOverview.dueToday} ▶", "heute fällig", onClick = onStartLearning)
                 ProgressFigure("≈ ${learningOverview.estimatedLevel}", "Wortschatz")
             }
         }
 
         Spacer(Modifier.height(10.dp))
+        Text(
+            text = "Freies Spiel",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+            modifier = Modifier.padding(start = 4.dp, bottom = 6.dp)
+        )
 
         // 2×4 game grid — fills all remaining space
         Column(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -210,7 +180,7 @@ fun MenuScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -233,7 +203,7 @@ fun MenuScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -256,7 +226,7 @@ fun MenuScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -279,7 +249,7 @@ fun MenuScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -302,7 +272,7 @@ fun MenuScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f),
+                    .height(GRID_CARD_HEIGHT),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 GridGameCard(
@@ -317,6 +287,112 @@ fun MenuScreen(
             }
         }
     }
+}
+
+/** "Heute": the two steps of the day with their status, plus the streak. */
+@Composable
+private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () -> Unit, onMenuDuJour: () -> Unit) {
+    val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, MenuWine.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
+            .background(MenuWine.copy(alpha = 0.04f), RoundedCornerShape(16.dp))
+            .padding(horizontal = 12.dp, vertical = 10.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Heute", fontWeight = FontWeight.Black, fontSize = 17.sp, modifier = Modifier.weight(1f))
+            if (today != null && today.streak > 0) {
+                Text(
+                    text = "🔥 ${today.streak} ${if (today.streak == 1) "Tag" else "Tage"}",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MenuWine
+                )
+            }
+        }
+        Spacer(Modifier.height(6.dp))
+        val due = today?.dueWords ?: dueFallback ?: 0
+        TodayStep(
+            number = "1",
+            title = "Vokabeln lernen",
+            status = if (due > 0) "$due fällig" else "✓ alles wiederholt",
+            done = today?.vocabDone == true,
+            color = LernenGreen,
+            onClick = onStartLearning
+        )
+        Spacer(Modifier.height(6.dp))
+        val menu = today?.menuToday
+        TodayStep(
+            number = "2",
+            title = "Menu du jour",
+            status = when {
+                menu != null -> "✓ ${menuTypeLabel(menu.menuType)} · ${formatGrade(menu.overallScore)}/20"
+                today != null && today.category.isNotEmpty() -> "Thema: ${today.category}"
+                else -> "Express · Complet · À la carte"
+            },
+            done = menu != null,
+            color = MenuWine,
+            onClick = onMenuDuJour
+        )
+        if (today?.complete == true) {
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = "Tagesziel erreicht 🎉 – alles Weitere ist Bonus.",
+                fontSize = 12.sp,
+                color = muted
+            )
+        }
+    }
+}
+
+@Composable
+private fun TodayStep(number: String, title: String, status: String, done: Boolean, color: Color, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (done) color.copy(alpha = 0.08f) else color)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(26.dp)
+                .clip(CircleShape)
+                .background(if (done) color else Color.White.copy(alpha = 0.25f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(if (done) "✓" else number, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+        }
+        Spacer(Modifier.width(10.dp))
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            color = if (done) color else Color.White,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = status,
+            fontSize = 12.sp,
+            color = if (done) color else Color.White.copy(alpha = 0.85f)
+        )
+        Text(" ▶", fontSize = 12.sp, color = if (done) color.copy(alpha = 0.6f) else Color.White)
+    }
+}
+
+private fun menuTypeLabel(type: String): String = when (type) {
+    "EXPRESS" -> "Express"
+    "COMPLET" -> "Complet"
+    else -> "À la carte"
+}
+
+/** Menu score 0–100 as a grade out of 20, e.g. "15,5". */
+private fun formatGrade(score: Int): String {
+    val grade = score / 5.0
+    return if (grade % 1.0 == 0.0) grade.toInt().toString() else String.format(java.util.Locale.GERMAN, "%.1f", grade)
 }
 
 @Composable

@@ -16,6 +16,8 @@ import com.hubert.utils.FrenchTts
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
@@ -119,6 +121,18 @@ data class GrammarMistake(
     val correctAnswer: String
 )
 
+/** The day's plan on the start screen: ① Vokabeln lernen → ② Menu du jour. */
+data class TodayPlan(
+    val dueWords: Int,              // still due in "Vokabeln lernen"
+    val menuToday: MenuSession?,    // best menu finished today
+    val category: String,           // theme of the day
+    val streak: Int                 // days in a row with practice
+) {
+    val vocabDone: Boolean get() = dueWords == 0
+    val menuDone: Boolean get() = menuToday != null
+    val complete: Boolean get() = vocabDone && menuDone
+}
+
 data class MenuDuJourState(
     val isRunning: Boolean = false,      // a menu is in progress (from type selection to L'addition)
     val isChoosingType: Boolean = false,
@@ -155,7 +169,8 @@ data class MenuDuJourState(
     val menusPlayed: Int = 0,
 
     // Learning path snapshot for the main menu strip
-    val overview: LearningOverview? = null
+    val overview: LearningOverview? = null,
+    val today: TodayPlan? = null
 ) {
     val nextCourse: Course? get() = courses.getOrNull(currentIndex)
     val needsDiscovery: Boolean get() = discoveryCards.isNotEmpty() && !discoveryDone
@@ -411,7 +426,16 @@ class MenuDuJourViewModel @Inject constructor(
     fun refreshOverview() {
         viewModelScope.launch {
             val overview = learningRepository.overview()
-            _uiState.update { it.copy(overview = overview) }
+            val now = LocalDate.now()
+            val menu = menuSessionDao.getBetween(startOfDay(now), startOfDay(now.plusDays(1)))
+                .maxByOrNull { it.overallScore }
+            val today = TodayPlan(
+                dueWords = overview.dueToday,
+                menuToday = menu,
+                category = dailyCategory(withContext(Dispatchers.Default) { eligibleCategories() }),
+                streak = learningRepository.streakDays()
+            )
+            _uiState.update { it.copy(overview = overview, today = today) }
         }
     }
 

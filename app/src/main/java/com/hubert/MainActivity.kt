@@ -1114,6 +1114,7 @@ fun HubertApp() {
                 accordezHighScore = accordezState.highScore,
                 parlezHighScore = parlezState.highScore,
                 learningOverview = menuState.overview,
+                today = menuState.today,
                 onShowProgress = { weeklyVm.open(0) },
                 onStartLearning = startLearning,
                 onMenuDuJour = {
