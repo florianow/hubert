@@ -8,6 +8,8 @@ import com.hubert.data.model.MenuSession
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.LearningOverview
 import com.hubert.data.repository.LearningRepository
+import com.hubert.data.repository.ParcoursRepository
+import com.hubert.data.repository.ParcoursStatus
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.SettingsRepository
 import com.hubert.data.repository.StatisticsRepository
@@ -126,6 +128,7 @@ data class TodayPlan(
     val dueWords: Int,              // still due in "Vokabeln lernen"
     val menuToday: MenuSession?,    // best menu finished today
     val category: String,           // theme of the day
+    val parcours: ParcoursStatus?,  // current étape (null = Parcours off)
     val streak: Int                 // days in a row with practice
 ) {
     val vocabDone: Boolean get() = dueWords == 0
@@ -170,7 +173,9 @@ data class MenuDuJourState(
 
     // Learning path snapshot for the main menu strip
     val overview: LearningOverview? = null,
-    val today: TodayPlan? = null
+    val today: TodayPlan? = null,
+    val parcours: ParcoursStatus? = null,       // current étape while choosing / playing a menu
+    val parcoursOutcome: String? = null         // what the finished menu did for the Parcours
 ) {
     val nextCourse: Course? get() = courses.getOrNull(currentIndex)
     val needsDiscovery: Boolean get() = discoveryCards.isNotEmpty() && !discoveryDone
@@ -196,6 +201,7 @@ class MenuDuJourViewModel @Inject constructor(
     private val wordAttemptDao: WordAttemptDao,
     private val learningRepository: LearningRepository,
     private val settingsRepository: SettingsRepository,
+    private val parcoursRepository: ParcoursRepository,
     private val frenchTts: FrenchTts
 ) : ViewModel() {
 
@@ -246,10 +252,12 @@ class MenuDuJourViewModel @Inject constructor(
         viewModelScope.launch {
             val chef = Course("Plat du chef", "", dailyGrammarGame())
             val learningPart = hasLearningPart()
+            val parcours = parcoursRepository.status()
             _uiState.update {
                 it.copy(
                     dailyCategory = dailyCategory(categories),
-                    expressPreview = expressCourses(learningPart).joinToString(" · ") { c -> c.game.gameName },
+                    parcours = parcours,
+                    expressPreview = expressCourses(learningPart, chef.takeIf { parcours != null }).joinToString(" · ") { c -> c.game.gameName },
                     completPreview = completCourses(chef, learningPart).joinToString(" · ") { c -> c.game.gameName }
                 )
             }
@@ -280,8 +288,11 @@ class MenuDuJourViewModel @Inject constructor(
         var cards = emptyList<DiscoveryCard>()
         var due = emptyList<Int>()
         val learningPart = hasLearningPart()
+        // The Parcours only applies to menus on the étape's theme (not À la carte)
+        val parcours = parcoursRepository.status()?.takeIf { type != MenuType.A_LA_CARTE && it.unit.theme == category }
         if (type == MenuType.A_LA_CARTE || !learningPart) {
-            // À la carte stays thematic; with Anki the own words are learned in "Vokabeln lernen: theme words plus recent mistakes
+            // Theme words plus recent mistakes: À la carte always, Express/Complet with Anki
+            // (the own words are learned in "Vokabeln lernen" then)
             focusRanks = struggled
         } else {
             // Learning path first: new words of the day, due reviews, then recent mistakes;
@@ -303,15 +314,9 @@ class MenuDuJourViewModel @Inject constructor(
         val courses = when (type) {
             // 4th course alternates daily: Fromage (Classez!) before or Café (Nombrez!) after the Dessert;
             // without part 1 (Anki) the Plat (Complétez!) takes the Apéritif's place
-            MenuType.EXPRESS -> expressCourses(learningPart)
-            MenuType.COMPLET -> {
-                val grammar = dailyGrammarGame()
-                val focus = grammarFocus(grammar)
-                val goal = if (focus.isEmpty()) "Grammatik: deine eigene Auswahl"
-                           else "Fokus: " + focus.joinToString(", ") { ConjuguezViewModel.TENSE_DISPLAY[it] ?: it }
-                val chef = Course("Plat du chef", goal, grammar, focus)
-                completCourses(chef, learningPart)
-            }
+            // In the Parcours the Express also serves the étape's grammar game
+            MenuType.EXPRESS -> expressCourses(learningPart, if (parcours != null) chefCourse(parcours) else null)
+            MenuType.COMPLET -> completCourses(chefCourse(parcours), learningPart)
             MenuType.A_LA_CARTE -> listOf(ENTREE, PLAT, FROMAGE, DESSERT)
         }
         _uiState.update {
@@ -322,6 +327,8 @@ class MenuDuJourViewModel @Inject constructor(
                 menuType = type,
                 category = category,
                 courses = courses,
+                parcours = parcours,
+                parcoursOutcome = null,
                 focusCount = focusRanks.size,
                 dueCount = due.size,
                 discoveryCards = cards,
@@ -433,6 +440,7 @@ class MenuDuJourViewModel @Inject constructor(
                 dueWords = overview.dueToday,
                 menuToday = menu,
                 category = dailyCategory(withContext(Dispatchers.Default) { eligibleCategories() }),
+                parcours = parcoursRepository.status(),
                 streak = learningRepository.streakDays()
             )
             _uiState.update { it.copy(overview = overview, today = today) }
@@ -466,8 +474,10 @@ class MenuDuJourViewModel @Inject constructor(
                     durationMs = durationMs
                 )
             )
+            val outcome = state.parcours?.let { recordParcours(it, state.menuType, overall) }
             _uiState.update {
                 it.copy(
+                    parcoursOutcome = outcome,
                     isBetweenCourses = false,
                     isFinished = true,
                     overallScore = overall,
@@ -482,6 +492,23 @@ class MenuDuJourViewModel @Inject constructor(
                     menusPlayed = menuSessionDao.getCount()
                 )
             }
+        }
+    }
+
+    /** Counts the menu for the étape; returns the line shown on the bill. */
+    private suspend fun recordParcours(status: ParcoursStatus, type: MenuType, score: Int): String {
+        val wasControl = type == MenuType.COMPLET && status.controlUnlocked
+        val passed = parcoursRepository.recordMenu(type == MenuType.COMPLET, score)
+        val after = parcoursRepository.status()
+        val menus = minOf(status.menusDone + 1, ParcoursRepository.MENUS_BEFORE_CONTROL)
+        return when {
+            passed && after != null && after.unit.id != status.unit.id ->
+                "🎓 Étape ${status.index + 1} bestanden! Weiter mit Étape ${after.index + 1}: ${after.unit.title}"
+            passed -> "🎓 Étape bestanden – das war die letzte. Bravo !"
+            wasControl -> "Contrôle: ab 12/20 bestanden – beim nächsten Complet klappt's."
+            menus >= ParcoursRepository.MENUS_BEFORE_CONTROL ->
+                "Étape ${status.index + 1}: Menü $menus/${ParcoursRepository.MENUS_BEFORE_CONTROL} – der nächste Complet ist der Contrôle."
+            else -> "Étape ${status.index + 1}: Menü $menus/${ParcoursRepository.MENUS_BEFORE_CONTROL}"
         }
     }
 
@@ -518,14 +545,28 @@ class MenuDuJourViewModel @Inject constructor(
      * the theme words), the grammar course and 2 of Complétez / Classez / Écrivez / Nombrez —
      * a different pair each day, served in menu order. Without part 1 (Anki) it is 3 of them.
      */
-    private fun expressCourses(learningPart: Boolean): List<Course> {
+    private fun expressCourses(learningPart: Boolean, chef: Course? = null): List<Course> {
         val opener = if (learningPart) listOf(APERITIF, ENTREE) else listOf(ENTREE, PLAT)
+        if (chef != null) return opener + listOf(chef, DESSERT)
         return if (LocalDate.now().toEpochDay() % 2 == 0L) opener + listOf(FROMAGE, DESSERT)
                else opener + listOf(DESSERT, CAFE)
     }
 
+    /** The grammar course: the étape's game and focus in the Parcours, otherwise the game you need most. */
+    private suspend fun chefCourse(parcours: ParcoursStatus?): Course {
+        val grammar = dailyGrammarGame()
+        val focus = grammarFocus(grammar)
+        val goal = when {
+            parcours != null -> "Étape ${parcours.index + 1}: ${parcours.unit.title}"
+            focus.isEmpty() -> "Grammatik: deine eigene Auswahl"
+            else -> "Fokus: " + focus.joinToString(", ") { ConjuguezViewModel.TENSE_DISPLAY[it] ?: it }
+        }
+        return Course("Plat du chef", goal, grammar, focus)
+    }
+
     private fun completCourses(chef: Course, learningPart: Boolean): List<Course> {
-        val rotation = CourseGame.COMPLET_ROTATION
+        // The chef's game (Classez!/Nombrez! in some étapes) is not served twice
+        val rotation = CourseGame.COMPLET_ROTATION - chef.game
         val first = (LocalDate.now().toEpochDay() % rotation.size).toInt()
         val count = if (learningPart) 2 else 3
         val today = (0 until count).map { rotation[(first + it) % rotation.size] }.toSet()
@@ -552,6 +593,8 @@ class MenuDuJourViewModel @Inject constructor(
      * comes round once before any repeats. Today's menus don't count, keeping the pick stable.
      */
     private suspend fun dailyCategory(categories: List<String>): String {
+        // The Parcours sets the theme
+        parcoursRepository.status()?.let { return it.unit.theme }
         val today = LocalDate.now()
         val recent = menuSessionDao
             .getBetween(startOfDay(today.minusDays(categories.size.toLong())), startOfDay(today))
@@ -567,6 +610,9 @@ class MenuDuJourViewModel @Inject constructor(
      * the lowest accuracy over the last weeks (no recent attempts counts as weakest).
      */
     private suspend fun dailyGrammarGame(): CourseGame {
+        parcoursRepository.status()?.let { status ->
+            CourseGame.entries.firstOrNull { it.gameType == status.unit.game }?.let { return it }
+        }
         val today = startOfDay(LocalDate.now())
         val servedToday = menuSessionDao.getBetween(today, Long.MAX_VALUE)
             .firstOrNull { it.menuType == MenuType.COMPLET.name }
@@ -591,6 +637,7 @@ class MenuDuJourViewModel @Inject constructor(
      * player's own selection (too little data).
      */
     private suspend fun grammarFocus(game: CourseGame): Set<String> {
+        parcoursRepository.status()?.takeIf { it.unit.game == game.gameType }?.let { return it.unit.focus.toSet() }
         val since = startOfDay(LocalDate.now().minusDays(GRAMMAR_WINDOW_DAYS))
         val results = wordAttemptDao.getAttemptsSince(game.gameType, since)
             .mapNotNull { attempt -> focusKey(game, attempt.question, attempt.correctAnswer)?.let { it to attempt.isCorrect } }

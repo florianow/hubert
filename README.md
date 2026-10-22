@@ -80,6 +80,10 @@ Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word
 
 **Daily reminder** (Einstellungen): optional notification at a chosen hour, only if no round was played that day and something is due (WorkManager).
 
+### Parcours
+
+A learning path of 27 *étapes* from A1 to B2 (`assets/parcours.json`, built by `scripts/build_parcours.py`). Each étape is one grammar point with its **Leçon** — the matching anki_french grammar notes (by jacbz), shown in the app: tap French to hear it, tap the blurred German to reveal it — plus a theme and the grammar game that practises it (Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez! or Classez!, with the étape's focus). While the Parcours is on, Express and Complet use the étape's theme and serve its game as *Plat du chef* (Express too). Steps: read the Leçon → 2 menus → **Contrôle**: the next Complet, passed from 12/20, moves on to the next étape. The Parcours screen lists all étapes by level; you can start or repeat anywhere (e.g. skip what you know) or switch the Parcours off (then the theme of the day is picked as before). Progress is stored in DataStore.
+
 ### Menu du jour
 
 A guided learning session that chains several games into one "menu", built around a thematic category plus words you recently struggled with (and pinned words). The courses follow a learning progression — recognise → apply in context → grammar → consolidate gender → produce — and words missed in earlier courses come back in later ones.

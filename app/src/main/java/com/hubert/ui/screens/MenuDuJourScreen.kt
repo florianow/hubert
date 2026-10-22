@@ -1,5 +1,8 @@
 package com.hubert.ui.screens
 
+import com.hubert.data.repository.ParcoursRepository
+import com.hubert.data.repository.ParcoursStatus
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -277,6 +280,20 @@ fun MenuDuJourAdditionScreen(
                 }
             }
             Spacer(Modifier.height(10.dp))
+            state.parcoursOutcome?.let { outcome ->
+                Text(
+                    text = outcome,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = ParcoursBlue,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(ParcoursBlue.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
+                        .padding(10.dp)
+                )
+                Spacer(Modifier.height(10.dp))
+            }
             Text(
                 text = mentionFor(grade),
                 fontSize = 20.sp,
@@ -461,6 +478,7 @@ fun MenuDuJourTypeScreen(
     dailyCategory: String,
     completPreview: String,
     expressPreview: String,
+    parcours: ParcoursStatus?,
     onChoose: (MenuType) -> Unit,
     onShowWeeklyReport: () -> Unit,
     onBack: () -> Unit
@@ -495,6 +513,28 @@ fun MenuDuJourTypeScreen(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+        if (parcours != null) {
+            Spacer(Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(ParcoursBlue.copy(alpha = 0.08f), RoundedCornerShape(12.dp))
+                    .padding(horizontal = 12.dp, vertical = 10.dp)
+            ) {
+                Text(
+                    text = "Parcours · Étape ${parcours.index + 1}: ${parcours.unit.title}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = ParcoursBlue
+                )
+                Text(
+                    text = if (parcours.controlUnlocked) "🎓 Der Complet ist heute dein Contrôle – ab 12/20 geht's zur nächsten Étape."
+                           else "Menü ${parcours.menusDone + 1}/${ParcoursRepository.MENUS_BEFORE_CONTROL} · Express und Complet zählen, danach kommt der Contrôle.",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+            }
+        }
         Spacer(Modifier.height(24.dp))
         MenuType.entries.forEach { type ->
             MenuTypeCard(

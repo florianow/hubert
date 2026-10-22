@@ -101,17 +101,22 @@ class NombrezViewModel @Inject constructor(
         _uiState.update { it.copy(selectedTopics = updated) }
     }
 
+    private var savedTopics: Set<NombrezTopic>? = null
+
     fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
         gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        // A menu course may set the topics (Parcours étapes on numbers, time, dates)
+        val stageTopics = stage?.grammarFocus.orEmpty().mapNotNull { key -> NombrezTopic.entries.find { it.name == key } }.toSet()
+        if (stageTopics.isNotEmpty()) savedTopics = savedTopics ?: _uiState.value.selectedTopics
         answerLog.clear()
         replayPool.clear()
 
         _uiState.update {
             NombrezState(
                 countdown = 3,
-                selectedTopics = it.selectedTopics,
+                selectedTopics = stageTopics.ifEmpty { it.selectedTopics },
                 highScore = it.highScore
             )
         }
@@ -284,7 +289,10 @@ class NombrezViewModel @Inject constructor(
         countdownJob?.cancel()
         answerLog.clear()
         replayPool.clear()
-        _uiState.update { NombrezState(selectedTopics = it.selectedTopics) }
+        // After a menu course, give the player their own topic selection back
+        val restored = savedTopics
+        savedTopics = null
+        _uiState.update { NombrezState(selectedTopics = restored ?: it.selectedTopics) }
         loadHighScore()
     }
 

@@ -1,0 +1,561 @@
+[
+ {
+  "id": 1,
+  "level": "A1",
+  "title": "Artikel & Geschlecht",
+  "theme": "Familie",
+  "lessons": [
+   {
+    "title": "Der bestimmte Artikel (le, la)",
+    "file": "grammar/der_bestimmte_artikel.html"
+   },
+   {
+    "title": "Der unbestimmte Artikel (un, une)",
+    "file": "grammar/der_unbestimmte_artikel.html"
+   },
+   {
+    "title": "Das Geschlecht der Substantive",
+    "file": "grammar/das_geschlecht_der_substantive.html"
+   }
+  ],
+  "game": "gender_snap",
+  "focus": []
+ },
+ {
+  "id": 2,
+  "level": "A1",
+  "title": "Das Présent",
+  "theme": "Haus und Wohnung",
+  "lessons": [
+   {
+    "title": "Présent",
+    "file": "grammar/present.html"
+   },
+   {
+    "title": "Die Verben auf &#8209;er",
+    "file": "grammar/die_verben_auf_er.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "present"
+  ]
+ },
+ {
+  "id": 3,
+  "level": "A1",
+  "title": "Zahlen",
+  "theme": "Einkaufen",
+  "lessons": [
+   {
+    "title": "Zahlen",
+    "file": "grammar/zahlen.html"
+   }
+  ],
+  "game": "numbers",
+  "focus": [
+   "NUMBERS_100",
+   "NUMBERS_1000"
+  ]
+ },
+ {
+  "id": 4,
+  "level": "A1",
+  "title": "Uhrzeit & Datum",
+  "theme": "Zeit",
+  "lessons": [
+   {
+    "title": "Zeitangaben",
+    "file": "grammar/zeitangaben.html"
+   },
+   {
+    "title": "Datumsangaben",
+    "file": "grammar/datumsangaben.html"
+   }
+  ],
+  "game": "numbers",
+  "focus": [
+   "TIME",
+   "DATES",
+   "DAYS_MONTHS"
+  ]
+ },
+ {
+  "id": 5,
+  "level": "A1",
+  "title": "Präpositionen des Ortes",
+  "theme": "Stadt und Reise",
+  "lessons": [
+   {
+    "title": "Präpositionen des Ortes",
+    "file": "grammar/praepositionen_des_ortes.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "à",
+   "en",
+   "dans",
+   "sur",
+   "chez",
+   "au",
+   "aux",
+   "de"
+  ]
+ },
+ {
+  "id": 6,
+  "level": "A1",
+  "title": "Adjektive: Stellung & Angleichung",
+  "theme": "Emotionen und Charakter",
+  "lessons": [
+   {
+    "title": "Die Stellung des Adjektivs",
+    "file": "grammar/die_stellung_des_adjektivs.html"
+   },
+   {
+    "title": "Adjektive in der Femininform",
+    "file": "grammar/adjektive_in_der_femininform.html"
+   },
+   {
+    "title": "Adjektive im Plural",
+    "file": "grammar/adjektive_im_plural.html"
+   }
+  ],
+  "game": "gender_snap",
+  "focus": []
+ },
+ {
+  "id": 7,
+  "level": "A2",
+  "title": "avoir & être",
+  "theme": "Kleidung",
+  "lessons": [
+   {
+    "title": "Die Hilfsverben avoir und être",
+    "file": "grammar/die_hilfsverben_avoir_und_tre.html"
+   },
+   {
+    "title": "Die Verben auf &#8209;ir",
+    "file": "grammar/die_verben_auf_ir.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "present"
+  ]
+ },
+ {
+  "id": 8,
+  "level": "A2",
+  "title": "Passé composé",
+  "theme": "Essen und Trinken",
+  "lessons": [
+   {
+    "title": "Passé composé",
+    "file": "grammar/passe_compose.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "passe_compose",
+   "present"
+  ]
+ },
+ {
+  "id": 9,
+  "level": "A2",
+  "title": "Passé composé mit être",
+  "theme": "Transport",
+  "lessons": [
+   {
+    "title": "Participe passé",
+    "file": "grammar/participe_passe.html"
+   }
+  ],
+  "game": "agreement",
+  "focus": [
+   "ETRE"
+  ]
+ },
+ {
+  "id": 10,
+  "level": "A2",
+  "title": "Der Imperativ",
+  "theme": "Körper und Gesundheit",
+  "lessons": [
+   {
+    "title": "Impératif",
+    "file": "grammar/imperatif.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "imperatif",
+   "present"
+  ]
+ },
+ {
+  "id": 11,
+  "level": "A2",
+  "title": "Präpositionen der Zeit",
+  "theme": "Sport",
+  "lessons": [
+   {
+    "title": "Präpositionen der Zeit",
+    "file": "grammar/praepositionen_der_zeit.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "avant",
+   "après",
+   "depuis",
+   "pendant",
+   "en",
+   "dans"
+  ]
+ },
+ {
+  "id": 12,
+  "level": "A2",
+  "title": "Relativsätze mit qui & que",
+  "theme": "Gesellschaft",
+  "lessons": [
+   {
+    "title": "Relativsätze mit qui",
+    "file": "grammar/relativsaetze_mit_qui.html"
+   },
+   {
+    "title": "Relativsätze mit que",
+    "file": "grammar/relativsaetze_mit_que.html"
+   }
+  ],
+  "game": "relative_pronoun",
+  "focus": [
+   "qui",
+   "que"
+  ]
+ },
+ {
+  "id": 13,
+  "level": "A2",
+  "title": "Reflexive Verben",
+  "theme": "Status und Beziehungen",
+  "lessons": [
+   {
+    "title": "Reflexive Verben",
+    "file": "grammar/reflexive_verben.html"
+   },
+   {
+    "title": "Die Reflexivpronomen (me, se)",
+    "file": "grammar/die_reflexivpronomen.html"
+   }
+  ],
+  "game": "agreement",
+  "focus": [
+   "REFLEXIVE",
+   "ETRE"
+  ]
+ },
+ {
+  "id": 14,
+  "level": "A2",
+  "title": "Infinitiv mit à und de",
+  "theme": "Bildung und Wissenschaft",
+  "lessons": [
+   {
+    "title": "Verb + à + Infinitiv",
+    "file": "grammar/der_infinitiv_mit_a.html"
+   },
+   {
+    "title": "Verb + de + Infinitiv",
+    "file": "grammar/der_infinitiv_mit_de.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "à",
+   "de"
+  ]
+ },
+ {
+  "id": 15,
+  "level": "A2",
+  "title": "Modale Präpositionen",
+  "theme": "Technologie und Medien",
+  "lessons": [
+   {
+    "title": "Modale Präpositionen",
+    "file": "grammar/modale_praepositionen.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "avec",
+   "sans",
+   "pour",
+   "par",
+   "contre",
+   "selon"
+  ]
+ },
+ {
+  "id": 16,
+  "level": "A2",
+  "title": "Ordnungszahlen & große Zahlen",
+  "theme": "Geld und Finanzen",
+  "lessons": [
+   {
+    "title": "Die Ordnungszahlen",
+    "file": "grammar/ordnungszahlen.html"
+   },
+   {
+    "title": "Bruchzahlen",
+    "file": "grammar/bruchzahlen.html"
+   }
+  ],
+  "game": "numbers",
+  "focus": [
+   "NUMBERS_BIG",
+   "DATES"
+  ]
+ },
+ {
+  "id": 17,
+  "level": "B1",
+  "title": "Imparfait",
+  "theme": "Natur",
+  "lessons": [
+   {
+    "title": "Imparfait",
+    "file": "grammar/imparfait.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "imparfait",
+   "passe_compose"
+  ]
+ },
+ {
+  "id": 18,
+  "level": "B1",
+  "title": "Futur simple",
+  "theme": "Wetter",
+  "lessons": [
+   {
+    "title": "Futur simple",
+    "file": "grammar/futur_simple.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "futur",
+   "present"
+  ]
+ },
+ {
+  "id": 19,
+  "level": "B1",
+  "title": "Conditionnel & si-Sätze",
+  "theme": "Kunst und Kultur",
+  "lessons": [
+   {
+    "title": "Conditionnel",
+    "file": "grammar/conditionnel.html"
+   },
+   {
+    "title": "Bedingungssätze mit si",
+    "file": "grammar/bedingungssaetze_mit_si.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "conditionnel",
+   "imparfait",
+   "futur"
+  ]
+ },
+ {
+  "id": 20,
+  "level": "B1",
+  "title": "Relativsätze mit dont & où",
+  "theme": "Recht",
+  "lessons": [
+   {
+    "title": "Relativsätze mit dont",
+    "file": "grammar/relativsaetze_mit_dont.html"
+   },
+   {
+    "title": "Relativsätze mit où",
+    "file": "grammar/relativsaetze_mit_ou.html"
+   }
+  ],
+  "game": "relative_pronoun",
+  "focus": [
+   "qui",
+   "que",
+   "dont",
+   "où"
+  ]
+ },
+ {
+  "id": 21,
+  "level": "B1",
+  "title": "Verben mit à und de",
+  "theme": "Kommunikationsverben",
+  "lessons": [
+   {
+    "title": "Verb + à",
+    "file": "grammar/verben_mit_a.html"
+   },
+   {
+    "title": "Verb + de",
+    "file": "grammar/verben_mit_de.html"
+   },
+   {
+    "title": "Verb + à oder de",
+    "file": "grammar/verben_mit_a_und_de.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "à",
+   "de",
+   "au",
+   "aux",
+   "du",
+   "des"
+  ]
+ },
+ {
+  "id": 22,
+  "level": "B1",
+  "title": "Angleichung mit avoir",
+  "theme": "Arbeit und Wirtschaft",
+  "lessons": [
+   {
+    "title": "Participe passé",
+    "file": "grammar/participe_passe.html"
+   }
+  ],
+  "game": "agreement",
+  "focus": [
+   "AVOIR"
+  ]
+ },
+ {
+  "id": 23,
+  "level": "B1",
+  "title": "Verben mit sur, pour, contre, en",
+  "theme": "Politik und Staat",
+  "lessons": [
+   {
+    "title": "Verb + pour",
+    "file": "grammar/verben_mit_pour.html"
+   },
+   {
+    "title": "Verb + contre",
+    "file": "grammar/verben_mit_contre.html"
+   },
+   {
+    "title": "Verb + sur",
+    "file": "grammar/verben_mit_sur.html"
+   },
+   {
+    "title": "Verb + en",
+    "file": "grammar/verben_mit_en.html"
+   }
+  ],
+  "game": "preposition",
+  "focus": [
+   "sur",
+   "pour",
+   "contre",
+   "en"
+  ]
+ },
+ {
+  "id": 24,
+  "level": "B2",
+  "title": "Subjonctif",
+  "theme": "Denken und Wissen",
+  "lessons": [
+   {
+    "title": "Subjonctif",
+    "file": "grammar/subjonctif.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "subjonctif",
+   "mood_question"
+  ]
+ },
+ {
+  "id": 25,
+  "level": "B2",
+  "title": "ce qui, ce que, ce dont",
+  "theme": "Berufe",
+  "lessons": [
+   {
+    "title": "Relativsätze mit ce qui, ce que und ce dont",
+    "file": "grammar/relativsaetze_mit_ce_que.html"
+   }
+  ],
+  "game": "relative_pronoun",
+  "focus": [
+   "ce qui",
+   "ce que",
+   "ce dont",
+   "qui",
+   "que"
+  ]
+ },
+ {
+  "id": 26,
+  "level": "B2",
+  "title": "lequel & Co.",
+  "theme": "Bildung und Wissenschaft",
+  "lessons": [
+   {
+    "title": "Relativsätze mit lequel",
+    "file": "grammar/relativsaetze_mit_lequel.html"
+   }
+  ],
+  "game": "relative_pronoun",
+  "focus": [
+   "lequel",
+   "laquelle",
+   "lesquels",
+   "lesquelles",
+   "auquel",
+   "auxquels",
+   "duquel",
+   "desquels"
+  ]
+ },
+ {
+  "id": 27,
+  "level": "B2",
+  "title": "Zeitenfolge (indirekte Rede)",
+  "theme": "Kommunikationsverben",
+  "lessons": [
+   {
+    "title": "Die indirekte Rede",
+    "file": "grammar/die_indirekte_rede.html"
+   },
+   {
+    "title": "Die Zeitenfolge in der indirekten Rede",
+    "file": "grammar/die_zeitenfolge_in_der_indirekten_rede.html"
+   }
+  ],
+  "game": "conjugation",
+  "focus": [
+   "imparfait",
+   "conditionnel",
+   "passe_compose"
+  ]
+ }
+]

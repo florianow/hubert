@@ -48,6 +48,8 @@ class SettingsRepository @Inject constructor(
         private val KEY_ANKI_ENABLED = booleanPreferencesKey("anki_enabled")
         private val KEY_ANKI_DECK = stringPreferencesKey("anki_deck")
         private val KEY_ANKI_LAST_SYNC = stringPreferencesKey("anki_last_sync")
+        private val KEY_PARCOURS = stringPreferencesKey("parcours_progress")
+        private val KEY_PARCOURS_ENABLED = booleanPreferencesKey("parcours_enabled")
         private val KEY_ANKI_TODAY_DAY = stringPreferencesKey("anki_today_day")
         private val KEY_ANKI_TODAY_RANKS = stringPreferencesKey("anki_today_ranks")
         private val KEY_ANKI_DONE_RANKS = stringPreferencesKey("anki_done_ranks")
@@ -72,6 +74,20 @@ class SettingsRepository @Inject constructor(
 
     suspend fun saveAnkiLastSync(summary: String) {
         context.globalSettingsDataStore.edit { prefs -> prefs[KEY_ANKI_LAST_SYNC] = summary }
+    }
+
+    /** Parcours progress as JSON (see ParcoursRepository); empty before the first step. */
+    val parcoursProgress: Flow<String> = context.globalSettingsDataStore.data.map { it[KEY_PARCOURS] ?: "" }
+
+    suspend fun saveParcoursProgress(json: String) {
+        context.globalSettingsDataStore.edit { prefs -> prefs[KEY_PARCOURS] = json }
+    }
+
+    /** Whether Menu du jour follows the Parcours (default) or picks a theme of the day. */
+    val parcoursEnabled: Flow<Boolean> = context.globalSettingsDataStore.data.map { it[KEY_PARCOURS_ENABLED] ?: true }
+
+    suspend fun saveParcoursEnabled(enabled: Boolean) {
+        context.globalSettingsDataStore.edit { prefs -> prefs[KEY_PARCOURS_ENABLED] = enabled }
     }
 
     /**

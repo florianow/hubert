@@ -23,6 +23,7 @@ import com.hubert.viewmodel.NombrezViewModel
 import com.hubert.viewmodel.AccordezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.LernenViewModel
+import com.hubert.viewmodel.ParcoursViewModel
 import com.hubert.viewmodel.DitesViewModel
 import com.hubert.viewmodel.LernRundeViewModel
 import com.hubert.viewmodel.LernRundeKind
@@ -69,6 +70,7 @@ enum class Screen {
     ACCORDEZ,
     PARLEZ,
     MENU_DU_JOUR,
+    PARCOURS,
     LERNEN,
     STATISTICS,
     SETTINGS
@@ -92,6 +94,7 @@ fun HubertApp() {
     val menuVm: MenuDuJourViewModel = hiltViewModel()
     val weeklyVm: WeeklyReportViewModel = hiltViewModel()
     val lernenVm: LernenViewModel = hiltViewModel()
+    val parcoursVm: ParcoursViewModel = hiltViewModel()
     val lernRundeVm: LernRundeViewModel = hiltViewModel()
     val ditesVm: DitesViewModel = hiltViewModel()
 
@@ -397,6 +400,7 @@ fun HubertApp() {
                         dailyCategory = menuState.dailyCategory,
                         completPreview = menuState.completPreview,
                         expressPreview = menuState.expressPreview,
+                        parcours = menuState.parcours,
                         onChoose = { menuVm.chooseMenuType(it) },
                         onShowWeeklyReport = { weeklyVm.open(0) },
                         onBack = { currentScreen = Screen.MENU }
@@ -443,6 +447,28 @@ fun HubertApp() {
                     }
                 }
             }
+        }
+
+        Screen.PARCOURS -> {
+            val parcoursState by parcoursVm.uiState.collectAsState()
+            ParcoursScreen(
+                state = parcoursState,
+                actions = ParcoursActions(
+                    back = { currentScreen = Screen.MENU },
+                    toOverview = { parcoursVm.showOverview() },
+                    selectUnit = { parcoursVm.selectUnit(it) },
+                    openLesson = { unit, i -> parcoursVm.openLesson(unit, i) },
+                    lessonNext = { parcoursVm.lessonNext() },
+                    closeLesson = { parcoursVm.closeLesson() },
+                    jumpTo = { parcoursVm.jumpTo(it) },
+                    setEnabled = { parcoursVm.setEnabled(it) },
+                    startMenu = {
+                        menuVm.showMenuSelection()
+                        currentScreen = Screen.MENU_DU_JOUR
+                    },
+                    speak = { parcoursVm.speak(it) }
+                )
+            )
         }
 
         Screen.SETTINGS -> {
@@ -1117,6 +1143,14 @@ fun HubertApp() {
                 parlezHighScore = parlezState.highScore,
                 learningOverview = menuState.overview,
                 today = menuState.today,
+                onShowParcours = {
+                    parcoursVm.showOverview()
+                    currentScreen = Screen.PARCOURS
+                },
+                onReadLesson = {
+                    parcoursVm.openCurrentLesson()
+                    currentScreen = Screen.PARCOURS
+                },
                 tab = homeTab,
                 onTabChange = { homeTab = it },
                 onShowProgress = { weeklyVm.open(0) },

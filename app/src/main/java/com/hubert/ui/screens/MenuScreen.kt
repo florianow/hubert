@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.hubert.R
 import com.hubert.data.repository.LearningOverview
 import com.hubert.viewmodel.TodayPlan
+import com.hubert.data.repository.ParcoursRepository
+import com.hubert.data.repository.ParcoursStatus
 import com.hubert.ui.theme.*
 
 private val GRID_CARD_HEIGHT = 104.dp
@@ -55,6 +57,8 @@ fun MenuScreen(
     onMenuDuJour: () -> Unit,
     learningOverview: LearningOverview?,
     today: TodayPlan?,
+    onShowParcours: () -> Unit,
+    onReadLesson: () -> Unit,
     onShowProgress: () -> Unit,
     onStartLearning: () -> Unit,
     onStartMatching: () -> Unit,
@@ -129,7 +133,9 @@ fun MenuScreen(
                 onStartLearning = onStartLearning,
                 onMenuDuJour = onMenuDuJour,
                 onShowProgress = { onTabChange(HomeTab.FORTSCHRITT) },
-                onShowGames = { onTabChange(HomeTab.SPIELE) }
+                onShowGames = { onTabChange(HomeTab.SPIELE) },
+                onShowParcours = onShowParcours,
+                onReadLesson = onReadLesson
             )
             HomeTab.FORTSCHRITT -> ProgressTab(
                 overview = learningOverview,
@@ -322,7 +328,9 @@ private fun TodayTab(
     onStartLearning: () -> Unit,
     onMenuDuJour: () -> Unit,
     onShowProgress: () -> Unit,
-    onShowGames: () -> Unit
+    onShowGames: () -> Unit,
+    onShowParcours: () -> Unit,
+    onReadLesson: () -> Unit
 ) {
     val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -339,6 +347,8 @@ private fun TodayTab(
         )
         Spacer(Modifier.height(16.dp))
         TodayCard(today = today, dueFallback = overview?.dueToday, onStartLearning = onStartLearning, onMenuDuJour = onMenuDuJour)
+        Spacer(Modifier.height(12.dp))
+        ParcoursCard(today?.parcours, onShowParcours = onShowParcours, onReadLesson = onReadLesson)
         if (today?.complete == true) {
             Spacer(Modifier.height(12.dp))
             OutlinedButton(
@@ -463,6 +473,8 @@ private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () 
             title = "Menu du jour",
             status = when {
                 menu != null -> "✓ ${menuTypeLabel(menu.menuType)} · ${formatGrade(menu.overallScore)}/20"
+                today?.parcours != null && today.parcours.controlUnlocked -> "🎓 Contrôle"
+                today?.parcours != null -> "Étape ${today.parcours.index + 1}"
                 today != null && today.category.isNotEmpty() -> "Thema: ${today.category}"
                 else -> "Express · Complet · À la carte"
             },
@@ -479,6 +491,79 @@ private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () 
             )
         }
     }
+}
+
+/** The current étape of the Parcours: where you are and what comes next. */
+@Composable
+private fun ParcoursCard(parcours: ParcoursStatus?, onShowParcours: () -> Unit, onReadLesson: () -> Unit) {
+    val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .border(1.dp, ParcoursBlue.copy(alpha = 0.3f), RoundedCornerShape(16.dp))
+            .background(ParcoursBlue.copy(alpha = 0.05f))
+            .clickable(onClick = onShowParcours)
+            .padding(horizontal = 12.dp, vertical = 10.dp)
+    ) {
+        if (parcours == null) {
+            Text("🧭 Parcours", fontWeight = FontWeight.Black, fontSize = 15.sp, color = ParcoursBlue)
+            Text("Aus – das Menu du jour wählt ein Thema des Tages. Tippen zum Einschalten.", fontSize = 12.sp, color = muted)
+            return@Column
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "🧭 Parcours · Étape ${parcours.index + 1}/${parcours.total}",
+                fontWeight = FontWeight.Black,
+                fontSize = 15.sp,
+                color = ParcoursBlue,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = parcours.unit.level,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(ParcoursBlue)
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+            )
+        }
+        Text(parcours.unit.title, fontWeight = FontWeight.Bold, fontSize = 17.sp, modifier = Modifier.padding(top = 2.dp))
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            ParcoursChip("📖 Leçon", parcours.lessonRead)
+            repeat(ParcoursRepository.MENUS_BEFORE_CONTROL) { i ->
+                ParcoursChip("🍽️ ${i + 1}", parcours.menusDone > i)
+            }
+            ParcoursChip("🎓 Contrôle", false)
+        }
+        if (!parcours.lessonRead) {
+            Spacer(Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = onReadLesson,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("📖 Leçon lesen (2–3 Min.)", color = ParcoursBlue, fontWeight = FontWeight.Bold)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ParcoursChip(label: String, done: Boolean) {
+    Text(
+        text = if (done) "$label ✓" else label,
+        fontSize = 11.sp,
+        fontWeight = if (done) FontWeight.Bold else FontWeight.Normal,
+        color = if (done) Color.White else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+        modifier = Modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(if (done) CorrectGreen else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.07f))
+            .padding(horizontal = 7.dp, vertical = 3.dp)
+    )
 }
 
 @Composable
