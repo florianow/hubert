@@ -8,12 +8,14 @@ import kotlin.math.max
  * (Écrivez!) is real recall; picking it from options or matching pairs is recognition.
  */
 enum class ReviewStrength(val growthShare: Double) {
-    RECALL(1.0),
-    RECOGNITION(0.5);
+    EASY(1.3),          // Anki "Einfach": recalled effortlessly
+    RECALL(1.0),        // Anki "Gut"
+    RECOGNITION(0.5);   // Anki "Schwer" / recognising the word among options
 
     companion object {
         fun forGameType(gameType: String): ReviewStrength? = when (gameType) {
-            "spelling_bee", "recall", "phrases" -> RECALL
+            "spelling_bee", "recall" -> RECALL
+            // Dites! records its own Anki-style grades (Nochmal/Schwer/Gut/Einfach)
             "matching", "gender_snap", "gap_fill", "listening" -> RECOGNITION
             else -> null      // grammar/number games don't review vocab words
         }
@@ -34,6 +36,10 @@ object SpacedRepetition {
     const val START_EASE = 2.5
     const val MIN_EASE = 1.3
     const val EASE_PENALTY = 0.2
+    /** "Einfach" on a new word skips the first steps, as in Anki. */
+    const val EASY_FIRST_INTERVAL = 4.0
+    /** Minimum growth for "Einfach", also when the word was practised before it was due. */
+    const val EASY_BONUS = 1.3
 
     fun review(current: WordProgress?, rank: Int, correct: Boolean, strength: ReviewStrength, today: Long): WordProgress {
         val p = current ?: WordProgress(
@@ -59,14 +65,16 @@ object SpacedRepetition {
 
         val elapsed = if (p.lastReviewDay < 0) 0.0 else (today - p.lastReviewDay).toDouble()
         val newInterval = if (p.intervalDays < 1.0) {
-            1.0                                             // first success
+            if (strength == ReviewStrength.EASY) EASY_FIRST_INTERVAL else 1.0   // first success
         } else {
             // Grow from the time that really passed: early practice grows less, an overdue
             // success proves more and counts half of the extra days
             val base = if (elapsed < p.intervalDays) max(1.0, elapsed)
                        else p.intervalDays + (elapsed - p.intervalDays) / 2
             val factor = 1.0 + (p.ease - 1.0) * strength.growthShare
-            max(p.intervalDays, base * factor)
+            val grown = max(p.intervalDays, base * factor)
+            // "Einfach" is an explicit judgment: it always moves the word further out, even early
+            if (strength == ReviewStrength.EASY) max(grown, p.intervalDays * EASY_BONUS) else grown
         }
         return p.copy(
             intervalDays = newInterval,

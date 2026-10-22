@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hubert.data.model.ConjugationVerb
+import com.hubert.data.model.Example
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -154,6 +155,20 @@ class VocabRepository @Inject constructor(
     // ---------------------------------------------------------------
     // Sentences (for Gap Fill)
     // ---------------------------------------------------------------
+
+    @Volatile private var cachedExamples: Map<String, List<Example>>? = null
+
+    /** All example sentences of the Anki deck (up to 20 per word), loaded on first use. */
+    fun getExamples(rank: Int): List<Example> {
+        val examples = cachedExamples ?: synchronized(this) {
+            cachedExamples ?: run {
+                val json = context.assets.open("examples.json").bufferedReader().use { it.readText() }
+                val type = object : TypeToken<Map<String, List<Example>>>() {}.type
+                gson.fromJson<Map<String, List<Example>>>(json, type).also { cachedExamples = it }
+            }
+        }
+        return examples[rank.toString()].orEmpty()
+    }
 
     fun getSentences(): Map<String, List<SentenceEntry>> {
         cachedSentences?.let { return it }

@@ -65,18 +65,35 @@ class LearningRepository @Inject constructor(
 
     suspend fun recordAnswers(gameType: String, answers: List<AnswerRecord>) {
         val strength = ReviewStrength.forGameType(gameType) ?: return
-        val relevant = answers.filter { it.rank >= 0 }
-        if (relevant.isEmpty()) return
+        review(answers.filter { it.rank >= 0 }.map { Triple(it.rank, it.isCorrect, strength) })
+    }
+
+    /** Anki-style self rating from Dites!: null strength = "Nochmal" (forgotten). */
+    suspend fun recordGrade(rank: Int, strength: ReviewStrength?) {
+        review(listOf(Triple(rank, strength != null, strength ?: ReviewStrength.RECALL)))
+    }
+
+    /** What each Anki button would do to [rank] now: next interval in days per grade. */
+    suspend fun previewIntervals(rank: Int): Map<ReviewStrength?, Double> {
+        val current = progressDao.getByRanks(listOf(rank)).firstOrNull()
+        val today = today()
+        return listOf<ReviewStrength?>(null, ReviewStrength.RECOGNITION, ReviewStrength.RECALL, ReviewStrength.EASY)
+            .associateWith { s -> SpacedRepetition.review(current, rank, s != null, s ?: ReviewStrength.RECALL, today).intervalDays }
+    }
+
+    private suspend fun review(items: List<Triple<Int, Boolean, ReviewStrength>>) {
+        if (items.isEmpty()) return
+        val relevant = items
         val today = today()
         mutex.withLock {
-            val state = progressDao.getByRanks(relevant.map { it.rank }.distinct())
+            val state = progressDao.getByRanks(relevant.map { it.first }.distinct())
                 .associateBy { it.rank }
                 .toMutableMap()
             // Only words that were actually due count against the daily limit
             val dueReviewed = state.values.count { it.dueDay <= today && it.lastReviewDay != today }
             if (dueReviewed > 0) settingsRepository.addDueReviewsToday(today, dueReviewed)
-            for (answer in relevant) {
-                state[answer.rank] = SpacedRepetition.review(state[answer.rank], answer.rank, answer.isCorrect, strength, today)
+            for ((rank, correct, strength) in relevant) {
+                state[rank] = SpacedRepetition.review(state[rank], rank, correct, strength, today)
             }
             progressDao.upsertAll(state.values.toList())
         }

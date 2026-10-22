@@ -25,6 +25,17 @@ data class SentenceEntry(
 )
 
 /**
+ * An example sentence pair from the Anki deck, with the target word marked as *word* in both
+ * languages (examples.json).
+ */
+data class Example(val fr: String, val de: String) {
+    val frPlain: String get() = fr.replace("*", "")
+    val dePlain: String get() = de.replace("*", "")
+    val frTarget: String? get() = Regex("\\*([^*]+)\\*").find(fr)?.groupValues?.get(1)
+    val deTarget: String? get() = Regex("\\*([^*]+)\\*").find(de)?.groupValues?.get(1)
+}
+
+/**
  * A verb with its conjugation forms across tenses.
  * Loaded from bundled conjugations.json asset.
  */

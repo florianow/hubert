@@ -96,7 +96,14 @@ Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, gram
 
 ### Dites!
 
-Built like the anki_french cards, plus pronunciation feedback. Cards alternate between the two directions of the Anki deck (FR → DE and DE → FR). The front shows the example sentence in the front language with the target word underlined, plus the deck's **Lückenspiel**: the other-language sentence is hidden as word blocks and rebuilt by tapping alphabetically sorted word tiles in order — the target word is the ★ tile, a wrong tile is outlined red, tapping a block reveals it as a hint, ⚡ reveals everything but the target, and the finished sentence is read aloud (`utils/ClozeGame.kt`, unit-tested; the German target words were restored from the deck via `scripts/add_de_highlights.py`); the back shows the French word with article, IPA and ▶, and an example box: sentence in the front language, the translation hidden until tapped (spoiler), ▶ for the French sentence, "›" to cycle through all example sentences. **🎤** records the French sentence and Azure scores it (mispronounced words turn red) — on DE → FR cards you can translate and speak the sentence from memory before revealing it. As in Anki the rating is about the word: "Wusstest du das Wort? Nein / Ja" (counts as recall in Hubert's schedule, nothing is written to Anki). Ten cards per session, due words with example sentences first.
+Modelled on the anki_french card templates, plus pronunciation feedback. Cards alternate between the deck's two directions (FR → DE and DE → FR) and use the deck's own example sentences (`examples.json`, up to 20 per word for all 5000 words, built by `scripts/build_examples.py`).
+
+- **Front**: the example sentence in the front language with the target word underlined; below it the **Lückenspiel**, first behind a blurred cover with ⚡ (only the target word is left to find), 🔊 (read the French sentence) and 🧩 (play). The other-language sentence is rebuilt by tapping alphabetically sorted word tiles in order — the target is the ★ tile, a wrong tile is outlined red, tapping a block reveals it as a hint, the finished sentence is read aloud (`utils/ClozeGame.kt`, unit-tested).
+- **Back**: rank, the French word with article, IPA and ▶, part of speech and the German meaning; the example box with counter (1/20), › for the next sentence and 🧩 to play it as a Lückenspiel — front language first, translation shown for the first example and as tap-to-reveal spoiler for the next ones, 🔊 for the French sentence; conjugation table for verbs.
+- **🎤** (Hubert's extra): speak the French sentence, Azure scores it and marks mispronounced words red.
+- **Nochmal / Schwer / Gut / Einfach** like Anki, each showing Hubert's next interval; grades go into Hubert's schedule only, nothing is written to Anki.
+
+Not built yet: the deck's grammar boxes (e.g. "B1 Verb + sur", "Thema …").
 
 ### Accordez!
 

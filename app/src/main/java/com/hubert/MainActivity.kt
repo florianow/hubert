@@ -345,20 +345,27 @@ fun HubertApp() {
         Screen.DITES -> {
             DitesScreen(
                 state = ditesState,
-                onReveal = { ditesVm.reveal() },
-                onSpeakWord = { ditesVm.speakWord() },
-                onSpeakSentence = { ditesVm.speakSentence() },
-                onToggleTranslation = { ditesVm.toggleTranslation() },
-                onNextSentence = { ditesVm.nextSentence() },
-                onClozeTile = { ditesVm.tapClozeTile(it) },
-                onClozeSlot = { ditesVm.tapClozeSlot(it) },
-                onClozeLightning = { ditesVm.clozeLightning() },
-                onToggleRecording = { ditesVm.toggleRecording() },
-                onRate = { ditesVm.rate(it) },
-                onQuit = {
-                    ditesVm.reset()
-                    currentScreen = Screen.MENU
-                }
+                actions = DitesActions(
+                    startCloze = { ditesVm.startCloze() },
+                    lightning = { ditesVm.clozeLightning() },
+                    clozeTile = { ditesVm.tapClozeTile(it) },
+                    clozeSlot = { ditesVm.tapClozeSlot(it) },
+                    backClozeTile = { ditesVm.tapBackClozeTile(it) },
+                    backClozeSlot = { ditesVm.tapBackClozeSlot(it) },
+                    toggleBackCloze = { ditesVm.toggleBackCloze() },
+                    reveal = { ditesVm.reveal() },
+                    speakWord = { ditesVm.speakWord() },
+                    speakSentence = { ditesVm.speakSentence() },
+                    toggleTranslation = { ditesVm.toggleTranslation() },
+                    nextExample = { ditesVm.nextExample() },
+                    toggleConjugation = { ditesVm.toggleConjugation() },
+                    toggleRecording = { ditesVm.toggleRecording() },
+                    rate = { ditesVm.rate(it) },
+                    quit = {
+                        ditesVm.reset()
+                        currentScreen = Screen.MENU
+                    }
+                )
             )
         }
 
