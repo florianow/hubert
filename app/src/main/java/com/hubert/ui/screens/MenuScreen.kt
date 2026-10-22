@@ -16,6 +16,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SportsEsports
+import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,6 +35,9 @@ import com.hubert.viewmodel.TodayPlan
 import com.hubert.ui.theme.*
 
 private val GRID_CARD_HEIGHT = 104.dp
+
+/** Start screen tabs (bottom navigation): the day's plan, all games, progress. */
+enum class HomeTab(val label: String) { HEUTE("Heute"), SPIELE("Spiele"), FORTSCHRITT("Fortschritt") }
 
 @Composable
 fun MenuScreen(
@@ -64,14 +69,20 @@ fun MenuScreen(
     onStartAccordez: () -> Unit,
     onStartParlez: () -> Unit,
     onShowSettings: () -> Unit,
-    onShowStatistics: () -> Unit
+    onShowStatistics: () -> Unit,
+    tab: HomeTab,
+    onTabChange: (HomeTab) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+    ) {
+    Column(
+        modifier = Modifier
+            .weight(1f)
             .padding(horizontal = 16.dp)
-            .padding(top = 12.dp, bottom = 12.dp)
+            .padding(top = 12.dp)
     ) {
         // Compact header
         Row(
@@ -100,13 +111,6 @@ fun MenuScreen(
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
             }
-            IconButton(onClick = onShowStatistics) {
-                Icon(
-                    imageVector = Icons.Default.BarChart,
-                    contentDescription = "Statistik",
-                    tint = AccentPurple.copy(alpha = 0.6f)
-                )
-            }
             IconButton(onClick = onShowSettings) {
                 Icon(
                     imageVector = Icons.Default.Settings,
@@ -118,31 +122,24 @@ fun MenuScreen(
 
         Spacer(Modifier.height(10.dp))
 
-        // The day's plan: ① Vokabeln lernen → ② Menu du jour; single games below stay free
-        TodayCard(today = today, dueFallback = learningOverview?.dueToday, onStartLearning = onStartLearning, onMenuDuJour = onMenuDuJour)
-
-
-        // Learning path at a glance — tap for the weekly report
-        if (learningOverview != null && learningOverview.known + learningOverview.learning > 0) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 6.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .clickable(onClick = onShowProgress)
-                    .background(MenuWine.copy(alpha = 0.06f))
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ProgressFigure("${learningOverview.known}", "sicher")
-                ProgressFigure("${learningOverview.learning}", "lernend")
-                ProgressFigure("≈ ${learningOverview.estimatedLevel}", "Wortschatz")
-            }
-        }
-
-        Spacer(Modifier.height(10.dp))
+        when (tab) {
+            HomeTab.HEUTE -> TodayTab(
+                today = today,
+                overview = learningOverview,
+                onStartLearning = onStartLearning,
+                onMenuDuJour = onMenuDuJour,
+                onShowProgress = { onTabChange(HomeTab.FORTSCHRITT) },
+                onShowGames = { onTabChange(HomeTab.SPIELE) }
+            )
+            HomeTab.FORTSCHRITT -> ProgressTab(
+                overview = learningOverview,
+                today = today,
+                onShowWeeklyReport = onShowProgress,
+                onShowStatistics = onShowStatistics
+            )
+            HomeTab.SPIELE -> {
         Text(
-            text = "Freies Spiel",
+            text = "Alle Spiele – frei spielbar",
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
@@ -285,6 +282,144 @@ fun MenuScreen(
                 )
                 Spacer(modifier = Modifier.weight(1f))
             }
+            Spacer(Modifier.height(4.dp))
+        }
+            }
+        }
+    }
+        NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = 2.dp) {
+            HomeTab.entries.forEach { t ->
+                NavigationBarItem(
+                    selected = tab == t,
+                    onClick = { onTabChange(t) },
+                    icon = {
+                        Icon(
+                            imageVector = when (t) {
+                                HomeTab.HEUTE -> Icons.Default.Today
+                                HomeTab.SPIELE -> Icons.Default.SportsEsports
+                                HomeTab.FORTSCHRITT -> Icons.Default.BarChart
+                            },
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(t.label) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = AccentPurple,
+                        selectedTextColor = AccentPurple,
+                        indicatorColor = AccentPurple.copy(alpha = 0.12f)
+                    )
+                )
+            }
+        }
+    }
+}
+
+/** "Heute": greeting, the two steps of the day and a short look at the progress. */
+@Composable
+private fun TodayTab(
+    today: TodayPlan?,
+    overview: LearningOverview?,
+    onStartLearning: () -> Unit,
+    onMenuDuJour: () -> Unit,
+    onShowProgress: () -> Unit,
+    onShowGames: () -> Unit
+) {
+    val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+        Spacer(Modifier.height(16.dp))
+        Text(greeting(), fontSize = 26.sp, fontWeight = FontWeight.Black)
+        Text(
+            text = when {
+                today?.complete == true -> "Dein Tag ist komplett – bravo !"
+                today != null && today.vocabDone -> "Vokabeln sind durch. Jetzt noch das Menü?"
+                else -> "Zwei Schritte für heute:"
+            },
+            fontSize = 14.sp,
+            color = muted
+        )
+        Spacer(Modifier.height(16.dp))
+        TodayCard(today = today, dueFallback = overview?.dueToday, onStartLearning = onStartLearning, onMenuDuJour = onMenuDuJour)
+        if (today?.complete == true) {
+            Spacer(Modifier.height(12.dp))
+            OutlinedButton(
+                onClick = onShowGames,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text("Lust auf mehr? Freies Spiel ▶", color = AccentPurple)
+            }
+        }
+        if (overview != null && overview.known + overview.learning > 0) {
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "${overview.known} Wörter sicher · ${overview.learning} lernend · Wortschatz ≈ ${overview.estimatedLevel}  ›",
+                fontSize = 12.sp,
+                color = muted,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable(onClick = onShowProgress)
+                    .padding(vertical = 8.dp, horizontal = 4.dp)
+            )
+        }
+    }
+}
+
+private fun greeting(): String = when (java.time.LocalTime.now().hour) {
+    in 5..10 -> "Bonjour ☀️"
+    in 11..17 -> "Salut 👋"
+    else -> "Bonsoir 🌙"
+}
+
+/** "Fortschritt": vocabulary figures plus the way into the weekly report and the statistics. */
+@Composable
+private fun ProgressTab(
+    overview: LearningOverview?,
+    today: TodayPlan?,
+    onShowWeeklyReport: () -> Unit,
+    onShowStatistics: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+        Spacer(Modifier.height(16.dp))
+        Text("Fortschritt", fontSize = 26.sp, fontWeight = FontWeight.Black)
+        Spacer(Modifier.height(16.dp))
+        if (overview != null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MenuWine.copy(alpha = 0.06f))
+                    .padding(horizontal = 12.dp, vertical = 14.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                ProgressFigure("${overview.known}", "sicher")
+                ProgressFigure("${overview.learning}", "lernend")
+                ProgressFigure("≈ ${overview.estimatedLevel}", "Wortschatz")
+                ProgressFigure("🔥 ${today?.streak ?: 0}", "Tage am Stück")
+            }
+            Text(
+                text = "„sicher“ = Wiederholungsabstand ab 3 Wochen. Das Niveau schätzt nur den Wortschatz.",
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                modifier = Modifier.padding(top = 6.dp, start = 4.dp)
+            )
+        }
+        Spacer(Modifier.height(20.dp))
+        Button(
+            onClick = onShowWeeklyReport,
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MenuWine)
+        ) {
+            Text("📊 Wochenbericht", fontWeight = FontWeight.Bold)
+        }
+        Spacer(Modifier.height(8.dp))
+        OutlinedButton(
+            onClick = onShowStatistics,
+            modifier = Modifier.fillMaxWidth().height(52.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text("Statistik pro Spiel", color = AccentPurple)
         }
     }
 }
@@ -301,7 +436,7 @@ private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () 
             .padding(horizontal = 12.dp, vertical = 10.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Heute", fontWeight = FontWeight.Black, fontSize = 17.sp, modifier = Modifier.weight(1f))
+            Text("Dein Tagesplan", fontWeight = FontWeight.Black, fontSize = 17.sp, modifier = Modifier.weight(1f))
             if (today != null && today.streak > 0) {
                 Text(
                     text = "🔥 ${today.streak} ${if (today.streak == 1) "Tag" else "Tage"}",

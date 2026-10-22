@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -116,6 +117,7 @@ fun HubertApp() {
     val ditesState by ditesVm.uiState.collectAsState()
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
+    var homeTab by rememberSaveable { mutableStateOf(HomeTab.HEUTE) }
 
     // "Menu du jour" — start the next course with the menu's stage config
     val startNextCourse: () -> Unit = {
@@ -1115,6 +1117,8 @@ fun HubertApp() {
                 parlezHighScore = parlezState.highScore,
                 learningOverview = menuState.overview,
                 today = menuState.today,
+                tab = homeTab,
+                onTabChange = { homeTab = it },
                 onShowProgress = { weeklyVm.open(0) },
                 onStartLearning = startLearning,
                 onMenuDuJour = {

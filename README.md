@@ -59,7 +59,7 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Game Modes
 
-The start screen leads with **Heute**, the plan of the day: ① *Vokabeln lernen* (today's due words) → ② *Menu du jour* (theme of the day). Each step shows its status (due count / "✓" with the menu's grade out of 20), plus a 🔥 streak of days in a row with practice. Below, all games stay available as *Freies Spiel*.
+The start screen has three tabs (bottom navigation): **Heute** — the plan of the day: ① *Vokabeln lernen* (today's due words) → ② *Menu du jour* (theme of the day), each with its status (due count / "✓" with the menu's grade out of 20) and a 🔥 streak of days in a row with practice; **Spiele** — every game, free to play; **Fortschritt** — known/learning words, estimated level, streak, weekly report and per-game statistics.
 
 ### Spaced repetition & learning path
 
