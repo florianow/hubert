@@ -362,6 +362,7 @@ fun HubertApp() {
                 matchingState.isModeSelection -> {
                     TrouvezModeScreen(
                         state = matchingState,
+                        onReview = { matchingVm.startReview() },
                         onThemenTraining = { matchingVm.showCategorySelection() },
                         onFreierModus = { matchingVm.showPinSelection() },
                         onBack = {
@@ -412,7 +413,11 @@ fun HubertApp() {
                 }
                 matchingState.isGameOver && !menuState.isRunning -> {
                     GameOverScreen(
-                        title = "TIME'S UP!",
+                        title = when {
+                            !matchingState.isReviewMode -> "TIME'S UP!"
+                            matchingState.reviewDueCount == 0 -> "ALLES WIEDERHOLT!"
+                            else -> "NOCH ${matchingState.reviewDueCount} FÄLLIG"
+                        },
                         score = matchingState.score,
                         isNewHighScore = matchingState.isNewHighScore,
                         totalCorrect = matchingState.totalMatches,
@@ -424,7 +429,9 @@ fun HubertApp() {
                         pinnedRanks = matchingState.pinnedRanks,
                         onTogglePin = { matchingVm.togglePin(it) },
                         wordStreaks = matchingState.wordStreaks,
-                        onPlayAgain = { matchingVm.startGame() },
+                        onPlayAgain = {
+                            if (matchingState.isReviewMode) matchingVm.startReview() else matchingVm.startGame()
+                        },
                         onBackToMenu = {
                             matchingVm.resetToMenu()
                             currentScreen = Screen.MENU
@@ -998,6 +1005,7 @@ fun HubertApp() {
                 parlezHighScore = parlezState.highScore,
                 learningOverview = menuState.overview,
                 onShowProgress = { weeklyVm.open(0) },
+                onStartReview = { matchingVm.startReview() },
                 onMenuDuJour = {
                     menuVm.showMenuSelection()
                     currentScreen = Screen.MENU_DU_JOUR

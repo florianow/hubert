@@ -45,6 +45,7 @@ fun MenuScreen(
     onMenuDuJour: () -> Unit,
     learningOverview: LearningOverview?,
     onShowProgress: () -> Unit,
+    onStartReview: () -> Unit,
     onStartMatching: () -> Unit,
     onStartGenderSnap: () -> Unit,
     onStartGapFill: () -> Unit,
@@ -154,7 +155,8 @@ fun MenuScreen(
             ) {
                 ProgressFigure("${learningOverview.known}", "sicher")
                 ProgressFigure("${learningOverview.learning}", "lernend")
-                ProgressFigure("${learningOverview.dueToday}", "heute fällig")
+                // Tapping the due count starts a review round right away
+                ProgressFigure("${learningOverview.dueToday} ▶", "heute fällig", onClick = onStartReview)
                 ProgressFigure("≈ ${learningOverview.estimatedLevel}", "Wortschatz")
             }
         }
@@ -302,8 +304,11 @@ fun MenuScreen(
 }
 
 @Composable
-private fun ProgressFigure(value: String, label: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun ProgressFigure(value: String, label: String, onClick: (() -> Unit)? = null) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = if (onClick != null) Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onClick) else Modifier
+    ) {
         Text(text = value, fontSize = 15.sp, fontWeight = FontWeight.Bold, color = MenuWine)
         Text(text = label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f))
     }

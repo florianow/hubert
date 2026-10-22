@@ -68,7 +68,7 @@ Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word
 - At most one step per word and day — five correct answers in one round are one review.
 - A word is **sicher** once its interval reaches 3 weeks.
 
-**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first.
+**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first. **Trouvez! → Wiederholen** (or tapping "heute fällig" on the main menu) plays rounds with only today's due words — most overdue and frequent first — and shows how many are still due afterwards.
 
 **Progress:** the main menu shows known / learning / due today and a rough vocabulary level (A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 known words). On first start after the update, past answers are replayed once to seed the schedule; the resulting backlog is spread over two weeks.
 
