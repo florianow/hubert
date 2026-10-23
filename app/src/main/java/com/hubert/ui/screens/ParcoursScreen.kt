@@ -318,7 +318,7 @@ private fun LessonView(open: OpenLesson, actions: ParcoursActions) {
             )
         }
         Text(
-            text = "Tippe auf Französisch zum Anhören, auf verschwommenes Deutsch zum Aufdecken.",
+            text = "Tippe auf Französisch zum Anhören, auf ein blaues 👆-Kästchen für die Übersetzung.",
             fontSize = 11.sp,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
             textAlign = TextAlign.Center,
@@ -364,6 +364,7 @@ private fun lessonPage(html: String, dark: Boolean): String {
     val fr = if (dark) "#82B1FF" else "#1565C0"
     val attention = if (dark) "#4A3520" else "#FFF3E0"
     val tip = if (dark) "#1F3A24" else "#E8F5E9"
+    val hidden = if (dark) "#22304A" else "#EAF2FD"
     return """
 <!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -380,8 +381,10 @@ ul { padding-left: 20px; }
 .examples .de { color: $muted; margin-bottom: 4px; }
 .fr { cursor: pointer; }
 span.fr { color: $fr; }
-.spoiler:not(.clicked) { filter: blur(5px); cursor: pointer; }
-.spoiler { transition: filter .2s; }
+.spoiler { border: 1.5px dashed transparent; border-radius: 8px; padding: 1px 6px; transition: color .2s, text-shadow .2s, background .2s; }
+.spoiler:not(.clicked) { color: transparent !important; text-shadow: 0 0 3px $muted; background: $hidden; border-color: $fr; cursor: pointer; }
+.spoiler:not(.clicked)::before { content: "👆 "; color: $fr; text-shadow: none; }
+div.spoiler { margin: 2px 0; }
 .attention, .tip { border-radius: 10px; padding: 8px 12px; margin: 10px 0; }
 .attention { background: $attention; }
 .attention::before { content: "⚠️ "; }
