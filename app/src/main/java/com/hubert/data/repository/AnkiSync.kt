@@ -58,10 +58,11 @@ class AnkiSync @Inject constructor(
      */
     private suspend fun snapshotQueue(deck: String, rankByFrench: Map<String, Int>): Int {
         val day = learningRepository.today()
-        val queue = ankiRepository.queuedRanks(deck, rankByFrench)
-        val doneInAnki = runCatching { ankiRepository.reviewedTodayRanks(deck, rankByFrench) }.getOrDefault(emptyList())
+        val rankByNote = ankiRepository.noteRanks(deck, rankByFrench)
+        val queue = ankiRepository.queuedRanks(deck, rankByNote)
+        val doneInAnki = runCatching { ankiRepository.reviewedTodayRanks(deck, rankByNote) }.getOrDefault(emptyList())
         val ranks = (queue + doneInAnki).distinct()
-        val needs = runCatching { ankiRepository.todayNeeds(deck, rankByFrench, ranks) }.getOrDefault(emptyMap())
+        val needs = runCatching { ankiRepository.todayNeeds(deck, rankByNote, ranks) }.getOrDefault(emptyMap())
         settingsRepository.saveAnkiQueue(day, ranks, needs)
         return settingsRepository.ankiQueueOn(day)?.size ?: 0
     }

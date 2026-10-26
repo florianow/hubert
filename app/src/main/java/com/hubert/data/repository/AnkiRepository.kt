@@ -94,9 +94,8 @@ class AnkiRepository @Inject constructor(
      * the deck's daily limits), mapped to ranks in queue order. Read-only: AnkiDroid selects the
      * deck for the query and restores the previous selection afterwards.
      */
-    suspend fun queuedRanks(deckName: String, rankByFrench: Map<String, Int>): List<Int> = withContext(Dispatchers.IO) {
+    suspend fun queuedRanks(deckName: String, rankByNote: Map<Long, Int>): List<Int> = withContext(Dispatchers.IO) {
         val deck = decks().firstOrNull { it.name == deckName } ?: return@withContext emptyList()
-        val rankByNote = rankByNote(deckName, rankByFrench)
         val ranks = mutableListOf<Int>()
         context.contentResolver.query(
             SCHEDULE_URI, arrayOf("note_id"), "limit=?,deckID=?", arrayOf(MAX_QUEUE.toString(), deck.id.toString()), null
@@ -110,8 +109,7 @@ class AnkiRepository @Inject constructor(
      * Words of [deckName] already answered in Anki today ("rated:1", Anki's day). They left the
      * queue there, but still belong to today's words when Hubert takes its snapshot afterwards.
      */
-    suspend fun reviewedTodayRanks(deckName: String, rankByFrench: Map<String, Int>): List<Int> = withContext(Dispatchers.IO) {
-        val rankByNote = rankByNote(deckName, rankByFrench)
+    suspend fun reviewedTodayRanks(deckName: String, rankByNote: Map<Long, Int>): List<Int> = withContext(Dispatchers.IO) {
         val ranks = mutableListOf<Int>()
         context.contentResolver.query(CARDS_URI, arrayOf("note_id"), "\"deck:$deckName\" rated:1", null, null)?.use { c ->
             while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { ranks += it }
@@ -124,9 +122,8 @@ class AnkiRepository @Inject constructor(
      * step, relearning cards once per relearning step, review cards once. Hubert asks for the
      * same number of right answers before a word of today's queue counts as done.
      */
-    suspend fun todayNeeds(deckName: String, rankByFrench: Map<String, Int>, ranks: Collection<Int>): Map<Int, Int> = withContext(Dispatchers.IO) {
+    suspend fun todayNeeds(deckName: String, rankByNote: Map<Long, Int>, ranks: Collection<Int>): Map<Int, Int> = withContext(Dispatchers.IO) {
         val (newSteps, lapseSteps) = learningSteps(deckName)
-        val rankByNote = rankByNote(deckName, rankByFrench)
         val types = mutableMapOf<Int, MutableSet<Int>>()
         context.contentResolver.query(
             CARDS_URI, arrayOf("note_id", "type"), "\"deck:$deckName\" (is:due OR is:learn OR rated:1)", null, null
@@ -165,7 +162,10 @@ class AnkiRepository @Inject constructor(
         }.getOrDefault(2 to 1)
     }
 
-    /** Note id → Hubert rank for all notes of [deckName]. */
+    /** Note id → Hubert rank for all notes of [deckName] (read once per sync, it is the slow part). */
+    suspend fun noteRanks(deckName: String, rankByFrench: Map<String, Int>): Map<Long, Int> =
+        withContext(Dispatchers.IO) { rankByNote(deckName, rankByFrench) }
+
     private fun rankByNote(deckName: String, rankByFrench: Map<String, Int>): Map<Long, Int> {
         val rankByNote = mutableMapOf<Long, Int>()
         context.contentResolver.query(NOTES_URI, arrayOf("_id", "flds"), "\"deck:$deckName\"", null, null)?.use { c ->
