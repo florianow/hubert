@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 8 game modes + guided Menu du jour</strong></p>
+  <p><strong>Gamified French-German trainer with 11 game modes, a grammar Parcours (A1–B2) and a guided Menu du jour</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -26,7 +26,7 @@
 Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables across 8 tenses.
 
 Three scoring systems keep things interesting:
-- **Timer-based** (Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
+- **Timer-based** (Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
 - **Points-based** (Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
 - **Evaluation-based** (Parlez!): After a 60-second free conversation, Gemini evaluates your performance across 5 categories (vocabulary, grammar, fluency, task completion, pronunciation) with a 0–100 overall score.
 
@@ -34,7 +34,8 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Features
 
-- **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
+- **11 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez!, Prononcez!, Parlez!
+- **Parcours** — 27 grammar étapes A1–B2, each with Leçon + Mini-Check, Entraînement in the matching game and a Contrôle (from 80 %), plus spaced Révisions
 - **Spaced repetition & learning path** — every vocab answer updates a per-word review schedule (Anki-style); new words arrive in frequency order (10/day); progress and an estimated level on the main menu
 - **Daily reminder** — optional notification at a chosen hour when something is due and you haven't practised yet
 - **Accordez!** — Past participle agreement (être, avoir + preceding object, reflexive verbs), with the rule explained after each answer
@@ -240,8 +241,18 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 
 <table>
   <tr>
-    <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Main Menu</b></td>
-    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 8 Game Modes</b></td>
+    <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Heute — Tagesplan & Parcours</b></td>
+    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>Spiele — all games</b></td>
+    <td align="center"><img src="screenshots/21-menu-du-jour.png" width="240"><br><b>Menu du jour</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/16-parcours.png" width="240"><br><b>Parcours — 27 étapes</b></td>
+    <td align="center"><img src="screenshots/17-parcours-etape.png" width="240"><br><b>Étape — Leçon, Entraînement, Contrôle</b></td>
+    <td align="center"><img src="screenshots/18-parcours-lecon.png" width="240"><br><b>Leçon — tap 👆 for the German</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/19-parcours-quiz.png" width="240"><br><b>Mini-Check — rule after a mistake</b></td>
+    <td align="center"><img src="screenshots/20-parcours-result.png" width="240"><br><b>Result — mistakes to read up on</b></td>
     <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Trouvez!</b></td>
   </tr>
   <tr>
