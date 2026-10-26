@@ -104,6 +104,19 @@ class AnkiRepository @Inject constructor(
         ranks.distinct()
     }
 
+    /**
+     * Words of [deckName] already answered in Anki today ("rated:1", Anki's day). They left the
+     * queue there, but still belong to today's words when Hubert takes its snapshot afterwards.
+     */
+    suspend fun reviewedTodayRanks(deckName: String, rankByFrench: Map<String, Int>): List<Int> = withContext(Dispatchers.IO) {
+        val rankByNote = rankByNote(deckName, rankByFrench)
+        val ranks = mutableListOf<Int>()
+        context.contentResolver.query(CARDS_URI, arrayOf("note_id"), "\"deck:$deckName\" rated:1", null, null)?.use { c ->
+            while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { ranks += it }
+        }
+        ranks.distinct()
+    }
+
     /** Note id → Hubert rank for all notes of [deckName]. */
     private fun rankByNote(deckName: String, rankByFrench: Map<String, Int>): Map<Long, Int> {
         val rankByNote = mutableMapOf<Long, Int>()

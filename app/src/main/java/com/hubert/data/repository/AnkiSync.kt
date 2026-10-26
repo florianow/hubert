@@ -51,10 +51,16 @@ class AnkiSync @Inject constructor(
         if (settingsRepository.ankiQueueOn(learningRepository.today()) == null) snapshotQueueIfEnabled()
     }
 
-    /** Stores today's Anki queue (merged with an earlier snapshot of the day); returns its size. */
+    /**
+     * Stores today's Anki queue (merged with an earlier snapshot of the day); returns its size.
+     * Cards already done in Anki today count too — otherwise a first snapshot taken after the
+     * Anki session would be empty and every word would look done in Hubert.
+     */
     private suspend fun snapshotQueue(deck: String, rankByFrench: Map<String, Int>): Int {
         val day = learningRepository.today()
-        settingsRepository.saveAnkiQueue(day, ankiRepository.queuedRanks(deck, rankByFrench))
+        val queue = ankiRepository.queuedRanks(deck, rankByFrench)
+        val doneInAnki = runCatching { ankiRepository.reviewedTodayRanks(deck, rankByFrench) }.getOrDefault(emptyList())
+        settingsRepository.saveAnkiQueue(day, (queue + doneInAnki).distinct())
         return settingsRepository.ankiQueueOn(day)?.size ?: 0
     }
 }
