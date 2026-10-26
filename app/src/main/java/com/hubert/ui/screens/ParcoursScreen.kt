@@ -714,6 +714,8 @@ div.spoiler { margin: 2px 0; }
 .tip::before { content: "💡 "; }
 table { border-collapse: collapse; width: 100%; margin: 8px 0; background: $card; border-radius: 10px; overflow: hidden; }
 td, th { padding: 6px 8px; border-bottom: 1px solid $line; text-align: left; vertical-align: top; }
+.section-conjugation-table td:first-child span + span::before { content: " · "; color: $muted; }
+.section-conjugation-table td[data-tense]:empty { display: none; }
 .condensed { color: $muted; font-size: 12px; white-space: nowrap; }
 .ipa { color: $muted; font-family: monospace; font-size: 14px; }
 u { text-decoration-color: $fr; text-decoration-thickness: 2px; text-underline-offset: 3px; }
