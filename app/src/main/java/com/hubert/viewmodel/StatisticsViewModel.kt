@@ -29,6 +29,11 @@ enum class GameType(val key: String, val displayName: String) {
     PRONUNCIATION("pronunciation", "Prononcez!"),
     PREPOSITION("preposition", "Pr\u00E9posez!"),
     RELATIVE_PRONOUN("relative_pronoun", "Relativisez!"),
+    NUMBERS("numbers", "Nombrez!"),
+    AGREEMENT("agreement", "Accordez!"),
+    LISTENING("listening", "Écoutez!"),
+    RECALL("recall", "Rappel"),
+    PHRASES("phrases", "Dites!"),
     PARLEZ("parlez", "Parlez!");
 
     companion object {
@@ -106,13 +111,5 @@ class StatisticsViewModel @Inject constructor(
                 it.copy(gameStats = stats, scoreTrend = trend)
             }
         }
-    }
-
-    /**
-     * Returns the game type key with the least total play time.
-     * Used by "Hubert choisit!" to pick the game the user needs to practice.
-     */
-    suspend fun getLeastPlayedGameType(): String {
-        return statisticsRepository.getLeastPlayedGameType()
     }
 }

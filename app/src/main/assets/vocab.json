@@ -4834,7 +4834,7 @@
   {
     "rank": 489,
     "french": "poste",
-    "german": "|-",
+    "german": "Stelle / Post",
     "gender": "f",
     "ipa": "pɔst",
     "pos": "nm, nf",
@@ -5182,7 +5182,7 @@
   {
     "rank": 523,
     "french": "tour",
-    "german": "|-",
+    "german": "Tour / Turm",
     "gender": "f",
     "ipa": "tuʁ",
     "pos": "nm, nf",
@@ -7279,7 +7279,7 @@
   {
     "rank": 732,
     "french": "ceci",
-    "german": "|-",
+    "german": "dies",
     "ipa": "sə.si",
     "pos": "pro"
   },
@@ -8973,7 +8973,7 @@
   {
     "rank": 901,
     "french": "garde",
-    "german": "|-",
+    "german": "Wächter / Bewachung",
     "gender": "f",
     "ipa": "ɡaʁd",
     "pos": "nm, nf",
@@ -11297,7 +11297,7 @@
   {
     "rank": 1137,
     "french": "mode",
-    "german": "|-",
+    "german": "Methode / Mode",
     "gender": "f",
     "ipa": "mɔd",
     "pos": "nm, nf, app"
@@ -11382,7 +11382,7 @@
   {
     "rank": 1146,
     "french": "physique",
-    "german": "|-",
+    "german": "körperlich / Physik",
     "gender": "f",
     "ipa": "fi.zik",
     "pos": "adj, nm, nf",
@@ -29930,7 +29930,7 @@
   {
     "rank": 3155,
     "french": "voile",
-    "german": "|-",
+    "german": "Schleier / Segel",
     "gender": "f",
     "ipa": "vwal",
     "pos": "nm, nf",
@@ -32457,7 +32457,7 @@
   {
     "rank": 3437,
     "french": "manche",
-    "german": "|-",
+    "german": "Griff / Ärmel",
     "gender": "f",
     "ipa": "mɑ̃ʃ",
     "pos": "nm, nf",
@@ -36562,7 +36562,7 @@
   {
     "rank": 3912,
     "french": "orange",
-    "german": "|-",
+    "german": "Orange",
     "gender": "f",
     "ipa": "o.ʁɑ̃ʒ",
     "pos": "nf, nm, adj",
@@ -39348,7 +39348,7 @@
   {
     "rank": 4233,
     "french": "arrivant",
-    "german": "|2-",
+    "german": "Ankömmling",
     "gender": "m",
     "ipa": "a.ʁi.vɑ̃",
     "pos": "nm"
@@ -40405,7 +40405,7 @@
   {
     "rank": 4350,
     "french": "gestionnaire",
-    "german": "|2-",
+    "german": "Geschäftsführer",
     "gender": "f",
     "ipa": "ʒɛs.tjɔ.nɛʁ",
     "pos": "adj, nm, nf",

@@ -569,9 +569,19 @@ class ConjuguezViewModel @Inject constructor(
     /**
      * Start the game with the currently selected tenses.
      */
-    fun startGame() {
+    // Round length (shorter when played as a Menu du jour course)
+    private var gameTimeMs = GAME_TIME_MS
+    // Player's own tense selection while a Menu du jour focus selection is active
+    private var savedSelection: Set<String>? = null
+
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        if (stage != null && stage.grammarFocus.isNotEmpty()) {
+            savedSelection = savedSelection ?: _uiState.value.selectedTenses
+            _uiState.update { it.copy(selectedTenses = stage.grammarFocus) }
+        }
 
         val selectedTenses = _uiState.value.selectedTenses
         activeTenses = selectedTenses - "mood_question"
@@ -604,9 +614,9 @@ class ConjuguezViewModel @Inject constructor(
             }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
-            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            timerDeadline = System.currentTimeMillis() + gameTimeMs
             _uiState.update {
-                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+                it.copy(timeRemainingMs = gameTimeMs, timerFraction = 1f)
             }
             showNextQuestion()
             startTimer()
@@ -1161,7 +1171,7 @@ class ConjuguezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = (remaining.toFloat() / GAME_TIME_MS).coerceIn(0f, 1f)
+                        timerFraction = (remaining.toFloat() / gameTimeMs).coerceIn(0f, 1f)
                     )
                 }
                 delay(50)
@@ -1304,7 +1314,10 @@ Sei präzise und ermutigend. Maximal 4 Stichpunkte gesamt.
         currentTenseKey = null
         currentPersonIdx = -1
         currentReplayItem = null
-        _uiState.value = ConjuguezState()
+        // After a Menu du jour course, give the player their own tense selection back
+        val restored = savedSelection
+        savedSelection = null
+        _uiState.value = if (restored != null) ConjuguezState(selectedTenses = restored) else ConjuguezState()
         viewModelScope.launch {
             val hs = highScoreRepository.getHighestScore(gameType = "conjugation")
             _uiState.update { it.copy(highScore = hs) }

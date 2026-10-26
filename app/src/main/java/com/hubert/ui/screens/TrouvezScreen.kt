@@ -608,14 +608,19 @@ fun TrouvezScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Active category badge
-            if (state.selectedCategory != null) {
+            val chipText = when {
+                state.isReviewMode -> "🔁 Vokabeln lernen"
+                state.selectedCategory != null -> "${categoryEmoji(state.selectedCategory)} ${state.selectedCategory}"
+                else -> null
+            }
+            if (chipText != null) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Surface(
                         shape = RoundedCornerShape(20.dp),
                         color = FrenchBlue.copy(alpha = 0.12f)
                     ) {
                         Text(
-                            text = "${categoryEmoji(state.selectedCategory)} ${state.selectedCategory}",
+                            text = chipText,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelMedium,
                             color = FrenchBlue,

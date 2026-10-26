@@ -12,6 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import com.hubert.utils.DailyReminder
+import com.hubert.data.repository.AnkiRepository
+import com.hubert.viewmodel.AnkiUiState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -20,12 +28,32 @@ import androidx.compose.ui.unit.sp
 import com.hubert.data.repository.AppSettings
 import com.hubert.ui.theme.*
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SettingsScreen(
     settings: AppSettings,
     onSave: (geminiKey: String, azureKey: String, azureRegion: String) -> Unit,
+    onReminderChange: (enabled: Boolean, hour: Int) -> Unit,
+    onDailyLimitChange: (Int) -> Unit,
+    anki: AnkiUiState,
+    ankiLastSync: String,
+    onAnkiEnable: (Boolean) -> Unit,
+    onAnkiDeck: (String) -> Unit,
+    onAnkiSync: () -> Unit,
+    onAnkiRefresh: () -> Unit,
     onBack: () -> Unit
 ) {
+    LaunchedEffect(Unit) { onAnkiRefresh() }
+    val ankiPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        onAnkiRefresh()
+        if (granted) onAnkiEnable(true)
+    }
+    val context = LocalContext.current
+    var permissionDenied by remember { mutableStateOf(false) }
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        permissionDenied = !granted
+        if (granted) onReminderChange(true, settings.reminderHour)
+    }
     var geminiKey   by remember(settings.geminiKey)   { mutableStateOf(settings.geminiKey) }
     var azureKey    by remember(settings.azureKey)    { mutableStateOf(settings.azureKey) }
     var azureRegion by remember(settings.azureRegion) { mutableStateOf(settings.azureRegion.ifBlank { "northeurope" }) }
@@ -65,6 +93,142 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
+
+            // ── Anki (read-only) ────────────────────────────────────────────────
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = FrenchBlue.copy(alpha = 0.06f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Mit Anki abgleichen", fontWeight = FontWeight.Bold, color = FrenchBlue)
+                            Text(
+                                text = "Nur lesen: Hubert übt die Wörter, die du in Anki lernst, und neue Wörter kommen nur noch aus Anki. In Anki wird nichts verändert.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                        }
+                        Switch(
+                            checked = settings.ankiEnabled,
+                            enabled = anki.installed,
+                            onCheckedChange = { enable ->
+                                when {
+                                    !enable -> onAnkiEnable(false)
+                                    anki.hasPermission -> onAnkiEnable(true)
+                                    else -> ankiPermissionLauncher.launch(AnkiRepository.PERMISSION)
+                                }
+                            },
+                            colors = SwitchDefaults.colors(checkedTrackColor = FrenchBlue)
+                        )
+                    }
+                    if (!anki.installed) {
+                        Text("AnkiDroid ist nicht installiert.", style = MaterialTheme.typography.bodySmall, color = WrongRed)
+                    }
+                    if (settings.ankiEnabled && anki.decks.isNotEmpty()) {
+                        Spacer(Modifier.height(8.dp))
+                        Text("Deck", style = MaterialTheme.typography.labelMedium)
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            anki.decks.forEach { deck ->
+                                FilterChip(
+                                    selected = settings.ankiDeck == deck,
+                                    onClick = { onAnkiDeck(deck) },
+                                    label = { Text(deck, fontSize = 12.sp) }
+                                )
+                            }
+                        }
+                    }
+                    if (settings.ankiEnabled) {
+                        Spacer(Modifier.height(6.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = if (anki.isSyncing) "Gleiche ab …" else ankiLastSync.ifEmpty { "Noch nicht abgeglichen" },
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.weight(1f)
+                            )
+                            TextButton(onClick = onAnkiSync, enabled = !anki.isSyncing) { Text("Jetzt abgleichen") }
+                        }
+                    }
+                }
+            }
+
+            // ── Daily review limit ──────────────────────────────────────────────
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = LernenGreen.copy(alpha = 0.06f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Wiederholungen pro Tag", fontWeight = FontWeight.Bold, color = LernenGreen)
+                    Text(
+                        text = "Mehr fällige Wörter verschiebt Hubert auf die nächsten Tage – die überfälligsten und häufigsten zuerst",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf(50, 100, 150, 200, 0).forEach { limit ->
+                            FilterChip(
+                                selected = settings.dailyReviewLimit == limit,
+                                onClick = { onDailyLimitChange(limit) },
+                                label = { Text(if (limit == 0) "unbegrenzt" else "$limit", fontSize = 12.sp) }
+                            )
+                        }
+                    }
+                }
+            }
+
+            // ── Daily reminder ──────────────────────────────────────────────────
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MenuWine.copy(alpha = 0.06f))
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text("Tägliche Erinnerung", fontWeight = FontWeight.Bold, color = MenuWine)
+                            Text(
+                                text = "Nur wenn du an dem Tag noch nicht geübt hast und etwas fällig ist",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            )
+                        }
+                        Switch(
+                            checked = settings.reminderEnabled,
+                            onCheckedChange = { enable ->
+                                when {
+                                    !enable -> onReminderChange(false, settings.reminderHour)
+                                    DailyReminder.canNotify(context) -> onReminderChange(true, settings.reminderHour)
+                                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+                                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                }
+                            },
+                            colors = SwitchDefaults.colors(checkedTrackColor = MenuWine)
+                        )
+                    }
+                    if (permissionDenied) {
+                        Text(
+                            text = "Ohne Benachrichtigungs-Erlaubnis geht es nicht – bitte in den Android-Einstellungen erlauben.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = WrongRed
+                        )
+                    }
+                    if (settings.reminderEnabled) {
+                        Spacer(Modifier.height(8.dp))
+                        FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            listOf(8, 12, 18, 19, 20, 21).forEach { hour ->
+                                FilterChip(
+                                    selected = settings.reminderHour == hour,
+                                    onClick = { onReminderChange(true, hour) },
+                                    label = { Text("$hour:00", fontSize = 12.sp) }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
 
             // ── Gemini section ──────────────────────────────────────────────────
             SectionCard(

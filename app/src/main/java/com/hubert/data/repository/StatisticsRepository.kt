@@ -2,7 +2,6 @@ package com.hubert.data.repository
 
 import com.hubert.data.local.DayCount
 import com.hubert.data.local.GameSessionDao
-import com.hubert.data.local.GameTypeDuration
 import com.hubert.data.local.StruggledWord
 import com.hubert.data.local.WordStreak
 import com.hubert.data.local.WordAttemptDao
@@ -61,7 +60,8 @@ data class Achievement(
 @Singleton
 class StatisticsRepository @Inject constructor(
     private val dao: GameSessionDao,
-    private val wordAttemptDao: WordAttemptDao
+    private val wordAttemptDao: WordAttemptDao,
+    private val learningRepository: LearningRepository
 ) {
 
     // ── Session saving (used by all ViewModels) ─────────────────────────
@@ -88,30 +88,6 @@ class StatisticsRepository @Inject constructor(
 
     suspend fun getHighestScore(gameType: String): Int {
         return dao.getHighestScore(gameType) ?: 0
-    }
-
-    // ── Hubert choisit! ─────────────────────────────────────────────────
-
-    /**
-     * Returns the game type with the least total play time.
-     * Games never played get 0ms and are preferred.
-     * Ties are broken randomly.
-     */
-    suspend fun getLeastPlayedGameType(): String {
-        val allGameTypes = listOf(
-            "matching", "gender_snap", "gap_fill",
-            "spelling_bee", "conjugation", "pronunciation", "preposition", "parlez"
-        )
-        val durations = dao.getTotalDurationPerGameType()
-        val durationMap = durations.associate { it.gameType to it.totalMs }
-
-        // Fill in 0 for any game type not yet played
-        val full = allGameTypes.map { it to (durationMap[it] ?: 0L) }
-        val minDuration = full.minOf { it.second }
-
-        // Among all tied at minimum, pick randomly
-        val candidates = full.filter { it.second == minDuration }.map { it.first }
-        return candidates.random()
     }
 
     // ── Overview ─────────────────────────────────────────────────────────
@@ -350,6 +326,8 @@ class StatisticsRepository @Inject constructor(
             )
         }
         wordAttemptDao.insertAll(attempts)
+        // Vocab answers also drive the spaced-repetition schedule
+        learningRepository.recordAnswers(gameType, answers)
     }
 
     /**

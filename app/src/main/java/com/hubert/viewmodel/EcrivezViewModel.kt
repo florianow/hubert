@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -58,7 +59,8 @@ class EcrivezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EcrivezState())
@@ -72,6 +74,8 @@ class EcrivezViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
     private val replayPool: ArrayDeque<VocabWord> = ArrayDeque()
     private var currentWordFromReplay = false
+    private var gameTimeMs = GAME_TIME_MS
+    private var stageCategory: String? = null
 
     companion object {
         const val GAME_TIME_MS = 60_000L
@@ -88,13 +92,18 @@ class EcrivezViewModel @Inject constructor(
         }
     }
 
-    fun startGame() {
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
+        replayPool.clear()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        stageCategory = stage?.category
 
-        // Use all words, shuffled
-        wordPool = vocabRepository.getAllWords().shuffled().toMutableList()
+        // All words shuffled (Menu du jour: focus words first, then the menu's category)
+        val focus = stage?.focusRanks.orEmpty().distinct().mapNotNull { vocabRepository.getWordByRank(it) }
+        wordPool = (focus + freshPool().filter { w -> focus.none { it.rank == w.rank } })
+            .toMutableList()
 
         _uiState.update {
             EcrivezState(
@@ -109,11 +118,16 @@ class EcrivezViewModel @Inject constructor(
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
             }
+            if (stage == null) {
+                // Free play follows the learning path: due and learned words first
+                val practice = learningRepository.practiceRanks().mapNotNull { vocabRepository.getWordByRank(it) }
+                wordPool = (practice + wordPool.filter { w -> practice.none { it.rank == w.rank } }).toMutableList()
+            }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
-            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            timerDeadline = System.currentTimeMillis() + gameTimeMs
             _uiState.update {
-                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+                it.copy(timeRemainingMs = gameTimeMs, timerFraction = 1f)
             }
             showNextWord()
             startTimer()
@@ -126,7 +140,7 @@ class EcrivezViewModel @Inject constructor(
             replayPool.removeFirst()
         } else {
             currentWordFromReplay = false
-            if (wordPool.isEmpty()) wordPool = vocabRepository.getAllWords().shuffled().toMutableList()
+            if (wordPool.isEmpty()) wordPool = freshPool()
             wordPool.removeFirst()
         }
         _uiState.update {
@@ -140,6 +154,12 @@ class EcrivezViewModel @Inject constructor(
         }
         // Speak the word so the player can hear it
         frenchTts.speak(word.french)
+    }
+
+    private fun freshPool(): MutableList<VocabWord> {
+        val words = vocabRepository.getAllWords()
+        val cat = stageCategory ?: return words.shuffled().toMutableList()
+        return words.filter { it.categories?.contains(cat) == true }.shuffled().toMutableList()
     }
 
     /** Called when user types / edits the text field. */
@@ -167,7 +187,8 @@ class EcrivezViewModel @Inject constructor(
                 question = "${word.german} →",
                 yourAnswer = state.typedText.trim(),
                 correctAnswer = word.french,
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                rank = word.rank
             )
         )
 
@@ -245,7 +266,7 @@ class EcrivezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)

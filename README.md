@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Hubert Logo" width="120" height="120">
   <h1>Hubert</h1>
-  <p><strong>Gamified French-German vocabulary trainer with 8 game modes + smart practice picker</strong></p>
+  <p><strong>Gamified French-German trainer with 11 game modes, a grammar Parcours (A1–B2) and a guided Menu du jour</strong></p>
   <p>
     <a href="#features">Features</a> •
     <a href="#game-modes">Game Modes</a> •
@@ -26,7 +26,7 @@
 Hubert is a Duolingo-style Android app for learning French-German vocabulary through fast-paced mini-games. Built with Kotlin, Jetpack Compose, and Material Design 3, it features ~5000 vocabulary cards sourced from the [anki_french](https://github.com/jacbz/anki_french) Anki deck — including gender, IPA pronunciation, thematic categories, example sentences, and full verb conjugation tables across 8 tenses.
 
 Three scoring systems keep things interesting:
-- **Timer-based** (Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
+- **Timer-based** (Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez!): Countdown timer with time bonuses for correct answers and penalties for wrong ones.
 - **Points-based** (Prononcez!): Start with 10 points. Earn +3 per correct answer (plus streak bonus), lose 5 for each mistake — game over when you hit 0.
 - **Evaluation-based** (Parlez!): After a 60-second free conversation, Gemini evaluates your performance across 5 categories (vocabulary, grammar, fluency, task completion, pronunciation) with a 0–100 overall score.
 
@@ -34,8 +34,13 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Features
 
-- **8 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Prononcez!, Préposez!, Parlez!
-- **Hubert choisit!** — Smart practice picker that launches the game mode you've played the least, encouraging balanced practice
+- **11 Game Modes** — Trouvez!, Classez!, Complétez!, Écrivez!, Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez!, Prononcez!, Parlez!
+- **Parcours** — 27 grammar étapes A1–B2, each with Leçon + Mini-Check, Entraînement in the matching game and a Contrôle (from 80 %), plus spaced Révisions
+- **Spaced repetition & learning path** — every vocab answer updates a per-word review schedule (Anki-style); new words arrive in frequency order (10/day); progress and an estimated level on the main menu
+- **Daily reminder** — optional notification at a chosen hour when something is due and you haven't practised yet
+- **Accordez!** — Past participle agreement (être, avoir + preceding object, reflexive verbs), with the rule explained after each answer
+- **Nombrez!** — Numbers, clock times, dates, days and months (hear → type, plus multiple choice)
+- **Menu du jour** — Guided multi-game session (Express, Complet, À la carte) around one theme, graded on the French /20 scale
 - **5000 Vocabulary Cards** — sourced from a curated French Anki deck
 - **IPA Phonetic Transcription** — shown alongside French words in Trouvez!, Classez!, and Conjuguez!
 - **Pronunciation Assessment** — read French sentences aloud, scored by Azure Speech Services, with second-chance retry
@@ -55,16 +60,88 @@ French words and sentences are spoken aloud via Android's built-in Text-to-Speec
 
 ## Game Modes
 
-### Hubert choisit!
+The start screen has three tabs (bottom navigation): **Heute** — the plan of the day: ① *Vokabeln lernen* (today's due words) → ② *Menu du jour* (theme of the day), each with its status (due count / "✓" with the menu's grade out of 20) and a 🔥 streak of days in a row with practice; **Spiele** — every game, free to play; **Fortschritt** — known/learning words, estimated level, streak, weekly report and per-game statistics.
 
-A smart practice picker — tap to let Hubert choose which game you should play next. Hubert queries your total play time per game mode and launches the one you've practiced the least, encouraging balanced learning across all modes. A toast shows which game was selected.
+### Spaced repetition & learning path
+
+Every answer in Trouvez!, Classez!, Complétez! and Écrivez! updates a per-word schedule (`word_progress`, `utils/SpacedRepetition.kt`, unit-tested), SM-2 style as in Anki:
+
+- **Correct** → the interval grows (1 → ~3 → ~8 → ~20 days …). Typing the word (Écrivez!) counts as *recall* and grows faster than *recognition* (matching, choosing). Practising early doesn't inflate the interval; remembering a word after an overdue gap counts part of the extra time.
+- **Wrong** → back to 1 day, the word gets harder (ease −0.2).
+- At most one step per word and day — five correct answers in one round are one review.
+- A word is **sicher** once its interval reaches 3 weeks.
+
+**Learning path:** new words are introduced in frequency order, 10 per day, in the *Amuse-bouche* at the start of Express/Complet (word, article/gender, IPA, translation, example sentence, audio; "Kenne ich schon" schedules a check in a week). Menu courses use new words, due reviews and recent mistakes first, the theme of the day fills the rest. Free play in the vocab games also puts due and learned words first. **Vokabeln lernen** (main menu, or tapping "heute fällig") works through today's due words in rounds (with the Anki sync: today's Anki queue — new, learning and review cards within the deck's limits — taken read-only at 4:30 each morning and on app start, plus the cards already done in Anki today, so it is still known after the cards were done in Anki; a word is done once answered right in Hubert as often as Anki shows it that day — new and learning words once per learning step of the deck options (default 2), relearning words once per relearning step, review words once); the stages take turns (starting with the one with the most due words, so a small stage is not starved), each with its games — *erkennen* (interval < 3 days): Trouvez! / **Écoutez!** (hear → pick the meaning), *im Satz* (3–10 days): Complétez! / **Dites!** (rebuild the sentence, ★ = target), *abrufen* (10+ days): **Rappel** (see the German meaning → type the French word; article and accents optional) / Dites!. After each round it shows what is still due. "Fertig für heute" ends with a short *Bilan du jour*: words practised, accuracy, minutes, how many of today's due words are done, results per game and the words still wrong at the end (*À revoir*).
+
+**Progress:** the main menu shows known / learning / due today and a rough vocabulary level (A1 ≈ 500, A2 ≈ 1000, B1 ≈ 2000, B2 ≈ 4000 known words). On first start after the update, past answers are replayed once to seed the schedule; the resulting backlog is spread over two weeks.
+
+**Anki (read-only)** (Einstellungen → Mit Anki abgleichen): reads the player's AnkiDroid deck through AnkiDroid's public ContentProvider (`AnkiRepository`, permission `com.ichi2.anki.permission.READ_WRITE_DATABASE`, but Hubert only reads). Cards are matched to Hubert's words by the deck's rank field (the vocab comes from the same anki_french deck). Words started in Anki join Hubert's learning path (spread over a week), words Anki keeps for 3+ weeks get at least Anki's interval in Hubert, and Hubert stops introducing new words itself — Anki stays the place for deep learning, Hubert reinforces it in games. Runs on app start and via "Jetzt abgleichen". Nothing is ever written to Anki.
+
+**Daily review limit** (Einstellungen → Wiederholungen pro Tag: 50 / 100 / 150 / 200 / unbegrenzt, default 150): "heute fällig" only counts what still fits into today's limit (only reviews of words that were due count against it — filler and free-play words don't); the rest stays due and moves up on the next days, most overdue and frequent first. Vokabeln lernen offers "Trotzdem weiter" once the limit is reached.
+
+**Daily reminder** (Einstellungen): optional notification at a chosen hour, only if no round was played that day and something is due (WorkManager).
+
+### Parcours
+
+A learning path of 27 *étapes* from A1 to B2 (`assets/parcours.json`, built by `scripts/build_parcours.py`). Each étape is one grammar point in three steps: **1. Leçon + Mini-Check** — the matching anki_french grammar notes (by jacbz), shown in the app (tap French to hear it, tap a dashed 👆 box to reveal the German), then 5 quick questions on the lesson's own sentences; **2. Entraînement** — the étape's grammar game (Conjuguez!, Préposez!, Relativisez!, Accordez!, Nombrez! or Classez!) with only the étape's focus, done with 6 right answers; **3. Contrôle** — 15 gap questions, passed from 80 %, moves on to the next étape. Wrong answers show the rule, and the result lists every mistake to read up on. The questions are built per étape by `scripts/parcours_exercises.py` (up to 40 each): the lessons underline the grammar point in their example sentences, which becomes the gap, and the wrong choices test exactly that grammar — other tenses of the same verb and person, the étape's other prepositions or relative pronouns, the other forms of the adjective or participle, the other articles (only word forms that occur in the example corpus). Étapes with few lesson sentences are filled up from Hubert's own pools for the same grammar (conjugation sentences, prepositions, relative pronouns, nouns with their gender); numbers and participle agreement come from the Nombrez!/Accordez! generators in the app (`ParcoursQuizBuilder`, unit-tested against the real asset). Passed étapes come back as a short **Révision** (8 questions) after 3, 7, 21 and 60 days; from 75 % it moves one step on, a weaker one comes back the next day. Each étape also has a **Parlez!** conversation (scenario + grammar goal, e.g. telling what you ate yesterday for the passé composé): Hubert steers towards the structure, and the evaluation comments on it. The start screen shows the étape's steps and the next one as a button, plus a due Révision. The Parcours screen lists all étapes by level; you can start or repeat anywhere (e.g. skip what you know). Menu du jour serves the étape's game as *Plat du chef* — extra practice, no duty (switch on the Parcours screen; off = the grammar game you need most). Progress is stored in DataStore.
+
+### Menu du jour
+
+A guided learning session that chains several games into one "menu", built around a thematic category plus words you recently struggled with (and pinned words). The courses follow a learning progression — recognise → apply in context → grammar → consolidate gender → produce — and words missed in earlier courses come back in later ones.
+
+| Menu | Part 1 · your words | Part 2 · theme |
+|---|---|---|
+| **Express** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Dessert (Écrivez!) · alternating daily: Fromage (Classez!) or Café (Nombrez!) — theme picked by Hubert |
+| **Complet** | Apéritif (Trouvez!) | Entrée (Trouvez!) · Plat du chef (grammar) · 2 of Complétez! / Classez! / Écrivez! / Nombrez!, a different pair each day — 5 courses in total |
+| **À la carte** | — | Entrée (Trouvez!) · Plat principal (Complétez!) · Fromage (Classez!) · Dessert (Écrivez!) — you choose the theme |
+
+Part 1 uses only the learning path (new words of the day, due reviews, recent mistakes, then learned words); part 2 only the theme, starting with a Trouvez! round to get to know the theme words. Mistakes come back within the same part. **With the Anki sync there is no part 1** — your own words come from the deck and are worked through in *Vokabeln lernen* — so the menu is all theme: Express Entrée · Plat (Complétez!) · Dessert · Fromage or Café, Complet Entrée · Plat du chef · 3 of the rotation.
+
+Course lengths: Trouvez! 40s, Complétez! 45s, Classez! 30s, Écrivez! 45s, grammar 60s, Nombrez! 45s. The *Plat du chef* is the grammar game you need most — Conjuguez!, Préposez!, Relativisez! or Accordez! — never the same as the previous Complet, otherwise the one with the lowest accuracy over the last 4 weeks; inside the game it focuses on your most-missed tenses/prepositions/pronouns. Conjuguez! always uses 3 tenses: up to 2 most-missed ones, topped up with the core tenses (présent, passé composé, imparfait, futur, conditionnel, subjonctif) practised least lately. In Classez! the menu balances le/la 50/50, topping up the theme with nouns from outside it, since many themes are gender-skewed (e.g. Berufe).
+
+**L'addition** grades the menu: each course scores 0–100 (80% accuracy + 20% volume), the average becomes a grade out of 20 with a French *mention* (Passable, Assez bien, Bien, Très bien, Félicitations du jury). It compares against your last menu of the same type, lists missed words under *À revoir* with a pin button, and shows grammar mistakes with the correct answer. Menus are stored in the `menu_sessions` table; the individual games still record their normal sessions and statistics.
+
+### Dites! (round in Vokabeln lernen)
+
+Built on the anki_french **Lückenspiel**, but graded by the game instead of self-rating — Anki stays the place for the full card routine. The front shows a deck example sentence with the target word underlined; the sentence in the other language (DE → FR or FR → DE, alternating) is rebuilt by tapping alphabetically sorted word tiles in order, the target word being the ★ tile (`utils/ClozeGame.kt`, unit-tested). Result per card: **richtig** (no wrong tile, no hint) · **noch wacklig** (found with mistakes or hints) · **falsch** (target revealed or "Auflösen"); ⚡ (only the target left) is not counted as a hint. Afterwards: word, meaning and the French sentence with audio, plus optional speaking with an Azure score (not graded). Uses the deck's example sentences (`examples.json`, up to 20 per word, built by `scripts/build_examples.py`). In Vokabeln lernen Dites! alternates with Complétez! (*im Satz*) and with Rappel (*abrufen*).
+
+### Accordez!
+
+Past participle agreement — pick the correctly agreed form (écrit / écrite / écrits / écrites). After each answer the full sentence and the rule are shown. Questions are generated from curated patterns (`AccordezQuestionGenerator`, unit-tested):
+
+| Rule | Example |
+|---|---|
+| être → agrees with the subject | Marie est **partie** · Julie et Marc sont **arrivés** · Madame, vous êtes **venue** |
+| avoir, object after → no agreement | Nous avons **écrit** la lettre. |
+| avoir, object before (que / l' / les) | Voici la lettre que j'ai **écrite**. · Les photos ? Elle les a **prises**. |
+| reflexive, se = direct object | Elle s'est **levée** tôt. |
+| reflexive, object after / se = indirect | Elle s'est **lavé** les mains. · Ils se sont **parlé**. |
+
+- **Scoring**: 150 pts + streak bonus · **Timer**: 60s, +3s correct, -5s wrong
+
+### Nombrez!
+
+Numbers, clock times and dates — the classic hurdle for German speakers (soixante-dix-sept, quatre-vingt-dix-sept, trois heures moins le quart). Pick topics on the selection screen; questions are mixed:
+
+| Topic | Question |
+|---|---|
+| Zahlen bis 100 | Hear a number, type the digits — half of the questions from 70–99 |
+| Zahlen bis 1000 / Große Zahlen & Jahre | Hear → type (1990, 250 300, …) |
+| Uhrzeit | Read « trois heures moins le quart » → pick 2:45; hear « quatorze heures trente-sept » → pick 14:37 |
+| Datum | Hear « le quinze août » → pick 15.08. |
+| Tage & Monate | Translate, or pick the day/month that comes next |
+
+All questions are generated in code (`utils/FrenchNumbers.kt`, unit-tested) — no data file. Distractors are built from typical confusions (hour ±1, et ↔ moins, treize/quatorze/quinze/seize).
+
+- **Scoring**: 100 pts (choice) / 150 pts (typed) + streak bonus
+- **Timer**: 60s, +3s correct, -5s wrong
 
 ### 1. Trouvez!
 
 Match French words on the left with their German translations on the right. Four pairs are shown at a time — tap a French word, then tap its German match. Matched pairs are replaced immediately so the game flows continuously. IPA phonetic transcription is shown on each French card.
 
 - **Scoring**: 100 pts per match + streak bonus
-- **Timer**: 60s, +2s correct, -5s wrong
+- **Timer**: 40s, +5s for clearing the board, -2s wrong
 
 ### 2. Classez!
 
@@ -164,8 +241,18 @@ Difficulty adapts to your streak: short sentences at first (Facile, <= 6 words),
 
 <table>
   <tr>
-    <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Main Menu</b></td>
-    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>All 8 Game Modes</b></td>
+    <td align="center"><img src="screenshots/01-menu.png" width="240"><br><b>Heute — Tagesplan & Parcours</b></td>
+    <td align="center"><img src="screenshots/13-menu-games.png" width="240"><br><b>Spiele — all games</b></td>
+    <td align="center"><img src="screenshots/21-menu-du-jour.png" width="240"><br><b>Menu du jour</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/16-parcours.png" width="240"><br><b>Parcours — 27 étapes</b></td>
+    <td align="center"><img src="screenshots/17-parcours-etape.png" width="240"><br><b>Étape — Leçon, Entraînement, Contrôle</b></td>
+    <td align="center"><img src="screenshots/18-parcours-lecon.png" width="240"><br><b>Leçon — tap 👆 for the German</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="screenshots/19-parcours-quiz.png" width="240"><br><b>Mini-Check — rule after a mistake</b></td>
+    <td align="center"><img src="screenshots/20-parcours-result.png" width="240"><br><b>Result — mistakes to read up on</b></td>
     <td align="center"><img src="screenshots/02-word-match.png" width="240"><br><b>Trouvez!</b></td>
   </tr>
   <tr>
@@ -317,7 +404,7 @@ app/src/main/java/com/hubert/
 │   └── DatabaseModule.kt           # Hilt module (Room + TTS singletons)
 ├── ui/
 │   ├── screens/
-│   │   ├── MenuScreen.kt           # Main menu with Hubert choisit! + 8 game mode cards
+│   │   ├── MenuScreen.kt           # Main menu with Menu du jour + game mode cards
 │   │   ├── TrouvezScreen.kt        # Trouvez! game UI (with IPA on French cards)
 │   │   ├── ClassezScreen.kt        # Classez! game UI (with IPA)
 │   │   ├── CompletezScreen.kt      # Complétez! game UI

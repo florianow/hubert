@@ -6,6 +6,7 @@ import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
 import com.hubert.data.local.WordStreak
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.PinnedWordsRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
@@ -33,6 +34,8 @@ data class TrouvezState(
     val isPinSelection: Boolean = false,
     val isModeSelection: Boolean = false,
     val isCategorySelection: Boolean = false,
+    // Round of "Vokabeln lernen": due words from the learning mode, learned words as filler
+    val isReviewMode: Boolean = false,
     val availableCategories: List<String> = emptyList(),
     val categorySizes: Map<String, Int> = emptyMap(),
     val selectedCategory: String? = null,
@@ -94,7 +97,8 @@ class TrouvezViewModel @Inject constructor(
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
     private val pinnedWordsRepository: PinnedWordsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TrouvezState())
@@ -114,15 +118,22 @@ class TrouvezViewModel @Inject constructor(
     private var gameStartTime = 0L
     // Track per-question answers for post-game review
     private val answerLog = mutableListOf<AnswerRecord>()
+    // Round length (shorter when played as a Menu du jour course)
+    private var gameTimeMs = GAME_TIME_MS
+    // Menu du jour focus words — drained before anything else, in every mode
+    private val focusPool: ArrayDeque<VocabWord> = ArrayDeque()
+    // Review mode: learned (not due) words, used only once all due words are on the board
+    private var reviewFiller: List<VocabWord> = emptyList()
 
     companion object {
         const val SLOTS = 5
-        const val GAME_TIME_MS = 30_000L      // 30 seconds total
+        const val GAME_TIME_MS = 40_000L      // 40 seconds total
         const val POINTS_PER_MATCH = 100
         const val STREAK_BONUS = 25           // extra points per streak level
         const val WRONG_PENALTY_MS = 2_000L   // lose 2 seconds on wrong match
         const val CLEAR_BOARD_BONUS_MS = 5_000L  // gain 5 seconds when all pairs cleared
         const val MAX_GREYED_OUT = 3         // after this many greyed-out pairs, oldest gets replaced
+        const val REVIEW_ROUND_LIMIT = 60      // due words loaded per review round
     }
 
     // Queue of greyed-out matched pairs: Pair(frenchIndex, germanIndex), oldest first
@@ -183,7 +194,8 @@ class TrouvezViewModel @Inject constructor(
                 isGameOver = false,
                 availableCategories = cats,
                 categorySizes = sizes,
-                selectedCategory = null
+                selectedCategory = null,
+                isReviewMode = false
             )
         }
         loadMenuScores()
@@ -222,7 +234,7 @@ class TrouvezViewModel @Inject constructor(
     }
 
     fun selectCategory(category: String) {
-        _uiState.update { it.copy(selectedCategory = category, isCategorySelection = false) }
+        _uiState.update { it.copy(selectedCategory = category, isCategorySelection = false, isReviewMode = false) }
         startGame()
     }
 
@@ -267,9 +279,17 @@ class TrouvezViewModel @Inject constructor(
     }
 
 
-    fun startGame() {
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        focusPool.clear()
+        if (stage != null) {
+            focusPool.addAll(stage.focusRanks.mapNotNull { vocabRepository.getWordByRank(it) })
+            _uiState.update { it.copy(selectedCategory = stage.category, isReviewMode = stage.learningRound) }
+        } else {
+            _uiState.update { it.copy(isReviewMode = false) }
+        }
         nextPairId = 0
         answerLog.clear()
         matchedQueue.clear()
@@ -281,7 +301,8 @@ class TrouvezViewModel @Inject constructor(
         val pinned = _uiState.value.pinnedRanks
             .mapNotNull { vocabRepository.getWordByRank(it) }
             .shuffled()
-        pinnedPool.addAll(pinned)
+        if (!_uiState.value.isReviewMode) pinnedPool.addAll(pinned)
+        reviewFiller = emptyList()
 
         val cat = _uiState.value.selectedCategory
         _uiState.update {
@@ -294,6 +315,7 @@ class TrouvezViewModel @Inject constructor(
                 wordStreaks = it.wordStreaks,
                 masteredWords = it.masteredWords,
                 selectedCategory = it.selectedCategory,
+                isReviewMode = it.isReviewMode,
                 availableCategories = it.availableCategories,
                 categoryHighScores = it.categoryHighScores,
                 bestCategoryName = it.bestCategoryName,
@@ -312,6 +334,19 @@ class TrouvezViewModel @Inject constructor(
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
             }
+            if (_uiState.value.isReviewMode) {
+                // Learning round: the given due words first; learned words fill in once they are all on the board
+                reviewFiller = learningRepository.practiceRanks(REVIEW_ROUND_LIMIT)
+                    .mapNotNull { vocabRepository.getWordByRank(it) }
+            } else if (stage == null && _uiState.value.selectedCategory == null) {
+                // Freier Modus: pinned words first, then the learning path (due and learned words)
+                val pinnedRanks = pinnedPool.map { it.rank }.toSet()
+                pinnedPool.addAll(
+                    learningRepository.practiceRanks()
+                        .filter { it !in pinnedRanks }
+                        .mapNotNull { vocabRepository.getWordByRank(it) }
+                )
+            }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
             initBoard()
@@ -326,6 +361,17 @@ class TrouvezViewModel @Inject constructor(
         val result = mutableListOf<VocabWord>()
 
         val category = _uiState.value.selectedCategory
+
+        val focusIter = focusPool.iterator()
+        while (focusIter.hasNext() && result.size < count) {
+            val w = focusIter.next()
+            if (w.rank !in currentRanks && w.german !in usedGerman) {
+                focusIter.remove()
+                currentRanks.add(w.rank)
+                usedGerman.add(w.german)
+                result.add(w)
+            }
+        }
 
         if (category == null) {
             // Freier Modus: drain pinned pool first
@@ -343,8 +389,11 @@ class TrouvezViewModel @Inject constructor(
 
         // Fill remainder from category (Themen-Training) or all words (Freier Modus)
         if (result.size < count) {
-            val pool = if (category != null) vocabRepository.getWordsInCategory(category)
-                       else vocabRepository.getAllWords()
+            val pool = when {
+                category != null -> vocabRepository.getWordsInCategory(category)
+                _uiState.value.isReviewMode && reviewFiller.size >= count -> reviewFiller
+                else -> vocabRepository.getAllWords()
+            }
             val randoms = pool
                 .filter { it.rank !in currentRanks && it.german !in usedGerman }
                 .shuffled()
@@ -377,13 +426,13 @@ class TrouvezViewModel @Inject constructor(
                 selectedGerman = null,
                 frenchFeedback = emptyMap(),
                 germanFeedback = emptyMap(),
-                timeRemainingMs = GAME_TIME_MS,
-                totalTimeMs = GAME_TIME_MS,
+                timeRemainingMs = gameTimeMs,
+                totalTimeMs = gameTimeMs,
                 timerFraction = 1f
             )
         }
 
-        timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+        timerDeadline = System.currentTimeMillis() + gameTimeMs
         startTimer()
     }
 
@@ -400,7 +449,7 @@ class TrouvezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)
@@ -654,7 +703,11 @@ class TrouvezViewModel @Inject constructor(
         timerJob?.cancel()
         val state = _uiState.value
         val durationMs = System.currentTimeMillis() - gameStartTime
-        val gameType = if (state.selectedCategory != null) "matching_${state.selectedCategory}" else "matching"
+        val gameType = when {
+            state.isReviewMode -> "matching_review"
+            state.selectedCategory != null -> "matching_${state.selectedCategory}"
+            else -> "matching"
+        }
 
         viewModelScope.launch {
             val previousHigh = highScoreRepository.getHighestScore(gameType)
@@ -702,6 +755,7 @@ class TrouvezViewModel @Inject constructor(
         answerLog.clear()
         replayPool.clear()
         pinnedPool.clear()
+        focusPool.clear()
         wrongAttemptedRanks.clear()
         matchedQueue.clear()
         _uiState.update { TrouvezState(pinnedRanks = it.pinnedRanks, pinnedWords = it.pinnedWords, wordStreaks = it.wordStreaks) }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.SentenceEntry
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -60,7 +61,8 @@ class CompletezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CompletezState())
@@ -77,6 +79,8 @@ class CompletezViewModel @Inject constructor(
     private val replayPool: ArrayDeque<Int> = ArrayDeque()
     private var currentRank: Int = -1
     private var currentRankFromReplay = false
+    private var gameTimeMs = GAME_TIME_MS
+    private var stageCategory: String? = null
 
     companion object {
         const val GAME_TIME_MS = 60_000L
@@ -94,14 +98,18 @@ class CompletezViewModel @Inject constructor(
         }
     }
 
-    fun startGame() {
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
+        replayPool.clear()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        stageCategory = stage?.category
 
-        // Build pool of words that have sentences
-        val wordsWithSentences = vocabRepository.getWordsWithSentences()
-        questionPool = wordsWithSentences.map { it.rank }.shuffled().toMutableList()
+        // Build pool of words that have sentences (Menu du jour: focus words first)
+        val withSentences = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
+        val focus = stage?.focusRanks.orEmpty().filter { it in withSentences }.distinct()
+        questionPool = (focus + freshPool().filter { it !in focus }).toMutableList()
 
         _uiState.update {
             CompletezState(
@@ -116,11 +124,17 @@ class CompletezViewModel @Inject constructor(
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
             }
+            if (stage == null) {
+                // Free play follows the learning path: due and learned words first
+                val withSentences = vocabRepository.getWordsWithSentences().map { it.rank }.toSet()
+                val practice = learningRepository.practiceRanks().filter { it in withSentences }
+                questionPool = (practice + questionPool.filter { it !in practice }).toMutableList()
+            }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
-            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            timerDeadline = System.currentTimeMillis() + gameTimeMs
             _uiState.update {
-                it.copy(timeRemainingMs = GAME_TIME_MS, timerFraction = 1f)
+                it.copy(timeRemainingMs = gameTimeMs, timerFraction = 1f)
             }
             showNextQuestion()
             startTimer()
@@ -134,7 +148,7 @@ class CompletezViewModel @Inject constructor(
         } else {
             currentRankFromReplay = false
             if (questionPool.isEmpty()) {
-                questionPool = vocabRepository.getWordsWithSentences().map { it.rank }.shuffled().toMutableList()
+                questionPool = freshPool()
             }
             questionPool.removeFirst()
         }
@@ -164,6 +178,13 @@ class CompletezViewModel @Inject constructor(
         }
     }
 
+    private fun freshPool(): MutableList<Int> {
+        val words = vocabRepository.getWordsWithSentences()
+        val cat = stageCategory
+        val pool = if (cat == null) words else words.filter { it.categories?.contains(cat) == true }
+        return pool.map { it.rank }.shuffled().toMutableList()
+    }
+
     fun answer(choiceIndex: Int) {
         val state = _uiState.value
         if (!state.isPlaying || state.feedback != null) return
@@ -175,7 +196,8 @@ class CompletezViewModel @Inject constructor(
                 question = state.sentenceWithGap,
                 yourAnswer = state.choices[choiceIndex],
                 correctAnswer = state.choices[state.correctIndex],
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                rank = currentRank
             )
         )
 
@@ -244,7 +266,7 @@ class CompletezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)

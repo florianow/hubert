@@ -2,9 +2,59 @@
 
 Future game mode ideas for the French-German vocabulary learning app.
 
+## Status & priorities (as of 2026-10-21)
+
+Every new grammar game automatically becomes a candidate for the **Plat du chef** course in the
+*Menu du jour* (Complet), every new vocab game can join the daily course rotation — so new games
+plug straight into the guided learning mode.
+
+### Done
+
+| Item | Notes |
+|---|---|
+| ✅ Nombrez! (#11) | Numbers, clock times, dates, days & months — generated in code, unit-tested |
+| ✅ Accordez! (#8) | Past participle agreement — generated from curated patterns, in the Plat du chef rotation |
+| ✅ Relativisez! data (#1) | 43 → 298 questions, every form ≥ 13 |
+| ✅ Préposez! (#4) | 1,397 questions |
+| ✅ Adaptive level (mostly) | Superseded by Menu du jour (weak words, weakest grammar game & tenses) |
+
+### Next
+
+| Priority | Item | Why |
+|---|---|---|
+| 1 | **Subjonctif data** (#6) | Only 10 nous / 5 vous sentences; prompts + merge script are ready, results never generated |
+| 2 | **Partagez!** (#5) | Partitive articles have no German equivalent — high value; write curated questions instead of filtering the noisy corpus |
+| 3 | **Négativez!** (#9) | Common patterns (pas, plus, jamais, rien, que, aucun) — good 5th Plat du chef candidate |
+| later | Démontrez! + Possédez! (#2, #3) | Merge into one "Pronoms!" game — each is small on its own |
+| later | Déjouez! (#10) | Needs the German lookalike per false friend; the 96 words already play as a theme |
+| later | Remplacez! (#7) | Most UI work (pronoun order) |
+
+### Lesson learned: curated or generated beats corpus filtering
+
+Nombrez!, Accordez! and the Relativisez! expansion all worked best with **questions written or
+generated for the rule being taught** rather than re-blanking `sentences.json` /
+`conjugations.json`: the corpus sentences are duplicated per person, rarely show the grammar
+point and can't tell e.g. a partitive *du* from *de + le*. Prefer the same approach for
+Partagez!, Négativez! and the pronoun games — the feasibility counts below mainly show where
+the corpus is *not* enough.
+
+### Follow-ups from the Menu du jour work
+
+- **Accordez! focus in the Plat du chef:** the game doesn't store which rule a question tested,
+  so the menu can't target the weakest rule yet (Conjuguez/Préposez/Relativisez can).
+- **Relativisez!:** auxquelles, desquelles and « à laquelle » are not in the game's pronoun list yet.
+- **Nombrez!:** calendar-grid tap and number bingo from the original idea are not built.
+- **Parlez!:** pre-select the CEFR level from statistics instead of always A1.
+- **Statistics screen:** planned overhaul (weekly report entry point, new games).
+
 ---
 
 ## Adaptive Niveau-Erkennung (alle Spielmodi)
+
+> **Status (2026-10-21): largely superseded by Menu du jour.** The menu already targets weak
+> spots automatically (struggled words, weakest grammar game, weakest tenses/prepositions of the
+> last 4 weeks). The remaining useful part is small: Parlez! always starts on **A1** and could
+> pre-select the level from the statistics.
 
 **Idee:** Hubert erkennt automatisch das Niveau des Spielers aus seinen Statistiken und schlägt
 das passende Niveau vor — in Parlez! beim Thema wählen, generell als Spieler-Profil.
@@ -31,14 +81,17 @@ Conjuguez! High Score > 70                           →  B1/B2 freischalten
 
 ## Data Sources
 
-The app currently has 4 data files in `app/src/main/assets/`:
+Data files in `app/src/main/assets/`:
 
 | File | Content | Size |
 |------|---------|------|
 | `vocab.json` | 5,000 words (rank, french, german, ipa, pos, gender, categories) | 548 KB |
 | `sentences.json` | 9,940 example sentences keyed by word rank (fr, de, blank) | 1.45 MB |
 | `conjugations.json` | 1,182 verbs with 8-tense conjugation tables + 15,173 matched sentences | 3.16 MB |
-| `categories.json` | Thematic category → word rank mappings | 12 KB |
+| `categories.json` | Thematic category → word rank mappings (incl. "Falsche Freunde", 96 words) | 12 KB |
+| `prepositions.json` | 1,397 Préposez! questions | — |
+| `relative_pronouns.json` | 298 Relativisez! questions (`scripts/add_relative_pronouns.py`) | — |
+| `parlez_topics.json` | 99 Parlez! conversation topics | — |
 
 All sentence blanks target the **vocabulary word**, not grammar elements. Most game
 ideas below would require re-blanking or entirely new datasets.
@@ -47,21 +100,28 @@ ideas below would require re-blanking or entirely new datasets.
 
 | # | Game | Data Status | Effort |
 |---|------|-------------|--------|
-| 1 | Relativisez! | Needs new dataset | High |
+| 1 | ~~Relativisez!~~ | ✅ **Implemented** — 298 questions | — |
 | 2 | Démontrez! | Partially sufficient (simple forms only) | Medium |
 | 3 | Possédez! | Needs new dataset | High |
 | 4 | ~~Préposez!~~ | ✅ **Implemented** | — |
 | 5 | Partagez! | Partially sufficient (needs disambiguation) | Medium |
 | 6 | ~~Subjonctiez!~~ → ✅ Conjuguez! enhancement | Partially implemented — fallback active, data generation pending (see scripts/MOOD_TASK_INSTRUCTIONS.md) | — |
 | 7 | Remplacez! | Partially sufficient (~1,268 sentences, noisy) | Medium |
-| 8 | **Accordez!** | **Sufficient (42 être verbs + 6,492 PC sentences)** | **Low** |
+| 8 | ~~Accordez!~~ | ✅ **Implemented** — generated from curated sentence patterns | — |
 | 9 | Négativez! | Sufficient for common patterns, scarce for rare ones | Medium |
-| 10 | Déjouez! | Needs new dataset | High |
-| 11 | **Nombrez!** | **Needs new dataset (fully generatable, no corpus needed)** | **Low** |
+| 10 | Déjouez! | Partially — "Falsche Freunde" category (96 words) already playable as theme; lookalike data missing | Medium |
+| 11 | ~~Nombrez!~~ | ✅ **Implemented** — generated in code, no data file | — |
 
 ---
 
-## 1. Relativisez! — Pronoms relatifs
+## 1. ~~Relativisez!~~ — Pronoms relatifs — ✅ Implemented
+
+> **Status (2026-10-21):** `relative_pronouns.json` expanded from 43 to **298 questions** via
+> `scripts/add_relative_pronouns.py` (curated sentences, 13–30 per form, every form incl.
+> duquel/desquels/auxquels ≥ 13). Rules: lequel family only with things (with persons
+> "avec qui" would also be correct), no que/ce que before il/elle/on (elision), duquel/desquels
+> only after prepositional phrases with de. Three old questions with an elision problem were
+> fixed. Not covered yet: auxquelles, desquelles, à laquelle. The analysis below is kept for reference.
 
 Fill in the correct relative pronoun: **qui, que, dont, où, lequel, laquelle, lesquels, lesquelles, auquel, auxquels, duquel, desquels, ce qui, ce que**.
 
@@ -156,9 +216,8 @@ A purpose-built dataset of ~200+ sentences (10+ per form) is needed.
 
 ## ~~4. Préposez!~~ — ✅ Implemented
 
-Fully integrated as game mode #7. 764 sentences extracted from anki_french preposition cards
-covering 16 prepositions: à, de, en, dans, sur, avec, sans, par, pour, avant, après, entre,
-contre, sous, vers, chez. See `app/src/main/assets/prepositions.json` and
+Fully integrated as game mode #7. Originally 764 sentences extracted from anki_french preposition
+cards; now **1,397 questions** covering the preposition groups on the selection screen. See `app/src/main/assets/prepositions.json` and
 `scripts/extract_prepositions.py`.
 
 ---
@@ -213,6 +272,9 @@ when the player has both **Subjonctif** and **Présent** enabled.
   on the fly — *"Il faut que nous ___."* (subjonctif) / *"Je sais que nous ___."* (indicatif)
 
 ### Known limitation — data gap
+
+> **Status (2026-10-21): still open.** The 16 prompt files and `merge_mood_results.py` exist, but
+> no `mood_result_*.json` has been generated yet; the numbers below are unchanged.
 
 Sentence coverage in `conjugations.json` is skewed:
 
@@ -278,7 +340,14 @@ but significant data transformation required.
 
 ---
 
-## 8. Accordez! — Accords du participe passé
+## 8. ~~Accordez!~~ — Accords du participe passé — ✅ Implemented
+
+> **Status (2026-10-21):** Implemented with generated questions (`AccordezQuestionGenerator`,
+> unit-tested) instead of corpus sentences: the PC sentences are stored 6× (once per person),
+> barely show visible agreement and don't mark preceding objects, so detection would be
+> unreliable. Rules covered: être (incl. mixed groups → masc. plural, polite vous singular),
+> avoir with the object after vs. before (que / l' / les), reflexive verbs (se = direct object,
+> object after, se = indirect object). The feasibility notes below are kept for reference.
 
 Choose the correctly agreed past participle form.
 
@@ -344,6 +413,11 @@ with generated sentences, or scope the game to the 6 common patterns.
 
 ## 10. Déjouez! — Faux amis (French-German false friends)
 
+> **Status (2026-10-21): partially covered.** `categories.json` contains a **"Falsche Freunde"**
+> category with 96 words, already playable as a Trouvez! theme and as an *À la carte* menu.
+> The table below (from the earlier vocab-only scan) understates what exists. What is still
+> missing for the actual game is the German lookalike + its real meaning per word.
+
 Given a French sentence with a highlighted word, choose the correct German translation (not the false friend).
 
 **Example questions:**
@@ -378,7 +452,13 @@ provides the French side but contains no false-friend metadata. Entirely separat
 
 ---
 
-## 11. Nombrez! — Nombres, dates et calendrier
+## 11. ~~Nombrez!~~ — Nombres, dates et calendrier — ✅ Implemented
+
+> **Status (2026-10-21):** Implemented without a data file — `utils/FrenchNumbers.kt` spells
+> numbers, dates and times (unit-tested), `NombrezQuestionGenerator` builds the questions.
+> Topics: numbers to 100 (half from 70–99), to 1000, big numbers & years (hear → type),
+> colloquial and 24h clock times, dates (hear → pick), days & months (translate, what comes
+> next). Not built (yet): calendar-grid tap, number bingo.
 
 A dedicated number and date training mode. Unlike all other games in Hubert, **Nombrez! does not
 use sentences** — it uses purpose-built interactions tuned to how numbers and dates are actually

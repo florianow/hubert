@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.hubert.data.model.HighScore
 import com.hubert.data.model.VocabWord
 import com.hubert.data.repository.HighScoreRepository
+import com.hubert.data.repository.LearningRepository
 import com.hubert.data.repository.StatisticsRepository
 import com.hubert.data.repository.VocabRepository
 import com.hubert.utils.FrenchTts
@@ -56,7 +57,8 @@ class ClassezViewModel @Inject constructor(
     private val vocabRepository: VocabRepository,
     private val highScoreRepository: HighScoreRepository,
     private val statisticsRepository: StatisticsRepository,
-    private val frenchTts: FrenchTts
+    private val frenchTts: FrenchTts,
+    private val learningRepository: LearningRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ClassezState())
@@ -70,6 +72,8 @@ class ClassezViewModel @Inject constructor(
     private val answerLog = mutableListOf<AnswerRecord>()
     private val replayPool: ArrayDeque<VocabWord> = ArrayDeque()
     private var currentWordFromReplay = false
+    private var gameTimeMs = GAME_TIME_MS
+    private var stageCategory: String? = null
 
     companion object {
         const val GAME_TIME_MS = 60_000L
@@ -77,6 +81,7 @@ class ClassezViewModel @Inject constructor(
         const val STREAK_BONUS = 25
         const val WRONG_PENALTY_MS = 5_000L
         const val CORRECT_BONUS_MS = 2_000L
+        const val MAX_PER_GENDER = 20
     }
 
     init {
@@ -86,13 +91,20 @@ class ClassezViewModel @Inject constructor(
         }
     }
 
-    fun startGame() {
+    fun startGame(stage: StageConfig? = null) {
         countdownJob?.cancel()
         timerJob?.cancel()
         answerLog.clear()
+        replayPool.clear()
+        gameTimeMs = stage?.timeMs ?: GAME_TIME_MS
+        stageCategory = stage?.category
 
-        // Build shuffled pool of nouns with known gender
-        nounPool = vocabRepository.getNouns().shuffled().toMutableList()
+        // Build shuffled pool of nouns with known gender (Menu du jour: focus words first)
+        val focus = stage?.focusRanks.orEmpty()
+            .mapNotNull { vocabRepository.getWordByRank(it) }
+            .filter { it.gender != null && it.pos in listOf("nm", "nf") }
+        nounPool = (focus + freshPool().filter { w -> focus.none { it.rank == w.rank } })
+            .toMutableList()
 
         _uiState.update {
             ClassezState(
@@ -107,12 +119,19 @@ class ClassezViewModel @Inject constructor(
                 _uiState.update { it.copy(countdown = i) }
                 delay(800)
             }
+            if (stage == null) {
+                // Free play follows the learning path: due and learned nouns first
+                val practice = learningRepository.practiceRanks()
+                    .mapNotNull { vocabRepository.getWordByRank(it) }
+                    .filter { it.gender != null && it.pos in listOf("nm", "nf") }
+                nounPool = (practice + nounPool.filter { w -> practice.none { it.rank == w.rank } }).toMutableList()
+            }
             _uiState.update { it.copy(countdown = null, isPlaying = true) }
             gameStartTime = System.currentTimeMillis()
-            timerDeadline = System.currentTimeMillis() + GAME_TIME_MS
+            timerDeadline = System.currentTimeMillis() + gameTimeMs
             _uiState.update {
                 it.copy(
-                    timeRemainingMs = GAME_TIME_MS,
+                    timeRemainingMs = gameTimeMs,
                     timerFraction = 1f
                 )
             }
@@ -127,7 +146,7 @@ class ClassezViewModel @Inject constructor(
             replayPool.removeFirst()
         } else {
             currentWordFromReplay = false
-            if (nounPool.isEmpty()) nounPool = vocabRepository.getNouns().shuffled().toMutableList()
+            if (nounPool.isEmpty()) nounPool = freshPool()
             nounPool.removeFirst()
         }
         _uiState.update {
@@ -137,6 +156,28 @@ class ClassezViewModel @Inject constructor(
                 feedback = null
             )
         }
+    }
+
+    private fun freshPool(): MutableList<VocabWord> {
+        val nouns = vocabRepository.getNouns()
+        val cat = stageCategory ?: return nouns.shuffled().toMutableList()
+        // Themes are often gender-skewed (Berufe is mostly masculine), so "le" would be a
+        // safe bet. Balance 50/50: themed nouns first, the minority gender topped up from
+        // outside the theme.
+        val themed = nouns.filter { it.categories?.contains(cat) == true }
+        val themedRanks = themed.map { it.rank }.toSet()
+        val perGender = minOf(
+            maxOf(themed.count { it.gender == "m" }, themed.count { it.gender == "f" }),
+            MAX_PER_GENDER
+        )
+        val balanced = listOf("m", "f").flatMap { gender ->
+            val inTheme = themed.filter { it.gender == gender }.shuffled().take(perGender)
+            val topUp = nouns.filter { it.gender == gender && it.rank !in themedRanks }
+                .shuffled()
+                .take(perGender - inTheme.size)
+            inTheme + topUp
+        }
+        return balanced.shuffled().toMutableList()
     }
 
     fun answer(isMasculine: Boolean) {
@@ -155,7 +196,8 @@ class ClassezViewModel @Inject constructor(
                 question = word.french,
                 yourAnswer = "$yourArticle ${word.french}",
                 correctAnswer = "$correctArticle ${word.french}",
-                isCorrect = isCorrect
+                isCorrect = isCorrect,
+                rank = word.rank
             )
         )
 
@@ -223,7 +265,7 @@ class ClassezViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         timeRemainingMs = remaining,
-                        timerFraction = remaining.toFloat() / GAME_TIME_MS
+                        timerFraction = remaining.toFloat() / gameTimeMs
                     )
                 }
                 delay(50)
