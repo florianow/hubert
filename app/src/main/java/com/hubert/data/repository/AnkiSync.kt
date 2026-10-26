@@ -60,7 +60,9 @@ class AnkiSync @Inject constructor(
         val day = learningRepository.today()
         val queue = ankiRepository.queuedRanks(deck, rankByFrench)
         val doneInAnki = runCatching { ankiRepository.reviewedTodayRanks(deck, rankByFrench) }.getOrDefault(emptyList())
-        settingsRepository.saveAnkiQueue(day, (queue + doneInAnki).distinct())
+        val ranks = (queue + doneInAnki).distinct()
+        val needs = runCatching { ankiRepository.todayNeeds(deck, rankByFrench, ranks) }.getOrDefault(emptyMap())
+        settingsRepository.saveAnkiQueue(day, ranks, needs)
         return settingsRepository.ankiQueueOn(day)?.size ?: 0
     }
 }

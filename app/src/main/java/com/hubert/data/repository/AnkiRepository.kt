@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -39,6 +40,7 @@ class AnkiRepository @Inject constructor(
         private val DECKS_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "decks")
         private val SCHEDULE_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "schedule")
         private const val MAX_QUEUE = 2000
+        private const val MAX_NEED = 3
         private const val FIELD_SEPARATOR = '\u001f'
     }
 
@@ -115,6 +117,52 @@ class AnkiRepository @Inject constructor(
             while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { ranks += it }
         }
         ranks.distinct()
+    }
+
+    /**
+     * How often each of [ranks] comes up in Anki today: new and learning cards once per learning
+     * step, relearning cards once per relearning step, review cards once. Hubert asks for the
+     * same number of right answers before a word of today's queue counts as done.
+     */
+    suspend fun todayNeeds(deckName: String, rankByFrench: Map<String, Int>, ranks: Collection<Int>): Map<Int, Int> = withContext(Dispatchers.IO) {
+        val (newSteps, lapseSteps) = learningSteps(deckName)
+        val rankByNote = rankByNote(deckName, rankByFrench)
+        val types = mutableMapOf<Int, MutableSet<Int>>()
+        context.contentResolver.query(
+            CARDS_URI, arrayOf("note_id", "type"), "\"deck:$deckName\" (is:due OR is:learn OR rated:1)", null, null
+        )?.use { c ->
+            while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { types.getOrPut(it) { mutableSetOf() } += c.getInt(1) }
+        }
+        val introducedToday = mutableSetOf<Int>()
+        context.contentResolver.query(CARDS_URI, arrayOf("note_id"), "\"deck:$deckName\" introduced:1", null, null)?.use { c ->
+            while (c.moveToNext()) rankByNote[c.getLong(0)]?.let { introducedToday += it }
+        }
+        ranks.associateWith { rank ->
+            val cardTypes = types[rank]
+            val need = when {
+                rank in introducedToday -> newSteps
+                cardTypes == null -> newSteps        // only in the queue as a new card
+                0 in cardTypes || 1 in cardTypes -> newSteps
+                3 in cardTypes -> lapseSteps
+                else -> 1
+            }
+            need.coerceIn(1, MAX_NEED)
+        }
+    }
+
+    /** Learning and relearning step counts from the deck's options (Anki defaults: 2 and 1). */
+    private fun learningSteps(deckName: String): Pair<Int, Int> {
+        val options = runCatching {
+            context.contentResolver.query(DECKS_URI, arrayOf("deck_name", "options"), null, null, null)?.use { c ->
+                var json: String? = null
+                while (c.moveToNext()) if (c.getString(0) == deckName) json = c.getString(1)
+                json
+            }
+        }.getOrNull() ?: return 2 to 1
+        return runCatching {
+            val o = JSONObject(options)
+            o.getJSONObject("new").getJSONArray("delays").length() to o.getJSONObject("lapse").getJSONArray("delays").length()
+        }.getOrDefault(2 to 1)
     }
 
     /** Note id → Hubert rank for all notes of [deckName]. */

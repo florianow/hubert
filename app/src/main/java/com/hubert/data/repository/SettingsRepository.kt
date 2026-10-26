@@ -53,6 +53,7 @@ class SettingsRepository @Inject constructor(
         private val KEY_ANKI_TODAY_DAY = stringPreferencesKey("anki_today_day")
         private val KEY_ANKI_TODAY_RANKS = stringPreferencesKey("anki_today_ranks")
         private val KEY_ANKI_DONE_RANKS = stringPreferencesKey("anki_done_ranks")
+        private val KEY_ANKI_TODAY_NEED = stringPreferencesKey("anki_today_need")
         private val KEY_DUE_REVIEWS_DAY = stringPreferencesKey("due_reviews_day")
         private val KEY_DUE_REVIEWS_COUNT = intPreferencesKey("due_reviews_count")
     }
@@ -100,33 +101,53 @@ class SettingsRepository @Inject constructor(
         return parseRanks(prefs[KEY_ANKI_TODAY_RANKS])
     }
 
-    /** Store Anki's queue for [day]; later snapshots of the same day only add cards. */
-    suspend fun saveAnkiQueue(day: Long, ranks: List<Int>) {
+    /**
+     * Store Anki's queue for [day]; later snapshots of the same day only add cards. [needs] holds
+     * how often a word must be answered right today (Anki's learning steps); missing = once.
+     */
+    suspend fun saveAnkiQueue(day: Long, ranks: List<Int>, needs: Map<Int, Int> = emptyMap()) {
         context.globalSettingsDataStore.edit { prefs ->
             val sameDay = prefs[KEY_ANKI_TODAY_DAY] == day.toString()
             val merged = if (sameDay) (parseRanks(prefs[KEY_ANKI_TODAY_RANKS]) + ranks).distinct() else ranks
+            val oldNeeds = if (sameDay) parseCounts(prefs[KEY_ANKI_TODAY_NEED]) else emptyMap()
+            val mergedNeeds = (oldNeeds.keys + needs.keys).associateWith { maxOf(oldNeeds[it] ?: 1, needs[it] ?: 1) }
             prefs[KEY_ANKI_TODAY_DAY] = day.toString()
             prefs[KEY_ANKI_TODAY_RANKS] = merged.joinToString(",")
+            prefs[KEY_ANKI_TODAY_NEED] = formatCounts(mergedNeeds.filterValues { it > 1 })
             if (!sameDay) prefs[KEY_ANKI_DONE_RANKS] = ""
         }
     }
 
-    /** Words of today's Anki queue answered correctly in Hubert. */
+    /** Words of today's Anki queue answered right in Hubert as often as Anki would show them. */
     suspend fun ankiDoneOn(day: Long): Set<Int> {
         val prefs = context.globalSettingsDataStore.data.first()
         if (prefs[KEY_ANKI_TODAY_DAY] != day.toString()) return emptySet()
-        return parseRanks(prefs[KEY_ANKI_DONE_RANKS]).toSet()
+        val needs = parseCounts(prefs[KEY_ANKI_TODAY_NEED])
+        return parseCounts(prefs[KEY_ANKI_DONE_RANKS]).filter { (rank, count) -> count >= (needs[rank] ?: 1) }.keys
     }
 
+    /** Counts one more right answer for each word (several in one game count once). */
     suspend fun addAnkiDone(day: Long, ranks: Collection<Int>) {
         if (ranks.isEmpty()) return
         context.globalSettingsDataStore.edit { prefs ->
             if (prefs[KEY_ANKI_TODAY_DAY] != day.toString()) return@edit
             val queue = parseRanks(prefs[KEY_ANKI_TODAY_RANKS]).toSet()
-            val done = parseRanks(prefs[KEY_ANKI_DONE_RANKS]).toSet() + ranks.filter { it in queue }
-            prefs[KEY_ANKI_DONE_RANKS] = done.joinToString(",")
+            val done = parseCounts(prefs[KEY_ANKI_DONE_RANKS]).toMutableMap()
+            for (rank in ranks.distinct()) if (rank in queue) done[rank] = (done[rank] ?: 0) + 1
+            prefs[KEY_ANKI_DONE_RANKS] = formatCounts(done)
         }
     }
+
+    /** "rank:count" pairs; a bare rank (older format) counts once. */
+    private fun parseCounts(text: String?): Map<Int, Int> =
+        text.orEmpty().split(",").mapNotNull { part ->
+            val bits = part.split(":")
+            val rank = bits[0].toIntOrNull() ?: return@mapNotNull null
+            rank to (bits.getOrNull(1)?.toIntOrNull() ?: 1)
+        }.toMap()
+
+    private fun formatCounts(counts: Map<Int, Int>): String =
+        counts.entries.joinToString(",") { "${it.key}:${it.value}" }
 
     private fun parseRanks(text: String?): List<Int> =
         text.orEmpty().split(",").mapNotNull { it.toIntOrNull() }
