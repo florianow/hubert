@@ -16,10 +16,19 @@ import javax.inject.Singleton
 data class ParcoursLesson(val title: String, val file: String)
 
 /**
- * One étape of the Parcours: a grammar point with its lesson(s) and the grammar game
- * (GameSession key) with its focus that serves as Plat du chef. [theme] supplies the word
- * hints of the étape's Parlez! conversation; the menus keep the theme of the day.
+ * A gap exercise of an étape (scripts/parcours_exercises.py): [fr] with "___", the [answer]
+ * and wrong choices that test the étape's grammar. [source] "lesson" = a sentence of the
+ * étape's lessons, "pool" = Hubert's sentences for the same grammar.
  */
+data class ParcoursExercise(
+    val fr: String,
+    val de: String,
+    val answer: String,
+    val wrong: List<String>,
+    val rule: String,
+    val source: String
+)
+
 /** The étape's conversation for Parlez! (scripts/build_parcours.py, PARLEZ). */
 data class ParcoursParlez(
     val themeFr: String,
@@ -29,6 +38,12 @@ data class ParcoursParlez(
     val grammarFr: String
 )
 
+/**
+ * One étape of the Parcours: a grammar point with its lesson(s), its gap [exercises], the
+ * grammar game (GameSession key) with its focus for the Entraînement (and as Plat du chef in
+ * the menus) and a Parlez! conversation. [kind]: article, adjective, conjugation,
+ * preposition, relative, agreement or numbers (the last two are filled up in the app).
+ */
 data class ParcoursUnit(
     val id: Int,
     val level: String,
@@ -37,42 +52,72 @@ data class ParcoursUnit(
     val lessons: List<ParcoursLesson>,
     val game: String,
     val focus: List<String>,
+    val kind: String = "",
+    val exercises: List<ParcoursExercise>? = null,
     val parlez: ParcoursParlez? = null
 )
 
 /** Spaced review of a passed étape's grammar: due on [dueDay], [step] into REVIEW_DAYS. */
 data class GrammarReview(val dueDay: Long, val step: Int)
 
-/** Stored progress. [menus]: menus finished per unit; [best]: best menu score (0–100). */
+/**
+ * Stored progress per étape: lesson read (with its Mini-Check), Entraînement played,
+ * best [control] result in percent, passed, and the Révision schedule. ([menus] and [best]
+ * are left from the menu-based Contrôle and no longer used.)
+ */
 data class ParcoursProgress(
     val current: Int = 1,
     val lessonsRead: Set<Int> = emptySet(),
     val menus: Map<Int, Int> = emptyMap(),
     val best: Map<Int, Int> = emptyMap(),
     val passed: Set<Int> = emptySet(),
-    val reviews: Map<Int, GrammarReview> = emptyMap()
+    val reviews: Map<Int, GrammarReview> = emptyMap(),
+    val checked: Set<Int> = emptySet(),
+    val trained: Set<Int> = emptySet(),
+    val control: Map<Int, Int> = emptyMap()
 )
 
 /** A passed étape whose grammar is due again. */
 data class DueReview(val unit: ParcoursUnit, val index: Int)
 
-/** Where the current unit stands: Leçon → 2 menus → Contrôle (a Complet with ≥ 12/20). */
+/** The steps of an étape, in order. */
+enum class ParcoursStep(val label: String, val icon: String) {
+    LECON("Leçon + Mini-Check", "📖"),
+    ENTRAINEMENT("Entraînement", "🎯"),
+    CONTROLE("Contrôle", "🎓")
+}
+
+/** Where the current unit stands: Leçon (+ Mini-Check) → Entraînement → Contrôle (≥ 80 %). */
 data class ParcoursStatus(
     val unit: ParcoursUnit,
     val index: Int,               // 0-based position in the Parcours
     val total: Int,
     val lessonRead: Boolean,
-    val menusDone: Int,
+    val trained: Boolean,
+    val bestControl: Int?,        // best Contrôle result in percent, null = not tried yet
     val enabled: Boolean,
-    val dueReviews: Int = 0       // passed étapes whose grammar is due again
+    val dueReview: DueReview? = null,   // most overdue passed étape (not the current one)
+    val dueReviews: Int = 0             // passed étapes whose grammar is due again
 ) {
-    val controlUnlocked: Boolean get() = menusDone >= ParcoursRepository.MENUS_BEFORE_CONTROL
+    /** The step to do next. */
+    val nextStep: ParcoursStep get() = when {
+        !lessonRead -> ParcoursStep.LECON
+        !trained -> ParcoursStep.ENTRAINEMENT
+        else -> ParcoursStep.CONTROLE
+    }
+    fun isDone(step: ParcoursStep): Boolean = when (step) {
+        ParcoursStep.LECON -> lessonRead
+        ParcoursStep.ENTRAINEMENT -> trained
+        ParcoursStep.CONTROLE -> false
+    }
 }
 
 /**
  * The Parcours: units from A1 to B2 (assets/parcours.json, built by scripts/build_parcours.py
- * from the anki_french grammar notes). Menu du jour serves the current unit's grammar game
- * (the theme of the day stays) and a passed Contrôle moves on to the next one.
+ * from the anki_french grammar notes). Each étape: Leçon with a Mini-Check, Entraînement in
+ * the étape's game, then a Contrôle of gap exercises; a passed Contrôle moves on to the next
+ * étape and starts its Révisions (short quizzes after 3, 7, 21, 60 days). Menu du jour serves
+ * the étape's game as Plat du chef (extra practice; the theme of the day stays).
  */
 @Singleton
 class ParcoursRepository @Inject constructor(
@@ -80,13 +125,14 @@ class ParcoursRepository @Inject constructor(
     private val settingsRepository: SettingsRepository
 ) {
     companion object {
-        const val MENUS_BEFORE_CONTROL = 2
-        /** Contrôle passed from 12/20. */
-        const val PASS_SCORE = 60
+        /** Contrôle passed from 80 %. */
+        const val PASS_SCORE = 80
+        /** The Entraînement counts once this many answers in the étape's game were right. */
+        const val TRAINING_MIN_CORRECT = 6
         /** Days until a passed étape comes back as Révision; a good Révision moves one step on. */
         val REVIEW_DAYS = listOf(3, 7, 21, 60)
-        /** A Révision counts as good from 70% (Plat-du-chef score). */
-        const val REVIEW_PASS_SCORE = 70
+        /** A Révision counts as good from 75 %. */
+        const val REVIEW_PASS_SCORE = 75
         /** A weak Révision comes back after this many days. */
         const val REVIEW_RETRY_DAYS = 1
     }
@@ -114,7 +160,10 @@ class ParcoursRepository @Inject constructor(
                     menus = it.menus ?: emptyMap(),
                     best = it.best ?: emptyMap(),
                     passed = it.passed ?: emptySet(),
-                    reviews = it.reviews ?: emptyMap()
+                    reviews = it.reviews ?: emptyMap(),
+                    checked = it.checked ?: emptySet(),
+                    trained = it.trained ?: emptySet(),
+                    control = it.control ?: emptyMap()
                 )
             } ?: ParcoursProgress()
 
@@ -131,8 +180,10 @@ class ParcoursRepository @Inject constructor(
             index = index,
             total = units.size,
             lessonRead = unit.id in p.lessonsRead,
-            menusDone = p.menus[unit.id] ?: 0,
+            trained = unit.id in p.trained,
+            bestControl = p.control[unit.id],
             enabled = enabled,
+            dueReview = dueReview(p),
             dueReviews = p.reviews.count { (id, r) -> r.dueDay <= today() && id != unit.id }
         ).takeIf { enabled }
     }
@@ -148,34 +199,39 @@ class ParcoursRepository @Inject constructor(
 
     suspend fun setEnabled(enabled: Boolean) = settingsRepository.saveParcoursEnabled(enabled)
 
+    /** The Mini-Check after the lesson was done. */
+    suspend fun recordCheck(unitId: Int) = update { it.copy(checked = it.checked + unitId) }
+
+    /** An Entraînement round in the étape's game; counts with [TRAINING_MIN_CORRECT] right answers. */
+    suspend fun recordTraining(unitId: Int, correct: Int): Boolean {
+        val done = correct >= TRAINING_MIN_CORRECT
+        if (done) update { it.copy(trained = it.trained + unitId) }
+        return done
+    }
+
     /**
-     * A menu of the current unit was finished. Once [MENUS_BEFORE_CONTROL] menus are done, a
-     * Complet counts as Contrôle: with [PASS_SCORE] or more the unit is passed and the next
-     * one starts. Returns true when the unit was passed.
+     * A Contrôle of [unitId] with [percent] right. From [PASS_SCORE] the étape is passed: the
+     * Parcours moves on (if it was the current étape) and the étape's Révisions start.
      */
-    suspend fun recordMenu(isComplet: Boolean, score: Int): Boolean {
-        var passed = false
+    suspend fun recordControl(unitId: Int, percent: Int): Boolean {
+        val passed = percent >= PASS_SCORE
         update { p ->
-            val id = p.current
-            val before = p.menus[id] ?: 0
-            val isControl = isComplet && before >= MENUS_BEFORE_CONTROL
-            passed = isControl && score >= PASS_SCORE
-            val next = if (passed) units.getOrNull(units.indexOfFirst { it.id == id } + 1)?.id ?: id else id
+            val next = if (passed && p.current == unitId) units.getOrNull(units.indexOfFirst { it.id == unitId } + 1)?.id ?: unitId else p.current
             p.copy(
                 current = next,
-                menus = p.menus + (id to before + 1),
-                best = p.best + (id to maxOf(p.best[id] ?: 0, score)),
-                passed = if (passed) p.passed + id else p.passed,
+                control = p.control + (unitId to maxOf(p.control[unitId] ?: 0, percent)),
+                passed = if (passed) p.passed + unitId else p.passed,
                 // A passed étape starts its review schedule (a repeated one keeps its own)
-                reviews = if (passed && id !in p.reviews) p.reviews + (id to GrammarReview(today() + REVIEW_DAYS[0], 0)) else p.reviews
+                reviews = if (passed && unitId !in p.reviews) p.reviews + (unitId to GrammarReview(today() + REVIEW_DAYS[0], 0)) else p.reviews
             )
         }
         return passed
     }
 
     /** The most overdue passed étape (not the current one), or null. */
-    suspend fun dueReview(): DueReview? {
-        val p = current()
+    suspend fun dueReview(): DueReview? = dueReview(current())
+
+    private fun dueReview(p: ParcoursProgress): DueReview? {
         val (id, _) = p.reviews.entries
             .filter { (id, r) -> r.dueDay <= today() && id != p.current }
             .minByOrNull { it.value.dueDay } ?: return null
@@ -184,7 +240,7 @@ class ParcoursRepository @Inject constructor(
     }
 
     /**
-     * Result of a Révision course: from [REVIEW_PASS_SCORE] the étape moves one step on in
+     * Result of a Révision quiz (percent): from [REVIEW_PASS_SCORE] the étape moves one step on in
      * [REVIEW_DAYS], otherwise it comes back soon and starts over. Returns days until next time.
      */
     suspend fun recordReview(unitId: Int, score: Int): Int {

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.hubert.R
 import com.hubert.data.repository.LearningOverview
 import com.hubert.viewmodel.TodayPlan
-import com.hubert.data.repository.ParcoursRepository
+import com.hubert.data.repository.ParcoursStep
 import com.hubert.data.repository.ParcoursStatus
 import com.hubert.ui.theme.*
 
@@ -58,7 +58,8 @@ fun MenuScreen(
     learningOverview: LearningOverview?,
     today: TodayPlan?,
     onShowParcours: () -> Unit,
-    onReadLesson: () -> Unit,
+    onParcoursStep: (ParcoursStatus) -> Unit,
+    onParcoursReview: () -> Unit,
     onShowProgress: () -> Unit,
     onStartLearning: () -> Unit,
     onStartMatching: () -> Unit,
@@ -135,7 +136,8 @@ fun MenuScreen(
                 onShowProgress = { onTabChange(HomeTab.FORTSCHRITT) },
                 onShowGames = { onTabChange(HomeTab.SPIELE) },
                 onShowParcours = onShowParcours,
-                onReadLesson = onReadLesson
+                onParcoursStep = onParcoursStep,
+                onParcoursReview = onParcoursReview
             )
             HomeTab.FORTSCHRITT -> ProgressTab(
                 overview = learningOverview,
@@ -330,7 +332,8 @@ private fun TodayTab(
     onShowProgress: () -> Unit,
     onShowGames: () -> Unit,
     onShowParcours: () -> Unit,
-    onReadLesson: () -> Unit
+    onParcoursStep: (ParcoursStatus) -> Unit,
+    onParcoursReview: () -> Unit
 ) {
     val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
@@ -348,7 +351,7 @@ private fun TodayTab(
         Spacer(Modifier.height(16.dp))
         TodayCard(today = today, dueFallback = overview?.dueToday, onStartLearning = onStartLearning, onMenuDuJour = onMenuDuJour)
         Spacer(Modifier.height(12.dp))
-        ParcoursCard(today?.parcours, onShowParcours = onShowParcours, onReadLesson = onReadLesson)
+        ParcoursCard(today?.parcours, onShowParcours = onShowParcours, onStep = onParcoursStep, onReview = onParcoursReview)
         if (today?.complete == true) {
             Spacer(Modifier.height(12.dp))
             OutlinedButton(
@@ -473,8 +476,6 @@ private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () 
             title = "Menu du jour",
             status = when {
                 menu != null -> "✓ ${menuTypeLabel(menu.menuType)} · ${formatGrade(menu.overallScore)}/20"
-                today?.parcours != null && today.parcours.controlUnlocked -> "🎓 Contrôle"
-                today?.parcours != null -> "Étape ${today.parcours.index + 1}"
                 today != null && today.category.isNotEmpty() -> "Thema: ${today.category}"
                 else -> "Express · Complet · À la carte"
             },
@@ -493,9 +494,14 @@ private fun TodayCard(today: TodayPlan?, dueFallback: Int?, onStartLearning: () 
     }
 }
 
-/** The current étape of the Parcours: where you are and what comes next. */
+/** The current étape of the Parcours: its steps, the next one as a button, a due Révision. */
 @Composable
-private fun ParcoursCard(parcours: ParcoursStatus?, onShowParcours: () -> Unit, onReadLesson: () -> Unit) {
+private fun ParcoursCard(
+    parcours: ParcoursStatus?,
+    onShowParcours: () -> Unit,
+    onStep: (ParcoursStatus) -> Unit,
+    onReview: () -> Unit
+) {
     val muted = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
     Column(
         modifier = Modifier
@@ -508,7 +514,7 @@ private fun ParcoursCard(parcours: ParcoursStatus?, onShowParcours: () -> Unit, 
     ) {
         if (parcours == null) {
             Text("🧭 Parcours", fontWeight = FontWeight.Black, fontSize = 15.sp, color = ParcoursBlue)
-            Text("Aus – das Menu du jour wählt ein Thema des Tages. Tippen zum Einschalten.", fontSize = 12.sp, color = muted)
+            Text("Grammatik Schritt für Schritt von A1 bis B2. Tippen zum Öffnen.", fontSize = 12.sp, color = muted)
             return@Column
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -533,28 +539,39 @@ private fun ParcoursCard(parcours: ParcoursStatus?, onShowParcours: () -> Unit, 
         Text(parcours.unit.title, fontWeight = FontWeight.Bold, fontSize = 17.sp, modifier = Modifier.padding(top = 2.dp))
         Spacer(Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            ParcoursChip("📖 Leçon", parcours.lessonRead)
-            repeat(ParcoursRepository.MENUS_BEFORE_CONTROL) { i ->
-                ParcoursChip("🍽️ ${i + 1}", parcours.menusDone > i)
+            ParcoursStep.entries.forEach { step ->
+                ParcoursChip("${step.icon} ${step.label.substringBefore(" +")}", parcours.isDone(step))
             }
-            ParcoursChip("🎓 Contrôle", false)
         }
-        if (parcours.dueReviews > 0) {
+        Spacer(Modifier.height(8.dp))
+        val next = parcours.nextStep
+        Button(
+            onClick = { onStep(parcours) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = ParcoursBlue)
+        ) {
             Text(
-                text = "🔁 ${parcours.dueReviews} ${if (parcours.dueReviews == 1) "Étape" else "Étapes"} zur Wiederholung – kommt als Révision ins nächste Menü",
-                fontSize = 12.sp,
-                color = ParcoursBlue,
-                modifier = Modifier.padding(top = 6.dp)
+                text = when (next) {
+                    ParcoursStep.LECON -> "📖 Leçon lesen + Mini-Check"
+                    ParcoursStep.ENTRAINEMENT -> "🎯 Entraînement: ${parcoursGameName(parcours.unit.game)}"
+                    ParcoursStep.CONTROLE -> "🎓 Contrôle" + (parcours.bestControl?.let { " (bisher $it %)" } ?: "")
+                },
+                fontWeight = FontWeight.Bold
             )
         }
-        if (!parcours.lessonRead) {
-            Spacer(Modifier.height(8.dp))
+        parcours.dueReview?.let { due ->
+            Spacer(Modifier.height(6.dp))
             OutlinedButton(
-                onClick = onReadLesson,
+                onClick = onReview,
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("📖 Leçon lesen (2–3 Min.)", color = ParcoursBlue, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "🔁 Révision: ${due.unit.title}" + if (parcours.dueReviews > 1) " (+${parcours.dueReviews - 1})" else "",
+                    color = ParcoursBlue,
+                    maxLines = 1
+                )
             }
         }
     }

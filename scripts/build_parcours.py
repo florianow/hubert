@@ -13,6 +13,10 @@ import json
 import os
 import re
 import shutil
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import parcours_exercises  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GRAMMAR = os.path.join(ROOT, "anki_french", "grammar")
@@ -222,11 +226,13 @@ def main():
     os.makedirs(out_dir)
     if len(PARLEZ) != len(UNITS):
         raise SystemExit(f"PARLEZ has {len(PARLEZ)} entries for {len(UNITS)} units")
+    corpus = parcours_exercises.Corpus(ASSETS)
     units = []
     for index, (level, title, theme, notes, game, focus) in enumerate(UNITS, start=1):
         if theme not in themes:
             raise SystemExit(f"Theme '{theme}' of unit {index} has too few nouns/sentences for a menu")
         lessons = []
+        htmls = []
         for note in notes:
             src = os.path.join(GRAMMAR, note + ".html")
             html = open(src, encoding="utf-8").read()
@@ -234,7 +240,15 @@ def main():
             note_title = re.sub(r"<[^>]+>", "", note_title).strip()
             file = slug(note) + ".html"
             shutil.copyfile(src, os.path.join(out_dir, file))
+            htmls.append(html)
             lessons.append({"title": note_title, "file": "grammar/" + file})
+        unit = {"title": title, "game": game, "focus": focus}
+        kind, exercises = parcours_exercises.build(unit, htmls, corpus, seed=index)
+        # Numbers and participle agreement are filled up in the app (Nombrez!/Accordez! generators)
+        if len(exercises) < parcours_exercises.MIN_EXERCISES and kind not in ("numbers", "agreement"):
+            raise SystemExit(f"Unit {index} '{title}' has only {len(exercises)} exercises")
+        lesson_count = sum(1 for e in exercises if e["source"] == "lesson")
+        print(f"{index:2} {title[:34]:34} {kind:12} {len(exercises):2} exercises ({lesson_count} from the lesson)")
         units.append({
             "id": index,
             "level": level,
@@ -243,6 +257,8 @@ def main():
             "lessons": lessons,
             "game": game,
             "focus": focus,
+            "kind": kind,
+            "exercises": exercises,
             "parlez": dict(zip(("themeFr", "scenarioDe", "hubertRoleFr", "starterFr", "grammarFr"), PARLEZ[index - 1])),
         })
     with open(os.path.join(ASSETS, "parcours.json"), "w", encoding="utf-8") as f:

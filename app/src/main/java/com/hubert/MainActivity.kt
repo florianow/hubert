@@ -24,6 +24,9 @@ import com.hubert.viewmodel.AccordezViewModel
 import com.hubert.viewmodel.WeeklyReportViewModel
 import com.hubert.viewmodel.LernenViewModel
 import com.hubert.viewmodel.ParcoursViewModel
+import com.hubert.data.repository.ParcoursStep
+import com.hubert.data.repository.ParcoursUnit
+import com.hubert.viewmodel.QuizKind
 import com.hubert.viewmodel.DitesViewModel
 import com.hubert.viewmodel.LernRundeViewModel
 import com.hubert.viewmodel.LernRundeKind
@@ -121,23 +124,36 @@ fun HubertApp() {
 
     var currentScreen by remember { mutableStateOf(Screen.MENU) }
     var homeTab by rememberSaveable { mutableStateOf(HomeTab.HEUTE) }
+    // Parcours Entraînement running: the étape whose game is being played
+    var parcoursTraining by remember { mutableStateOf<Int?>(null) }
+
+    // Starts one of the course games with a stage config (Menu du jour, Parcours Entraînement)
+    val startCourseGame: (CourseGame, StageConfig) -> Unit = { game, config ->
+        when (game) {
+            CourseGame.TROUVEZ -> matchingVm.startGame(config)
+            CourseGame.COMPLETEZ -> gapFillVm.startGame(config)
+            CourseGame.CLASSEZ -> genderSnapVm.startGame(config)
+            CourseGame.ECRIVEZ -> spellingBeeVm.startGame(config)
+            CourseGame.CONJUGUEZ -> conjugationVm.startGame(config)
+            CourseGame.PREPOSEZ -> prepositionVm.startGame(config)
+            CourseGame.RELATIVISEZ -> relativisezVm.startGame(config)
+            CourseGame.NOMBREZ -> nombrezVm.startGame(config)
+            CourseGame.ACCORDEZ -> accordezVm.startGame(config)
+        }
+    }
 
     // "Menu du jour" — start the next course with the menu's stage config
     val startNextCourse: () -> Unit = {
         val course = menuVm.uiState.value.nextCourse
         val config = menuVm.configForNextCourse()
-        if (course != null && config != null) {
-            when (course.game) {
-                CourseGame.TROUVEZ -> matchingVm.startGame(config)
-                CourseGame.COMPLETEZ -> gapFillVm.startGame(config)
-                CourseGame.CLASSEZ -> genderSnapVm.startGame(config)
-                CourseGame.ECRIVEZ -> spellingBeeVm.startGame(config)
-                CourseGame.CONJUGUEZ -> conjugationVm.startGame(config)
-                CourseGame.PREPOSEZ -> prepositionVm.startGame(config)
-                CourseGame.RELATIVISEZ -> relativisezVm.startGame(config)
-                CourseGame.NOMBREZ -> nombrezVm.startGame(config)
-                CourseGame.ACCORDEZ -> accordezVm.startGame(config)
-            }
+        if (course != null && config != null) startCourseGame(course.game, config)
+    }
+
+    // Parcours — the étape's game with only its grammar
+    val startTraining: (ParcoursUnit) -> Unit = { unit ->
+        CourseGame.entries.firstOrNull { it.gameType == unit.game }?.let { game ->
+            parcoursTraining = unit.id
+            startCourseGame(game, StageConfig(game.timeMs, category = null, focusRanks = emptyList(), grammarFocus = unit.focus.toSet()))
         }
     }
 
@@ -298,6 +314,70 @@ fun HubertApp() {
             menuVm.onCourseFinished(accordezState.answerHistory)
             accordezVm.resetToMenu()
             currentScreen = Screen.MENU_DU_JOUR
+        }
+    }
+    // Parcours Entraînement — the result goes back to the étape (quitting the game cancels it)
+    LaunchedEffect(currentScreen) {
+        if (currentScreen == Screen.MENU) parcoursTraining = null
+    }
+    LaunchedEffect(genderSnapState.isGameOver) {
+        val unitId = parcoursTraining
+        if (genderSnapState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = genderSnapState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            genderSnapVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
+        }
+    }
+    LaunchedEffect(conjugationState.isGameOver) {
+        val unitId = parcoursTraining
+        if (conjugationState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = conjugationState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            conjugationVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
+        }
+    }
+    LaunchedEffect(prepositionState.isGameOver) {
+        val unitId = parcoursTraining
+        if (prepositionState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = prepositionState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            prepositionVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
+        }
+    }
+    LaunchedEffect(relativisezState.isGameOver) {
+        val unitId = parcoursTraining
+        if (relativisezState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = relativisezState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            relativisezVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
+        }
+    }
+    LaunchedEffect(nombrezState.isGameOver) {
+        val unitId = parcoursTraining
+        if (nombrezState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = nombrezState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            nombrezVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
+        }
+    }
+    LaunchedEffect(accordezState.isGameOver) {
+        val unitId = parcoursTraining
+        if (accordezState.isGameOver && unitId != null && !menuVm.uiState.value.isRunning) {
+            val answers = accordezState.answerHistory
+            parcoursVm.recordTraining(unitId, answers.count { it.isCorrect }, answers.size)
+            accordezVm.resetToMenu()
+            parcoursTraining = null
+            currentScreen = Screen.PARCOURS
         }
     }
     // "Vokabeln lernen" — finished rounds report back to the learning overview
@@ -462,10 +542,13 @@ fun HubertApp() {
                     closeLesson = { parcoursVm.closeLesson() },
                     jumpTo = { parcoursVm.jumpTo(it) },
                     setEnabled = { parcoursVm.setEnabled(it) },
-                    startMenu = {
-                        menuVm.showMenuSelection()
-                        currentScreen = Screen.MENU_DU_JOUR
-                    },
+                    startTraining = startTraining,
+                    startQuiz = { unit, kind -> parcoursVm.startQuiz(unit, kind) },
+                    choose = { parcoursVm.choose(it) },
+                    onTyped = { parcoursVm.onTyped(it) },
+                    submitTyped = { parcoursVm.submitTyped() },
+                    nextQuestion = { parcoursVm.nextQuestion() },
+                    closeQuiz = { parcoursVm.closeQuiz() },
                     startParlez = { unit ->
                         parcoursVm.parlezTopic(unit)?.let { topic ->
                             parlezVm.openWithTopic(topic)
@@ -1153,8 +1236,25 @@ fun HubertApp() {
                     parcoursVm.showOverview()
                     currentScreen = Screen.PARCOURS
                 },
-                onReadLesson = {
-                    parcoursVm.openCurrentLesson()
+                onParcoursStep = { status ->
+                    when (status.nextStep) {
+                        ParcoursStep.LECON -> {
+                            parcoursVm.openCurrentLesson()
+                            currentScreen = Screen.PARCOURS
+                        }
+                        ParcoursStep.ENTRAINEMENT -> {
+                            parcoursVm.selectUnit(status.unit)
+                            startTraining(status.unit)
+                        }
+                        ParcoursStep.CONTROLE -> {
+                            parcoursVm.selectUnit(status.unit)
+                            parcoursVm.startQuiz(status.unit, QuizKind.CONTROL)
+                            currentScreen = Screen.PARCOURS
+                        }
+                    }
+                },
+                onParcoursReview = {
+                    parcoursVm.startDueReview()
                     currentScreen = Screen.PARCOURS
                 },
                 tab = homeTab,
